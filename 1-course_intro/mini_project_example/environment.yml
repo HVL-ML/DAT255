@@ -1,0 +1,15 @@
+name: fastai
+channels:
+    - fastai
+    - pytorch
+    - defaults
+dependencies:
+- python
+- pytorch
+- torchvision
+- pip
+- pip:
+  - pip
+  - fastai
+  - ipywidgets
+  - kaggle
