@@ -19,8 +19,8 @@ It is a three-part story:
 
 | Notebook    |      1-Click Notebook      |
 |:----------|------|
-| [DAT255-NLP-1.0-introduction.ipynb]() <br> | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)]()<br>[![kaggle](https://camo.githubusercontent.com/a08ca511178e691ace596a95d334f73cf4ce06e83a5c4a5169b8bb68cac27bef/68747470733a2f2f6b6167676c652e636f6d2f7374617469632f696d616765732f6f70656e2d696e2d6b6167676c652e737667)]()|
-| [DAT255-NLP-2.0-MedTweets-fastai-ULMFiT.ipynb]() <br> | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)]()<br>[![kaggle](https://camo.githubusercontent.com/a08ca511178e691ace596a95d334f73cf4ce06e83a5c4a5169b8bb68cac27bef/68747470733a2f2f6b6167676c652e636f6d2f7374617469632f696d616765732f6f70656e2d696e2d6b6167676c652e737667)]()|
+| [DAT255-NLP-1.0-introduction.ipynb](https://nbviewer.org/github/HVL-ML/DAT255/blob/main/3-NLP/DAT255-NLP-1.0-introduction.ipynb) <br> | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)]()<br>[![kaggle](https://camo.githubusercontent.com/a08ca511178e691ace596a95d334f73cf4ce06e83a5c4a5169b8bb68cac27bef/68747470733a2f2f6b6167676c652e636f6d2f7374617469632f696d616765732f6f70656e2d696e2d6b6167676c652e737667)]()|
+| [DAT255-NLP-2.0-MedTweets-fastai-ULMFiT.ipynb](https://github.com/HVL-ML/DAT255/blob/main/3-NLP/DAT255-NLP-2.0-MedTweets-fastai-ULMFiT.ipynb) <br> | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)]()<br>[![kaggle](https://camo.githubusercontent.com/a08ca511178e691ace596a95d334f73cf4ce06e83a5c4a5169b8bb68cac27bef/68747470733a2f2f6b6167676c652e636f6d2f7374617469632f696d616765732f6f70656e2d696e2d6b6167676c652e737667)]()|
 | [DAT255-NLP-3.0-MedTweets-transformers.ipynb]() <br> | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)]()<br>[![kaggle](https://camo.githubusercontent.com/a08ca511178e691ace596a95d334f73cf4ce06e83a5c4a5169b8bb68cac27bef/68747470733a2f2f6b6167676c652e636f6d2f7374617469632f696d616765732f6f70656e2d696e2d6b6167676c652e737667)]()|
 
 ## Slides
