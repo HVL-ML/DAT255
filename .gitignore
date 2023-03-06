@@ -131,3 +131,9 @@ dmypy.json
 
 # Various
 .DS_Store
+
+# env files
+.env
+
+# HuggingFace checkpoints
+checkpoint-*
