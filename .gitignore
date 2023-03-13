@@ -137,3 +137,6 @@ dmypy.json
 
 # HuggingFace checkpoints
 checkpoint-*
+
+# Examples in dev
+dev-examples
