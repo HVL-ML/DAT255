@@ -1,8 +1,0 @@
-# Deep learning under the hood
-
-> Extra material for [Module 3](https://hvl.instructure.com/courses/21919/modules#module_89838) of the course.
-
-| Notebook    |      1-Click Notebook      |
-|:----------|------|
-|  [DAT255-1.0-Nnets_building_blocks-Part1.ipynb](https://nbviewer.org/github/HVL-ML/DAT255/blob/main/2-DL_building_blocks/DAT255-1.0-Nnets_building_blocks-Part1.ipynb)  <br>As deep neural networks consist of a set of chained operations on what's called tensors, we'll take a closer look at tensors and tensor operations. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/DAT255-1.0-Nnets_building_blocks-Part1.ipynb)<br>[![kaggle](https://camo.githubusercontent.com/a08ca511178e691ace596a95d334f73cf4ce06e83a5c4a5169b8bb68cac27bef/68747470733a2f2f6b6167676c652e636f6d2f7374617469632f696d616765732f6f70656e2d696e2d6b6167676c652e737667)](https://www.kaggle.com/alexanderlundervold/)|
-|  [DAT255-1.0-Nnets_building_blocks-Part2.ipynb](https://nbviewer.org/github/HVL-ML/DAT255/blob/main/2-DL_building_blocks/DAT255-2.0-Nnets_building_blocks-Part2.ipynb)  <br>What is deep learning? | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/2-DL_building_blocks/DAT255-2.0-Nnets_building_blocks-Part2.ipynb)<br>[![kaggle](https://camo.githubusercontent.com/a08ca511178e691ace596a95d334f73cf4ce06e83a5c4a5169b8bb68cac27bef/68747470733a2f2f6b6167676c652e636f6d2f7374617469632f696d616765732f6f70656e2d696e2d6b6167676c652e737667)](https://www.kaggle.com/alexanderlundervold/)|

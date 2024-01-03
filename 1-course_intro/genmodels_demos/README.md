@@ -1,1 +1,0 @@
-These are some quick demos of stable diffusion, Whisper, and PubMedGPT, used in the course introduction. We'll learn much more about how this works later. 
