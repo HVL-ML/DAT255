@@ -140,3 +140,4 @@ checkpoint-*
 
 # Examples in dev
 dev-examples
+nbs/dev
