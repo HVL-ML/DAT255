@@ -135,6 +135,9 @@ dmypy.json
 # env files
 .env
 
+# Pytorcvh models
+nbs/models
+
 # HuggingFace checkpoints
 checkpoint-*
 
