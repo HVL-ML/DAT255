@@ -16,7 +16,7 @@
 
 ## Content
 
-:point_right: Go to [`/nbs`](/nbs) to find the course material. 
+:point_right: Go to [`/nbs`](/nbs/README.md) to find the course material. 
 
 ---
 
