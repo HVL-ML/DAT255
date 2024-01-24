@@ -16,11 +16,11 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 
 | Notebook    |      1-Click Notebook      
 |:----------|------|
-| [fastai-course-00-is-it-a-bird-creating-a-model-from-your-own-data.ipynb](https://www.kaggle.com/code/jhoward/is-it-a-bird-creating-a-model-from-your-own-data)<br>the Kaggle notebook covered in the first lesson of the fastai course|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/is-it-a-bird-creating-a-model-from-your-own-data)
-| [DAT255-1.0-asl-basic_intro_example-CIFAR.ipynb](./DAT255-1.0-asl-basic_intro_example-CIFAR.ipynb)<br>a first, straightforward example of using fastai for image classification.|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/2024-dat255-1-0-asl-basic-intro-example-ipynb/)   <br>[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/nbs/DAT255-1.0-asl-basic_intro_example-CIFAR.ipynb)
-| [fastbook-01_intro.ipynb](https://github.com/fastai/fastbook/blob/master/01_intro.ipynb)<br>the first chapter of the fastai textbook|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/01_intro.ipynb)
-| [fastbook-02_production.ipynb](https://github.com/fastai/fastbook/blob/master/02_production.ipynb)<br>the second chapter of the fastai textbook|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/02_production.ipynb)
-| [DAT255-1.1-asl-plantdoc.ipynb](./DAT255-1.1-asl-plantdoc.ipynb)<br>another basic example of image classification.|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/2024-dat255-1-1-asl-plantdoc-ipynb/)   <br>[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/nbs/DAT255-1.1-asl-plantdoc.ipynb)
+| [fastai course: Is it a bird? Creating a model from your own data](https://www.kaggle.com/code/jhoward/is-it-a-bird-creating-a-model-from-your-own-data)<br>the Kaggle notebook covered in the first lesson of the fastai course|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/is-it-a-bird-creating-a-model-from-your-own-data)
+| [DAT255: 1.0-asl-basic_intro_example-CIFAR.ipynb](./DAT255-1.0-asl-basic_intro_example-CIFAR.ipynb)<br>a first, straightforward example of using fastai for image classification.|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/2024-dat255-1-0-asl-basic-intro-example-ipynb/)   <br>[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/nbs/DAT255-1.0-asl-basic_intro_example-CIFAR.ipynb)
+| [fastbook: 01_intro.ipynb](https://github.com/fastai/fastbook/blob/master/01_intro.ipynb)<br>the first chapter of the fastai textbook|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/01_intro.ipynb)
+| [fastbook: 02_production.ipynb](https://github.com/fastai/fastbook/blob/master/02_production.ipynb)<br>the second chapter of the fastai textbook|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/02_production.ipynb)
+| [DAT255: 1.1-asl-plantdoc.ipynb](./DAT255-1.1-asl-plantdoc.ipynb)<br>another basic example of image classification.|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/2024-dat255-1-1-asl-plantdoc-ipynb/)   <br>[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/nbs/DAT255-1.1-asl-plantdoc.ipynb)
 | _More TBA_
 
 ## Module 2: From model to production
@@ -28,7 +28,9 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 
 | Notebook    |      1-Click Notebook      
 |:----------|------|
-| [fastbook-02_production.ipynb](https://github.com/fastai/fastbook/blob/master/02_production.ipynb)<br>the second chapter of the fastai textbook|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/02_production.ipynb)
+| [fastbook: 02_production.ipynb](https://github.com/fastai/fastbook/blob/master/02_production.ipynb)<br>the second chapter of the fastai textbook|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/02_production.ipynb)
+| [fastai course: Saving a basic fastai model](https://www.kaggle.com/code/jhoward/saving-a-basic-fastai-model/notebook)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/saving-a-basic-fastai-model/notebook)
+| [DAT255: 2.0-asl-data_collection_model_deployment.ipynb](./DAT255-2.0-asl-data_collection_model_deployment.ipynb)
 | _More TBA_
 
 
