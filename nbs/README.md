@@ -76,3 +76,12 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 |:----------|------|
 | _More TBA_
 
+
+
+## Extra notebooks
+
+:point_right: Notebooks related to projects, assignments, and other topics. Note that these are typically not as detailed as the notebooks above.
+
+| Notebook    |      1-Click Notebook
+|:----------|------|
+| [extra_example-1.0-audio_as_images.ipynb](./extra_example-1.0-audio_as_images.ipynb)<br>an example of how to use librosa to construct spectrograms to be used for audio classification|
