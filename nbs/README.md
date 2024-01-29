@@ -21,7 +21,6 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 | [fastbook: 01_intro.ipynb](https://github.com/fastai/fastbook/blob/master/01_intro.ipynb)<br>the first chapter of the fastai textbook|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/01_intro.ipynb)
 | [fastbook: 02_production.ipynb](https://github.com/fastai/fastbook/blob/master/02_production.ipynb)<br>the second chapter of the fastai textbook|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/02_production.ipynb)
 | [DAT255: 1.1-asl-plantdoc.ipynb](./DAT255-1.1-asl-plantdoc.ipynb)<br>another basic example of image classification.|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/2024-dat255-1-1-asl-plantdoc-ipynb/)   <br>[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/nbs/DAT255-1.1-asl-plantdoc.ipynb)
-| _More TBA_
 
 ## Module 2: From model to production
 See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/pages/from-model-to-production?module_item_id=747059) for details.
@@ -31,7 +30,7 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 | [fastbook: 02_production.ipynb](https://github.com/fastai/fastbook/blob/master/02_production.ipynb)<br>the second chapter of the fastai textbook|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/02_production.ipynb)
 | [fastai course: Saving a basic fastai model](https://www.kaggle.com/code/jhoward/saving-a-basic-fastai-model/notebook)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/saving-a-basic-fastai-model/notebook)
 | [DAT255: 2.0-asl-data_collection_model_deployment.ipynb](./DAT255-2.0-asl-data_collection_model_deployment.ipynb)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/2024-dat255-2-0-asl-data-collect-model-deployment)
-| _More TBA_
+| [fastbook: 03_ethics.ipynb](https://github.com/fastai/fastbook/blob/master/03_ethics.ipynb)
 
 
 ## Module 3: Deep learning under the hood
@@ -39,7 +38,10 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 
 | Notebook    |      1-Click Notebook      
 |:----------|------|
-| _More TBA_
+| [fastai course: How does a neural net really work?](https://www.kaggle.com/code/jhoward/how-does-a-neural-net-really-work)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/how-does-a-neural-net-really-work)
+| [fastbook: 04_mnist_basics.ipynb](https://github.com/fastai/fastbook/blob/master/04_mnist_basics.ipynb)|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/04_mnist_basics.ipynb)
+| [DAT255: 3.0-Nnets_building_blocks-Part1.ipynb](./DAT255-3.0-asl-Nnets_building_blocks-Part1.ipynb)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/2024-dat255-3-0-asl-nnets_building_blocks_part1-ipynb/)   <br>[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/nbs/DAT255-3.0-asl-Nnets_building_blocks-Part1.ipynb)
+| [DAT255: 3.1-Nnets_building_blocks-Part2.ipynb](./DAT255-3.1-asl-Nnets_building_blocks-Part2.ipynb)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/2024-dat255-3-0-asl-nnets_building_blocks_part1-ipynb/)   <br>[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/nbs/DAT255-3.0-asl-Nnets_building_blocks-Part2.ipynb)
 
 ## Module 4: Natural language processing and generative AI
 See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/pages/from-model-to-production?module_item_id=747059) for details.
