@@ -30,7 +30,7 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 |:----------|------|
 | [fastbook: 02_production.ipynb](https://github.com/fastai/fastbook/blob/master/02_production.ipynb)<br>the second chapter of the fastai textbook|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/02_production.ipynb)
 | [fastai course: Saving a basic fastai model](https://www.kaggle.com/code/jhoward/saving-a-basic-fastai-model/notebook)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/saving-a-basic-fastai-model/notebook)
-| [DAT255: 2.0-asl-data_collection_model_deployment.ipynb](./DAT255-2.0-asl-data_collection_model_deployment.ipynb)
+| [DAT255: 2.0-asl-data_collection_model_deployment.ipynb](./DAT255-2.0-asl-data_collection_model_deployment.ipynb)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/2024-dat255-2-0-asl-data-collect-model-deployment)
 | _More TBA_
 
 
