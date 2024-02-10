@@ -21,6 +21,8 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 | [fastbook: 01_intro.ipynb](https://github.com/fastai/fastbook/blob/master/01_intro.ipynb)<br>the first chapter of the fastai textbook|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/01_intro.ipynb)
 | [fastbook: 02_production.ipynb](https://github.com/fastai/fastbook/blob/master/02_production.ipynb)<br>the second chapter of the fastai textbook|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/02_production.ipynb)
 | [DAT255: 1.1-asl-plantdoc.ipynb](./DAT255-1.1-asl-plantdoc.ipynb)<br>another basic example of image classification.|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/2024-dat255-1-1-asl-plantdoc-ipynb/)   <br>[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/nbs/DAT255-1.1-asl-plantdoc.ipynb)
+|Extra: [fastai course: Road to the Top, Part 1](https://www.kaggle.com/code/jhoward/first-steps-road-to-the-top-part-1)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/first-steps-road-to-the-top-part-1)
+|Extra: [fastai course: Road to the Top, Part 2](https://www.kaggle.com/code/jhoward/small-models-road-to-the-top-part-2/)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/small-models-road-to-the-top-part-2/)
 
 ## Module 2: From model to production
 See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/pages/from-model-to-production?module_item_id=747059) for details.
@@ -48,6 +50,8 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 
 | Notebook    |      1-Click Notebook      
 |:----------|------|
+|[fastai course: Getting started with NLP for absolute beginners](https://www.kaggle.com/code/jhoward/getting-started-with-nlp-for-absolute-beginners/)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/getting-started-with-nlp-for-absolute-beginners/)
+|[fastbook: NLP Deep Dive: RNNs](https://colab.research.google.com/github/fastai/fastbook/blob/master/10_nlp.ipynb)|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/10_nlp.ipynb)
 | _More TBA_
 
 ## Module 5: Tabular data
@@ -55,6 +59,8 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 
 | Notebook    |      1-Click Notebook      
 |:----------|------|
+|[fastai course: How random forests really work](https://www.kaggle.com/code/jhoward/how-random-forests-really-work)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/how-random-forests-really-work)
+|[fastai book: 09_tabular.ipynb](https://github.com/fastai/fastbook/blob/master/09_tabular.ipynb)|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/09_tabular.ipynb)
 | _More TBA_
 
 ## Module 6: Collaborative filtering and recommender systems
