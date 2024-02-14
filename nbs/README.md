@@ -37,7 +37,7 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 
 
 ## Module 3: Deep learning under the hood
-See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/pages/from-model-to-production?module_item_id=747059) for details.
+See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/pages/deep-learning-under-the-hood) for details.
 
 | Notebook    |      1-Click Notebook      
 |:----------|------|
@@ -47,7 +47,7 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 | DAT255: [3.1-Nnets_building_blocks-Part2.ipynb](./DAT255-3.1-asl-Nnets_building_blocks-Part2.ipynb)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/2024-dat255-3-0-asl-nnets_building_blocks_part1-ipynb/)   <br>[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/nbs/DAT255-3.0-asl-Nnets_building_blocks-Part2.ipynb)
 
 ## Module 4: Natural language processing and generative AI
-See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/pages/from-model-to-production?module_item_id=747059) for details.
+See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/pages/natural-language-processing-and-generative-ai) for details.
 
 | Notebook    |      1-Click Notebook      
 |:----------|------|
