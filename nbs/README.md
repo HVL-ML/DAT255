@@ -54,7 +54,7 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 |fastai course: [Getting started with NLP for absolute beginners](https://www.kaggle.com/code/jhoward/getting-started-with-nlp-for-absolute-beginners/)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/getting-started-with-nlp-for-absolute-beginners/)
 |fastbook: [NLP Deep Dive: RNNs](https://colab.research.google.com/github/fastai/fastbook/blob/master/10_nlp.ipynb)|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/10_nlp.ipynb)
 | DAT255: [4.0-NLP-tokenizing_batching_embedding.ipynb](DAT255-4.0-NLP-tokenizing_batching_embedding.ipynb) | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/nbs/DAT255-4.0-NLP-tokenizing_batching_embedding.ipynb)
-| DAT255: 4.1-NLP-text_classification.ipynb
+| DAT255: [4.1-NLP-text-classification.ipynb](DAT255-4.1-NLP-text-classification.ipynb)| [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/nbs/DAT255-4.1-NLP-text-classification.ipynb)
 | DAT255: 4.2-NLP-language_modeling.ipynb
 | DAT255: 4.3-NLP-LLMs_Part1.ipynb
 | _More TBA_
