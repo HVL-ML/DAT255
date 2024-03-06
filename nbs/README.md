@@ -74,13 +74,14 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 
 | Notebook    |      1-Click Notebook      
 |:----------|------|
-| _More TBA_
+|fastai course: [Collaborative Filtering Deep Dive](https://www.kaggle.com/code/jhoward/collaborative-filtering-deep-dive/notebook)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/collaborative-filtering-deep-dive/notebook) <br>[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/08_collab.ipynb)
 
 ## Module 7: Convolutional neural networks under the hood
 See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/pages/from-model-to-production?module_item_id=747059) for details.
 
 | Notebook    |      1-Click Notebook      
 |:----------|------|
+| fastai book: [13_convolutions](https://github.com/fastai/fastbook/blob/master/13_convolutions.ipynb) | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/13_convolutions.ipynb)
 | _More TBA_
 
 ## Module 8: Generative AI under the hood
