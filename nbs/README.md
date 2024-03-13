@@ -68,7 +68,7 @@ See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/
 |:----------|------|
 |fastai course: [How random forests really work](https://www.kaggle.com/code/jhoward/how-random-forests-really-work)|[![kaggle](../assets/kaggle.svg)](https://www.kaggle.com/code/jhoward/how-random-forests-really-work)
 |fastai book: [09_tabular.ipynb](https://github.com/fastai/fastbook/blob/master/09_tabular.ipynb)|[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fastai/fastbook/blob/master/09_tabular.ipynb)
-| _More TBA_
+| DAT255: [5.1-asl-tabular_data_example.ipynb](DAT255-5.1-asl-tabular_data_example.ipynb)
 
 ## Module 6: Collaborative filtering and recommender systems
 See the [corresponding Canvas module](https://hvl.instructure.com/courses/25507/pages/from-model-to-production?module_item_id=747059) for details.
