@@ -2,12 +2,11 @@
 
 ![](assets/DAT255-logo.png)
 
-<p>
-
+<!-- <p>
 [![kaggle](./assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/code) &nbsp;  [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/) &nbsp; [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/HVL-ML/DAT255/HEAD) &nbsp; [![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github/HVL-ML/DAT255/tree/main/)
-</p>
+</p> -->
 
-> Material used in the 2024 version of the course DAT255 at HVL. More information can be found on the course website: https://hvl.instructure.com/courses/25507. 
+> Material used in the 2025 version of the course DAT255 at HVL. More information can be found on the course website: https://hvl.instructure.com/courses/28951. 
 
 ## About the course
 :eyes: Deep learning is a sub-field of machine learning and is what both launched and propels the recent surge of interest in artificial intelligence. The course focuses on deep learning and its applications in computer vision, natural language processing, generative AI, and recommendation systems. The methods, tools, and techniques covered by the course are widely applicable, and the course aims to be instructive to anyone wanting to apply deep learning to any task.
@@ -16,7 +15,7 @@
 
 ## Content
 
-:point_right: Go to [`/nbs`](/nbs/README.md) to find the course material. 
+:point_right: Go to [`/notebooks`](/notebooks) to find the course material. 
 
 ---
 

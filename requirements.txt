@@ -1,0 +1,8 @@
+keras
+tensorflow[and-cuda]~=2.18.0
+scikit-learn
+numpy
+scipy
+notebook
+matplotlib
+gradio
