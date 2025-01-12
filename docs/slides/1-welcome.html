@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.5.56">
+
+  <meta name="author" content="sma@hvl.no">
+  <title>DAT255 – DAT255: Machine Learning Engineering and Advanced Algorithms</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
+  <h1 class="title">DAT255: Machine Learning Engineering and Advanced Algorithms</h1>
+  <p class="subtitle">Lecture 1 – Welcome</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+sma@hvl.no 
+</div>
+</div>
+</div>
+
+</section>
+<section id="what-can-you-do-with-deep-learning" class="slide level2 center" data-background-color="#00838F" style="text-align: center;">
+<h2>What can you do with deep learning?</h2>
+</section>
+<section id="section" class="slide level2 center" data-menu-title="ChatGPT">
+<h2></h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><a href="https://chatgpt.com/"><img data-src="figures/lecture1/chatgpt.png" class="quarto-figure quarto-figure-center" style="width:70.0%"></a></p>
+</figure>
+</div>
+</section>
+<section id="sora-openai" class="slide level2" data-background-color="#0f0f0f">
+<h2><em>Sora</em> (OpenAI)</h2>
+<div class="{r-stack}">
+<div class="absolute" style="top: 10%; left: 0%; width: 500px; ">
+<p><video data-src="https://cdn.openai.com/sora-ga/dev/features/hq/feature-loop-flower-double.mp4.mp4" autoplay="true" loop="true" controls=""><a href="https://cdn.openai.com/sora-ga/dev/features/hq/feature-loop-flower-double.mp4.mp4">Video</a></video></p>
+</div>
+<div class="absolute" style="top: 60%; left: 0%; width: 500px; ">
+<p><video data-src="https://cdn.openai.com/sora/landing-page/md/010-7_20241120_2300_Harmony%20with%20Nature_simple_compose_01jd6ras77f01s8we76f97xsvm%20(2).mp4.mp4" autoplay="true" loop="true" controls=""><a href="https://cdn.openai.com/sora/landing-page/md/010-7_20241120_2300_Harmony%20with%20Nature_simple_compose_01jd6ras77f01s8we76f97xsvm%20(2).mp4.mp4">Video</a></video></p>
+</div>
+<div class="absolute" style="top: 10%; left: 60%; width: 500px; ">
+<p><video data-src="https://cdn.openai.com/sora/landing-page/md/012-7_20241115_1200_Twilight%20Beach%20Serenity_simple_compose_01jcrpjtgqfnc97f13pbp0zrff_prob4.mp4.mp4" autoplay="true" loop="true" controls=""><a href="https://cdn.openai.com/sora/landing-page/md/012-7_20241115_1200_Twilight%20Beach%20Serenity_simple_compose_01jcrpjtgqfnc97f13pbp0zrff_prob4.mp4.mp4">Video</a></video></p>
+</div>
+<div class="absolute" style="top: 60%; left: 60%; width: 500px; ">
+<p><video data-src="https://cdn.openai.com/sora/landing-page/md/019-20241204_0022_Golden%20Festive%20Frolic_simple_compose_01je8c5v26fpj8jeydjp6gymy9.mp4.mp4" autoplay="true" loop="true" controls=""><a href="https://cdn.openai.com/sora/landing-page/md/019-20241204_0022_Golden%20Festive%20Frolic_simple_compose_01je8c5v26fpj8jeydjp6gymy9.mp4.mp4">Video</a></video></p>
+</div>
+<div class="absolute" style="top: 35%; left: 30%; width: 500px; ">
+<p><video data-src="https://cdn.openai.com/sora/landing-page/md/020-00236_20241121_1411_Underwater%20Literary%20Escape_simple_compose_01jd8cenk1fvw8bbztzjm2dnhj%20(1).mp4.mp4" autoplay="true" loop="true" controls=""><a href="https://cdn.openai.com/sora/landing-page/md/020-00236_20241121_1411_Underwater%20Literary%20Escape_simple_compose_01jd8cenk1fvw8bbztzjm2dnhj%20(1).mp4.mp4">Video</a></video></p>
+</div>
+</div>
+</section>
+<section id="stable-diffusion-dall-e" class="slide level2" data-background-color="#FBE9E7">
+<h2>Stable Diffusion / DALL-E</h2>
+<div class="r-stack">
+<div class="absolute" style="top: 10%; left: 0%; width: 600px; ">
+<p><video data-src="https://dsgrblobprod5u3.blob.core.windows.net/video/image-creator-hero-video.webm" autoplay="true" loop="true" controls=""><a href="https://dsgrblobprod5u3.blob.core.windows.net/video/image-creator-hero-video.webm">Video</a></video></p>
+</div>
+<div class="absolute" style="top: 8%; right: 0%; width: 400px; ">
+<p><img data-src="https://images.squarespace-cdn.com/content/v1/6213c340453c3f502425776e/80c951e5-bf57-43d5-b236-f93934bb47df/Search_replace-ezgif.com-optimize.gif?format=750w"></p>
+</div>
+<div class="absolute" style="top: 36%; right: 0%; width: 400px; ">
+<p><img data-src="https://images.squarespace-cdn.com/content/v1/6213c340453c3f502425776e/b41ad1b4-0cfa-4352-93ea-bf25ab080b00/Control-ezgif.com-optimize+%283%29.gif?format=750w"></p>
+</div>
+<div class="absolute" style="left: 0%; bottom: 0%; width: 200px; ">
+<p><img data-src="https://images.ctfassets.net/kftzwdyauwt9/5GOIjwbUjLZHoGhX6q5oQg/d2984681d2a9466b71b7ca7632a8481c/Anastronautridingahorseinaphotorealisticstyle0.jpg?w=640&amp;q=90&amp;fm=webp"></p>
+</div>
+<div class="absolute" style="left: 25%; bottom: 0%; width: 200px; ">
+<p><img data-src="https://images.ctfassets.net/kftzwdyauwt9/3CBAlHk4Yb43cBeXOpm2YY/cfa09b0ab810dd3a0f01f1e2c488b4cc/Anastronautridingahorseinaphotorealisticstyle4.jpeg"></p>
+</div>
+<div class="absolute" style="left: 50%; bottom: 0%; width: 200px; ">
+<p><img data-src="https://images.ctfassets.net/kftzwdyauwt9/6Hpmny9K2Z8Xxget5bmlWa/66634b4c69faef5600e5ea48f499ba5e/Anastronautridingahorseinaphotorealisticstyle6.jpg"></p>
+</div>
+<div class="absolute" style="left: 75%; bottom: 0%; width: 200px; ">
+<p><img data-src="https://images.ctfassets.net/kftzwdyauwt9/3qYPvVTQPwuVZ17QJ5NuFN/fc536dca7e9eed533b15ff887a263ac2/Anastronautridingahorseinaphotorealisticstyle2.jpg"></p>
+</div>
+</div>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="segment-anything" class="slide level2" data-background-video="figures/lecture1/sam2.mp4" data-background-video-loop="true">
+<h2>Segment anything</h2>
+<div class="absolute" style="font-size: 0.6em;bottom: 0%; right: 0%; ">
+<p><a href="https://ai.meta.com/sam2/">https://ai.meta.com/sam2/</a></p>
+</div>
+</section>
+<section id="notebooklm" class="slide level2">
+<h2>NotebookLM</h2>
+<div class="absolute" style="top: 10%; left: 0%; width: 1100px; ">
+<p><video data-src="https://storage.googleapis.com/ai-prod-wagtail/documents/notebookLM_homepage_width-1200.mp4" autoplay="true" loop="true" controls=""><a href="https://storage.googleapis.com/ai-prod-wagtail/documents/notebookLM_homepage_width-1200.mp4">Video</a></video></p>
+</div>
+</section>
+<section id="section-1" class="slide level2" data-menu-title="Robotics" data-background-color="#F9FBE7">
+<h2></h2>
+<div class="r-stack">
+<div class="absolute" style="top: 20%; left: 0%; width: 500px; ">
+<p><video data-src="https://surgical-robot-transformer.github.io/resources/tasks/m1.mp4" autoplay="true" loop="true" controls=""><a href="https://surgical-robot-transformer.github.io/resources/tasks/m1.mp4">Video</a></video></p>
+</div>
+<div class="absolute" style="top: 20%; right: 0%; width: 500px; ">
+<p><video data-src="https://surgical-robot-transformer.github.io/resources/tasks/m2.mp4" autoplay="true" loop="true" controls=""><a href="https://surgical-robot-transformer.github.io/resources/tasks/m2.mp4">Video</a></video></p>
+</div>
+</div>
+</section>
+<section id="section-2" class="slide level2 center" data-menu-title="Dota 2">
+<h2></h2>
+<p><a href="https://openai.com/index/openai-five-defeats-dota-2-world-champions/"><img data-src="figures/lecture1/dota2.png"></a></p>
+</section>
+<section id="section-3" class="slide level2" data-background-iframe="https://www.youtube.com/embed/tlThdr3O5Qo?autoplay=1&amp;mute=1" data-menu-title="Eksempel: Selvkjøring">
+<h2></h2>
+</section>
+<section id="section-4" class="slide level2" data-background-image="figures/lecture1/faceid.png" data-menu-title="FaceID">
+<h2></h2>
+</section>
+<section id="section-5" class="slide level2" data-background-image="figures/lecture1/queue-monitoring-crowd-ultralytics-yolov8.avif" data-menu-title="Queue counting">
+<h2></h2>
+</section>
+<section id="section-6" class="slide level2" data-menu-title="YOLO" data-background-image="figures/lecture1/queue-monitoring-crowd-ultralytics-yolov8.avif" data-background-opacity="0.2">
+<h2></h2>
+<div class="r-stack">
+<div class="absolute" style="top: -5%; left: 20%; width: 600px; ">
+<p><img data-src="figures/lecture1/vehicle-detection-using-obb.avif"></p>
+</div>
+<div class="absolute" style="left: 20%; bottom: -5%; width: 600px; ">
+<p><img data-src="figures/lecture1/speed-estimation-on-road-using-ultralytics-yolov8.avif"></p>
+</div>
+</div>
+</section>
+<section id="section-7" class="slide level2" data-background-image="figures/lecture1/netflix1.png" data-menu-title="Recommender systems">
+<h2></h2>
+<p><img data-src="figures/lecture1/netflix2.png" class="absolute" style="border: 1px solid #FFF;left: 15%; bottom: 0%; width: 800px; "></p>
+</section>
+<section id="section-8" class="slide level2" data-background-iframe="https://archive.nytimes.com/www.nytimes.com/2018/03/19/technology/facebook-cambridge-analytica-explained.html" data-menu-title="Nefarious stuff">
+<h2></h2>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="practical-things-in-dat255" class="slide level2 center" data-background-color="#673AB7" style="text-align: center;">
+<h2>Practical things in DAT255</h2>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="textbook" class="slide level2">
+<h2>Textbook</h2>
+<p><em>A. Géron:</em> Hands-on Machine Learning with Scikit-Learn, Keras, and TensorFlow <br>(<strong>3rd edition</strong>)</p>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>Chapters:</p>
+<div style="font-size: 0.9em;">
+<ul>
+<li><strong>10</strong> Intro to NNs</li>
+<li><strong>11</strong> Training deep neural networks</li>
+<li><strong>12</strong> Custom models and training with TensorFlow</li>
+<li><strong>13</strong> Loading and preprocessing data with TensorFlow</li>
+<li><strong>14</strong> Deep computer vision using CNNs</li>
+<li><strong>15</strong> Processing sequences using RNNs and CNNs</li>
+<li><strong>16</strong> Natural language processing with RNNs and attention</li>
+<li><strong>17</strong> Autoencoders, GANs and diffusion models</li>
+<li><span style="color: #C62828;"><em>Not 18</em></span></li>
+<li><strong>19</strong> Training and deploying TensorFlow models at scale</li>
+</ul>
+</div>
+</div><div class="column" style="width:30%;">
+<p><img data-src="figures/lecture1/book-cover.webp" class="img-shadow" style="width:80.0%"></p>
+</div></div>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="extra-resources" class="slide level2">
+<h2>Extra resources</h2>
+<ul>
+<li>Framework documentation:
+<ul>
+<li>The Keras <a href="keras.io">documentation and examples</a></li>
+<li>The TensorFlow <a href="https://www.tensorflow.org/">documentation and examples</a></li>
+</ul></li>
+<li>Various research blogs</li>
+<li>Other reputable internet material</li>
+</ul>
+<p><em>You are expected to research certain topics and find supporting material yourself</em> (especially for the project work)</p>
+<p><img data-src="figures/lecture1/keras.png" class="img-shadow" style="border: none;"></p>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="assessment" class="slide level2">
+<h2>Assessment</h2>
+<div style="margin-top: 100px;">
+
+</div>
+<p>The exam has two parts:</p>
+<ul>
+<li><strong>Group project report</strong>, counts 50%</li>
+<li><strong>Short written exam</strong>, counts 50%</li>
+</ul>
+<p>Exam date will be posted on StudentWeb</p>
+<p>Last chance for registering for the exam is <strong>Feb.&nbsp;2</strong></p>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="project-work" class="slide level2">
+<h2>Project work</h2>
+<p>The project work puts the <span class="color-indigo"><em>engineering</em></span> into Deep learning engineering</p>
+<p><span class="hl-red"><strong>Primary goal:</strong></span> <br> Build and deploy a <strong>deep learning-based application</strong>, based on the theory, techniques and tools you learn in this course</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="hl-yellow"><strong>Secondary goals:</strong></span> <br> Make something that is</p>
+<ul>
+<li>Useful</li>
+<li>Fun</li>
+<li>Useful and fun</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figures/lecture1/project_example.jpg" style="width:60.0%"></p>
+</div></div>
+</div>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="project-work-1" class="slide level2">
+<h2>Project work</h2>
+<p>The project work puts the <span class="color-teal"><em>engineering</em></span> into Deep learning engineering</p>
+<p><span class="hl-red"><strong>Primary goal:</strong></span> <br> Build and deploy a <strong>deep learning-based application</strong>, based on the theory, techniques and tools you learn in this course</p>
+<p><strong>Topic options:</strong></p>
+<ol type="1">
+<li>Choose yourself</li>
+<li>Choose from a project catalog (will be published on canvas)</li>
+</ol>
+<p>All projects, along with a plan and description, <strong>must be approved</strong> beforehand</p>
+<p>📆 Submission deadline to be determined based on your input</p>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="canvas" class="slide level2">
+<h2>Canvas</h2>
+<p>The canonical source of information is <a href="https://hvl.instructure.com/courses/28951">Canvas</a></p>
+<div class="img-shadow">
+<p><img data-src="figures/lecture1/canvas.png"></p>
+</div>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="calendar" class="slide level2">
+<h2>Calendar</h2>
+<p><img data-src="figures/lecture1/timeedit.png"></p>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="deep-learning" class="slide level2 center" data-background-color="#E64A19" style="text-align: center;">
+<h2>Deep learning</h2>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="ai-vs-ml-vs-dl" class="slide level2">
+<h2>AI vs ML vs DL</h2>
+<div class="quarto-figure quarto-figure-center" style="margin-top: 10%;">
+<figure>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/AI_hierarchy.svg/1024px-AI_hierarchy.svg.png" style="width:40.0%"></p>
+<figcaption><span style="font-size: 0.5em; font-style: italic;">WikiMedia Commons</span></figcaption>
+</figure>
+</div>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="quick-history-of-deep-learning" class="slide level2">
+<h2>Quick history of deep learning</h2>
+<p><img data-src="figures/lecture1/neuron-structure.jpg"></p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:30%;">
+<p><em>Artificial neural network</em><br> McCulloch &amp; Pitts, 1943</p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figures/lecture1/ann.png" style="width:70.0%"></p>
+</div><div class="column" style="width:30%;">
+<p><span class="math display">\[
+\small
+a = \sum_{i=1}^{M} w_ix_i
+\]</span> <span class="math display">\[
+\small
+y = f(a)
+\]</span></p>
+</div></div>
+</div>
+</section>
+<section id="quick-history-of-deep-learning-1" class="slide level2">
+<h2>Quick history of deep learning</h2>
+<p>The <strong><em>perceptron</em></strong><br> Rosenblatt 1960</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><img data-src="figures/lecture1/perceptron-mk1.jpg"></p>
+</div><div class="column" style="width:30%;">
+<p><img data-src="figures/lecture1/rosenblatt1960.jpg"></p>
+</div><div class="column" style="width:30%;">
+<p><img data-src="figures/lecture1/perceptron.png"></p>
+<p><span class="math display">\[
+\small
+f(a) =
+\begin{cases}
+0, &amp; a \leq 0 \\
+1, &amp; a &gt; 0
+\end{cases}
+\]</span></p>
+</div></div>
+</section>
+<section id="quick-history-of-deep-learning-2" class="slide level2">
+<h2>Quick history of deep learning</h2>
+<p><strong><em>Backpropagation</em></strong><br> Rumelhart, Hinton &amp; Williams, 1986</p>
+<div class="columns">
+<div class="column" style="width:30%;">
+<p>ALVINN, 1989</p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figures/lecture1/alvinn1.png" style="width:60.0%"></p>
+</div><div class="column" style="width:30%;">
+<p><img data-src="figures/lecture1/alvinn2.png" style="width:90.0%"></p>
+</div></div>
+<div class="columns">
+<div class="column" style="width:20%;">
+<p>LeNet, 1989</p>
+</div><div class="column" style="width:80%;">
+<p><img data-src="figures/lecture1/LeNet-5.png" style="width:80.0%"></p>
+</div></div>
+</section>
+<section id="quick-history-of-deep-learning-3" class="slide level2">
+<h2>Quick history of deep learning</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>AlexNet, 2012</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture1/alexnet.png" class="quarto-figure quarto-figure-center" style="border: solid 1px #ccc;;width:80.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture1/imagenet.jpg" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<div style="padding-top: 100px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture1/rtx4090.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div>
+</div></div>
+</section>
+<section id="quick-history-of-deep-learning-4" class="slide level2">
+<h2>Quick history of deep learning</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong><em>Large language models (LLMs)</em></strong>, 2017</p>
+<p>GhatGPT 2022</p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="figures/lecture1/attention.png" style="width:70.0%"></p>
+</div></div>
+</section>
+<section id="quick-history-of-deep-learning-5" class="slide level2">
+<h2>Quick history of deep learning</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><strong><em>Diffusion models</em></strong>, 2020</p>
+<p><img data-src="figures/lecture1/diffusion.png"></p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figures/lecture1/Astronaut_Riding_a_Horse.webp"></p>
+</div><p><a href="https://playground.tensorflow.org/">TF playground</a></p>
+</div>
+</section>
+<section id="section-9" class="slide level2" data-menu-title="Stanford AI index">
+<h2></h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture1/ai-index-fig_2.1.16.jpg" style="width:80.0%"></p>
+<figcaption><span style="font-size: 0.6em;">Maslej et al.&nbsp;(2024) Artificial intelligence index report 2024. arXiv:2405.19522</span></figcaption>
+</figure>
+</div>
+</section>
+<section id="section-10" class="slide level2" data-background-iframe="https://playground.tensorflow.org/#activation=tanh&amp;batchSize=10&amp;dataset=gauss&amp;regDataset=reg-plane&amp;learningRate=0.03&amp;regularizationRate=0&amp;noise=15&amp;networkShape=&amp;seed=0.56524&amp;showTestData=false&amp;discretize=false&amp;percTrainData=50&amp;x=false&amp;y=false&amp;xTimesY=false&amp;xSquared=false&amp;ySquared=false&amp;cosX=false&amp;sinX=false&amp;cosY=false&amp;sinY=false&amp;collectStats=false&amp;problem=classification&amp;initZero=false&amp;hideText=false&amp;playButton_hide=false&amp;showTestData_hide=false&amp;regularization_hide=true&amp;dataset_hide=false&amp;batchSize_hide=true&amp;learningRate_hide=false&amp;percTrainData_hide=true&amp;regularizationRate_hide=true&amp;problem_hide=true" data-background-interactive="true" data-menu-title="TensorFlow playground">
+<h2></h2>
+<div class="absolute" style="font-size: 0.5em;left: 0%; bottom: 0%; ">
+<p><a href="https://playground.tensorflow.org/"><em>TensorFlow<br>playground</em></a></p>
+</div>
+<!----------------------------------------------------------------------------->
+</section>
+<section id="section-11" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<h2></h2>
+<div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
+<p><img data-src="figures/hvl_logo_engelsk.png"></p>
+</div>
+
+<div class="quarto-auto-generated-content">
+<div class="footer footer-default">
+
+</div>
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: true,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

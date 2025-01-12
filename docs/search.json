@@ -1,0 +1,247 @@
+[
+  {
+    "objectID": "slides/2-tools.html#frameworks",
+    "href": "slides/2-tools.html#frameworks",
+    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Frameworks",
+    "text": "Frameworks"
+  },
+  {
+    "objectID": "slides/2-tools.html#low-level-tensorflow",
+    "href": "slides/2-tools.html#low-level-tensorflow",
+    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Low-level TensorFlow",
+    "text": "Low-level TensorFlow\nMost things work like NumPy, but with the benefit of GPU support and JIT compilation.\nThe core object is the Tensor, which is basically a multidimensional array.\n\nNumPy\n&gt;&gt;&gt; import numpy as np\n&gt;&gt;&gt; x = np.array([[1,2,3], [4,5,6]], dtype=np.float32)\n&gt;&gt;&gt; print(x)\n[[1. 2. 3.]\n [4. 5. 6.]]\n\n\nTensorFlow\n&gt;&gt;&gt; import tensorflow as tf\n&gt;&gt;&gt; x = tf.constant([[1,2,3], [4,5,6]], dtype=tf.float32)\n&gt;&gt;&gt; print(x)\ntf.Tensor(\n[[1. 2. 3.]\n [4. 5. 6.]], shape=(2, 3), dtype=float32)"
+  },
+  {
+    "objectID": "slides/2-tools.html#low-level-tensorflow-the-tensor",
+    "href": "slides/2-tools.html#low-level-tensorflow-the-tensor",
+    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Low-level TensorFlow: The Tensor",
+    "text": "Low-level TensorFlow: The Tensor\nTensors are immutable, and are useful for storing constant values such as input data\nFor values that will be updated (such as model weights), use a Variable:\n&gt;&gt;&gt; y = tf.Variable([[1,2,3], [4,5,6]], dtype=tf.float32, name=\"My first variable\")\n&gt;&gt;&gt; y[0,1].assign(50)\n&lt;tf.Variable 'UnreadVariable' shape=(2, 3) dtype=float32, numpy=\narray([[ 1., 50.,  3.],\n       [ 4.,  5.,  6.]], dtype=float32)&gt;"
+  },
+  {
+    "objectID": "slides/2-tools.html#low-level-tensorflow-simple-operations",
+    "href": "slides/2-tools.html#low-level-tensorflow-simple-operations",
+    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Low-level TensorFlow: Simple operations",
+    "text": "Low-level TensorFlow: Simple operations\nBasic math is accessed through operators\n&gt;&gt;&gt; a = b + c       # Element-wise addition\n&gt;&gt;&gt; a = b * c       # Element-wise multiplication (Hadamard product)\n&gt;&gt;&gt; a = b @ c       # Matrix multiplication\nwhile more complicated stuff is available as functions in tf.math\n\nNotice in particular the reduce_ functions, which look different from NumPy:\n&gt;&gt;&gt; x = tf.constant([[1,2,3], [4,5,6]]); print(x)\ntf.Tensor(\n[[1 2 3]\n [4 5 6]], shape=(2, 3), dtype=int32)\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=0)\n&lt;tf.Tensor: shape=(3,), dtype=int32, numpy=array([5, 7, 9], dtype=int32)&gt;\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=1)\n&lt;tf.Tensor: shape=(2,), dtype=int32, numpy=array([ 6, 15], dtype=int32)&gt;\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=None)\n&lt;tf.Tensor: shape=(), dtype=int32, numpy=21&gt;"
+  },
+  {
+    "objectID": "slides/2-tools.html#low-level-tensorflow-shapes",
+    "href": "slides/2-tools.html#low-level-tensorflow-shapes",
+    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Low-level TensorFlow: Shapes",
+    "text": "Low-level TensorFlow: Shapes\nBroadcasting works like in NumPy:\n&gt;&gt;&gt; x = tf.constant([1,2,3], dtype=tf.float32)\n&gt;&gt;&gt; x + 1\n&lt;tf.Tensor: shape=(3,), dtype=float32, numpy=array([2., 3., 4.], dtype=float32)&gt;\nSame for shapes:"
+  },
+  {
+    "objectID": "slides/2-tools.html#gpu",
+    "href": "slides/2-tools.html#gpu",
+    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
+    "section": "GPU",
+    "text": "GPU\nTensorFlow will automatically try to use the fastest compute device available\nTensor operations are typically faster when parallelised on a GPU\nWhile this is automatic, it can also be forced:\nwith tf.device('CPU:0'):\n  a = tf.Variable([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])\n  b = tf.Variable([[1.0, 2.0, 3.0]])\n\nwith tf.device('GPU:0'):\n  k = a * b\n\nprint(k)"
+  },
+  {
+    "objectID": "slides/2-tools.html#automatic-differentiation",
+    "href": "slides/2-tools.html#automatic-differentiation",
+    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Automatic differentiation",
+    "text": "Automatic differentiation\nLet’s try to compute this derivative:\n\\[\n\\small\n\\frac{\\mathrm{d}}{\\mathrm{d}x} \\Big|_{x=1} \\; x^2 + 2x - 5\n\\]\n\n\\[\n\\small\n= 2x + 2 \\big|_{x=1} = 2 \\cdot 1 + 2 = 4\n\\]\n\n\nTurns out TensorFlow can do it for us:\ndef f(x):\n  return x**2 + 2*x - 5\n\nx = tf.Variable(1.0)\n\nwith tf.GradientTape() as tape:\n  y = f(x)\n\nd_dx = tape.gradient(y, x)\nprint(d_dx)\n\n\n&lt;tf.Tensor: shape=(), dtype=float32, numpy=4.0&gt;"
+  },
+  {
+    "objectID": "slides/2-tools.html#keras",
+    "href": "slides/2-tools.html#keras",
+    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Keras",
+    "text": "Keras\nThe Keras framework contains all the high-level components we need to contruct and train a neural network:\n\nkeras.layers: Different types of layers and activation functions\nkeras.callbacks: Monitor, modify or stop the training process\nkeras.optimizers: Optimisation algorithms\nkeras.metrics: Performance metrics\nkeras.losses: Loss functions\nkeras.datasets: Small datasets for testing\nkeras.applications: Pre-trained networks for different tasks"
+  },
+  {
+    "objectID": "slides/2-tools.html#densely-connected-layers",
+    "href": "slides/2-tools.html#densely-connected-layers",
+    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Densely connected layers",
+    "text": "Densely connected layers"
+  },
+  {
+    "objectID": "slides/2-tools.html#section",
+    "href": "slides/2-tools.html#section",
+    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
+    "section": "",
+    "text": "Exercises\nhttps://www.tensorflow.org/guide/tensor https://www.tensorflow.org/guide/basics"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DAT255 lecture notes",
+    "section": "",
+    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction"
+  },
+  {
+    "objectID": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
+    "href": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "What can you do with deep learning?",
+    "text": "What can you do with deep learning?"
+  },
+  {
+    "objectID": "slides/1-welcome.html#sora-openai",
+    "href": "slides/1-welcome.html#sora-openai",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Sora (OpenAI)",
+    "text": "Sora (OpenAI)\n\n\nVideo\n\n\nVideo\n\n\nVideo\n\n\nVideo\n\n\nVideo"
+  },
+  {
+    "objectID": "slides/1-welcome.html#stable-diffusion-dall-e",
+    "href": "slides/1-welcome.html#stable-diffusion-dall-e",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Stable Diffusion / DALL-E",
+    "text": "Stable Diffusion / DALL-E\n\n\nVideo"
+  },
+  {
+    "objectID": "slides/1-welcome.html#segment-anything",
+    "href": "slides/1-welcome.html#segment-anything",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Segment anything",
+    "text": "Segment anything\n\nhttps://ai.meta.com/sam2/"
+  },
+  {
+    "objectID": "slides/1-welcome.html#notebooklm",
+    "href": "slides/1-welcome.html#notebooklm",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "NotebookLM",
+    "text": "NotebookLM\n\nVideo"
+  },
+  {
+    "objectID": "slides/1-welcome.html#section-1",
+    "href": "slides/1-welcome.html#section-1",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "",
+    "text": "Video\n\n\nVideo"
+  },
+  {
+    "objectID": "slides/1-welcome.html#practical-things-in-dat255",
+    "href": "slides/1-welcome.html#practical-things-in-dat255",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Practical things in DAT255",
+    "text": "Practical things in DAT255"
+  },
+  {
+    "objectID": "slides/1-welcome.html#textbook",
+    "href": "slides/1-welcome.html#textbook",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Textbook",
+    "text": "Textbook\nA. Géron: Hands-on Machine Learning with Scikit-Learn, Keras, and TensorFlow (3rd edition)\n\n\nChapters:\n\n\n10 Intro to NNs\n11 Training deep neural networks\n12 Custom models and training with TensorFlow\n13 Loading and preprocessing data with TensorFlow\n14 Deep computer vision using CNNs\n15 Processing sequences using RNNs and CNNs\n16 Natural language processing with RNNs and attention\n17 Autoencoders, GANs and diffusion models\nNot 18\n19 Training and deploying TensorFlow models at scale"
+  },
+  {
+    "objectID": "slides/1-welcome.html#extra-resources",
+    "href": "slides/1-welcome.html#extra-resources",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Extra resources",
+    "text": "Extra resources\n\nFramework documentation:\n\nThe Keras documentation and examples\nThe TensorFlow documentation and examples\n\nVarious research blogs\nOther reputable internet material\n\nYou are expected to research certain topics and find supporting material yourself (especially for the project work)"
+  },
+  {
+    "objectID": "slides/1-welcome.html#assessment",
+    "href": "slides/1-welcome.html#assessment",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Assessment",
+    "text": "Assessment\n\n\n\nThe exam has two parts:\n\nGroup project report, counts 50%\nShort written exam, counts 50%\n\nExam date will be posted on StudentWeb\nLast chance for registering for the exam is Feb. 2"
+  },
+  {
+    "objectID": "slides/1-welcome.html#project-work",
+    "href": "slides/1-welcome.html#project-work",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Project work",
+    "text": "Project work\nThe project work puts the engineering into Deep learning engineering\nPrimary goal:  Build and deploy a deep learning-based application, based on the theory, techniques and tools you learn in this course\n\n\n\nSecondary goals:  Make something that is\n\nUseful\nFun\nUseful and fun"
+  },
+  {
+    "objectID": "slides/1-welcome.html#project-work-1",
+    "href": "slides/1-welcome.html#project-work-1",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Project work",
+    "text": "Project work\nThe project work puts the engineering into Deep learning engineering\nPrimary goal:  Build and deploy a deep learning-based application, based on the theory, techniques and tools you learn in this course\nTopic options:\n\nChoose yourself\nChoose from a project catalog (will be published on canvas)\n\nAll projects, along with a plan and description, must be approved beforehand\n📆 Submission deadline to be determined based on your input"
+  },
+  {
+    "objectID": "slides/1-welcome.html#canvas",
+    "href": "slides/1-welcome.html#canvas",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Canvas",
+    "text": "Canvas\nThe canonical source of information is Canvas"
+  },
+  {
+    "objectID": "slides/1-welcome.html#calendar",
+    "href": "slides/1-welcome.html#calendar",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Calendar",
+    "text": "Calendar"
+  },
+  {
+    "objectID": "slides/1-welcome.html#deep-learning",
+    "href": "slides/1-welcome.html#deep-learning",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Deep learning",
+    "text": "Deep learning"
+  },
+  {
+    "objectID": "slides/1-welcome.html#ai-vs-ml-vs-dl",
+    "href": "slides/1-welcome.html#ai-vs-ml-vs-dl",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "AI vs ML vs DL",
+    "text": "AI vs ML vs DL\n\n\n\nWikiMedia Commons"
+  },
+  {
+    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning",
+    "href": "slides/1-welcome.html#quick-history-of-deep-learning",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Quick history of deep learning",
+    "text": "Quick history of deep learning\n\n\n\n\nArtificial neural network McCulloch & Pitts, 1943\n\n\n\n\\[\n\\small\na = \\sum_{i=1}^{M} w_ix_i\n\\] \\[\n\\small\ny = f(a)\n\\]"
+  },
+  {
+    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-1",
+    "href": "slides/1-welcome.html#quick-history-of-deep-learning-1",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Quick history of deep learning",
+    "text": "Quick history of deep learning\nThe perceptron Rosenblatt 1960\n\n\n\n\n\n\n\n\\[\n\\small\nf(a) =\n\\begin{cases}\n0, & a \\leq 0 \\\\\n1, & a &gt; 0\n\\end{cases}\n\\]"
+  },
+  {
+    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-2",
+    "href": "slides/1-welcome.html#quick-history-of-deep-learning-2",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Quick history of deep learning",
+    "text": "Quick history of deep learning\nBackpropagation Rumelhart, Hinton & Williams, 1986\n\n\nALVINN, 1989\n\n\n\n\n\n\n\nLeNet, 1989"
+  },
+  {
+    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-3",
+    "href": "slides/1-welcome.html#quick-history-of-deep-learning-3",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Quick history of deep learning",
+    "text": "Quick history of deep learning\n\n\nAlexNet, 2012"
+  },
+  {
+    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-4",
+    "href": "slides/1-welcome.html#quick-history-of-deep-learning-4",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Quick history of deep learning",
+    "text": "Quick history of deep learning\n\n\nLarge language models (LLMs), 2017\nGhatGPT 2022"
+  },
+  {
+    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-5",
+    "href": "slides/1-welcome.html#quick-history-of-deep-learning-5",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Quick history of deep learning",
+    "text": "Quick history of deep learning\n\n\nDiffusion models, 2020\n\n\n\nTF playground"
+  },
+  {
+    "objectID": "slides/1-welcome.html#section-9",
+    "href": "slides/1-welcome.html#section-9",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "",
+    "text": "Maslej et al. (2024) Artificial intelligence index report 2024. arXiv:2405.19522"
+  },
+  {
+    "objectID": "slides/1-welcome.html#section-10",
+    "href": "slides/1-welcome.html#section-10",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "",
+    "text": "TensorFlowplayground"
+  }
+]
