@@ -56,20 +56,6 @@
     "text": "Keras\nThe Keras framework contains all the high-level components we need to contruct and train a neural network:\n\nkeras.layers: Different types of layers and activation functions\nkeras.callbacks: Monitor, modify or stop the training process\nkeras.optimizers: Optimisation algorithms\nkeras.metrics: Performance metrics\nkeras.losses: Loss functions\nkeras.datasets: Small datasets for testing\nkeras.applications: Pre-trained networks for different tasks"
   },
   {
-    "objectID": "slides/2-tools.html#densely-connected-layers",
-    "href": "slides/2-tools.html#densely-connected-layers",
-    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
-    "section": "Densely connected layers",
-    "text": "Densely connected layers"
-  },
-  {
-    "objectID": "slides/2-tools.html#section",
-    "href": "slides/2-tools.html#section",
-    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
-    "section": "",
-    "text": "Exercises\nhttps://www.tensorflow.org/guide/tensor https://www.tensorflow.org/guide/basics"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "DAT255 lecture notes",
