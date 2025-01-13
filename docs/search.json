@@ -70,18 +70,18 @@
     "text": "What can you do with deep learning?"
   },
   {
-    "objectID": "slides/1-welcome.html#sora-openai",
-    "href": "slides/1-welcome.html#sora-openai",
-    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
-    "section": "Sora (OpenAI)",
-    "text": "Sora (OpenAI)\n\n\nVideo\n\n\nVideo\n\n\nVideo\n\n\nVideo\n\n\nVideo"
-  },
-  {
     "objectID": "slides/1-welcome.html#stable-diffusion-dall-e",
     "href": "slides/1-welcome.html#stable-diffusion-dall-e",
     "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
     "section": "Stable Diffusion / DALL-E",
     "text": "Stable Diffusion / DALL-E\n\n\nVideo"
+  },
+  {
+    "objectID": "slides/1-welcome.html#sora-openai",
+    "href": "slides/1-welcome.html#sora-openai",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Sora (OpenAI)",
+    "text": "Sora (OpenAI)\n\n\nVideo\n\n\nVideo\n\n\nVideo\n\n\nVideo\n\n\nVideo"
   },
   {
     "objectID": "slides/1-welcome.html#segment-anything",
@@ -96,6 +96,13 @@
     "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
     "section": "NotebookLM",
     "text": "NotebookLM\n\nVideo"
+  },
+  {
+    "objectID": "slides/1-welcome.html#cursor",
+    "href": "slides/1-welcome.html#cursor",
+    "title": "DAT255: Machine Learning Engineering and Advanced Algorithms",
+    "section": "Cursor",
+    "text": "Cursor\n\nVideo"
   },
   {
     "objectID": "slides/1-welcome.html#section-1",
