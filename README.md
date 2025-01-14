@@ -17,6 +17,41 @@
 
 :point_right: Go to [`/notebooks`](/notebooks) to find the course material. 
 
+
+## Setup 
+
+The simplest way to run the notebooks is through a cloud service like [https://colab.research.google.com/](Colab). However, if you want to run on your own computer, the setup is relatively simple. The commands below assume a `bash` shell -- if you are on Mac, have a look at these [instructions](https://developer.apple.com/metal/tensorflow-plugin/) (note you need python 3.9 or 3.10), and if you are on Windows, just Google what to do.
+
+1. **Create a virtual environment (optional)**<br>
+    If you have [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html) installed, run 
+    ```bash
+    conda create --name dat255 python=3.12
+    conda activate dat255-env
+    ```
+    otherwise use the built-in virtual environment tool by running
+    ```bash
+    python3 -m venv dat255-env
+    source dat255-env/bin/activate
+    ```
+2. **Clone our repository**
+    ```bash
+    git clone git@github.com:HVL-ML/DAT255.git
+    cd DAT255
+    ```
+3. **Install the frameworks we need**
+    ```bash
+    pip install -r requirements.tex
+    ```
+4. **Run notebooks**
+    ```bash
+    cd notebooks
+    jupyter notebook
+    ```
+
+More in-depth details about installing TensorFlow (the most important and most difficult thing to install) are listed in the [documentation](https://www.tensorflow.org/install/pip).
+
+For help with any of the above, visit the lab on Mondays!
+
 ---
 
 > A course from the AI Engineering Group at the Western Norway University of Applied Sciences.
