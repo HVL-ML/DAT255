@@ -29,71 +29,6 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-      }
-    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-    div.sourceCode
-      { color: #383a42;  }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #383a42; } /* Normal */
-    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
-    code span.an { color: #50a14f; } /* Annotation */
-    code span.at { color: #a626a4; } /* Attribute */
-    code span.bn { color: #986801; } /* BaseN */
-    code span.bu { color: #a626a4; } /* BuiltIn */
-    code span.cf { color: #a626a4; } /* ControlFlow */
-    code span.ch { color: #50a14f; } /* Char */
-    code span.cn { color: #986801; } /* Constant */
-    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
-    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
-    code span.do { color: #e45649; } /* Documentation */
-    code span.dt { color: #a626a4; } /* DataType */
-    code span.dv { color: #986801; } /* DecVal */
-    code span.er { color: #f44747; text-decoration: underline; } /* Error */
-    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
-    code span.fl { color: #986801; } /* Float */
-    code span.fu { color: #4078f2; } /* Function */
-    code span.im { color: #50a14f; } /* Import */
-    code span.in { color: #c45b00; } /* Information */
-    code span.kw { color: #a626a4; } /* Keyword */
-    code span.op { color: #a626a4; } /* Operator */
-    code span.ot { color: #27ae60; } /* Other */
-    code span.pp { color: #a626a4; } /* Preprocessor */
-    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
-    code span.sc { color: #0184bc; } /* SpecialChar */
-    code span.ss { color: #da4453; } /* SpecialString */
-    code span.st { color: #50a14f; } /* String */
-    code span.va { color: #e45649; } /* Variable */
-    code span.vs { color: #da4453; } /* VerbatimString */
-    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -393,7 +328,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle">Lecture 2 – The tools of deep learning</p>
+  <p class="subtitle">Lecture 3 – Computer vision and the concepts of layers</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -404,246 +339,101 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="frameworks" class="slide level2">
-<h2>Frameworks</h2>
-<div class="r-stack">
-<div class="absolute" style="top: 20%; left: 25%; width: 450px; ">
-<p><a href="https://keras.io/"><img data-src="figures/lecture2/keras-logo.png"></a></p>
-</div>
-<div class="absolute" style="left: 0%; bottom: 20%; width: 250px; ">
-<p><a href="https://www.tensorflow.org/"><img data-src="figures/lecture2/TensorFlow_logo.svg.png"></a></p>
-</div>
-<div class="absolute" style="left: 30%; bottom: 25%; width: 150px; ">
-<p><a href="https://jax.readthedocs.io/en/latest/"><img data-src="figures/lecture2/Google_JAX_logo.svg.png"></a></p>
-</div>
-<div class="absolute" style="left: 55%; bottom: 25%; width: 250px; ">
-<p><a href="https://pytorch.org/"><img data-src="figures/lecture2/PyTorch_logo_black.svg.png"></a></p>
-</div>
-<div class="absolute" style="left: 15%; bottom: 0%; width: 150px; ">
-<p><a href="https://scikit-learn.org/stable/"><img data-src="figures/lecture2/Scikit_learn_logo_small.svg.png"></a></p>
-</div>
-<div class="absolute" style="left: 45%; bottom: 0%; width: 170px; ">
-<p><a href="https://numpy.org/doc/stable/"><img data-src="figures/lecture2/NumPy_logo_2020.svg.png"></a></p>
-</div>
-</div>
-<div class="absolute" style="top: 25%; right: 0%; ">
-<p><em>High-level</em></p>
-</div>
-<div class="absolute" style="bottom: 30%; right: 0%; ">
-<p><em>Compute</em></p>
-</div>
-<div class="absolute" style="bottom: 7%; right: 0%; ">
-<p><em>Supporting</em></p>
-</div>
+<section id="tf-playground" class="slide level2">
+<h2>TF playground</h2>
 </section>
-<section id="frameworks-1" class="slide level2">
-<h2>Frameworks</h2>
-<p><code>python</code> is the de-facto language for deep learning</p>
-<p>In case you need a refresher, look at e.g.</p>
+<section id="the-feed-forward-neural-network" class="slide level2">
+<h2>The feed-forward neural network</h2>
+<p>For the demo we used the good ol’ fully-connected feed-forward network:</p>
+<p><img data-src="figures/lecture1/ann.png"></p>
+<p>Each <span class="color-purple">node</span> computes an output by</p>
+<p><span class="math display">\[
+y = f\left( \sum_{i=1}^{M} w_ix_i + b \right)
+\]</span></p>
+<p>where</p>
 <ul>
-<li><em>Kaggle Learn:</em> <a href="https://www.kaggle.com/learn/python">https://www.kaggle.com/learn/python</a></li>
-<li><em>Google Edu:</em> <a href="https://developers.google.com/edu/python">https://developers.google.com/edu/python</a></li>
+<li><span class="math inline">\(w_i\)</span> is the <span class="color-purple">weight</span> of each incoming connection</li>
+<li><span class="math inline">\(b\)</span> is the <span class="color-purple">bias</span> term</li>
+<li><span class="math inline">\(f\)</span> is the <span class="color-purple">activation function</span> (more next week)</li>
 </ul>
-<div class="fragment">
-<p>Technically, we use python as a configuration language while the framework backends are C++/CUDA (but we won’t touch this)</p>
-<p>For deployment, there are hooks to Haskell / C# / Julia / Java / R / Ruby / Rust / Scala / Perl and others</p>
-<p><span class="color-pink-dark"><em>We assume you have been exposed to NumPy – although it’s no requirement</em></span></p>
-</div>
-<div class="absolute" style="top: 0%; right: 0%; width: 200px; ">
-<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/701px-Python-logo-notext.svg.png"></p>
-</div>
 </section>
-<section id="this-week" class="slide level2">
-<h2>This week</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><img data-src="figures/lecture2/canvas-week-3.png" class="img-shadow"></p>
-</div><div class="column" style="width:50%;">
-<div style="padding-top: 100px;">
-
-</div>
-<p><strong>Environment setup:</strong> Check our <a href="https://github.com/HVL-ML/DAT255">GitHub</a></p>
-<p><strong>Intro to TensorFlow:</strong><br>We look at this today</p>
-</div></div>
+<section id="image-classification" class="slide level2">
+<h2>Image classification</h2>
+<p>Let’s classify this image: <span class="color-gray">(see notebook 1)</span></p>
+<p><img data-src="figures/lecture3/digit-2.png"></p>
 </section>
-<section id="computing-resources" class="slide level2">
-<h2>Computing resources</h2>
-<p>Many exercises in this course are compute intensive, and will benefit from a <em>hardware accelerator</em> (i.e.&nbsp;a GPU)</p>
-<p>Some options:</p>
+<section id="image-classification-1" class="slide level2">
+<h2>Image classification</h2>
+<p>Let’s classify this image: <span class="color-gray">(see notebook 1)</span></p>
+<p>Can treat every pixel as feature:</p>
+<p><img data-src="figures/lecture3/digit-is-2.png"></p>
+</section>
+<section id="image-classification-2" class="slide level2">
+<h2>Image classification</h2>
+<p>Let’s classify this image: <span class="color-gray">(see notebook 1)</span></p>
+<p>Can treat every pixel as feature:</p>
+<p><img data-src="figures/lecture3/digit-is-2.png"></p>
+<p><img data-src="figures/lecture3/digit-is-not-2.png"></p>
+<p>Two obvious problems:</p>
 <ul>
-<li>Your own computer (NVIDIA GPU or M-series Mac)</li>
-<li>Cloud services
-<ul>
-<li><a href="https://colab.research.google.com/">Google Colab</a><span class="color-gray">: T4 for free</span></li>
-<li><a href="https://www.kaggle.com/code">Kaggle Notebooks</a><span class="color-gray">: P100 for free</span></li>
-<li>(and others)</li>
-</ul></li>
-<li>Research group hardware<br> If you are connected to some research group at HVL/UiB</li>
+<li>Not invariant under <span class="color-indigo">translation</span> (move the image <i class="bi bi-arrow-right"></i> different result)</li>
+<li>Not invariant under <span class="color-indigo">dilation</span> (resize the image <i class="bi bi-arrow-right"></i> different result)</li>
 </ul>
-<div class="absolute" style="bottom: 20%; right: 0%; width: 300px;; ">
-<p><img data-src="figures/lecture1/rtx4090.png" class="rotate"></p>
-</div>
 </section>
-<section id="low-level-tensorflow" class="slide level2">
-<h2>Low-level TensorFlow</h2>
-<p>Most things work like NumPy, but with the benefit of GPU support and JIT compilation.</p>
-<p>The core object is the <a href="https://www.tensorflow.org/api_docs/python/tf/Tensor"><code>Tensor</code></a>, which is basically a multidimensional array.</p>
-<div class="fragment">
-<p>NumPy</p>
-<div class="sourceCode" id="cb1" data-code-line-numbers="1,2|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-2"><a></a><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>], [<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>]], dtype<span class="op">=</span>np.float32)</span>
-<span id="cb1-3"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(x)</span>
-<span id="cb1-4"><a></a>[[<span class="fl">1.</span> <span class="fl">2.</span> <span class="fl">3.</span>]</span>
-<span id="cb1-5"><a></a> [<span class="fl">4.</span> <span class="fl">5.</span> <span class="fl">6.</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="fragment">
-<p>TensorFlow</p>
-<div class="sourceCode" id="cb2" data-code-line-numbers="1,2|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
-<span id="cb2-2"><a></a><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> tf.constant([[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>], [<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>]], dtype<span class="op">=</span>tf.float32)</span>
-<span id="cb2-3"><a></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(x)</span>
-<span id="cb2-4"><a></a>tf.Tensor(</span>
-<span id="cb2-5"><a></a>[[<span class="fl">1.</span> <span class="fl">2.</span> <span class="fl">3.</span>]</span>
-<span id="cb2-6"><a></a> [<span class="fl">4.</span> <span class="fl">5.</span> <span class="fl">6.</span>]], shape<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">3</span>), dtype<span class="op">=</span>float32)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="low-level-tensorflow-the-tensor" class="slide level2">
-<h2>Low-level TensorFlow: The <code>Tensor</code></h2>
-<p><code>Tensor</code>s are immutable, and are useful for storing constant values such as input data</p>
-<p>For values that will be updated (such as model weights), use a <code>Variable</code>:</p>
-<div class="sourceCode" id="cb3" data-code-line-numbers="1|2|3,4,5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="op">&gt;&gt;&gt;</span> y <span class="op">=</span> tf.Variable([[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>], [<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>]], dtype<span class="op">=</span>tf.float32, name<span class="op">=</span><span class="st">"My first variable"</span>)</span>
-<span id="cb3-2"><a></a><span class="op">&gt;&gt;&gt;</span> y[<span class="dv">0</span>,<span class="dv">1</span>].assign(<span class="dv">50</span>)</span>
-<span id="cb3-3"><a></a><span class="op">&lt;</span>tf.Variable <span class="st">'UnreadVariable'</span> shape<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">3</span>) dtype<span class="op">=</span>float32, numpy<span class="op">=</span></span>
-<span id="cb3-4"><a></a>array([[ <span class="fl">1.</span>, <span class="fl">50.</span>,  <span class="fl">3.</span>],</span>
-<span id="cb3-5"><a></a>       [ <span class="fl">4.</span>,  <span class="fl">5.</span>,  <span class="fl">6.</span>]], dtype<span class="op">=</span>float32)<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="low-level-tensorflow-simple-operations" class="slide level2">
-<h2>Low-level TensorFlow: Simple operations</h2>
-<p>Basic math is accessed through operators</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> b <span class="op">+</span> c       <span class="co"># Element-wise addition</span></span>
-<span id="cb4-2"><a></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> b <span class="op">*</span> c       <span class="co"># Element-wise multiplication (Hadamard product)</span></span>
-<span id="cb4-3"><a></a><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> b <span class="op">@</span> c       <span class="co"># Matrix multiplication</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>while more complicated stuff is available as functions in <code>tf.math</code></p>
-<div class="fragment">
-<p>Notice in particular the <code>reduce_</code> functions, which look different from NumPy:</p>
-<div class="sourceCode" id="cb5" data-code-line-numbers="1-4|1-7|1-4,9,10|1-4,12,13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> tf.constant([[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>], [<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>]])<span class="op">;</span> <span class="bu">print</span>(x)</span>
-<span id="cb5-2"><a></a>tf.Tensor(</span>
-<span id="cb5-3"><a></a>[[<span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span>]</span>
-<span id="cb5-4"><a></a> [<span class="dv">4</span> <span class="dv">5</span> <span class="dv">6</span>]], shape<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">3</span>), dtype<span class="op">=</span>int32)</span>
-<span id="cb5-5"><a></a></span>
-<span id="cb5-6"><a></a><span class="op">&gt;&gt;&gt;</span> tf.math.reduce_sum(x, axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb5-7"><a></a><span class="op">&lt;</span>tf.Tensor: shape<span class="op">=</span>(<span class="dv">3</span>,), dtype<span class="op">=</span>int32, numpy<span class="op">=</span>array([<span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>], dtype<span class="op">=</span>int32)<span class="op">&gt;</span></span>
-<span id="cb5-8"><a></a></span>
-<span id="cb5-9"><a></a><span class="op">&gt;&gt;&gt;</span> tf.math.reduce_sum(x, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb5-10"><a></a><span class="op">&lt;</span>tf.Tensor: shape<span class="op">=</span>(<span class="dv">2</span>,), dtype<span class="op">=</span>int32, numpy<span class="op">=</span>array([ <span class="dv">6</span>, <span class="dv">15</span>], dtype<span class="op">=</span>int32)<span class="op">&gt;</span></span>
-<span id="cb5-11"><a></a></span>
-<span id="cb5-12"><a></a><span class="op">&gt;&gt;&gt;</span> tf.math.reduce_sum(x, axis<span class="op">=</span><span class="va">None</span>)</span>
-<span id="cb5-13"><a></a><span class="op">&lt;</span>tf.Tensor: shape<span class="op">=</span>(), dtype<span class="op">=</span>int32, numpy<span class="op">=</span><span class="dv">21</span><span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="low-level-tensorflow-shapes" class="slide level2">
-<h2>Low-level TensorFlow: <em>Shapes</em></h2>
-<p><em>Broadcasting</em> works like in NumPy:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> tf.constant([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>], dtype<span class="op">=</span>tf.float32)</span>
-<span id="cb6-2"><a></a><span class="op">&gt;&gt;&gt;</span> x <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb6-3"><a></a><span class="op">&lt;</span>tf.Tensor: shape<span class="op">=</span>(<span class="dv">3</span>,), dtype<span class="op">=</span>float32, numpy<span class="op">=</span>array([<span class="fl">2.</span>, <span class="fl">3.</span>, <span class="fl">4.</span>], dtype<span class="op">=</span>float32)<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Same for <em>shapes</em>:</p>
-<div class="r-stack">
-<p><img data-src="figures/lecture2/shapes1.png" style="width:80.0%"></p>
-<div class="fragment">
-<p><img data-src="figures/lecture2/shapes2.png" style="width:80.0%"></p>
-</div>
-</div>
-</section>
-<section id="a-typical-shape-128-299-299-3" class="slide level2">
-<h2>A typical shape: [128, 299, 299, 3]</h2>
-<p>Images are typically represented as <code>[height, width, channel]</code></p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture2/rgb.jpeg" class="quarto-figure quarto-figure-center" style="width:55.0%"></p>
-</figure>
-</div>
-<div class="fragment">
-<p>During model training we want to do <span class="color-blue-dark"><em>minibatch gradient descent</em></span>, and load a subset of the data at a time</p>
-<p><i class="bi bi-arrow-right"></i> This adds a fourth <strong>batch</strong> dimension: <code>[batch, height, width, channel]</code></p>
-<p>When processing single data points, we often need to add or remove it:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> tf.expand_dims(img, <span class="dv">0</span>)    <span class="co"># [24, 24, 3]    -&gt; [1, 24, 24, 3]</span></span>
-<span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> tf.squeeze(img)           <span class="co"># [1, 24, 24, 3] -&gt; [24, 24, 3]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="run-computations-on-a-gpu" class="slide level2">
-<h2>Run computations on a GPU</h2>
-<p>TensorFlow will automatically try to use the fastest compute device available</p>
-<p>Tensor operations are typically faster when parallelised on a GPU</p>
+<section id="enter-the-convolution-operation" class="slide level2">
+<h2>Enter the <em>convolution operation</em></h2>
+<p>The foundation for modern computer vision <span class="color-grey"><em>(plus lots of other things!)</em></span><br> is <span class="color-purple"><strong>convolution</strong></span>:</p>
+<p>an operation that takes in two functions and returns a new function</p>
 <div style="padding-top: 40px;">
 
 </div>
-<p>While this is automatic, it can also be forced:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="cf">with</span> tf.device(<span class="st">'CPU:0'</span>):</span>
-<span id="cb8-2"><a></a>  a <span class="op">=</span> tf.Variable([[<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>], [<span class="fl">4.0</span>, <span class="fl">5.0</span>, <span class="fl">6.0</span>]])</span>
-<span id="cb8-3"><a></a>  b <span class="op">=</span> tf.Variable([[<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>]])</span>
-<span id="cb8-4"><a></a></span>
-<span id="cb8-5"><a></a><span class="cf">with</span> tf.device(<span class="st">'GPU:0'</span>):</span>
-<span id="cb8-6"><a></a>  k <span class="op">=</span> a <span class="op">*</span> b</span>
-<span id="cb8-7"><a></a></span>
-<span id="cb8-8"><a></a><span class="bu">print</span>(k)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="automatic-differentiation" class="slide level2">
-<h2>Automatic differentiation</h2>
-<p>Let’s try to compute this derivative:</p>
+<div class="columns">
+<div class="column" style="width:&quot;50%;">
 <p><span class="math display">\[
-\small
-\frac{\mathrm{d}}{\mathrm{d}x} \Big|_{x=1} \; x^2 + 2x - 5
+f \ast g \equiv \int_{-\infty}^{\infty} f(\tau) g(t-\tau) d\tau
 \]</span></p>
+</div><div class="column" style="width:&quot;50%;">
 <div class="fragment">
-<p><span class="math display">\[
-\small
-= 2x + 2 \big|_{x=1} = 2 \cdot 1 + 2 = 4
-\]</span></p>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Convolution_of_box_signal_with_itself2.gif"></p>
 </div>
-<div class="fragment">
-<p>Turns out TensorFlow can do it <em>for us:</em></p>
-<div class="sourceCode" id="cb9" data-code-line-numbers="1-2|1-4|1-7|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="kw">def</span> f(x):</span>
-<span id="cb9-2"><a></a>  <span class="cf">return</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>x <span class="op">-</span> <span class="dv">5</span></span>
-<span id="cb9-3"><a></a></span>
-<span id="cb9-4"><a></a>x <span class="op">=</span> tf.Variable(<span class="fl">1.0</span>)</span>
-<span id="cb9-5"><a></a></span>
-<span id="cb9-6"><a></a><span class="cf">with</span> tf.GradientTape() <span class="im">as</span> tape:</span>
-<span id="cb9-7"><a></a>  y <span class="op">=</span> f(x)</span>
-<span id="cb9-8"><a></a></span>
-<span id="cb9-9"><a></a>d_dx <span class="op">=</span> tape.gradient(y, x)</span>
-<span id="cb9-10"><a></a><span class="bu">print</span>(d_dx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="fragment" style="padding-top: 10px;">
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>tf.Tensor: shape<span class="op">=</span>(), dtype<span class="op">=</span>float32, numpy<span class="op">=</span><span class="fl">4.0</span><span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<!-- ## Number of bits  -->
+</div></div>
 </section>
-<section id="keras" class="slide level2">
-<h2>Keras</h2>
-<p>The <a href="https://keras.io/">Keras</a> framework contains all the high-level components we need to construct and train a neural network:</p>
+<section id="enter-the-convolution-operation-1" class="slide level2">
+<h2>Enter the <em>convolution operation</em></h2>
+<p>The foundation for modern computer vision <span class="color-grey"><em>(plus lots of other things!)</em></span><br> is <span class="color-purple"><strong>convolution</strong></span>:</p>
+<p>an operation that takes in two functions and returns a new function</p>
+<div style="padding-top: 40px;">
+
+</div>
+<div class="columns">
+<div class="column" style="width:&quot;50%;">
+<p><span class="math display">\[
+f \ast g \equiv \int_{-\infty}^{\infty} f(\tau) g(t-\tau) d\tau
+\]</span></p>
+</div><div class="column" style="width:&quot;50%;">
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Convolution_of_spiky_function_with_box2.gif"></p>
+</div></div>
+<p>In practice, convolution is a way to <strong>recognise and localise patterns</strong> in data</p>
+</section>
+<section id="discrete-convolution" class="slide level2">
+<h2>Discrete convolution</h2>
+<p>Convolution is a lot easier with discrete data such as images, because:</p>
 <ul>
-<li><code>keras.layers</code>: Different types of layers and activation functions</li>
-<li><code>keras.callbacks</code>: Monitor, modify or stop the training process</li>
-<li><code>keras.optimizers</code>: Optimisation algorithms</li>
-<li><code>keras.metrics</code>: Performance metrics</li>
-<li><code>keras.losses</code>: Loss functions</li>
-<li><code>keras.datasets</code>: Small datasets for testing</li>
-<li><code>keras.applications</code>: Pre-trained networks for different tasks</li>
+<li>the integral becomes a <span class="color-pink-dark">sum</span></li>
+<li>the first function is our <span class="color-pink-dark">image</span></li>
+<li>the second function is our <span class="color-pink-dark"><em><strong>kernel</strong></em></span>, which tries to find patters in the image.</li>
 </ul>
-<div class="r-stack">
-<div class="absolute" style="bottom: 0%; right: 0%; width: 300px; ">
-<p><img data-src="figures/lecture2/keras-logo.png"></p>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture3/2d-conv.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
+</figure>
 </div>
 </div>
 </section>
-<section id="referansegruppe" class="slide level2">
-<h2>Referansegruppe</h2>
-<div class="absolute" style="top: 10%; left: -7%; width: 120%; ">
-<p><img data-src="figures/lecture2/referansegruppe.png"></p>
-</div>
-<div class="absolute" style="top: 70%; left: 80%; ">
-<p><img data-src="figures/lecture2/uncle-sam.jpg"></p>
-</div>
+<section id="convolution-over-images" class="slide level2">
+<h2>Convolution over images</h2>
+<p><img data-src="figures/lecture3/2dconv-anim.gif"></p>
 
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">

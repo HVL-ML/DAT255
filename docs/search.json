@@ -1,66 +1,66 @@
 [
   {
-    "objectID": "slides/2-tools.html#frameworks",
-    "href": "slides/2-tools.html#frameworks",
-    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
-    "section": "Frameworks",
-    "text": "Frameworks"
+    "objectID": "slides/lecture3.html#tf-playground",
+    "href": "slides/lecture3.html#tf-playground",
+    "title": "DAT255: Deep learning engineering",
+    "section": "TF playground",
+    "text": "TF playground"
   },
   {
-    "objectID": "slides/2-tools.html#low-level-tensorflow",
-    "href": "slides/2-tools.html#low-level-tensorflow",
-    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
-    "section": "Low-level TensorFlow",
-    "text": "Low-level TensorFlow\nMost things work like NumPy, but with the benefit of GPU support and JIT compilation.\nThe core object is the Tensor, which is basically a multidimensional array.\n\nNumPy\n&gt;&gt;&gt; import numpy as np\n&gt;&gt;&gt; x = np.array([[1,2,3], [4,5,6]], dtype=np.float32)\n&gt;&gt;&gt; print(x)\n[[1. 2. 3.]\n [4. 5. 6.]]\n\n\nTensorFlow\n&gt;&gt;&gt; import tensorflow as tf\n&gt;&gt;&gt; x = tf.constant([[1,2,3], [4,5,6]], dtype=tf.float32)\n&gt;&gt;&gt; print(x)\ntf.Tensor(\n[[1. 2. 3.]\n [4. 5. 6.]], shape=(2, 3), dtype=float32)"
+    "objectID": "slides/lecture3.html#the-feed-forward-neural-network",
+    "href": "slides/lecture3.html#the-feed-forward-neural-network",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The feed-forward neural network",
+    "text": "The feed-forward neural network\nFor the demo we used the good ol’ fully-connected feed-forward network:\n\nEach node computes an output by\n\\[\ny = f\\left( \\sum_{i=1}^{M} w_ix_i + b \\right)\n\\]\nwhere\n\n\\(w_i\\) is the weight of each incoming connection\n\\(b\\) is the bias term\n\\(f\\) is the activation function (more next week)"
   },
   {
-    "objectID": "slides/2-tools.html#low-level-tensorflow-the-tensor",
-    "href": "slides/2-tools.html#low-level-tensorflow-the-tensor",
-    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
-    "section": "Low-level TensorFlow: The Tensor",
-    "text": "Low-level TensorFlow: The Tensor\nTensors are immutable, and are useful for storing constant values such as input data\nFor values that will be updated (such as model weights), use a Variable:\n&gt;&gt;&gt; y = tf.Variable([[1,2,3], [4,5,6]], dtype=tf.float32, name=\"My first variable\")\n&gt;&gt;&gt; y[0,1].assign(50)\n&lt;tf.Variable 'UnreadVariable' shape=(2, 3) dtype=float32, numpy=\narray([[ 1., 50.,  3.],\n       [ 4.,  5.,  6.]], dtype=float32)&gt;"
+    "objectID": "slides/lecture3.html#image-classification",
+    "href": "slides/lecture3.html#image-classification",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Image classification",
+    "text": "Image classification\nLet’s classify this image: (see notebook 1)"
   },
   {
-    "objectID": "slides/2-tools.html#low-level-tensorflow-simple-operations",
-    "href": "slides/2-tools.html#low-level-tensorflow-simple-operations",
-    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
-    "section": "Low-level TensorFlow: Simple operations",
-    "text": "Low-level TensorFlow: Simple operations\nBasic math is accessed through operators\n&gt;&gt;&gt; a = b + c       # Element-wise addition\n&gt;&gt;&gt; a = b * c       # Element-wise multiplication (Hadamard product)\n&gt;&gt;&gt; a = b @ c       # Matrix multiplication\nwhile more complicated stuff is available as functions in tf.math\n\nNotice in particular the reduce_ functions, which look different from NumPy:\n&gt;&gt;&gt; x = tf.constant([[1,2,3], [4,5,6]]); print(x)\ntf.Tensor(\n[[1 2 3]\n [4 5 6]], shape=(2, 3), dtype=int32)\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=0)\n&lt;tf.Tensor: shape=(3,), dtype=int32, numpy=array([5, 7, 9], dtype=int32)&gt;\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=1)\n&lt;tf.Tensor: shape=(2,), dtype=int32, numpy=array([ 6, 15], dtype=int32)&gt;\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=None)\n&lt;tf.Tensor: shape=(), dtype=int32, numpy=21&gt;"
+    "objectID": "slides/lecture3.html#image-classification-1",
+    "href": "slides/lecture3.html#image-classification-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Image classification",
+    "text": "Image classification\nLet’s classify this image: (see notebook 1)\nCan treat every pixel as feature:"
   },
   {
-    "objectID": "slides/2-tools.html#low-level-tensorflow-shapes",
-    "href": "slides/2-tools.html#low-level-tensorflow-shapes",
-    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
-    "section": "Low-level TensorFlow: Shapes",
-    "text": "Low-level TensorFlow: Shapes\nBroadcasting works like in NumPy:\n&gt;&gt;&gt; x = tf.constant([1,2,3], dtype=tf.float32)\n&gt;&gt;&gt; x + 1\n&lt;tf.Tensor: shape=(3,), dtype=float32, numpy=array([2., 3., 4.], dtype=float32)&gt;\nSame for shapes:"
+    "objectID": "slides/lecture3.html#image-classification-2",
+    "href": "slides/lecture3.html#image-classification-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Image classification",
+    "text": "Image classification\nLet’s classify this image: (see notebook 1)\nCan treat every pixel as feature:\n\n\nTwo obvious problems:\n\nNot invariant under translation (move the image  different result)\nNot invariant under dilation (resize the image  different result)"
   },
   {
-    "objectID": "slides/2-tools.html#gpu",
-    "href": "slides/2-tools.html#gpu",
-    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
-    "section": "GPU",
-    "text": "GPU\nTensorFlow will automatically try to use the fastest compute device available\nTensor operations are typically faster when parallelised on a GPU\nWhile this is automatic, it can also be forced:\nwith tf.device('CPU:0'):\n  a = tf.Variable([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])\n  b = tf.Variable([[1.0, 2.0, 3.0]])\n\nwith tf.device('GPU:0'):\n  k = a * b\n\nprint(k)"
+    "objectID": "slides/lecture3.html#enter-the-convolution-operation",
+    "href": "slides/lecture3.html#enter-the-convolution-operation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Enter the convolution operation",
+    "text": "Enter the convolution operation\nThe foundation for modern computer vision (plus lots of other things!) is convolution:\nan operation that takes in two functions and returns a new function\n\n\n\n\n\n\\[\nf \\ast g \\equiv \\int_{-\\infty}^{\\infty} f(\\tau) g(t-\\tau) d\\tau\n\\]"
   },
   {
-    "objectID": "slides/2-tools.html#automatic-differentiation",
-    "href": "slides/2-tools.html#automatic-differentiation",
-    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
-    "section": "Automatic differentiation",
-    "text": "Automatic differentiation\nLet’s try to compute this derivative:\n\\[\n\\small\n\\frac{\\mathrm{d}}{\\mathrm{d}x} \\Big|_{x=1} \\; x^2 + 2x - 5\n\\]\n\n\\[\n\\small\n= 2x + 2 \\big|_{x=1} = 2 \\cdot 1 + 2 = 4\n\\]\n\n\nTurns out TensorFlow can do it for us:\ndef f(x):\n  return x**2 + 2*x - 5\n\nx = tf.Variable(1.0)\n\nwith tf.GradientTape() as tape:\n  y = f(x)\n\nd_dx = tape.gradient(y, x)\nprint(d_dx)\n\n\n&lt;tf.Tensor: shape=(), dtype=float32, numpy=4.0&gt;"
+    "objectID": "slides/lecture3.html#enter-the-convolution-operation-1",
+    "href": "slides/lecture3.html#enter-the-convolution-operation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Enter the convolution operation",
+    "text": "Enter the convolution operation\nThe foundation for modern computer vision (plus lots of other things!) is convolution:\nan operation that takes in two functions and returns a new function\n\n\n\n\n\n\\[\nf \\ast g \\equiv \\int_{-\\infty}^{\\infty} f(\\tau) g(t-\\tau) d\\tau\n\\]\n\n\n\nIn practice, convolution is a way to recognise and localise patterns in data"
   },
   {
-    "objectID": "slides/2-tools.html#keras",
-    "href": "slides/2-tools.html#keras",
-    "title": "DAT158: Machine Learning Engineering and Advanced Algorithms",
-    "section": "Keras",
-    "text": "Keras\nThe Keras framework contains all the high-level components we need to contruct and train a neural network:\n\nkeras.layers: Different types of layers and activation functions\nkeras.callbacks: Monitor, modify or stop the training process\nkeras.optimizers: Optimisation algorithms\nkeras.metrics: Performance metrics\nkeras.losses: Loss functions\nkeras.datasets: Small datasets for testing\nkeras.applications: Pre-trained networks for different tasks"
+    "objectID": "slides/lecture3.html#discrete-convolution",
+    "href": "slides/lecture3.html#discrete-convolution",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Discrete convolution",
+    "text": "Discrete convolution\nConvolution is a lot easier with discrete data such as images, because:\n\nthe integral becomes a sum\nthe first function is our image\nthe second function is our kernel, which tries to find patters in the image."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "DAT255 lecture notes",
-    "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction"
+    "objectID": "slides/lecture3.html#convolution-over-images",
+    "href": "slides/lecture3.html#convolution-over-images",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Convolution over images",
+    "text": "Convolution over images"
   },
   {
     "objectID": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
@@ -243,5 +243,103 @@
     "title": "DAT255: Deep learning",
     "section": "",
     "text": "TensorFlowplayground"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DAT255 lecture notes",
+    "section": "",
+    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning"
+  },
+  {
+    "objectID": "slides/2-tools.html#frameworks",
+    "href": "slides/2-tools.html#frameworks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Frameworks",
+    "text": "Frameworks\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHigh-level\n\n\nCompute\n\n\nSupporting"
+  },
+  {
+    "objectID": "slides/2-tools.html#frameworks-1",
+    "href": "slides/2-tools.html#frameworks-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Frameworks",
+    "text": "Frameworks\npython is the de-facto language for deep learning\nIn case you need a refresher, look at e.g.\n\nKaggle Learn: https://www.kaggle.com/learn/python\nGoogle Edu: https://developers.google.com/edu/python\n\n\nTechnically, we use python as a configuration language while the framework backends are C++/CUDA (but we won’t touch this)\nFor deployment, there are hooks to Haskell / C# / Julia / Java / R / Ruby / Rust / Scala / Perl and others\nWe assume you have been exposed to NumPy – although it’s no requirement"
+  },
+  {
+    "objectID": "slides/2-tools.html#this-week",
+    "href": "slides/2-tools.html#this-week",
+    "title": "DAT255: Deep learning engineering",
+    "section": "This week",
+    "text": "This week\n\n\n\n\n\n\n\nEnvironment setup: Check our GitHub\nIntro to TensorFlow:We look at this today"
+  },
+  {
+    "objectID": "slides/2-tools.html#computing-resources",
+    "href": "slides/2-tools.html#computing-resources",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Computing resources",
+    "text": "Computing resources\nMany exercises in this course are compute intensive, and will benefit from a hardware accelerator (i.e. a GPU)\nSome options:\n\nYour own computer (NVIDIA GPU or M-series Mac)\nCloud services\n\nGoogle Colab: T4 for free\nKaggle Notebooks: P100 for free\n(and others)\n\nResearch group hardware If you are connected to some research group at HVL/UiB"
+  },
+  {
+    "objectID": "slides/2-tools.html#low-level-tensorflow",
+    "href": "slides/2-tools.html#low-level-tensorflow",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Low-level TensorFlow",
+    "text": "Low-level TensorFlow\nMost things work like NumPy, but with the benefit of GPU support and JIT compilation.\nThe core object is the Tensor, which is basically a multidimensional array.\n\nNumPy\n&gt;&gt;&gt; import numpy as np\n&gt;&gt;&gt; x = np.array([[1,2,3], [4,5,6]], dtype=np.float32)\n&gt;&gt;&gt; print(x)\n[[1. 2. 3.]\n [4. 5. 6.]]\n\n\nTensorFlow\n&gt;&gt;&gt; import tensorflow as tf\n&gt;&gt;&gt; x = tf.constant([[1,2,3], [4,5,6]], dtype=tf.float32)\n&gt;&gt;&gt; print(x)\ntf.Tensor(\n[[1. 2. 3.]\n [4. 5. 6.]], shape=(2, 3), dtype=float32)"
+  },
+  {
+    "objectID": "slides/2-tools.html#low-level-tensorflow-the-tensor",
+    "href": "slides/2-tools.html#low-level-tensorflow-the-tensor",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Low-level TensorFlow: The Tensor",
+    "text": "Low-level TensorFlow: The Tensor\nTensors are immutable, and are useful for storing constant values such as input data\nFor values that will be updated (such as model weights), use a Variable:\n&gt;&gt;&gt; y = tf.Variable([[1,2,3], [4,5,6]], dtype=tf.float32, name=\"My first variable\")\n&gt;&gt;&gt; y[0,1].assign(50)\n&lt;tf.Variable 'UnreadVariable' shape=(2, 3) dtype=float32, numpy=\narray([[ 1., 50.,  3.],\n       [ 4.,  5.,  6.]], dtype=float32)&gt;"
+  },
+  {
+    "objectID": "slides/2-tools.html#low-level-tensorflow-simple-operations",
+    "href": "slides/2-tools.html#low-level-tensorflow-simple-operations",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Low-level TensorFlow: Simple operations",
+    "text": "Low-level TensorFlow: Simple operations\nBasic math is accessed through operators\n&gt;&gt;&gt; a = b + c       # Element-wise addition\n&gt;&gt;&gt; a = b * c       # Element-wise multiplication (Hadamard product)\n&gt;&gt;&gt; a = b @ c       # Matrix multiplication\nwhile more complicated stuff is available as functions in tf.math\n\nNotice in particular the reduce_ functions, which look different from NumPy:\n&gt;&gt;&gt; x = tf.constant([[1,2,3], [4,5,6]]); print(x)\ntf.Tensor(\n[[1 2 3]\n [4 5 6]], shape=(2, 3), dtype=int32)\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=0)\n&lt;tf.Tensor: shape=(3,), dtype=int32, numpy=array([5, 7, 9], dtype=int32)&gt;\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=1)\n&lt;tf.Tensor: shape=(2,), dtype=int32, numpy=array([ 6, 15], dtype=int32)&gt;\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=None)\n&lt;tf.Tensor: shape=(), dtype=int32, numpy=21&gt;"
+  },
+  {
+    "objectID": "slides/2-tools.html#low-level-tensorflow-shapes",
+    "href": "slides/2-tools.html#low-level-tensorflow-shapes",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Low-level TensorFlow: Shapes",
+    "text": "Low-level TensorFlow: Shapes\nBroadcasting works like in NumPy:\n&gt;&gt;&gt; x = tf.constant([1,2,3], dtype=tf.float32)\n&gt;&gt;&gt; x + 1\n&lt;tf.Tensor: shape=(3,), dtype=float32, numpy=array([2., 3., 4.], dtype=float32)&gt;\nSame for shapes:"
+  },
+  {
+    "objectID": "slides/2-tools.html#a-typical-shape-128-299-299-3",
+    "href": "slides/2-tools.html#a-typical-shape-128-299-299-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "A typical shape: [128, 299, 299, 3]",
+    "text": "A typical shape: [128, 299, 299, 3]\nImages are typically represented as [height, width, channel]\n\n\n\n\n\n\nDuring model training we want to do minibatch gradient descent, and load a subset of the data at a time\n This adds a fourth batch dimension: [batch, height, width, channel]\nWhen processing single data points, we often need to add or remove it:\nimg = tf.expand_dims(img, 0)    # [24, 24, 3]    -&gt; [1, 24, 24, 3]\nimg = tf.squeeze(img)           # [1, 24, 24, 3] -&gt; [24, 24, 3]"
+  },
+  {
+    "objectID": "slides/2-tools.html#run-computations-on-a-gpu",
+    "href": "slides/2-tools.html#run-computations-on-a-gpu",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Run computations on a GPU",
+    "text": "Run computations on a GPU\nTensorFlow will automatically try to use the fastest compute device available\nTensor operations are typically faster when parallelised on a GPU\n\n\n\nWhile this is automatic, it can also be forced:\nwith tf.device('CPU:0'):\n  a = tf.Variable([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])\n  b = tf.Variable([[1.0, 2.0, 3.0]])\n\nwith tf.device('GPU:0'):\n  k = a * b\n\nprint(k)"
+  },
+  {
+    "objectID": "slides/2-tools.html#automatic-differentiation",
+    "href": "slides/2-tools.html#automatic-differentiation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Automatic differentiation",
+    "text": "Automatic differentiation\nLet’s try to compute this derivative:\n\\[\n\\small\n\\frac{\\mathrm{d}}{\\mathrm{d}x} \\Big|_{x=1} \\; x^2 + 2x - 5\n\\]\n\n\\[\n\\small\n= 2x + 2 \\big|_{x=1} = 2 \\cdot 1 + 2 = 4\n\\]\n\n\nTurns out TensorFlow can do it for us:\ndef f(x):\n  return x**2 + 2*x - 5\n\nx = tf.Variable(1.0)\n\nwith tf.GradientTape() as tape:\n  y = f(x)\n\nd_dx = tape.gradient(y, x)\nprint(d_dx)\n\n\n&lt;tf.Tensor: shape=(), dtype=float32, numpy=4.0&gt;"
+  },
+  {
+    "objectID": "slides/2-tools.html#keras",
+    "href": "slides/2-tools.html#keras",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Keras",
+    "text": "Keras\nThe Keras framework contains all the high-level components we need to construct and train a neural network:\n\nkeras.layers: Different types of layers and activation functions\nkeras.callbacks: Monitor, modify or stop the training process\nkeras.optimizers: Optimisation algorithms\nkeras.metrics: Performance metrics\nkeras.losses: Loss functions\nkeras.datasets: Small datasets for testing\nkeras.applications: Pre-trained networks for different tasks"
+  },
+  {
+    "objectID": "slides/2-tools.html#referansegruppe",
+    "href": "slides/2-tools.html#referansegruppe",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Referansegruppe",
+    "text": "Referansegruppe"
   }
 ]
