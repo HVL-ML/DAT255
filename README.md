@@ -40,7 +40,7 @@ The simplest way to run the notebooks is through a cloud service like [https://c
     ```
 3. **Install the frameworks we need**
     ```bash
-    pip install -r requirements.tex
+    pip install -r requirements.txt
     ```
 4. **Run notebooks**
     ```bash
