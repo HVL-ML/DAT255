@@ -1,66 +1,276 @@
 [
   {
-    "objectID": "slides/lecture3.html#tf-playground",
-    "href": "slides/lecture3.html#tf-playground",
+    "objectID": "slides/3-convolutions.html#section",
+    "href": "slides/3-convolutions.html#section",
     "title": "DAT255: Deep learning engineering",
-    "section": "TF playground",
-    "text": "TF playground"
+    "section": "",
+    "text": "TensorFlowplayground"
   },
   {
-    "objectID": "slides/lecture3.html#the-feed-forward-neural-network",
-    "href": "slides/lecture3.html#the-feed-forward-neural-network",
+    "objectID": "slides/3-convolutions.html#shallow-learning",
+    "href": "slides/3-convolutions.html#shallow-learning",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Shallow learning",
+    "text": "Shallow learning\n\n\n\n\n\n\n%%{ init: {'flowchart': { 'curve': 'bumpX', 'nodeSpacing': 50, 'rankSpacing': 80 } } }%%\nflowchart LR\n    X1(\"x1\") --&gt; M{Model}\n    X2(\"x2\") --&gt; M\n    X1 --&gt; X3(\"x3\")\n    X2 --&gt; X3\n    X1 --&gt; X4(\"x4\")\n    X2 --&gt; X4\n    X3 --&gt; M\n    X4 --&gt; M\n    subgraph ML\n    M\n    end\n    subgraph F[Original features]\n    X1\n    X2\n    end\n    subgraph FE[Engineered features]\n    X3\n    X4\n    end \n    M --&gt; P(\"Prediction _y_\")\n\nstyle ML fill:#ededed,stroke:#606060\nstyle F fill:#ededed,stroke:#606060\nstyle FE fill:#FFF8E1,stroke:#606060\n\n\n\n\n\n\n\n\\[\ny = f(x_1, x_2, x_3, x_4, \\dots, x_n | \\theta)\n\\]"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#deep-learning",
+    "href": "slides/3-convolutions.html#deep-learning",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Deep learning",
+    "text": "Deep learning\n\n\n\n\n\n\n%%{ init: {'flowchart': { 'curve': 'bumpX', 'nodeSpacing': 50, 'rankSpacing': 80 } } }%%\nflowchart LR\n    X1(\"x1\") --&gt; L1(Layer 1)\n    X2(\"x2\") --&gt; L1\n    subgraph ML[Neural network]\n    L1 --&gt; L2(Layer 2)\n    L2 --&gt; L3(Layer 3)\n    end\n    subgraph F[Original features]\n    X1\n    X2\n    end\n    L3 --&gt; P(\"Prediction _y_\")\n\nstyle ML fill:#ededed,stroke:#606060\nstyle F fill:#ededed,stroke:#606060\n\n\n\n\n\n\n\n\\[\ny = f_3(f_2(f_1(x_1, x_2 | \\theta_1) | \\theta_2) | \\theta_3)\n\\]"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#section-1",
+    "href": "slides/3-convolutions.html#section-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "",
+    "text": "TensorFlowplayground"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#deep-learning-1",
+    "href": "slides/3-convolutions.html#deep-learning-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Deep learning",
+    "text": "Deep learning\n\n\n\nThe point of deep learning is to sequentially learn better feature representations, and use these to solve a task.\n\n\n\nSince neural networks are universal function approximators, they can model arbitrarily complex relationships. The cost of doing so, is that we need a lot of data."
+  },
+  {
+    "objectID": "slides/3-convolutions.html#the-feed-forward-neural-network",
+    "href": "slides/3-convolutions.html#the-feed-forward-neural-network",
     "title": "DAT255: Deep learning engineering",
     "section": "The feed-forward neural network",
-    "text": "The feed-forward neural network\nFor the demo we used the good ol’ fully-connected feed-forward network:\n\nEach node computes an output by\n\\[\ny = f\\left( \\sum_{i=1}^{M} w_ix_i + b \\right)\n\\]\nwhere\n\n\\(w_i\\) is the weight of each incoming connection\n\\(b\\) is the bias term\n\\(f\\) is the activation function (more next week)"
+    "text": "The feed-forward neural network\nFor the demo we used the good ol’ fully-connected feed-forward network:\n\n\n\n\nEach node computes an output by\n\\[\n\\small\ny = f\\left( \\sum_{i=1}^{n} w_ix_i + b \\right)\n\\]\nwhere\n\n\\(w_i\\) is the weight of each incoming connection\n\\(b\\) is the bias term\n\\(f\\) is the activation function (more next week)"
   },
   {
-    "objectID": "slides/lecture3.html#image-classification",
-    "href": "slides/lecture3.html#image-classification",
+    "objectID": "slides/3-convolutions.html#image-classification",
+    "href": "slides/3-convolutions.html#image-classification",
     "title": "DAT255: Deep learning engineering",
     "section": "Image classification",
     "text": "Image classification\nLet’s classify this image: (see notebook 1)"
   },
   {
-    "objectID": "slides/lecture3.html#image-classification-1",
-    "href": "slides/lecture3.html#image-classification-1",
+    "objectID": "slides/3-convolutions.html#image-classification-1",
+    "href": "slides/3-convolutions.html#image-classification-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Image classification",
-    "text": "Image classification\nLet’s classify this image: (see notebook 1)\nCan treat every pixel as feature:"
+    "text": "Image classification\nLet’s classify this image: (see notebook 1)\nTry to treat every pixel as feature:\n\n\n2"
   },
   {
-    "objectID": "slides/lecture3.html#image-classification-2",
-    "href": "slides/lecture3.html#image-classification-2",
+    "objectID": "slides/3-convolutions.html#image-classification-2",
+    "href": "slides/3-convolutions.html#image-classification-2",
     "title": "DAT255: Deep learning engineering",
     "section": "Image classification",
-    "text": "Image classification\nLet’s classify this image: (see notebook 1)\nCan treat every pixel as feature:\n\n\nTwo obvious problems:\n\nNot invariant under translation (move the image  different result)\nNot invariant under dilation (resize the image  different result)"
+    "text": "Image classification\nLet’s classify this image: (see notebook 1)\nTry to treat every pixel as feature:\n\n\nnot 2\n\n\nTwo obvious problems:\n\nNot invariant under translation(move the image  different result)\nNot invariant under dilation(resize the image  different result)"
   },
   {
-    "objectID": "slides/lecture3.html#enter-the-convolution-operation",
-    "href": "slides/lecture3.html#enter-the-convolution-operation",
+    "objectID": "slides/3-convolutions.html#enter-the-convolution-operation",
+    "href": "slides/3-convolutions.html#enter-the-convolution-operation",
     "title": "DAT255: Deep learning engineering",
     "section": "Enter the convolution operation",
     "text": "Enter the convolution operation\nThe foundation for modern computer vision (plus lots of other things!) is convolution:\nan operation that takes in two functions and returns a new function\n\n\n\n\n\n\\[\nf \\ast g \\equiv \\int_{-\\infty}^{\\infty} f(\\tau) g(t-\\tau) d\\tau\n\\]"
   },
   {
-    "objectID": "slides/lecture3.html#enter-the-convolution-operation-1",
-    "href": "slides/lecture3.html#enter-the-convolution-operation-1",
+    "objectID": "slides/3-convolutions.html#enter-the-convolution-operation-1",
+    "href": "slides/3-convolutions.html#enter-the-convolution-operation-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Enter the convolution operation",
     "text": "Enter the convolution operation\nThe foundation for modern computer vision (plus lots of other things!) is convolution:\nan operation that takes in two functions and returns a new function\n\n\n\n\n\n\\[\nf \\ast g \\equiv \\int_{-\\infty}^{\\infty} f(\\tau) g(t-\\tau) d\\tau\n\\]\n\n\n\nIn practice, convolution is a way to recognise and localise patterns in data"
   },
   {
-    "objectID": "slides/lecture3.html#discrete-convolution",
-    "href": "slides/lecture3.html#discrete-convolution",
+    "objectID": "slides/3-convolutions.html#discrete-convolution",
+    "href": "slides/3-convolutions.html#discrete-convolution",
     "title": "DAT255: Deep learning engineering",
     "section": "Discrete convolution",
     "text": "Discrete convolution\nConvolution is a lot easier with discrete data such as images, because:\n\nthe integral becomes a sum\nthe first function is our image\nthe second function is our kernel, which tries to find patters in the image."
   },
   {
-    "objectID": "slides/lecture3.html#convolution-over-images",
-    "href": "slides/lecture3.html#convolution-over-images",
+    "objectID": "slides/3-convolutions.html#convolution-over-images",
+    "href": "slides/3-convolutions.html#convolution-over-images",
     "title": "DAT255: Deep learning engineering",
     "section": "Convolution over images",
-    "text": "Convolution over images"
+    "text": "Convolution over images\nSimple case – one input channel"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#convolution-over-images-1",
+    "href": "slides/3-convolutions.html#convolution-over-images-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Convolution over images",
+    "text": "Convolution over images\nFor RGB color images: Process each color channel, then sum"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#the-convolution-kernel-or-filter",
+    "href": "slides/3-convolutions.html#the-convolution-kernel-or-filter",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The convolution kernel (or filter)",
+    "text": "The convolution kernel (or filter)\nConvolution with predefined kernels is the core to digital image processing (but then we call it filters)\n\n\n\n\n\n\n\n\n\nIdentify vertical lines\n\n\n\n\n\n\n\nIdentify diagonal lines\n\n\n\n\n\n\n\nIdentifiy horizontal lines"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#more-filters",
+    "href": "slides/3-convolutions.html#more-filters",
+    "title": "DAT255: Deep learning engineering",
+    "section": "More filters",
+    "text": "More filters\n\n\nAverage: blurring effect\n\n\n\n\n\n\n\n\nSobel filter: Edge detector"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#kernels-for-image-recognition",
+    "href": "slides/3-convolutions.html#kernels-for-image-recognition",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Kernels for image recognition",
+    "text": "Kernels for image recognition\nLet’s try handcrafting some filters/kernels:\n\n\n\n\n\n\n\n\n\n\n\nNeed to refinethe approach :/"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#decomposition-into-simple-patters",
+    "href": "slides/3-convolutions.html#decomposition-into-simple-patters",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Decomposition into simple patters",
+    "text": "Decomposition into simple patters\nA better approach: Multiple small filters\n\n\n\n\n\n\nOriginal image\n\n\nNew image, in lower resolution\n\n\nRepeat"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#decomposition-into-simple-patters-1",
+    "href": "slides/3-convolutions.html#decomposition-into-simple-patters-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Decomposition into simple patters",
+    "text": "Decomposition into simple patters"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#section-2",
+    "href": "slides/3-convolutions.html#section-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "",
+    "text": "Talk is cheap.Show me the code"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#keras-layers",
+    "href": "slides/3-convolutions.html#keras-layers",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Keras layers",
+    "text": "Keras layers\nFor our proposed solution we need three layer types:\n\n\n\n\nConvolution layers to extract image features\nkeras.layers.Conv2D\n\n\n\n\n\nPooling layers to downsample and aggregate the features\nkeras.layers.MaxPooling2D\n\n\n\n\n\nFully-connected (dense) layers to compute the final prediction\nkeras.layers.Dense"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#the-conv2d-layer",
+    "href": "slides/3-convolutions.html#the-conv2d-layer",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Conv2D layer",
+    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#the-conv2d-layer-1",
+    "href": "slides/3-convolutions.html#the-conv2d-layer-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Conv2D layer",
+    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)\n\nNumber of filters to use (typical: 32 to 512)"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#the-conv2d-layer-2",
+    "href": "slides/3-convolutions.html#the-conv2d-layer-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Conv2D layer",
+    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)\n\nSize of the filter/kernel (typical: 3x3, sometimes bigger in the first layer)"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#the-conv2d-layer-3",
+    "href": "slides/3-convolutions.html#the-conv2d-layer-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Conv2D layer",
+    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)\n\nStepsize for the convolution operation (typical: 1 or 2)\n\n\n\n\n\n\n\n\n\nstride=(1,1)\n\n\n\n\n\n\n\n\n\nstride=(2,2)"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#the-conv2d-layer-4",
+    "href": "slides/3-convolutions.html#the-conv2d-layer-4",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Conv2D layer",
+    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)\n\nPadding around the image edges (typical: 1 or 2)\n\n\n\n\n\n\n\n\n\npadding=\"valid\"\n\n\n\n\n\n\n\n\n\npadding=\"same\""
+  },
+  {
+    "objectID": "slides/3-convolutions.html#pooling-layers",
+    "href": "slides/3-convolutions.html#pooling-layers",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Pooling layers",
+    "text": "Pooling layers\nTwo reasons for downsampling the image features:\n\nLearn a spatial hierarchy by widening the receptive field\nReduce the total parameter count\n\nMost common approach: Choose the maximum value from a window of pixels"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#the-maxpooling2d-layer",
+    "href": "slides/3-convolutions.html#the-maxpooling2d-layer",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The MaxPooling2D layer",
+    "text": "The MaxPooling2D layer\n\n\nkeras.layers.MaxPooling2D(\n    pool_size=(2, 2),\n    strides=None,\n    padding=\"valid\",\n    data_format=None, \n    name=None, \n    **kwargs\n)\n\npool_size: Size of pooling window (typical: 2x2 or 3x3)\nstrides: Step size (typical: same as pool_size)\npadding: Padding around edges, valid or same"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#the-dense-layer",
+    "href": "slides/3-convolutions.html#the-dense-layer",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Dense layer",
+    "text": "The Dense layer\n\n\nkeras.layers.Dense(\n    units,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    lora_rank=None,\n    **kwargs\n)\n\nunits: number of nodes in this layer\n\n\n\n\n\n\nIn the last dense layer, units must be equal to the number of classes (or otherwise number of desired outputs)."
+  },
+  {
+    "objectID": "slides/3-convolutions.html#my-first-convolutional-network",
+    "href": "slides/3-convolutions.html#my-first-convolutional-network",
+    "title": "DAT255: Deep learning engineering",
+    "section": "My first convolutional network ✨",
+    "text": "My first convolutional network ✨\nLet’s piece together a convnet using Keras’ sequential model API:\n\n\n\nconvnet = keras.Sequential(\n    [\n        keras.Input(shape=(28, 28, 1)),\n        keras.layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n        keras.layers.MaxPooling2D(pool_size=(2, 2)),\n        keras.layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n        keras.layers.MaxPooling2D(pool_size=(2, 2)),\n        keras.layers.Flatten(),\n        keras.layers.Dense(10, activation=\"softmax\"),\n    ]\n)\n\n\n\n(More details about activations and training next week)"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#my-first-convolutional-network-1",
+    "href": "slides/3-convolutions.html#my-first-convolutional-network-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "My first convolutional network ✨",
+    "text": "My first convolutional network ✨\nconvnet.summary()\nModel: \"sequential_1\"\n\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓\n┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃\n┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩\n│ conv2d (Conv2D)                      │ (None, 26, 26, 32)          │             320 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ max_pooling2d (MaxPooling2D)         │ (None, 13, 13, 32)          │               0 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ conv2d_1 (Conv2D)                    │ (None, 11, 11, 32)          │           9,248 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ max_pooling2d_1 (MaxPooling2D)       │ (None, 5, 5, 32)            │               0 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ flatten_1 (Flatten)                  │ (None, 800)                 │               0 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ dropout (Dropout)                    │ (None, 800)                 │               0 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ dense_3 (Dense)                      │ (None, 10)                  │           8,010 │\n└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘\n\n Total params: 17,578 (68.66 KB)\n\n Trainable params: 17,578 (68.66 KB)\n\n Non-trainable params: 0 (0.00 B)"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#my-first-convolutional-network-2",
+    "href": "slides/3-convolutions.html#my-first-convolutional-network-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "My first convolutional network ✨",
+    "text": "My first convolutional network ✨\nConfigure the training objective and strategy:\nconvnet.compile(\n  loss=\"categorical_crossentropy\",\n  optimizer=\"adam\",\n  metrics=[\"accuracy\"]\n)\n(again, more details next week)\nStart training!\nconvnet.fit(\n  X_train,\n  y_train,\n  batch_size=128,\n  epochs=15,\n  validation_split=0.1\n)"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#pre-trained-models",
+    "href": "slides/3-convolutions.html#pre-trained-models",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Pre-trained models",
+    "text": "Pre-trained models"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#decomposition-into-simple-patters-theory-vs-practice",
+    "href": "slides/3-convolutions.html#decomposition-into-simple-patters-theory-vs-practice",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Decomposition into simple patters: Theory vs practice",
+    "text": "Decomposition into simple patters: Theory vs practice\nRemember the cat:\n\n\n\n\n\n(We’ll try to classify pictures of cats in exercise 3, but let’s test out a cat detector convnet already now)"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#decomposition-into-simple-patters-theory-vs-practice-1",
+    "href": "slides/3-convolutions.html#decomposition-into-simple-patters-theory-vs-practice-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Decomposition into simple patters: Theory vs practice",
+    "text": "Decomposition into simple patters: Theory vs practice\nOur test image:\n\n\n\n\n\n\nFrom F. Chollet: Deep Learning with Python"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#layer-activations",
+    "href": "slides/3-convolutions.html#layer-activations",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Layer activations",
+    "text": "Layer activations\nWe can visualise what each filter does by looking at its activation on the test image: The output after the convolution and applying the activation function.\nExamples:\n\n\n\n\n\n\n\n\n\nLayer 1, filter 4\n\n\n\n\n\n\n\nLayer 1, filter 7"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#layer-activations-1",
+    "href": "slides/3-convolutions.html#layer-activations-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Layer activations",
+    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 1 and 2:"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#layer-activations-2",
+    "href": "slides/3-convolutions.html#layer-activations-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Layer activations",
+    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 3:"
+  },
+  {
+    "objectID": "slides/3-convolutions.html#layer-activations-3",
+    "href": "slides/3-convolutions.html#layer-activations-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Layer activations",
+    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 4 (last):"
   },
   {
     "objectID": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
@@ -249,7 +459,7 @@
     "href": "index.html",
     "title": "DAT255 lecture notes",
     "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning"
+    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers"
   },
   {
     "objectID": "slides/2-tools.html#frameworks",
