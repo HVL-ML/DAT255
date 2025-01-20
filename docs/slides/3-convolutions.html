@@ -224,7 +224,7 @@ sma@hvl.no
 <div>
 <pre class="mermaid mermaid-js">%%{ init: {'flowchart': { 'curve': 'bumpX', 'nodeSpacing': 50, 'rankSpacing': 80 } } }%%
 flowchart LR
-    X1("x1") --&gt; M{Model}
+    X1("x1") --&gt; M{"Model _f_"}
     X2("x2") --&gt; M
     X1 --&gt; X3("x3")
     X2 --&gt; X3
@@ -232,9 +232,6 @@ flowchart LR
     X2 --&gt; X4
     X3 --&gt; M
     X4 --&gt; M
-    subgraph ML
-    M
-    end
     subgraph F[Original features]
     X1
     X2
@@ -245,7 +242,6 @@ flowchart LR
     end 
     M --&gt; P("Prediction _y_")
 
-style ML fill:#ededed,stroke:#606060
 style F fill:#ededed,stroke:#606060
 style FE fill:#FFF8E1,stroke:#606060
 </pre>
@@ -261,7 +257,7 @@ y = f(x_1, x_2, x_3, x_4, \dots, x_n | \theta)
 </section>
 <section id="deep-learning" class="slide level2">
 <h2><em>Deep</em> learning</h2>
-<div style="padding-left: 80px">
+<div style="padding-left: 80px; padding-top: 40px;">
 <div class="cell" data-reveal="true" data-layout-align="default">
 <div class="cell-output-display">
 <div>
@@ -269,11 +265,11 @@ y = f(x_1, x_2, x_3, x_4, \dots, x_n | \theta)
 <div>
 <pre class="mermaid mermaid-js">%%{ init: {'flowchart': { 'curve': 'bumpX', 'nodeSpacing': 50, 'rankSpacing': 80 } } }%%
 flowchart LR
-    X1("x1") --&gt; L1(Layer 1)
+    X1("x1") --&gt; L1("Layer 1 (_f1_)")
     X2("x2") --&gt; L1
     subgraph ML[Neural network]
-    L1 --&gt; L2(Layer 2)
-    L2 --&gt; L3(Layer 3)
+    L1 --&gt; L2("Layer 2 (_f2_)")
+    L2 --&gt; L3("Layer 3 (_f3_)")
     end
     subgraph F[Original features]
     X1
@@ -402,7 +398,7 @@ f \ast g \equiv \int_{-\infty}^{\infty} f(\tau) g(t-\tau) d\tau
 <ul>
 <li>the integral becomes a <span class="color-pink-dark">sum</span></li>
 <li>the first function is our <span class="color-pink-dark">image</span></li>
-<li>the second function is our <span class="color-pink-dark"><em><strong>kernel</strong></em></span>, which tries to find patters in the image.</li>
+<li>the second function is our <span class="color-pink-dark"><em><strong>kernel</strong></em></span> or <span class="color-pink-dark"><em><strong>filter</strong></em></span>, which tries to find patterns in the image.</li>
 </ul>
 <div class="fragment">
 <div class="quarto-figure quarto-figure-center">
@@ -472,7 +468,7 @@ f \ast g \equiv \int_{-\infty}^{\infty} f(\tau) g(t-\tau) d\tau
 <h2>More filters</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
-<p>Average: blurring effect</p>
+<p>Average: Blurring effect</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figures/lecture3/average-filter.png" class="quarto-figure quarto-figure-center" style="width:50.0%"></p>
@@ -555,7 +551,7 @@ f \ast g \equiv \int_{-\infty}^{\infty} f(\tau) g(t-\tau) d\tau
 <div class="absolute" style="top: 80%; left: 55%; ">
 <p>New image, in <br>lower resolution</p>
 </div>
-<div class="absolute" style="top: 80%; left: 95%; ">
+<div class="absolute" style="top: 80%; left: 90%; ">
 <p>Repeat</p>
 </div>
 </section>
@@ -563,7 +559,7 @@ f \ast g \equiv \int_{-\infty}^{\infty} f(\tau) g(t-\tau) d\tau
 <h2>Decomposition into simple patters</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture3/chollet-cat.png" class="quarto-figure quarto-figure-center" style="width:60.0%"></p>
+<p><img data-src="figures/lecture3/chollet-cat.png" class="quarto-figure quarto-figure-center" style="padding-top: 30px;;width:60.0%"></p>
 </figure>
 </div>
 </section>
@@ -712,7 +708,7 @@ f \ast g \equiv \int_{-\infty}^{\infty} f(\tau) g(t-\tau) d\tau
 <div>
 
 </div>
-<div class="quarto-layout-panel" data-layout-nrow="2" style="text-align: center;">
+<div class="quarto-layout-panel" style="text-align: center;" data-layout-nrow="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
@@ -764,7 +760,7 @@ f \ast g \equiv \int_{-\infty}^{\infty} f(\tau) g(t-\tau) d\tau
 <div>
 
 </div>
-<div class="quarto-layout-panel" data-layout-nrow="2" style="text-align: center;">
+<div class="quarto-layout-panel" style="text-align: center;" data-layout-nrow="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">

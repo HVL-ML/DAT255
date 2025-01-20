@@ -11,14 +11,14 @@
     "href": "slides/3-convolutions.html#shallow-learning",
     "title": "DAT255: Deep learning engineering",
     "section": "Shallow learning",
-    "text": "Shallow learning\n\n\n\n\n\n\n%%{ init: {'flowchart': { 'curve': 'bumpX', 'nodeSpacing': 50, 'rankSpacing': 80 } } }%%\nflowchart LR\n    X1(\"x1\") --&gt; M{Model}\n    X2(\"x2\") --&gt; M\n    X1 --&gt; X3(\"x3\")\n    X2 --&gt; X3\n    X1 --&gt; X4(\"x4\")\n    X2 --&gt; X4\n    X3 --&gt; M\n    X4 --&gt; M\n    subgraph ML\n    M\n    end\n    subgraph F[Original features]\n    X1\n    X2\n    end\n    subgraph FE[Engineered features]\n    X3\n    X4\n    end \n    M --&gt; P(\"Prediction _y_\")\n\nstyle ML fill:#ededed,stroke:#606060\nstyle F fill:#ededed,stroke:#606060\nstyle FE fill:#FFF8E1,stroke:#606060\n\n\n\n\n\n\n\n\\[\ny = f(x_1, x_2, x_3, x_4, \\dots, x_n | \\theta)\n\\]"
+    "text": "Shallow learning\n\n\n\n\n\n\n%%{ init: {'flowchart': { 'curve': 'bumpX', 'nodeSpacing': 50, 'rankSpacing': 80 } } }%%\nflowchart LR\n    X1(\"x1\") --&gt; M{\"Model _f_\"}\n    X2(\"x2\") --&gt; M\n    X1 --&gt; X3(\"x3\")\n    X2 --&gt; X3\n    X1 --&gt; X4(\"x4\")\n    X2 --&gt; X4\n    X3 --&gt; M\n    X4 --&gt; M\n    subgraph F[Original features]\n    X1\n    X2\n    end\n    subgraph FE[Engineered features]\n    X3\n    X4\n    end \n    M --&gt; P(\"Prediction _y_\")\n\nstyle F fill:#ededed,stroke:#606060\nstyle FE fill:#FFF8E1,stroke:#606060\n\n\n\n\n\n\n\n\\[\ny = f(x_1, x_2, x_3, x_4, \\dots, x_n | \\theta)\n\\]"
   },
   {
     "objectID": "slides/3-convolutions.html#deep-learning",
     "href": "slides/3-convolutions.html#deep-learning",
     "title": "DAT255: Deep learning engineering",
     "section": "Deep learning",
-    "text": "Deep learning\n\n\n\n\n\n\n%%{ init: {'flowchart': { 'curve': 'bumpX', 'nodeSpacing': 50, 'rankSpacing': 80 } } }%%\nflowchart LR\n    X1(\"x1\") --&gt; L1(Layer 1)\n    X2(\"x2\") --&gt; L1\n    subgraph ML[Neural network]\n    L1 --&gt; L2(Layer 2)\n    L2 --&gt; L3(Layer 3)\n    end\n    subgraph F[Original features]\n    X1\n    X2\n    end\n    L3 --&gt; P(\"Prediction _y_\")\n\nstyle ML fill:#ededed,stroke:#606060\nstyle F fill:#ededed,stroke:#606060\n\n\n\n\n\n\n\n\\[\ny = f_3(f_2(f_1(x_1, x_2 | \\theta_1) | \\theta_2) | \\theta_3)\n\\]"
+    "text": "Deep learning\n\n\n\n\n\n\n%%{ init: {'flowchart': { 'curve': 'bumpX', 'nodeSpacing': 50, 'rankSpacing': 80 } } }%%\nflowchart LR\n    X1(\"x1\") --&gt; L1(\"Layer 1 (_f1_)\")\n    X2(\"x2\") --&gt; L1\n    subgraph ML[Neural network]\n    L1 --&gt; L2(\"Layer 2 (_f2_)\")\n    L2 --&gt; L3(\"Layer 3 (_f3_)\")\n    end\n    subgraph F[Original features]\n    X1\n    X2\n    end\n    L3 --&gt; P(\"Prediction _y_\")\n\nstyle ML fill:#ededed,stroke:#606060\nstyle F fill:#ededed,stroke:#606060\n\n\n\n\n\n\n\n\\[\ny = f_3(f_2(f_1(x_1, x_2 | \\theta_1) | \\theta_2) | \\theta_3)\n\\]"
   },
   {
     "objectID": "slides/3-convolutions.html#section-1",
@@ -81,7 +81,7 @@
     "href": "slides/3-convolutions.html#discrete-convolution",
     "title": "DAT255: Deep learning engineering",
     "section": "Discrete convolution",
-    "text": "Discrete convolution\nConvolution is a lot easier with discrete data such as images, because:\n\nthe integral becomes a sum\nthe first function is our image\nthe second function is our kernel, which tries to find patters in the image."
+    "text": "Discrete convolution\nConvolution is a lot easier with discrete data such as images, because:\n\nthe integral becomes a sum\nthe first function is our image\nthe second function is our kernel or filter, which tries to find patterns in the image."
   },
   {
     "objectID": "slides/3-convolutions.html#convolution-over-images",
@@ -109,7 +109,7 @@
     "href": "slides/3-convolutions.html#more-filters",
     "title": "DAT255: Deep learning engineering",
     "section": "More filters",
-    "text": "More filters\n\n\nAverage: blurring effect\n\n\n\n\n\n\n\n\nSobel filter: Edge detector"
+    "text": "More filters\n\n\nAverage: Blurring effect\n\n\n\n\n\n\n\n\nSobel filter: Edge detector"
   },
   {
     "objectID": "slides/3-convolutions.html#kernels-for-image-recognition",
