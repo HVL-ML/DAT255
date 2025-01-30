@@ -91,6 +91,13 @@
     "text": "Learning rate scheduling\nSome options for the most efficient learning: (see notebooks)\n\n\nReduce \\(\\eta\\) when learning stops:\nkeras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)\nGradually reduce \\(\\eta\\) for each step:\nkeras.optimizers.schedules.ExponentialDecay(initial_learning_rate, decay_steps, decay_rate)\nkeras.optimizers.schedules.PolynomialDecay(initial_learning_rate, ...)\nChange \\(\\eta\\) by some other rule:\nclass MyLRSchedule(keras.optimizers.schedules.LearningRateSchedule):\n\n    def __init__(self, initial_learning_rate):\n        self.initial_learning_rate = initial_learning_rate\n\n    def __call__(self, step):\n        return self.initial_learning_rate / (step + 1)\n\noptimizer = keras.optimizers.SGD(learning_rate=MyLRSchedule(0.1))"
   },
   {
+    "objectID": "slides/5-optimisers.html#referansegruppe",
+    "href": "slides/5-optimisers.html#referansegruppe",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Referansegruppe",
+    "text": "Referansegruppe"
+  },
+  {
     "objectID": "slides/3-convolutions.html#section",
     "href": "slides/3-convolutions.html#section",
     "title": "DAT255: Deep learning engineering",
