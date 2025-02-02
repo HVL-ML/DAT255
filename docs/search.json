@@ -1,101 +1,668 @@
 [
   {
-    "objectID": "slides/5-optimisers.html#loss-functions",
-    "href": "slides/5-optimisers.html#loss-functions",
+    "objectID": "slides/6-augmentation.html#this-week",
+    "href": "slides/6-augmentation.html#this-week",
     "title": "DAT255: Deep learning engineering",
-    "section": "Loss functions",
-    "text": "Loss functions\n\n\nReminder: For all statistical modelling we need a measure of prediction quality\nThe loss function \\(L\\) must satisfy two conditions:\n\nDifferentiable*\nBounded below (\\(L \\geq 0\\))\n\n\nIn this course we stick mostly to\n\nMean squared error (MSE) loss, for regression tasks\n\n\n\n\n\n\\[\n\\small\nL_{\\mathrm{MSE}}(\\boldsymbol{\\hat{y}, y}) = \\frac{1}{N} \\sum_{i}^{N} (\\hat{y}_i - y_i)^2\n\\] where \\(N\\) is the number of data points\n\n\n\n\n\n\n\n\n\n*Again, at least piecewise differentiable"
+    "section": "This week",
+    "text": "This week\n\n\n\n\nTechnicalities about loading data\nData transformations (augmentation)\nModern convnets for computer vision\nOther computer vision tasks"
   },
   {
-    "objectID": "slides/5-optimisers.html#loss-functions-1",
-    "href": "slides/5-optimisers.html#loss-functions-1",
+    "objectID": "slides/6-augmentation.html#data-pipelines",
+    "href": "slides/6-augmentation.html#data-pipelines",
     "title": "DAT255: Deep learning engineering",
-    "section": "Loss functions",
-    "text": "Loss functions\n\n\nReminder: For all statistical modelling we need a measure of prediction quality\nThe loss function \\(L\\) must satisfy two conditions:\n\nDifferentiable*\nBounded below (\\(L \\geq 0\\))\n\nIn this course we stick mostly to\n\nMean squared error (MSE) loss, for regression tasks\nCross-entropy loss (or log loss), for classification tasks\n\n\n\n\\[\n\\scriptsize\nL_{\\mathrm{log}}(\\boldsymbol{\\hat{y}, y}) = -\\frac{1}{N} \\sum_i^N \\sum_k^K y_{i,k} \\log\\hat{y}_{i,k}\n\\] where \\(K\\) is the number of classes\n\n\n\n\n\n\n\n\n*Again, at least piecewise differentiable"
+    "section": "Data pipelines",
+    "text": "Data pipelines\n\n\n\nIn a deep learning setting, we typically need to consider that\n\nData are a too big to fit in memory (problem)\nWe have two separate compute units, the CPU and the GPU (opportunity)\n\nImplications:\n\nData must be divided into batches\nWhile the GPU is working on one batch, the CPU can prepare the next one."
   },
   {
-    "objectID": "slides/5-optimisers.html#gradient-descent",
-    "href": "slides/5-optimisers.html#gradient-descent",
+    "objectID": "slides/6-augmentation.html#sequential-processing",
+    "href": "slides/6-augmentation.html#sequential-processing",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Sequential processing",
+    "text": "Sequential processing\n\n\n\n\n\nOpen\n\n\nRead\n\n\nTrain\n\n\nEpoch"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#prefetching",
+    "href": "slides/6-augmentation.html#prefetching",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Prefetching",
+    "text": "Prefetching\n\n\n\n\n\nOpen\n\n\nRead\n\n\nTrain\n\n\nEpoch"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#prefetching-interleaving-file-reads",
+    "href": "slides/6-augmentation.html#prefetching-interleaving-file-reads",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Prefetching + interleaving file reads",
+    "text": "Prefetching + interleaving file reads\n\n\n\n\n\nOpen\n\n\nRead\n\n\nTrain\n\n\nEpoch"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#prefetching-interleaving-parallel-preprocessing",
+    "href": "slides/6-augmentation.html#prefetching-interleaving-parallel-preprocessing",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Prefetching + interleaving + parallel preprocessing",
+    "text": "Prefetching + interleaving + parallel preprocessing\n\n\n\n\n\nOpen\n\n\nRead\n\n\nMap\n\n\nTrain\n\n\nEpoch"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#tensorflow-dataset",
+    "href": "slides/6-augmentation.html#tensorflow-dataset",
+    "title": "DAT255: Deep learning engineering",
+    "section": "TensorFlow Dataset",
+    "text": "TensorFlow Dataset\n\n\n\nGet all these features with minimal effort though tf.data.Dataset\n\n\n\n\nEffort: Getting the data into a Dataset.\nReduced effort: Keras convenience functions for “standard” data."
+  },
+  {
+    "objectID": "slides/6-augmentation.html#tensorflow-dataset-1",
+    "href": "slides/6-augmentation.html#tensorflow-dataset-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "TensorFlow Dataset",
+    "text": "TensorFlow Dataset\nAs an example, create a Dataset from a list: (although we never do this in practice)\n&gt;&gt;&gt; dataset = tf.data.Dataset.from_tensor_slices([1, 2, 3])\n&gt;&gt;&gt; dataset\n&lt;_TensorSliceDataset element_spec=TensorSpec(shape=(), dtype=tf.int32, name=None)&gt;\n&gt;&gt;&gt; for element in dataset: \n&gt;&gt;&gt;   print(element)\ntf.Tensor(1, shape=(), dtype=int32)\ntf.Tensor(2, shape=(), dtype=int32)\ntf.Tensor(3, shape=(), dtype=int32)\nApply some transformation:\n&gt;&gt;&gt; def square(x):\n&gt;&gt;&gt;    return x * x\n\n&gt;&gt;&gt; new_dataset = dataset.map(square)\n\n&gt;&gt;&gt; for element in new_dataset:\n&gt;&gt;&gt;    print(element)\ntf.Tensor(1, shape=(), dtype=int32)\ntf.Tensor(4, shape=(), dtype=int32)\ntf.Tensor(9, shape=(), dtype=int32)\nImportant: The Dataset methods do not modify data in-place, but always returns a new Dataset."
+  },
+  {
+    "objectID": "slides/6-augmentation.html#tensorflow-dataset-2",
+    "href": "slides/6-augmentation.html#tensorflow-dataset-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "TensorFlow Dataset",
+    "text": "TensorFlow Dataset\nAssuming we already have a Dataset, set up the parallel processing chain:\n\n\n\nshuffled_ds = dataset.shuffle()  # optional\npreprocessed_ds = shuffled_ds.map(preprocessing_fn, num_parallel_calls=10)\nbatched_ds = preprocessed_ds.batch(batch_size)\nprefeched_ds = batched_ds.prefetch(buffer_size)\nor as a one-liner:\n\n\n\nds = dataset.shuffle().map(...).batch(...).prefetch(...)\n\nIn most cases we can set buffer_size, num_parallel_calls, etc to tf.data.AUTOTUNE and have TensorFlow figure out the best setting for us.\n\n\n\ndataset.prefetch(tf.data.AUTOTUNE)"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#getting-data-into-a-dataset",
+    "href": "slides/6-augmentation.html#getting-data-into-a-dataset",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Getting data into a Dataset",
+    "text": "Getting data into a Dataset\nCan be tricky since Datasets are maximally generic, but Keras to the rescue for the most common data types:\nI have\n\nImages: keras.utils.image_dataset_from_directory\nTime series: keras.utils.timeseries_dataset_from_array\nText: keras.utils.text_dataset_from_directory\nAudio: keras.utils.audio_dataset_from_directory\n\nWhile if I have\n\nCSV files: Read the TensorFlow tutorial\nSomething else: Code it yourself"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#train-a-model",
+    "href": "slides/6-augmentation.html#train-a-model",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Train a model",
+    "text": "Train a model\n\n\n\nDatasets are input to .fit() just as usual:\n\n\n\nmodel.fit(\n    train_dataset,\n    validation_data=val_dataset,\n    ...\n)\nand Keras figures out the rest.\nSee this week’s notebook and consult the documentation for more info on Datasets."
+  },
+  {
+    "objectID": "slides/6-augmentation.html#improving-generalisation",
+    "href": "slides/6-augmentation.html#improving-generalisation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Improving generalisation",
+    "text": "Improving generalisation\nRealisation:\n\nWe don’t have infinite training data\nTraining data don’t cover the space of all realistic examples\n\n\nMitigation:\n\nAdd artificially modified duplicates of the training data (while preserving information)\n\n\n\n\n\n\n\n\n\n\n\nCat\n\n\n\n\n\n\n\nRotated cat is still cat\n\n\n\n\n\n\n\nFlipped cat is also cat???"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#augmentation",
+    "href": "slides/6-augmentation.html#augmentation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Augmentation",
+    "text": "Augmentation\nThe benefit of augmentation greatly exceeds the effort involved\n Always recommended to use for computer vision.\n\n\n\n\n\nNo augmentation\n\n\n\n\n\n\n\nkeras.layers.RandomFlip\n\n\n\n\n\n\n\nkeras.layers.RandomRotation\n\n\n\n\n\n\n\nkeras.layers.RandomCrop\n\n\n\n\n\n\n\nkeras.layers.RandomBrightness\n\n\n\n\n\n\n\nkeras.layers.RandomHue\n\n\n\n\n\n\n\nkeras.layers.RandomTranslation\n\n\n\n\n\n\n\nkeras.layers.RandomShear\n\n\n\n\n\n\n\nkeras.layers.Equalization\n\n\n\n\n\n\n\nkeras.layers.RandAugment (“do it all”)"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#more-advanced-network-configurations",
+    "href": "slides/6-augmentation.html#more-advanced-network-configurations",
+    "title": "DAT255: Deep learning engineering",
+    "section": "More advanced network configurations",
+    "text": "More advanced network configurations\nGoing beyond the Sequential model"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#the-keras-functional-api",
+    "href": "slides/6-augmentation.html#the-keras-functional-api",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Keras functional API",
+    "text": "The Keras functional API\nConsider the equivalent ways of defining a network:\n\n\nfrom keras import layers\nmodel = keras.Sequential([\n  layers.Input(shape=input_shape),\n  layers.Conv2D(64, 3, activation=\"relu\"),\n  layers.Conv2D(64, 3, activation=\"relu\"),\n  layers.MaxPooling2D(pool_size=(2, 2)),\n  layers.Conv2D(128, 3, activation=\"relu\"),\n  layers.Conv2D(128, 3, activation=\"relu\"),\n  layers.Flatten(),\n  layers.Dropout(0.5),\n  layers.Dense(\n    num_classes, activation=\"softmax\"\n  ),\n])\n\n\ninputs = layers.Input(shape=input_shape)\nx = layers.Conv2D(64, 3, activation=\"relu\")(inputs)\nx = layers.Conv2D(64, 3, activation=\"relu\")(x)\nx = layers.MaxPooling2D(pool_size=(2, 2))(x)\nx = layers.Conv2D(128, 3, activation=\"relu\")(x)\nx = layers.Conv2D(128, 3, activation=\"relu\")(x)\nx = layers.Flatten()(x)\nx = layers.Dropout(0.5)(x)\noutputs = layers.Dense(\n  num_classes, activation=\"softmax\"\n)(x)\n\nmodel = keras.Model(\n  inputs=inputs,\n  outputs=outputs\n)"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#bird-classifier",
+    "href": "slides/6-augmentation.html#bird-classifier",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Bird classifier",
+    "text": "Bird classifier\n\n\nSay that you for obvious reasons want to classify observations of birds.\nEach data point contains:\n\nPicture of bird\nSize of bird\n(other numerical values related to observation of bird) \n\n\n\n\n\n\n\n\n\n\n\nBird 1. Size: 50 cm\n\n\n\n\n\n\n\nBird 2. Size: 14 cm\n\n\n\n\n\n\n\nBird 3. Size: 63 cm\n\n\n\n\n\n\n\n\nHow to combine this information?"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#bird-classifier-1",
+    "href": "slides/6-augmentation.html#bird-classifier-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Bird classifier",
+    "text": "Bird classifier\n\n\nIn the functional API we can easily have two input sources:\ninput1 = keras.layers.Input(shape=(128,128,3))\n\nx1 = keras.layers.Conv2D(64, 3, activation='relu')(input1)\nx1 = keras.layers.MaxPooling2D(2)(x1)\nx1 = keras.layers.Conv2D(64, 3, activation='relu')(x1)\nx1 = keras.layers.MaxPooling2D(2)(x1)\nx1 = keras.layers.Flatten()(x1)\n\ninput2 = keras.layers.Input(shape=(10,))\n\nx2 = keras.layers.Dense(32, activation='relu')(input2)\nx2 = keras.layers.Dense(32, activation='relu')(x2)\n\nconcat = keras.layers.Concatenate()([x1, x2])\n\nx = keras.layers.Dense(64, activation='relu')(concat)\nout = keras.layers.Dense(3, activation='softmax')(x)\n\nmodel = keras.Model(\n  inputs=[input1, input2],\n  outputs=out\n)"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#non-sequential-networks",
+    "href": "slides/6-augmentation.html#non-sequential-networks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Non-sequential networks",
+    "text": "Non-sequential networks\n\n\n\n\n\nCan have networks with\n\nMultiple inputs\nMultiple outputs\nArbitrary layer connections\nNetworks-inside-the-network\nLoops (will come to this later)\n\n\n\n\n\n\nLet’s look at some noteworthy architectures."
+  },
+  {
+    "objectID": "slides/6-augmentation.html#inception-networks",
+    "href": "slides/6-augmentation.html#inception-networks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Inception networks",
+    "text": "Inception networks\n\n\nThe inception module features parallel convolutional layers with different kernel size:\n\n\n\n\n\nOutput is concatenated and passed on to the next module\n\n\n\n\nGoogLeNet, 2014"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#residual-networks",
+    "href": "slides/6-augmentation.html#residual-networks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Residual networks",
+    "text": "Residual networks\n\n\n\n\n\nThis architecture features skip connections, where data is passed (unmodified) around some layers, and then added back in"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#residual-networks-1",
+    "href": "slides/6-augmentation.html#residual-networks-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Residual networks",
+    "text": "Residual networks\n\n\n\n\n\nThis architecture features skip connections, where data is passed (unmodified) around some layers, and then added back in\n\n\n\nIdea: Avoid vanishing gradients or “dead” layers"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#residual-networks-2",
+    "href": "slides/6-augmentation.html#residual-networks-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Residual networks",
+    "text": "Residual networks"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#densely-connected-convolutional-networks",
+    "href": "slides/6-augmentation.html#densely-connected-convolutional-networks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Densely connected convolutional networks",
+    "text": "Densely connected convolutional networks\nHow about adding skip connections (almost) everywhere?\nEnter the DenseNet:"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#xception-networks",
+    "href": "slides/6-augmentation.html#xception-networks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Xception networks",
+    "text": "Xception networks\nThe Xception (“extreme inception”) architecture relies on depthwise separable convolution layers\n\n\n\n\n\nThese layers are available as keras.layers.SeparableConv2D and can be used just like the regular Conv2D, often with increased performance"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#keras.applications",
+    "href": "slides/6-augmentation.html#keras.applications",
+    "title": "DAT255: Deep learning engineering",
+    "section": "keras.applications",
+    "text": "keras.applications\nThe most popular computer vision architectures are available as pre-trained models in keras.applications.\nThese are excellent starting points for\n\nfeature extraction\nfine-tuning\ntransfer learning\n\nNote: The different models typically require specific preprocessing:\nIf you want to use\nkeras.applications.Xception()\nyou should process the input images with\nkeras.applications.xception.preprocess_input()"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#other-computer-vision-tasks",
+    "href": "slides/6-augmentation.html#other-computer-vision-tasks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Other computer vision tasks",
+    "text": "Other computer vision tasks\nConvolutional nets are great for other things than just classification:\n\n\n\n\nObject detection: Localise (several) objects in an image\n\n\n\n\nOriented bounding boxes: Localise and estimate orientation of objects\n\n\n\n\nSemantic segmentation: Classify each pixel onto an object\n\n\n\n\nInstance segmentation: Draw a detailed outline around abjects\n\n\n\n\nPose estimation: Localise distinctive features or parts of an object"
+  },
+  {
+    "objectID": "slides/6-augmentation.html#segmentation",
+    "href": "slides/6-augmentation.html#segmentation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Segmentation",
+    "text": "Segmentation\nFor segmentation we need to classify each pixel\n Output must have same dimension as the input.\nCan still downsample the input in the usual Conv2D + MaxPooling2D cycle to find large-scale patterns, as long as we upsample again to the correct dimensions.\n\nOften talk about an encoder-decoder structure:\n\n\n\n\n\n\nU-Net (2015)"
+  },
+  {
+    "objectID": "slides/4-training.html#the-parameters-of-a-neural-network",
+    "href": "slides/4-training.html#the-parameters-of-a-neural-network",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The parameters of a neural network",
+    "text": "The parameters of a neural network\nRecall the simple formulation of a machine learning model:\n\n\\[\n\\large \\hat{\\color{DarkBlue}{y}} = \\color{Purple}{f}(\\color{DarkOrange}{\\mathbf{x}}, \\boldsymbol{\\color{teal}{\\theta}})\n\\]\n\nwhere\n\n\\(\\hat{\\color{DarkBlue}{y}}\\) is the prediction\n\\(\\color{DarkOrange}{\\mathbf{x}}\\) is a data point\n\\(\\boldsymbol{\\color{teal}{\\theta}}\\) are parameters of the model"
+  },
+  {
+    "objectID": "slides/4-training.html#the-parameters-of-a-neural-network-1",
+    "href": "slides/4-training.html#the-parameters-of-a-neural-network-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The parameters of a neural network",
+    "text": "The parameters of a neural network\n\n\n\n\n\nThe parameters of the simple fully-connected network are\n\none weight per connection (line)\none bias term per node (circle)\n\n(for other types of layers, there are other types of parameters)"
+  },
+  {
+    "objectID": "slides/4-training.html#the-parameters-of-a-neural-network-2",
+    "href": "slides/4-training.html#the-parameters-of-a-neural-network-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The parameters of a neural network",
+    "text": "The parameters of a neural network"
+  },
+  {
+    "objectID": "slides/4-training.html#the-activation-function",
+    "href": "slides/4-training.html#the-activation-function",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The activation function",
+    "text": "The activation function\nWhat separates a neural network from standard linear regression is the non-linear activation function.\n\n(And not that we have many layers – stacking linear functions is still a linear function)\n\\[\n\\small\n\\begin{aligned}\n\\color{DarkBlue}{f}(x) &= 2x + 3  & (\\mathrm{linear}) \\\\\n\\color{Purple}{g}(x) &= 5x -1 & (\\mathrm{linear}) \\\\\n\\color{DarkBlue}{f}(\\color{Purple}{g}(x)) &= 2(5x-1) +3 &  \\\\\n&= 10x + 1 & (\\mathrm{also\\;linear})\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "slides/4-training.html#activation-function",
+    "href": "slides/4-training.html#activation-function",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Activation function",
+    "text": "Activation function\n\n\nA good activation function is\n\nNonlinear\nDifferentiable*\nSwitches from off for negative inputs to on for positive inputs\n\n\n\n\n\n\nSigmoid\n\n\n\n\n\ntanh\n\n\n\n\n\nReLU\n\n\n\n\n\nGELU\n\n\n\n\n\nSwish\n\n\n\n\n\n\n\n\n*At least piecewise differentiable"
+  },
+  {
+    "objectID": "slides/4-training.html#last-layer-activation-functions",
+    "href": "slides/4-training.html#last-layer-activation-functions",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Last layer activation functions",
+    "text": "Last layer activation functions\nIn the final layer of the network, we need to choose an activation function that suits our task\n\n\nRegression:\nNo activation – just sum the weighted connections. Output range \\((-\\infty, \\infty)\\) Also called linear activation.  keras.layers.Dense(units, activation=None)\nClassification:\nNeed something with output range \\([0, 1]\\)\n\nBinary classification: Use sigmoid keras.layers.Dense(1, activation='sigmoid)\nMulticlass: Use softmax keras.layers.Dense(10, activation='softmax') (remember one-hot encoding)"
+  },
+  {
+    "objectID": "slides/4-training.html#finding-optimal-parameters",
+    "href": "slides/4-training.html#finding-optimal-parameters",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Finding optimal parameters",
+    "text": "Finding optimal parameters\n\n\n\n\n\nFor large networks we get a huge number of parameters\nNeed a clever way to optimise all at the same time.\n\nThe solution is backpropagation, which is relies on the network output being differentiable with respect to its parameters."
+  },
+  {
+    "objectID": "slides/4-training.html#backpropagation",
+    "href": "slides/4-training.html#backpropagation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Backpropagation",
+    "text": "Backpropagation\nStep 1:\n\n\n\n\n\n\n\n\n\n\n\nRandomly initialise parameters\n\n\n\nRun a forward pass on a mini-batch, i.e. compute predictions, but keep track of the output for each node"
+  },
+  {
+    "objectID": "slides/4-training.html#backpropagation-1",
+    "href": "slides/4-training.html#backpropagation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Backpropagation",
+    "text": "Backpropagation\nStep 2:\n\n\n\n\n\n\n\\[\n\\mathrm{loss}(\\hat{y}, y)\n\\]\n\n\nCompute the loss, which measures how big the error is"
+  },
+  {
+    "objectID": "slides/4-training.html#backpropagation-2",
+    "href": "slides/4-training.html#backpropagation-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Backpropagation",
+    "text": "Backpropagation\nStep 3:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCompute how much each parameter contributed to the loss (i.e. compute the gradient for each parameter)\n\nStart at the last layer and move backwards (backwards pass)"
+  },
+  {
+    "objectID": "slides/4-training.html#backpropagation-3",
+    "href": "slides/4-training.html#backpropagation-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Backpropagation",
+    "text": "Backpropagation\nStep 4:\n\n\n\n\n\n\nRun one step of gradient descent to find better values for all parameters"
+  },
+  {
+    "objectID": "slides/4-training.html#gradient-descent",
+    "href": "slides/4-training.html#gradient-descent",
     "title": "DAT255: Deep learning engineering",
     "section": "Gradient descent",
-    "text": "Gradient descent\n\n\n\n\n\n\n\n\n\n\nWith the gradient in place, we take steps downward (along the negative gradient), towards the optimal solution:\n\\[\n\\small\n\\boldsymbol{\\color{teal}{\\theta}}^{n+1} = \\boldsymbol{\\color{teal}{\\theta}}^n - \\eta \\nabla \\color{Purple}{L}\n\\]\nHere \\(\\eta\\) is the learning rate"
+    "text": "Gradient descent\n\n\n\n\n\n\n\nThe gradient points towards direction of maximum increase of the loss function.\nWe want to find the minimum, so need the negative gradient.\n\\[\n\\nabla \\color{MediumVioletRed}{L}(\\color{teal}{\\boldsymbol{\\theta}}) =\n\\begin{bmatrix}\n  \\frac{\\partial \\color{MediumVioletRed}{L}}{\\partial \\color{teal}{\\theta}_0} \\\\\n  \\vdots \\\\\n  \\frac{\\partial \\color{MediumVioletRed}{L}}{\\partial \\color{teal}{\\theta}_n} \\\\\n\\end{bmatrix}\n\\]\n\n\n Vector in parameterspace\n\n\n Gradient"
   },
   {
-    "objectID": "slides/5-optimisers.html#local-minima",
-    "href": "slides/5-optimisers.html#local-minima",
+    "objectID": "slides/4-training.html#gradient-descent-1",
+    "href": "slides/4-training.html#gradient-descent-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Local minima",
-    "text": "Local minima\n\n\nLocalminimum -&gt; bad predictions"
+    "section": "Gradient descent",
+    "text": "Gradient descent\n\n\n\n\n\n\n\nWith the gradient in place, we take steps downward (along the negative gradient), towards the optimal solution:\n\\[\n\\small\n\\boldsymbol{\\color{teal}{\\theta}}^{n+1} = \\boldsymbol{\\color{teal}{\\theta}}^n - \\eta \\nabla \\color{Purple}{L}\n\\]\nHere \\(\\eta\\) is the learning rate"
   },
   {
-    "objectID": "slides/5-optimisers.html#momentum-optimisation",
-    "href": "slides/5-optimisers.html#momentum-optimisation",
+    "objectID": "slides/4-training.html#learning-rate",
+    "href": "slides/4-training.html#learning-rate",
     "title": "DAT255: Deep learning engineering",
-    "section": "Momentum optimisation",
-    "text": "Momentum optimisation\n\n\nImprove on regular gradient descent by keeping track of past gradients in a new term \\(\\boldsymbol{m}\\):\n\\[\n\\small\n\\begin{align}\n    \\boldsymbol{m}_n &= \\beta \\boldsymbol{m}_{n-1} - \\eta \\nabla \\color{Purple}{L}(\\color{teal}{\\theta}_n) \\\\\n    \\boldsymbol{\\color{teal}{\\theta}}_{n+1} &= \\boldsymbol{\\color{teal}{\\theta}}_n + \\boldsymbol{m}_n\n\\end{align}\n\\]\n(behaves like a heavy ball rolling down a hill, where \\(\\boldsymbol{m}\\) is the velocity)\n\nIntroduces a new hyperparameter \\(\\small\\beta \\in [0,1]\\), which is called the momentum\n\n\\(\\small\\beta = 0\\): “max friction”\n\\(\\small\\beta = 1\\): “no friction”"
+    "section": "Learning rate",
+    "text": "Learning rate\n\n\n\nLearning rate is a hyperparameter\n\n\n\n\n\n\n\n\n\nTo small (slow convergence)\n\n\n\n\n\n\n\nJust right\n\n\n\n\n\n\n\nTo high (no convergence)"
   },
   {
-    "objectID": "slides/5-optimisers.html#momentum-optimisation-1",
-    "href": "slides/5-optimisers.html#momentum-optimisation-1",
+    "objectID": "slides/4-training.html#practical-problems",
+    "href": "slides/4-training.html#practical-problems",
     "title": "DAT255: Deep learning engineering",
-    "section": "Momentum optimisation",
-    "text": "Momentum optimisation\n\n\nImprove on regular gradient descent by keeping track of past gradients in a new term \\(\\boldsymbol{m}\\):\n\\[\n\\small\n\\begin{align}\n    \\boldsymbol{m}_n &= \\beta \\boldsymbol{m}_{n-1} - \\eta \\nabla \\color{Purple}{L}(\\color{teal}{\\theta}_n) \\\\\n    \\boldsymbol{\\color{teal}{\\theta}}_{n+1} &= \\boldsymbol{\\color{teal}{\\theta}}_n + \\boldsymbol{m}_n\n\\end{align}\n\\]\n(behaves like a heavy ball rolling down a hill, where \\(\\boldsymbol{m}\\) is the velocity)\nIntroduces a new hyperparameter \\(\\small\\beta \\in [0,1]\\), which is called the momentum\n\n\n\n\n\n\nkeras.optimizers.SGD(learning_rate=0.01, momentum=0.9)"
+    "section": "Practical problems",
+    "text": "Practical problems"
   },
   {
-    "objectID": "slides/5-optimisers.html#nesterov-accelerated-gradient",
-    "href": "slides/5-optimisers.html#nesterov-accelerated-gradient",
+    "objectID": "slides/4-training.html#practical-problems-1",
+    "href": "slides/4-training.html#practical-problems-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Nesterov accelerated gradient",
-    "text": "Nesterov accelerated gradient\nKeep the concept of momentum, but compute the gradient slightly ahead:\n\\[\n\\small\n\\begin{align}\n    \\boldsymbol{m}_n &=\n        \\beta \\boldsymbol{m}_{n-1}\n        - \\eta \\nabla \\color{Purple}{L}(\\color{teal}{\\theta}_n + \\beta \\boldsymbol{m}_{n-1}) \\\\\n    \\boldsymbol{\\color{teal}{\\theta}}_{n+1} &= \\boldsymbol{\\color{teal}{\\theta}}_n + \\boldsymbol{m}_n\n\\end{align}\n\\]\nkeras.optimizers.SGD(learning_rate=0.01, momentum=0.9, nesterov=True)"
+    "section": "Practical problems",
+    "text": "Practical problems\n\n\nLocalminimum -&gt; bad predictions"
   },
   {
-    "objectID": "slides/5-optimisers.html#adagrad-adaptive-gradient",
-    "href": "slides/5-optimisers.html#adagrad-adaptive-gradient",
+    "objectID": "slides/4-training.html#practical-problems-2",
+    "href": "slides/4-training.html#practical-problems-2",
     "title": "DAT255: Deep learning engineering",
-    "section": "AdaGrad (Adaptive Gradient)",
-    "text": "AdaGrad (Adaptive Gradient)\nAdaGrad introduces an adaptive learning rate, which is adjusted independently for the different parameters\nAdjustment is done by dividing by the sum of all past gradients\n\nFor parameters with steep gradient, learning rate is reduced quickly\nFor parameters with shallow gradient, learning rate is reduced slowly"
+    "section": "Practical problems",
+    "text": "Practical problems\n\n\nLocalminimum -&gt; bad predictions\n\n\nPlateau -&gt; slow convergence\n\n\nWill try to solve theseproblems on Thursday"
   },
   {
-    "objectID": "slides/5-optimisers.html#rmsprop-root-mean-square-propagation",
-    "href": "slides/5-optimisers.html#rmsprop-root-mean-square-propagation",
+    "objectID": "slides/4-training.html#vanishing-and-exploding-gradients",
+    "href": "slides/4-training.html#vanishing-and-exploding-gradients",
     "title": "DAT255: Deep learning engineering",
-    "section": "RMSProp (Root Mean Square Propagation)",
-    "text": "RMSProp (Root Mean Square Propagation)\nAdaGrad in practice:\n\nGood: Less sensitive to choice of learning rate (since it’s adaptive)\nGood: Fast convergence for simple problems\nBad: Slow (or no) convergence for difficult problems\n\n\nRMSProp improves on AdaGrad by exponentially scaling down old gradients, before summing them\n Good convergence for the difficult problems too\nThis scaling gives a new hyperparameter \\(\\rho\\):\n\n\n\nkeras.optimizers.RMSprop(learning_rate=0.001, rho=0.9)"
+    "section": "Vanishing and exploding gradients",
+    "text": "Vanishing and exploding gradients\nWhen backpropagation steps through the network layers, we can get unfortunate amplification effects:\n\nVanishing gradients:    Gradients go towards zero  no learning\nExploding gradients:    Gradients go towards infinity  no learning\n\n\nGet improved training stability if we can make the variance of the output of a layer to be similar to the variance or the input:"
   },
   {
-    "objectID": "slides/5-optimisers.html#adam-and-friends",
-    "href": "slides/5-optimisers.html#adam-and-friends",
+    "objectID": "slides/4-training.html#some-tricks",
+    "href": "slides/4-training.html#some-tricks",
     "title": "DAT255: Deep learning engineering",
-    "section": "Adam (and friends)",
-    "text": "Adam (and friends)\n\n\n\nMomentum\n + RMSProp\n + some technical details\n = adaptive moment estimation (Adam)\nkeras.optimizers.Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999)\n(For max confusion, the hyperparameters now changed names to \\(\\beta_1,\\,\\beta_2\\))\n\n\nMore tricks:\n\nAdaMax: Scale the past gradients differently\nNadam: Add Nesterov momentum\nAdamW Add L2 regularisation (aka weight decay)"
+    "section": "Some tricks",
+    "text": "Some tricks\n\n\nCommon apporaches to avoid vanishing/exploding gradients:\n\nChoose a non-saturating activation function (like ReLU)\n\n\n\nInitialise each layer’s parameters according to number of input and output connections\n\n\n\n\n\nInitialisation method\nActivation function\n\n\n\n\nGlorot\nNone, tanh, sigmoid, softmax\n\n\nHe (Kaiming)\nReLU, GELU, Swish, …\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSigmoid\n\n\n\n\n\n\n\n\n\nReLU"
   },
   {
-    "objectID": "slides/5-optimisers.html#comparison-and-guidelines",
-    "href": "slides/5-optimisers.html#comparison-and-guidelines",
+    "objectID": "slides/4-training.html#some-tricks-1",
+    "href": "slides/4-training.html#some-tricks-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Comparison and guidelines",
-    "text": "Comparison and guidelines\n\n\n\n\n\n\n\n\n\n\n\nMethod\nConvergence\n\n\n\nSpeed\nQuality\n\n\n\n\n\nSGD\n⚡️\n⭐️⭐️⭐️\n\n\nSGD w/ momentum\n⚡️⚡️\n⭐️⭐️⭐️\n\n\n\nSGD w/ Nesterov\n⚡️⚡️\n⭐️⭐️⭐️\n\n\n\nAdaGrad\n⚡️⚡️⚡️\n⭐️\n\n\nRMSProp\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\nAdam\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\nAdaMax\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\nNadam\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\nAdamW\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\n\n\n\n\n\n\n\n\n\n\nG\n\n\n\nStart\n\nStart\n\n\n\nAdam\n\nAdam\n\n\n\nStart-&gt;Adam\n\n\n\n\n\nwork\n\nDid it\nwork?\n\n\n\nwhy\n\nWhy\nnot?\n\n\n\nwork-&gt;why\n\n\nNo\n\n\n\nDone\n\nDone!\n\n\n\nwork-&gt;Done\n\n\nYes\n\n\n\nAdaMax\n\nAdaMax\n\n\n\nwhy-&gt;AdaMax\n\n\nNumerically\nunstable\n\n\n\nAdamW\n\nAdamW\n\n\n\nwhy-&gt;AdamW\n\n\nNeeds\nregularisation\n\n\n\nNadam\n\nNadam\n\n\n\nwhy-&gt;Nadam\n\n\nSlow\n\n\n\nsgdn\n\nSGD w/\nNesterov\n\n\n\nwhy-&gt;sgdn\n\n\nUnderfitting\n\n\n\nAdam-&gt;work\n\n\n\n\n\nAdaMax-&gt;work\n\n\n\n\n\nAdamW-&gt;work\n\n\n\n\n\nNadam-&gt;work\n\n\n\n\n\nsgdn-&gt;work"
+    "section": "Some tricks",
+    "text": "Some tricks\n\n\nCommon apporaches to avoid vanishing/exploding gradients:\n\nChoose a non-saturating activation function (like ReLU)\n\n\n\n\n\nInitialise each layer’s parameters according to number of input and output connections\n\n\n\n\n\nInitialisation method\nActivation function\n\n\n\n\nGlorot\nNone, tanh, sigmoid, softmax\n\n\nHe (Kaiming)\nReLU, GELU, Swish, …\n\n\n\n\n\nkeras.layers.Dense(\n    units,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    lora_rank=None,\n    **kwargs\n)"
   },
   {
-    "objectID": "slides/5-optimisers.html#learning-rate-and-loss-curves",
-    "href": "slides/5-optimisers.html#learning-rate-and-loss-curves",
+    "objectID": "slides/4-training.html#some-tricks-2",
+    "href": "slides/4-training.html#some-tricks-2",
     "title": "DAT255: Deep learning engineering",
-    "section": "Learning rate and loss curves",
-    "text": "Learning rate and loss curves\nCommon to all optimisation methods is that we must choose a learning rate \\(\\eta\\).\nThis affects the training progress:"
+    "section": "Some tricks",
+    "text": "Some tricks\n\n\nCommon apporaches to avoid vanishing/exploding gradients:\n\nChoose a non-saturating activation function (like ReLU)\n\n\n\n\n\nInitialise each layer’s parameters according to number of input and output connections\n\n\n\n\n\nAdd normalisation layers to the model"
   },
   {
-    "objectID": "slides/5-optimisers.html#learning-rate-scheduling",
-    "href": "slides/5-optimisers.html#learning-rate-scheduling",
+    "objectID": "slides/4-training.html#normalisation-layers",
+    "href": "slides/4-training.html#normalisation-layers",
     "title": "DAT255: Deep learning engineering",
-    "section": "Learning rate scheduling",
-    "text": "Learning rate scheduling\nSome options for the most efficient learning: (see notebooks)\n\n\nReduce \\(\\eta\\) when learning stops:\nkeras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)\nGradually reduce \\(\\eta\\) for each step:\nkeras.optimizers.schedules.ExponentialDecay(initial_learning_rate, decay_steps, decay_rate)\nkeras.optimizers.schedules.PolynomialDecay(initial_learning_rate, ...)\nChange \\(\\eta\\) by some other rule:\nclass MyLRSchedule(keras.optimizers.schedules.LearningRateSchedule):\n\n    def __init__(self, initial_learning_rate):\n        self.initial_learning_rate = initial_learning_rate\n\n    def __call__(self, step):\n        return self.initial_learning_rate / (step + 1)\n\noptimizer = keras.optimizers.SGD(learning_rate=MyLRSchedule(0.1))"
+    "section": "Normalisation layers",
+    "text": "Normalisation layers\n\n\nMost common: keras.layers.BatchNormalisation\n\nFrom the documentation: (read the textbook for further details)\n\nBatch normalization applies a transformation that maintains the mean output close to 0 and the output standard deviation close to 1.\nImportantly, batch normalization works differently during training and during inference.\n\n\n\n\n\n\nkeras.layers.BatchNormalization(\n    axis=-1,\n    momentum=0.99,\n    epsilon=0.001,\n    center=True,\n    scale=True,\n    beta_initializer=\"zeros\",\n    gamma_initializer=\"ones\",\n    moving_mean_initializer=\"zeros\",\n    moving_variance_initializer=\"ones\",\n    beta_regularizer=None,\n    gamma_regularizer=None,\n    beta_constraint=None,\n    gamma_constraint=None,\n    synchronized=False,\n    **kwargs\n)\n\n Comes with sensible defaults"
   },
   {
-    "objectID": "slides/5-optimisers.html#referansegruppe",
-    "href": "slides/5-optimisers.html#referansegruppe",
+    "objectID": "slides/4-training.html#regularisation",
+    "href": "slides/4-training.html#regularisation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Regularisation",
+    "text": "Regularisation\nThe usual L1 and L2 regularisation can be applied to neural network nodes\nTechnically three different options for where to add it (see docs):\nlayer = keras.layers.Dense(\n    units=64, \n    kernel_regularizer=keras.regularizers.L1L2(l1=1e-5, l2=1e-4),\n    bias_regularizer=keras.regularizers.L2(1e-4),\n    activity_regularizer=keras.regularizers.L1(1e-5)\n)"
+  },
+  {
+    "objectID": "slides/4-training.html#dropout-regularisation",
+    "href": "slides/4-training.html#dropout-regularisation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Dropout regularisation",
+    "text": "Dropout regularisation\nOne of the most common regularisation techniques is very simple:\nAt each training step, randomly remove a fraction of the neurons\n\n\n\n\n\nPrevents neuron co-adaptation\n(should be enabled during training time only)"
+  },
+  {
+    "objectID": "slides/4-training.html#dropout-regularisation-1",
+    "href": "slides/4-training.html#dropout-regularisation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Dropout regularisation",
+    "text": "Dropout regularisation\nThe rate adjusts the percentage of nodes dropped\n\n\n\nkeras.layers.Dropout(rate, noise_shape=None, seed=None, **kwargs)\n\n\n\nAfter convolutional layers it is recommended to rather use spatial dropout, which drops entire feature maps\n\n\n\nkeras.layers.SpatialDropout2D(\n    rate, data_format=None, seed=None, name=None, dtype=None\n)"
+  },
+  {
+    "objectID": "slides/4-training.html#putting-together-an-improved-network",
+    "href": "slides/4-training.html#putting-together-an-improved-network",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Putting together an improved network",
+    "text": "Putting together an improved network\nfrom keras.layers import (\n  Input, Rescaling, Conv2D, BatchNormalization,\n  MaxPooling2D, Activation, Dropout, Dense\n)\n\nmodel = keras.Sequential([\n  keras.Input(shape=(128, 128, 3)),\n  Rescaling(1.0 / 255),\n  Conv2D(128, kernel_size=3, kernel_initializer=\"he_uniform\", padding=\"same\"),\n  BatchNormalization(),\n  Activation(\"relu\"),\n  MaxPooling2D(3, padding=\"same\"),\n  # ...\n  # (more layers)\n  # ...\n  Conv2D(128, kernel_size=3, kernel_initializer=\"he_uniform\", padding=\"same\"),\n  BatchNormalization(),\n  layers.Activation(\"relu\"),\n  MaxPooling2D(3, padding=\"same\"),\n  Flatten(),\n  Dropout(0.3),\n  Dense(num_classes, activation=\"softmax\"),\n])"
+  },
+  {
+    "objectID": "slides/4-training.html#best-practices",
+    "href": "slides/4-training.html#best-practices",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Best practices",
+    "text": "Best practices\nWith the choice of\n\nArchitecture (layers and nodes)\nParameter initialisers\nActivation functions\nRegularisation\nOptimisation algorithm\nLearning rate and scheduling\n\nthe search space for finding the optimal solution is huge\nGuidelines from this and next week are meant to save time, but are not absolute.\n(Better guidelines will come along the next few years anyway)"
+  },
+  {
+    "objectID": "slides/4-training.html#ai-assistant",
+    "href": "slides/4-training.html#ai-assistant",
+    "title": "DAT255: Deep learning engineering",
+    "section": "AI Assistant",
+    "text": "AI Assistant"
+  },
+  {
+    "objectID": "slides/2-tools.html#frameworks",
+    "href": "slides/2-tools.html#frameworks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Frameworks",
+    "text": "Frameworks\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHigh-level\n\n\nCompute\n\n\nSupporting"
+  },
+  {
+    "objectID": "slides/2-tools.html#frameworks-1",
+    "href": "slides/2-tools.html#frameworks-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Frameworks",
+    "text": "Frameworks\npython is the de-facto language for deep learning\nIn case you need a refresher, look at e.g.\n\nKaggle Learn: https://www.kaggle.com/learn/python\nGoogle Edu: https://developers.google.com/edu/python\n\n\nTechnically, we use python as a configuration language while the framework backends are C++/CUDA (but we won’t touch this)\nFor deployment, there are hooks to Haskell / C# / Julia / Java / R / Ruby / Rust / Scala / Perl and others\nWe assume you have been exposed to NumPy – although it’s no requirement"
+  },
+  {
+    "objectID": "slides/2-tools.html#this-week",
+    "href": "slides/2-tools.html#this-week",
+    "title": "DAT255: Deep learning engineering",
+    "section": "This week",
+    "text": "This week\n\n\n\n\n\n\n\nEnvironment setup: Check our GitHub\nIntro to TensorFlow:We look at this today"
+  },
+  {
+    "objectID": "slides/2-tools.html#computing-resources",
+    "href": "slides/2-tools.html#computing-resources",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Computing resources",
+    "text": "Computing resources\nMany exercises in this course are compute intensive, and will benefit from a hardware accelerator (i.e. a GPU)\nSome options:\n\nYour own computer (NVIDIA GPU or M-series Mac)\nCloud services\n\nGoogle Colab: T4 for free\nKaggle Notebooks: P100 for free\n(and others)\n\nResearch group hardware If you are connected to some research group at HVL/UiB"
+  },
+  {
+    "objectID": "slides/2-tools.html#low-level-tensorflow",
+    "href": "slides/2-tools.html#low-level-tensorflow",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Low-level TensorFlow",
+    "text": "Low-level TensorFlow\nMost things work like NumPy, but with the benefit of GPU support and JIT compilation.\nThe core object is the Tensor, which is basically a multidimensional array.\n\nNumPy\n&gt;&gt;&gt; import numpy as np\n&gt;&gt;&gt; x = np.array([[1,2,3], [4,5,6]], dtype=np.float32)\n&gt;&gt;&gt; print(x)\n[[1. 2. 3.]\n [4. 5. 6.]]\n\n\nTensorFlow\n&gt;&gt;&gt; import tensorflow as tf\n&gt;&gt;&gt; x = tf.constant([[1,2,3], [4,5,6]], dtype=tf.float32)\n&gt;&gt;&gt; print(x)\ntf.Tensor(\n[[1. 2. 3.]\n [4. 5. 6.]], shape=(2, 3), dtype=float32)"
+  },
+  {
+    "objectID": "slides/2-tools.html#low-level-tensorflow-the-tensor",
+    "href": "slides/2-tools.html#low-level-tensorflow-the-tensor",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Low-level TensorFlow: The Tensor",
+    "text": "Low-level TensorFlow: The Tensor\nTensors are immutable, and are useful for storing constant values such as input data\nFor values that will be updated (such as model weights), use a Variable:\n&gt;&gt;&gt; y = tf.Variable([[1,2,3], [4,5,6]], dtype=tf.float32, name=\"My first variable\")\n&gt;&gt;&gt; y[0,1].assign(50)\n&lt;tf.Variable 'UnreadVariable' shape=(2, 3) dtype=float32, numpy=\narray([[ 1., 50.,  3.],\n       [ 4.,  5.,  6.]], dtype=float32)&gt;"
+  },
+  {
+    "objectID": "slides/2-tools.html#low-level-tensorflow-simple-operations",
+    "href": "slides/2-tools.html#low-level-tensorflow-simple-operations",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Low-level TensorFlow: Simple operations",
+    "text": "Low-level TensorFlow: Simple operations\nBasic math is accessed through operators\n&gt;&gt;&gt; a = b + c       # Element-wise addition\n&gt;&gt;&gt; a = b * c       # Element-wise multiplication (Hadamard product)\n&gt;&gt;&gt; a = b @ c       # Matrix multiplication\nwhile more complicated stuff is available as functions in tf.math\n\nNotice in particular the reduce_ functions, which look different from NumPy:\n&gt;&gt;&gt; x = tf.constant([[1,2,3], [4,5,6]]); print(x)\ntf.Tensor(\n[[1 2 3]\n [4 5 6]], shape=(2, 3), dtype=int32)\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=0)\n&lt;tf.Tensor: shape=(3,), dtype=int32, numpy=array([5, 7, 9], dtype=int32)&gt;\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=1)\n&lt;tf.Tensor: shape=(2,), dtype=int32, numpy=array([ 6, 15], dtype=int32)&gt;\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=None)\n&lt;tf.Tensor: shape=(), dtype=int32, numpy=21&gt;"
+  },
+  {
+    "objectID": "slides/2-tools.html#low-level-tensorflow-shapes",
+    "href": "slides/2-tools.html#low-level-tensorflow-shapes",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Low-level TensorFlow: Shapes",
+    "text": "Low-level TensorFlow: Shapes\nBroadcasting works like in NumPy:\n&gt;&gt;&gt; x = tf.constant([1,2,3], dtype=tf.float32)\n&gt;&gt;&gt; x + 1\n&lt;tf.Tensor: shape=(3,), dtype=float32, numpy=array([2., 3., 4.], dtype=float32)&gt;\nSame for shapes:"
+  },
+  {
+    "objectID": "slides/2-tools.html#a-typical-shape-128-299-299-3",
+    "href": "slides/2-tools.html#a-typical-shape-128-299-299-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "A typical shape: [128, 299, 299, 3]",
+    "text": "A typical shape: [128, 299, 299, 3]\nImages are typically represented as [height, width, channel]\n\n\n\n\n\n\nDuring model training we want to do minibatch gradient descent, and load a subset of the data at a time\n This adds a fourth batch dimension: [batch, height, width, channel]\nWhen processing single data points, we often need to add or remove it:\nimg = tf.expand_dims(img, 0)    # [24, 24, 3]    -&gt; [1, 24, 24, 3]\nimg = tf.squeeze(img)           # [1, 24, 24, 3] -&gt; [24, 24, 3]"
+  },
+  {
+    "objectID": "slides/2-tools.html#run-computations-on-a-gpu",
+    "href": "slides/2-tools.html#run-computations-on-a-gpu",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Run computations on a GPU",
+    "text": "Run computations on a GPU\nTensorFlow will automatically try to use the fastest compute device available\nTensor operations are typically faster when parallelised on a GPU\n\n\n\nWhile this is automatic, it can also be forced:\nwith tf.device('CPU:0'):\n  a = tf.Variable([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])\n  b = tf.Variable([[1.0, 2.0, 3.0]])\n\nwith tf.device('GPU:0'):\n  k = a * b\n\nprint(k)"
+  },
+  {
+    "objectID": "slides/2-tools.html#automatic-differentiation",
+    "href": "slides/2-tools.html#automatic-differentiation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Automatic differentiation",
+    "text": "Automatic differentiation\nLet’s try to compute this derivative:\n\\[\n\\small\n\\frac{\\mathrm{d}}{\\mathrm{d}x} \\Big|_{x=1} \\; x^2 + 2x - 5\n\\]\n\n\\[\n\\small\n= 2x + 2 \\big|_{x=1} = 2 \\cdot 1 + 2 = 4\n\\]\n\n\nTurns out TensorFlow can do it for us:\ndef f(x):\n  return x**2 + 2*x - 5\n\nx = tf.Variable(1.0)\n\nwith tf.GradientTape() as tape:\n  y = f(x)\n\nd_dx = tape.gradient(y, x)\nprint(d_dx)\n\n\n&lt;tf.Tensor: shape=(), dtype=float32, numpy=4.0&gt;"
+  },
+  {
+    "objectID": "slides/2-tools.html#keras",
+    "href": "slides/2-tools.html#keras",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Keras",
+    "text": "Keras\nThe Keras framework contains all the high-level components we need to construct and train a neural network:\n\nkeras.layers: Different types of layers and activation functions\nkeras.callbacks: Monitor, modify or stop the training process\nkeras.optimizers: Optimisation algorithms\nkeras.metrics: Performance metrics\nkeras.losses: Loss functions\nkeras.datasets: Small datasets for testing\nkeras.applications: Pre-trained networks for different tasks"
+  },
+  {
+    "objectID": "slides/2-tools.html#referansegruppe",
+    "href": "slides/2-tools.html#referansegruppe",
     "title": "DAT255: Deep learning engineering",
     "section": "Referansegruppe",
     "text": "Referansegruppe"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DAT255 lecture notes",
+    "section": "",
+    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates"
+  },
+  {
+    "objectID": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
+    "href": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
+    "title": "DAT255: Deep learning engineering",
+    "section": "What can you do with deep learning?",
+    "text": "What can you do with deep learning?"
+  },
+  {
+    "objectID": "slides/1-welcome.html#stable-diffusion-dall-e",
+    "href": "slides/1-welcome.html#stable-diffusion-dall-e",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Stable Diffusion / DALL-E",
+    "text": "Stable Diffusion / DALL-E\n\n\nVideo"
+  },
+  {
+    "objectID": "slides/1-welcome.html#sora-openai",
+    "href": "slides/1-welcome.html#sora-openai",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Sora (OpenAI)",
+    "text": "Sora (OpenAI)\n\n\nVideo\n\n\nVideo\n\n\nVideo\n\n\nVideo\n\n\nVideo"
+  },
+  {
+    "objectID": "slides/1-welcome.html#segment-anything",
+    "href": "slides/1-welcome.html#segment-anything",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Segment anything",
+    "text": "Segment anything\n\nhttps://ai.meta.com/sam2/"
+  },
+  {
+    "objectID": "slides/1-welcome.html#notebooklm",
+    "href": "slides/1-welcome.html#notebooklm",
+    "title": "DAT255: Deep learning engineering",
+    "section": "NotebookLM",
+    "text": "NotebookLM\n\nVideo"
+  },
+  {
+    "objectID": "slides/1-welcome.html#cursor",
+    "href": "slides/1-welcome.html#cursor",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Cursor",
+    "text": "Cursor\n\nVideo"
+  },
+  {
+    "objectID": "slides/1-welcome.html#section-1",
+    "href": "slides/1-welcome.html#section-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "",
+    "text": "Video\n\n\nVideo"
+  },
+  {
+    "objectID": "slides/1-welcome.html#practical-things-in-dat255",
+    "href": "slides/1-welcome.html#practical-things-in-dat255",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Practical things in DAT255",
+    "text": "Practical things in DAT255"
+  },
+  {
+    "objectID": "slides/1-welcome.html#textbook",
+    "href": "slides/1-welcome.html#textbook",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Textbook",
+    "text": "Textbook\nA. Géron: Hands-on Machine Learning with Scikit-Learn, Keras, and TensorFlow (3rd edition)\n\n\nChapters:\n\n\n10 Intro to NNs\n11 Training deep neural networks\n12 Custom models and training with TensorFlow\n13 Loading and preprocessing data with TensorFlow\n14 Deep computer vision using CNNs\n15 Processing sequences using RNNs and CNNs\n16 Natural language processing with RNNs and attention\n17 Autoencoders, GANs and diffusion models\nNot 18\n19 Training and deploying TensorFlow models at scale"
+  },
+  {
+    "objectID": "slides/1-welcome.html#extra-resources",
+    "href": "slides/1-welcome.html#extra-resources",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Extra resources",
+    "text": "Extra resources\n\nFramework documentation:\n\nThe Keras documentation and examples\nThe TensorFlow documentation and examples\n\nVarious research blogs\nOther reputable internet material\n\nYou are expected to research certain topics and find supporting material yourself (especially for the project work)"
+  },
+  {
+    "objectID": "slides/1-welcome.html#interaction",
+    "href": "slides/1-welcome.html#interaction",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Interaction",
+    "text": "Interaction\n\n\n\nMuch of this course is based on gaining experience with deep learning by working on problems.\nOccationally we will ask YOU to share your experience by presenting your work in class.\n\n👩‍💻🤓"
+  },
+  {
+    "objectID": "slides/1-welcome.html#assessment",
+    "href": "slides/1-welcome.html#assessment",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Assessment",
+    "text": "Assessment\n\n\n\nThe exam has two parts:\n\nGroup project report, counts 50%\nShort written exam, counts 50%\n\nExam date will be posted on StudentWeb\nLast chance for registering for the exam is Feb. 2"
+  },
+  {
+    "objectID": "slides/1-welcome.html#project-work",
+    "href": "slides/1-welcome.html#project-work",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Project work",
+    "text": "Project work\nThe project work puts the engineering into Deep learning engineering\nPrimary goal:  Build and deploy a deep learning-based application, based on the theory, techniques and tools you learn in this course\n\n\n\nSecondary goals:  Make something that is\n\nUseful\nFun\nUseful and fun"
+  },
+  {
+    "objectID": "slides/1-welcome.html#project-work-1",
+    "href": "slides/1-welcome.html#project-work-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Project work",
+    "text": "Project work\nThe project work puts the engineering into Deep learning engineering\nPrimary goal:  Build and deploy a deep learning-based application, based on the theory, techniques and tools you learn in this course\nTopic options:\n\nChoose yourself\nChoose from a project catalog (will be published on canvas)\n\nAll projects, along with a plan and description, must be approved beforehand\n📆 Submission deadline to be determined based on your input"
+  },
+  {
+    "objectID": "slides/1-welcome.html#canvas",
+    "href": "slides/1-welcome.html#canvas",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Canvas",
+    "text": "Canvas\nThe canonical source of information is Canvas"
+  },
+  {
+    "objectID": "slides/1-welcome.html#calendar",
+    "href": "slides/1-welcome.html#calendar",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Calendar",
+    "text": "Calendar"
+  },
+  {
+    "objectID": "slides/1-welcome.html#deep-learning",
+    "href": "slides/1-welcome.html#deep-learning",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Deep learning",
+    "text": "Deep learning"
+  },
+  {
+    "objectID": "slides/1-welcome.html#ai-vs-ml-vs-dl",
+    "href": "slides/1-welcome.html#ai-vs-ml-vs-dl",
+    "title": "DAT255: Deep learning engineering",
+    "section": "AI vs ML vs DL",
+    "text": "AI vs ML vs DL\n\n\n\nWikiMedia Commons"
+  },
+  {
+    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning",
+    "href": "slides/1-welcome.html#quick-history-of-deep-learning",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Quick history of deep learning",
+    "text": "Quick history of deep learning\n\n\n\n\nArtificial neural network McCulloch & Pitts, 1943\n\n\n\n\\[\n\\small\na = \\sum_{i=1}^{M} w_ix_i\n\\] \\[\n\\small\ny = f(a)\n\\]"
+  },
+  {
+    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-1",
+    "href": "slides/1-welcome.html#quick-history-of-deep-learning-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Quick history of deep learning",
+    "text": "Quick history of deep learning\nThe perceptron Rosenblatt 1960\n\n\n\n\n\n\n\n\\[\n\\small\nf(a) =\n\\begin{cases}\n0, & a \\leq 0 \\\\\n1, & a &gt; 0\n\\end{cases}\n\\]"
+  },
+  {
+    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-2",
+    "href": "slides/1-welcome.html#quick-history-of-deep-learning-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Quick history of deep learning",
+    "text": "Quick history of deep learning\nBackpropagation Rumelhart, Hinton & Williams, 1986\n\n\nALVINN, 1989\n\n\n\n\n\n\n\nLeNet, 1989"
+  },
+  {
+    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-3",
+    "href": "slides/1-welcome.html#quick-history-of-deep-learning-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Quick history of deep learning",
+    "text": "Quick history of deep learning\n\n\nAlexNet, 2012"
+  },
+  {
+    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-4",
+    "href": "slides/1-welcome.html#quick-history-of-deep-learning-4",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Quick history of deep learning",
+    "text": "Quick history of deep learning\n\n\nLarge language models (LLMs), 2017\nGhatGPT 2022"
+  },
+  {
+    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-5",
+    "href": "slides/1-welcome.html#quick-history-of-deep-learning-5",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Quick history of deep learning",
+    "text": "Quick history of deep learning\n\n\nDiffusion models, 2020\n\n\n\nTF playground"
+  },
+  {
+    "objectID": "slides/1-welcome.html#section-9",
+    "href": "slides/1-welcome.html#section-9",
+    "title": "DAT255: Deep learning engineering",
+    "section": "",
+    "text": "Maslej et al. (2024) Artificial intelligence index report 2024. arXiv:2405.19522"
+  },
+  {
+    "objectID": "slides/1-welcome.html#section-10",
+    "href": "slides/1-welcome.html#section-10",
+    "title": "DAT255: Deep learning engineering",
+    "section": "",
+    "text": "TensorFlowplayground"
   },
   {
     "objectID": "slides/3-convolutions.html#section",
@@ -364,479 +931,101 @@
     "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 4 (last):"
   },
   {
-    "objectID": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
-    "href": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
+    "objectID": "slides/5-optimisers.html#loss-functions",
+    "href": "slides/5-optimisers.html#loss-functions",
     "title": "DAT255: Deep learning engineering",
-    "section": "What can you do with deep learning?",
-    "text": "What can you do with deep learning?"
+    "section": "Loss functions",
+    "text": "Loss functions\n\n\nReminder: For all statistical modelling we need a measure of prediction quality\nThe loss function \\(L\\) must satisfy two conditions:\n\nDifferentiable*\nBounded below (\\(L \\geq 0\\))\n\n\nIn this course we stick mostly to\n\nMean squared error (MSE) loss, for regression tasks\n\n\n\n\n\n\\[\n\\small\nL_{\\mathrm{MSE}}(\\boldsymbol{\\hat{y}, y}) = \\frac{1}{N} \\sum_{i}^{N} (\\hat{y}_i - y_i)^2\n\\] where \\(N\\) is the number of data points\n\n\n\n\n\n\n\n\n\n*Again, at least piecewise differentiable"
   },
   {
-    "objectID": "slides/1-welcome.html#stable-diffusion-dall-e",
-    "href": "slides/1-welcome.html#stable-diffusion-dall-e",
+    "objectID": "slides/5-optimisers.html#loss-functions-1",
+    "href": "slides/5-optimisers.html#loss-functions-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Stable Diffusion / DALL-E",
-    "text": "Stable Diffusion / DALL-E\n\n\nVideo"
+    "section": "Loss functions",
+    "text": "Loss functions\n\n\nReminder: For all statistical modelling we need a measure of prediction quality\nThe loss function \\(L\\) must satisfy two conditions:\n\nDifferentiable*\nBounded below (\\(L \\geq 0\\))\n\nIn this course we stick mostly to\n\nMean squared error (MSE) loss, for regression tasks\nCross-entropy loss (or log loss), for classification tasks\n\n\n\n\\[\n\\scriptsize\nL_{\\mathrm{log}}(\\boldsymbol{\\hat{y}, y}) = -\\frac{1}{N} \\sum_i^N \\sum_k^K y_{i,k} \\log\\hat{y}_{i,k}\n\\] where \\(K\\) is the number of classes\n\n\n\n\n\n\n\n\n*Again, at least piecewise differentiable"
   },
   {
-    "objectID": "slides/1-welcome.html#sora-openai",
-    "href": "slides/1-welcome.html#sora-openai",
+    "objectID": "slides/5-optimisers.html#gradient-descent",
+    "href": "slides/5-optimisers.html#gradient-descent",
     "title": "DAT255: Deep learning engineering",
-    "section": "Sora (OpenAI)",
-    "text": "Sora (OpenAI)\n\n\nVideo\n\n\nVideo\n\n\nVideo\n\n\nVideo\n\n\nVideo"
+    "section": "Gradient descent",
+    "text": "Gradient descent\n\n\n\n\n\n\n\n\n\n\nWith the gradient in place, we take steps downward (along the negative gradient), towards the optimal solution:\n\\[\n\\small\n\\boldsymbol{\\color{teal}{\\theta}}^{n+1} = \\boldsymbol{\\color{teal}{\\theta}}^n - \\eta \\nabla \\color{Purple}{L}\n\\]\nHere \\(\\eta\\) is the learning rate"
   },
   {
-    "objectID": "slides/1-welcome.html#segment-anything",
-    "href": "slides/1-welcome.html#segment-anything",
+    "objectID": "slides/5-optimisers.html#local-minima",
+    "href": "slides/5-optimisers.html#local-minima",
     "title": "DAT255: Deep learning engineering",
-    "section": "Segment anything",
-    "text": "Segment anything\n\nhttps://ai.meta.com/sam2/"
+    "section": "Local minima",
+    "text": "Local minima\n\n\nLocalminimum -&gt; bad predictions"
   },
   {
-    "objectID": "slides/1-welcome.html#notebooklm",
-    "href": "slides/1-welcome.html#notebooklm",
+    "objectID": "slides/5-optimisers.html#momentum-optimisation",
+    "href": "slides/5-optimisers.html#momentum-optimisation",
     "title": "DAT255: Deep learning engineering",
-    "section": "NotebookLM",
-    "text": "NotebookLM\n\nVideo"
+    "section": "Momentum optimisation",
+    "text": "Momentum optimisation\n\n\nImprove on regular gradient descent by keeping track of past gradients in a new term \\(\\boldsymbol{m}\\):\n\\[\n\\small\n\\begin{align}\n    \\boldsymbol{m}_n &= \\beta \\boldsymbol{m}_{n-1} - \\eta \\nabla \\color{Purple}{L}(\\color{teal}{\\theta}_n) \\\\\n    \\boldsymbol{\\color{teal}{\\theta}}_{n+1} &= \\boldsymbol{\\color{teal}{\\theta}}_n + \\boldsymbol{m}_n\n\\end{align}\n\\]\n(behaves like a heavy ball rolling down a hill, where \\(\\boldsymbol{m}\\) is the velocity)\n\nIntroduces a new hyperparameter \\(\\small\\beta \\in [0,1]\\), which is called the momentum\n\n\\(\\small\\beta = 0\\): “max friction”\n\\(\\small\\beta = 1\\): “no friction”"
   },
   {
-    "objectID": "slides/1-welcome.html#cursor",
-    "href": "slides/1-welcome.html#cursor",
+    "objectID": "slides/5-optimisers.html#momentum-optimisation-1",
+    "href": "slides/5-optimisers.html#momentum-optimisation-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Cursor",
-    "text": "Cursor\n\nVideo"
+    "section": "Momentum optimisation",
+    "text": "Momentum optimisation\n\n\nImprove on regular gradient descent by keeping track of past gradients in a new term \\(\\boldsymbol{m}\\):\n\\[\n\\small\n\\begin{align}\n    \\boldsymbol{m}_n &= \\beta \\boldsymbol{m}_{n-1} - \\eta \\nabla \\color{Purple}{L}(\\color{teal}{\\theta}_n) \\\\\n    \\boldsymbol{\\color{teal}{\\theta}}_{n+1} &= \\boldsymbol{\\color{teal}{\\theta}}_n + \\boldsymbol{m}_n\n\\end{align}\n\\]\n(behaves like a heavy ball rolling down a hill, where \\(\\boldsymbol{m}\\) is the velocity)\nIntroduces a new hyperparameter \\(\\small\\beta \\in [0,1]\\), which is called the momentum\n\n\n\n\n\n\nkeras.optimizers.SGD(learning_rate=0.01, momentum=0.9)"
   },
   {
-    "objectID": "slides/1-welcome.html#section-1",
-    "href": "slides/1-welcome.html#section-1",
+    "objectID": "slides/5-optimisers.html#nesterov-accelerated-gradient",
+    "href": "slides/5-optimisers.html#nesterov-accelerated-gradient",
     "title": "DAT255: Deep learning engineering",
-    "section": "",
-    "text": "Video\n\n\nVideo"
+    "section": "Nesterov accelerated gradient",
+    "text": "Nesterov accelerated gradient\nKeep the concept of momentum, but compute the gradient slightly ahead:\n\\[\n\\small\n\\begin{align}\n    \\boldsymbol{m}_n &=\n        \\beta \\boldsymbol{m}_{n-1}\n        - \\eta \\nabla \\color{Purple}{L}(\\color{teal}{\\theta}_n + \\beta \\boldsymbol{m}_{n-1}) \\\\\n    \\boldsymbol{\\color{teal}{\\theta}}_{n+1} &= \\boldsymbol{\\color{teal}{\\theta}}_n + \\boldsymbol{m}_n\n\\end{align}\n\\]\nkeras.optimizers.SGD(learning_rate=0.01, momentum=0.9, nesterov=True)"
   },
   {
-    "objectID": "slides/1-welcome.html#practical-things-in-dat255",
-    "href": "slides/1-welcome.html#practical-things-in-dat255",
+    "objectID": "slides/5-optimisers.html#adagrad-adaptive-gradient",
+    "href": "slides/5-optimisers.html#adagrad-adaptive-gradient",
     "title": "DAT255: Deep learning engineering",
-    "section": "Practical things in DAT255",
-    "text": "Practical things in DAT255"
+    "section": "AdaGrad (Adaptive Gradient)",
+    "text": "AdaGrad (Adaptive Gradient)\nAdaGrad introduces an adaptive learning rate, which is adjusted independently for the different parameters\nAdjustment is done by dividing by the sum of all past gradients\n\nFor parameters with steep gradient, learning rate is reduced quickly\nFor parameters with shallow gradient, learning rate is reduced slowly"
   },
   {
-    "objectID": "slides/1-welcome.html#textbook",
-    "href": "slides/1-welcome.html#textbook",
+    "objectID": "slides/5-optimisers.html#rmsprop-root-mean-square-propagation",
+    "href": "slides/5-optimisers.html#rmsprop-root-mean-square-propagation",
     "title": "DAT255: Deep learning engineering",
-    "section": "Textbook",
-    "text": "Textbook\nA. Géron: Hands-on Machine Learning with Scikit-Learn, Keras, and TensorFlow (3rd edition)\n\n\nChapters:\n\n\n10 Intro to NNs\n11 Training deep neural networks\n12 Custom models and training with TensorFlow\n13 Loading and preprocessing data with TensorFlow\n14 Deep computer vision using CNNs\n15 Processing sequences using RNNs and CNNs\n16 Natural language processing with RNNs and attention\n17 Autoencoders, GANs and diffusion models\nNot 18\n19 Training and deploying TensorFlow models at scale"
+    "section": "RMSProp (Root Mean Square Propagation)",
+    "text": "RMSProp (Root Mean Square Propagation)\nAdaGrad in practice:\n\nGood: Less sensitive to choice of learning rate (since it’s adaptive)\nGood: Fast convergence for simple problems\nBad: Slow (or no) convergence for difficult problems\n\n\nRMSProp improves on AdaGrad by exponentially scaling down old gradients, before summing them\n Good convergence for the difficult problems too\nThis scaling gives a new hyperparameter \\(\\rho\\):\n\n\n\nkeras.optimizers.RMSprop(learning_rate=0.001, rho=0.9)"
   },
   {
-    "objectID": "slides/1-welcome.html#extra-resources",
-    "href": "slides/1-welcome.html#extra-resources",
+    "objectID": "slides/5-optimisers.html#adam-and-friends",
+    "href": "slides/5-optimisers.html#adam-and-friends",
     "title": "DAT255: Deep learning engineering",
-    "section": "Extra resources",
-    "text": "Extra resources\n\nFramework documentation:\n\nThe Keras documentation and examples\nThe TensorFlow documentation and examples\n\nVarious research blogs\nOther reputable internet material\n\nYou are expected to research certain topics and find supporting material yourself (especially for the project work)"
+    "section": "Adam (and friends)",
+    "text": "Adam (and friends)\n\n\n\nMomentum\n + RMSProp\n + some technical details\n = adaptive moment estimation (Adam)\nkeras.optimizers.Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999)\n(For max confusion, the hyperparameters now changed names to \\(\\beta_1,\\,\\beta_2\\))\n\n\nMore tricks:\n\nAdaMax: Scale the past gradients differently\nNadam: Add Nesterov momentum\nAdamW Add L2 regularisation (aka weight decay)"
   },
   {
-    "objectID": "slides/1-welcome.html#interaction",
-    "href": "slides/1-welcome.html#interaction",
+    "objectID": "slides/5-optimisers.html#comparison-and-guidelines",
+    "href": "slides/5-optimisers.html#comparison-and-guidelines",
     "title": "DAT255: Deep learning engineering",
-    "section": "Interaction",
-    "text": "Interaction\n\n\n\nMuch of this course is based on gaining experience with deep learning by working on problems.\nOccationally we will ask YOU to share your experience by presenting your work in class.\n\n👩‍💻🤓"
+    "section": "Comparison and guidelines",
+    "text": "Comparison and guidelines\n\n\n\n\n\n\n\n\n\n\n\nMethod\nConvergence\n\n\n\nSpeed\nQuality\n\n\n\n\n\nSGD\n⚡️\n⭐️⭐️⭐️\n\n\nSGD w/ momentum\n⚡️⚡️\n⭐️⭐️⭐️\n\n\n\nSGD w/ Nesterov\n⚡️⚡️\n⭐️⭐️⭐️\n\n\n\nAdaGrad\n⚡️⚡️⚡️\n⭐️\n\n\nRMSProp\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\nAdam\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\nAdaMax\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\nNadam\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\nAdamW\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\n\n\n\n\n\n\n\n\n\n\nG\n\n\n\nStart\n\nStart\n\n\n\nAdam\n\nAdam\n\n\n\nStart-&gt;Adam\n\n\n\n\n\nwork\n\nDid it\nwork?\n\n\n\nwhy\n\nWhy\nnot?\n\n\n\nwork-&gt;why\n\n\nNo\n\n\n\nDone\n\nDone!\n\n\n\nwork-&gt;Done\n\n\nYes\n\n\n\nAdaMax\n\nAdaMax\n\n\n\nwhy-&gt;AdaMax\n\n\nNumerically\nunstable\n\n\n\nAdamW\n\nAdamW\n\n\n\nwhy-&gt;AdamW\n\n\nNeeds\nregularisation\n\n\n\nNadam\n\nNadam\n\n\n\nwhy-&gt;Nadam\n\n\nSlow\n\n\n\nsgdn\n\nSGD w/\nNesterov\n\n\n\nwhy-&gt;sgdn\n\n\nUnderfitting\n\n\n\nAdam-&gt;work\n\n\n\n\n\nAdaMax-&gt;work\n\n\n\n\n\nAdamW-&gt;work\n\n\n\n\n\nNadam-&gt;work\n\n\n\n\n\nsgdn-&gt;work"
   },
   {
-    "objectID": "slides/1-welcome.html#assessment",
-    "href": "slides/1-welcome.html#assessment",
+    "objectID": "slides/5-optimisers.html#learning-rate-and-loss-curves",
+    "href": "slides/5-optimisers.html#learning-rate-and-loss-curves",
     "title": "DAT255: Deep learning engineering",
-    "section": "Assessment",
-    "text": "Assessment\n\n\n\nThe exam has two parts:\n\nGroup project report, counts 50%\nShort written exam, counts 50%\n\nExam date will be posted on StudentWeb\nLast chance for registering for the exam is Feb. 2"
+    "section": "Learning rate and loss curves",
+    "text": "Learning rate and loss curves\nCommon to all optimisation methods is that we must choose a learning rate \\(\\eta\\).\nThis affects the training progress:"
   },
   {
-    "objectID": "slides/1-welcome.html#project-work",
-    "href": "slides/1-welcome.html#project-work",
+    "objectID": "slides/5-optimisers.html#learning-rate-scheduling",
+    "href": "slides/5-optimisers.html#learning-rate-scheduling",
     "title": "DAT255: Deep learning engineering",
-    "section": "Project work",
-    "text": "Project work\nThe project work puts the engineering into Deep learning engineering\nPrimary goal:  Build and deploy a deep learning-based application, based on the theory, techniques and tools you learn in this course\n\n\n\nSecondary goals:  Make something that is\n\nUseful\nFun\nUseful and fun"
+    "section": "Learning rate scheduling",
+    "text": "Learning rate scheduling\nSome options for the most efficient learning: (see notebooks)\n\n\nReduce \\(\\eta\\) when learning stops:\nkeras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)\nGradually reduce \\(\\eta\\) for each step:\nkeras.optimizers.schedules.ExponentialDecay(initial_learning_rate, decay_steps, decay_rate)\nkeras.optimizers.schedules.PolynomialDecay(initial_learning_rate, ...)\nChange \\(\\eta\\) by some other rule:\nclass MyLRSchedule(keras.optimizers.schedules.LearningRateSchedule):\n\n    def __init__(self, initial_learning_rate):\n        self.initial_learning_rate = initial_learning_rate\n\n    def __call__(self, step):\n        return self.initial_learning_rate / (step + 1)\n\noptimizer = keras.optimizers.SGD(learning_rate=MyLRSchedule(0.1))"
   },
   {
-    "objectID": "slides/1-welcome.html#project-work-1",
-    "href": "slides/1-welcome.html#project-work-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Project work",
-    "text": "Project work\nThe project work puts the engineering into Deep learning engineering\nPrimary goal:  Build and deploy a deep learning-based application, based on the theory, techniques and tools you learn in this course\nTopic options:\n\nChoose yourself\nChoose from a project catalog (will be published on canvas)\n\nAll projects, along with a plan and description, must be approved beforehand\n📆 Submission deadline to be determined based on your input"
-  },
-  {
-    "objectID": "slides/1-welcome.html#canvas",
-    "href": "slides/1-welcome.html#canvas",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Canvas",
-    "text": "Canvas\nThe canonical source of information is Canvas"
-  },
-  {
-    "objectID": "slides/1-welcome.html#calendar",
-    "href": "slides/1-welcome.html#calendar",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Calendar",
-    "text": "Calendar"
-  },
-  {
-    "objectID": "slides/1-welcome.html#deep-learning",
-    "href": "slides/1-welcome.html#deep-learning",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Deep learning",
-    "text": "Deep learning"
-  },
-  {
-    "objectID": "slides/1-welcome.html#ai-vs-ml-vs-dl",
-    "href": "slides/1-welcome.html#ai-vs-ml-vs-dl",
-    "title": "DAT255: Deep learning engineering",
-    "section": "AI vs ML vs DL",
-    "text": "AI vs ML vs DL\n\n\n\nWikiMedia Commons"
-  },
-  {
-    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning",
-    "href": "slides/1-welcome.html#quick-history-of-deep-learning",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Quick history of deep learning",
-    "text": "Quick history of deep learning\n\n\n\n\nArtificial neural network McCulloch & Pitts, 1943\n\n\n\n\\[\n\\small\na = \\sum_{i=1}^{M} w_ix_i\n\\] \\[\n\\small\ny = f(a)\n\\]"
-  },
-  {
-    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-1",
-    "href": "slides/1-welcome.html#quick-history-of-deep-learning-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Quick history of deep learning",
-    "text": "Quick history of deep learning\nThe perceptron Rosenblatt 1960\n\n\n\n\n\n\n\n\\[\n\\small\nf(a) =\n\\begin{cases}\n0, & a \\leq 0 \\\\\n1, & a &gt; 0\n\\end{cases}\n\\]"
-  },
-  {
-    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-2",
-    "href": "slides/1-welcome.html#quick-history-of-deep-learning-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Quick history of deep learning",
-    "text": "Quick history of deep learning\nBackpropagation Rumelhart, Hinton & Williams, 1986\n\n\nALVINN, 1989\n\n\n\n\n\n\n\nLeNet, 1989"
-  },
-  {
-    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-3",
-    "href": "slides/1-welcome.html#quick-history-of-deep-learning-3",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Quick history of deep learning",
-    "text": "Quick history of deep learning\n\n\nAlexNet, 2012"
-  },
-  {
-    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-4",
-    "href": "slides/1-welcome.html#quick-history-of-deep-learning-4",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Quick history of deep learning",
-    "text": "Quick history of deep learning\n\n\nLarge language models (LLMs), 2017\nGhatGPT 2022"
-  },
-  {
-    "objectID": "slides/1-welcome.html#quick-history-of-deep-learning-5",
-    "href": "slides/1-welcome.html#quick-history-of-deep-learning-5",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Quick history of deep learning",
-    "text": "Quick history of deep learning\n\n\nDiffusion models, 2020\n\n\n\nTF playground"
-  },
-  {
-    "objectID": "slides/1-welcome.html#section-9",
-    "href": "slides/1-welcome.html#section-9",
-    "title": "DAT255: Deep learning engineering",
-    "section": "",
-    "text": "Maslej et al. (2024) Artificial intelligence index report 2024. arXiv:2405.19522"
-  },
-  {
-    "objectID": "slides/1-welcome.html#section-10",
-    "href": "slides/1-welcome.html#section-10",
-    "title": "DAT255: Deep learning engineering",
-    "section": "",
-    "text": "TensorFlowplayground"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "DAT255 lecture notes",
-    "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates"
-  },
-  {
-    "objectID": "slides/2-tools.html#frameworks",
-    "href": "slides/2-tools.html#frameworks",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Frameworks",
-    "text": "Frameworks\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHigh-level\n\n\nCompute\n\n\nSupporting"
-  },
-  {
-    "objectID": "slides/2-tools.html#frameworks-1",
-    "href": "slides/2-tools.html#frameworks-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Frameworks",
-    "text": "Frameworks\npython is the de-facto language for deep learning\nIn case you need a refresher, look at e.g.\n\nKaggle Learn: https://www.kaggle.com/learn/python\nGoogle Edu: https://developers.google.com/edu/python\n\n\nTechnically, we use python as a configuration language while the framework backends are C++/CUDA (but we won’t touch this)\nFor deployment, there are hooks to Haskell / C# / Julia / Java / R / Ruby / Rust / Scala / Perl and others\nWe assume you have been exposed to NumPy – although it’s no requirement"
-  },
-  {
-    "objectID": "slides/2-tools.html#this-week",
-    "href": "slides/2-tools.html#this-week",
-    "title": "DAT255: Deep learning engineering",
-    "section": "This week",
-    "text": "This week\n\n\n\n\n\n\n\nEnvironment setup: Check our GitHub\nIntro to TensorFlow:We look at this today"
-  },
-  {
-    "objectID": "slides/2-tools.html#computing-resources",
-    "href": "slides/2-tools.html#computing-resources",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Computing resources",
-    "text": "Computing resources\nMany exercises in this course are compute intensive, and will benefit from a hardware accelerator (i.e. a GPU)\nSome options:\n\nYour own computer (NVIDIA GPU or M-series Mac)\nCloud services\n\nGoogle Colab: T4 for free\nKaggle Notebooks: P100 for free\n(and others)\n\nResearch group hardware If you are connected to some research group at HVL/UiB"
-  },
-  {
-    "objectID": "slides/2-tools.html#low-level-tensorflow",
-    "href": "slides/2-tools.html#low-level-tensorflow",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Low-level TensorFlow",
-    "text": "Low-level TensorFlow\nMost things work like NumPy, but with the benefit of GPU support and JIT compilation.\nThe core object is the Tensor, which is basically a multidimensional array.\n\nNumPy\n&gt;&gt;&gt; import numpy as np\n&gt;&gt;&gt; x = np.array([[1,2,3], [4,5,6]], dtype=np.float32)\n&gt;&gt;&gt; print(x)\n[[1. 2. 3.]\n [4. 5. 6.]]\n\n\nTensorFlow\n&gt;&gt;&gt; import tensorflow as tf\n&gt;&gt;&gt; x = tf.constant([[1,2,3], [4,5,6]], dtype=tf.float32)\n&gt;&gt;&gt; print(x)\ntf.Tensor(\n[[1. 2. 3.]\n [4. 5. 6.]], shape=(2, 3), dtype=float32)"
-  },
-  {
-    "objectID": "slides/2-tools.html#low-level-tensorflow-the-tensor",
-    "href": "slides/2-tools.html#low-level-tensorflow-the-tensor",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Low-level TensorFlow: The Tensor",
-    "text": "Low-level TensorFlow: The Tensor\nTensors are immutable, and are useful for storing constant values such as input data\nFor values that will be updated (such as model weights), use a Variable:\n&gt;&gt;&gt; y = tf.Variable([[1,2,3], [4,5,6]], dtype=tf.float32, name=\"My first variable\")\n&gt;&gt;&gt; y[0,1].assign(50)\n&lt;tf.Variable 'UnreadVariable' shape=(2, 3) dtype=float32, numpy=\narray([[ 1., 50.,  3.],\n       [ 4.,  5.,  6.]], dtype=float32)&gt;"
-  },
-  {
-    "objectID": "slides/2-tools.html#low-level-tensorflow-simple-operations",
-    "href": "slides/2-tools.html#low-level-tensorflow-simple-operations",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Low-level TensorFlow: Simple operations",
-    "text": "Low-level TensorFlow: Simple operations\nBasic math is accessed through operators\n&gt;&gt;&gt; a = b + c       # Element-wise addition\n&gt;&gt;&gt; a = b * c       # Element-wise multiplication (Hadamard product)\n&gt;&gt;&gt; a = b @ c       # Matrix multiplication\nwhile more complicated stuff is available as functions in tf.math\n\nNotice in particular the reduce_ functions, which look different from NumPy:\n&gt;&gt;&gt; x = tf.constant([[1,2,3], [4,5,6]]); print(x)\ntf.Tensor(\n[[1 2 3]\n [4 5 6]], shape=(2, 3), dtype=int32)\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=0)\n&lt;tf.Tensor: shape=(3,), dtype=int32, numpy=array([5, 7, 9], dtype=int32)&gt;\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=1)\n&lt;tf.Tensor: shape=(2,), dtype=int32, numpy=array([ 6, 15], dtype=int32)&gt;\n\n&gt;&gt;&gt; tf.math.reduce_sum(x, axis=None)\n&lt;tf.Tensor: shape=(), dtype=int32, numpy=21&gt;"
-  },
-  {
-    "objectID": "slides/2-tools.html#low-level-tensorflow-shapes",
-    "href": "slides/2-tools.html#low-level-tensorflow-shapes",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Low-level TensorFlow: Shapes",
-    "text": "Low-level TensorFlow: Shapes\nBroadcasting works like in NumPy:\n&gt;&gt;&gt; x = tf.constant([1,2,3], dtype=tf.float32)\n&gt;&gt;&gt; x + 1\n&lt;tf.Tensor: shape=(3,), dtype=float32, numpy=array([2., 3., 4.], dtype=float32)&gt;\nSame for shapes:"
-  },
-  {
-    "objectID": "slides/2-tools.html#a-typical-shape-128-299-299-3",
-    "href": "slides/2-tools.html#a-typical-shape-128-299-299-3",
-    "title": "DAT255: Deep learning engineering",
-    "section": "A typical shape: [128, 299, 299, 3]",
-    "text": "A typical shape: [128, 299, 299, 3]\nImages are typically represented as [height, width, channel]\n\n\n\n\n\n\nDuring model training we want to do minibatch gradient descent, and load a subset of the data at a time\n This adds a fourth batch dimension: [batch, height, width, channel]\nWhen processing single data points, we often need to add or remove it:\nimg = tf.expand_dims(img, 0)    # [24, 24, 3]    -&gt; [1, 24, 24, 3]\nimg = tf.squeeze(img)           # [1, 24, 24, 3] -&gt; [24, 24, 3]"
-  },
-  {
-    "objectID": "slides/2-tools.html#run-computations-on-a-gpu",
-    "href": "slides/2-tools.html#run-computations-on-a-gpu",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Run computations on a GPU",
-    "text": "Run computations on a GPU\nTensorFlow will automatically try to use the fastest compute device available\nTensor operations are typically faster when parallelised on a GPU\n\n\n\nWhile this is automatic, it can also be forced:\nwith tf.device('CPU:0'):\n  a = tf.Variable([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])\n  b = tf.Variable([[1.0, 2.0, 3.0]])\n\nwith tf.device('GPU:0'):\n  k = a * b\n\nprint(k)"
-  },
-  {
-    "objectID": "slides/2-tools.html#automatic-differentiation",
-    "href": "slides/2-tools.html#automatic-differentiation",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Automatic differentiation",
-    "text": "Automatic differentiation\nLet’s try to compute this derivative:\n\\[\n\\small\n\\frac{\\mathrm{d}}{\\mathrm{d}x} \\Big|_{x=1} \\; x^2 + 2x - 5\n\\]\n\n\\[\n\\small\n= 2x + 2 \\big|_{x=1} = 2 \\cdot 1 + 2 = 4\n\\]\n\n\nTurns out TensorFlow can do it for us:\ndef f(x):\n  return x**2 + 2*x - 5\n\nx = tf.Variable(1.0)\n\nwith tf.GradientTape() as tape:\n  y = f(x)\n\nd_dx = tape.gradient(y, x)\nprint(d_dx)\n\n\n&lt;tf.Tensor: shape=(), dtype=float32, numpy=4.0&gt;"
-  },
-  {
-    "objectID": "slides/2-tools.html#keras",
-    "href": "slides/2-tools.html#keras",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Keras",
-    "text": "Keras\nThe Keras framework contains all the high-level components we need to construct and train a neural network:\n\nkeras.layers: Different types of layers and activation functions\nkeras.callbacks: Monitor, modify or stop the training process\nkeras.optimizers: Optimisation algorithms\nkeras.metrics: Performance metrics\nkeras.losses: Loss functions\nkeras.datasets: Small datasets for testing\nkeras.applications: Pre-trained networks for different tasks"
-  },
-  {
-    "objectID": "slides/2-tools.html#referansegruppe",
-    "href": "slides/2-tools.html#referansegruppe",
+    "objectID": "slides/5-optimisers.html#referansegruppe",
+    "href": "slides/5-optimisers.html#referansegruppe",
     "title": "DAT255: Deep learning engineering",
     "section": "Referansegruppe",
     "text": "Referansegruppe"
-  },
-  {
-    "objectID": "slides/4-training.html#the-parameters-of-a-neural-network",
-    "href": "slides/4-training.html#the-parameters-of-a-neural-network",
-    "title": "DAT255: Deep learning engineering",
-    "section": "The parameters of a neural network",
-    "text": "The parameters of a neural network\nRecall the simple formulation of a machine learning model:\n\n\\[\n\\large \\hat{\\color{DarkBlue}{y}} = \\color{Purple}{f}(\\color{DarkOrange}{\\mathbf{x}}, \\boldsymbol{\\color{teal}{\\theta}})\n\\]\n\nwhere\n\n\\(\\hat{\\color{DarkBlue}{y}}\\) is the prediction\n\\(\\color{DarkOrange}{\\mathbf{x}}\\) is a data point\n\\(\\boldsymbol{\\color{teal}{\\theta}}\\) are parameters of the model"
-  },
-  {
-    "objectID": "slides/4-training.html#the-parameters-of-a-neural-network-1",
-    "href": "slides/4-training.html#the-parameters-of-a-neural-network-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "The parameters of a neural network",
-    "text": "The parameters of a neural network\n\n\n\n\n\nThe parameters of the simple fully-connected network are\n\none weight per connection (line)\none bias term per node (circle)\n\n(for other types of layers, there are other types of parameters)"
-  },
-  {
-    "objectID": "slides/4-training.html#the-parameters-of-a-neural-network-2",
-    "href": "slides/4-training.html#the-parameters-of-a-neural-network-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "The parameters of a neural network",
-    "text": "The parameters of a neural network"
-  },
-  {
-    "objectID": "slides/4-training.html#the-activation-function",
-    "href": "slides/4-training.html#the-activation-function",
-    "title": "DAT255: Deep learning engineering",
-    "section": "The activation function",
-    "text": "The activation function\nWhat separates a neural network from standard linear regression is the non-linear activation function.\n\n(And not that we have many layers – stacking linear functions is still a linear function)\n\\[\n\\small\n\\begin{aligned}\n\\color{DarkBlue}{f}(x) &= 2x + 3  & (\\mathrm{linear}) \\\\\n\\color{Purple}{g}(x) &= 5x -1 & (\\mathrm{linear}) \\\\\n\\color{DarkBlue}{f}(\\color{Purple}{g}(x)) &= 2(5x-1) +3 &  \\\\\n&= 10x + 1 & (\\mathrm{also\\;linear})\n\\end{aligned}\n\\]"
-  },
-  {
-    "objectID": "slides/4-training.html#activation-function",
-    "href": "slides/4-training.html#activation-function",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Activation function",
-    "text": "Activation function\n\n\nA good activation function is\n\nNonlinear\nDifferentiable*\nSwitches from off for negative inputs to on for positive inputs\n\n\n\n\n\n\nSigmoid\n\n\n\n\n\ntanh\n\n\n\n\n\nReLU\n\n\n\n\n\nGELU\n\n\n\n\n\nSwish\n\n\n\n\n\n\n\n\n*At least piecewise differentiable"
-  },
-  {
-    "objectID": "slides/4-training.html#last-layer-activation-functions",
-    "href": "slides/4-training.html#last-layer-activation-functions",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Last layer activation functions",
-    "text": "Last layer activation functions\nIn the final layer of the network, we need to choose an activation function that suits our task\n\n\nRegression:\nNo activation – just sum the weighted connections. Output range \\((-\\infty, \\infty)\\) Also called linear activation.  keras.layers.Dense(units, activation=None)\nClassification:\nNeed something with output range \\([0, 1]\\)\n\nBinary classification: Use sigmoid keras.layers.Dense(1, activation='sigmoid)\nMulticlass: Use softmax keras.layers.Dense(10, activation='softmax') (remember one-hot encoding)"
-  },
-  {
-    "objectID": "slides/4-training.html#finding-optimal-parameters",
-    "href": "slides/4-training.html#finding-optimal-parameters",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Finding optimal parameters",
-    "text": "Finding optimal parameters\n\n\n\n\n\nFor large networks we get a huge number of parameters\nNeed a clever way to optimise all at the same time.\n\nThe solution is backpropagation, which is relies on the network output being differentiable with respect to its parameters."
-  },
-  {
-    "objectID": "slides/4-training.html#backpropagation",
-    "href": "slides/4-training.html#backpropagation",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Backpropagation",
-    "text": "Backpropagation\nStep 1:\n\n\n\n\n\n\n\n\n\n\n\nRandomly initialise parameters\n\n\n\nRun a forward pass on a mini-batch, i.e. compute predictions, but keep track of the output for each node"
-  },
-  {
-    "objectID": "slides/4-training.html#backpropagation-1",
-    "href": "slides/4-training.html#backpropagation-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Backpropagation",
-    "text": "Backpropagation\nStep 2:\n\n\n\n\n\n\n\\[\n\\mathrm{loss}(\\hat{y}, y)\n\\]\n\n\nCompute the loss, which measures how big the error is"
-  },
-  {
-    "objectID": "slides/4-training.html#backpropagation-2",
-    "href": "slides/4-training.html#backpropagation-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Backpropagation",
-    "text": "Backpropagation\nStep 3:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCompute how much each parameter contributed to the loss (i.e. compute the gradient for each parameter)\n\nStart at the last layer and move backwards (backwards pass)"
-  },
-  {
-    "objectID": "slides/4-training.html#backpropagation-3",
-    "href": "slides/4-training.html#backpropagation-3",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Backpropagation",
-    "text": "Backpropagation\nStep 4:\n\n\n\n\n\n\nRun one step of gradient descent to find better values for all parameters"
-  },
-  {
-    "objectID": "slides/4-training.html#gradient-descent",
-    "href": "slides/4-training.html#gradient-descent",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Gradient descent",
-    "text": "Gradient descent\n\n\n\n\n\n\n\nThe gradient points towards direction of maximum increase of the loss function.\nWe want to find the minimum, so need the negative gradient.\n\\[\n\\nabla \\color{MediumVioletRed}{L}(\\color{teal}{\\boldsymbol{\\theta}}) =\n\\begin{bmatrix}\n  \\frac{\\partial \\color{MediumVioletRed}{L}}{\\partial \\color{teal}{\\theta}_0} \\\\\n  \\vdots \\\\\n  \\frac{\\partial \\color{MediumVioletRed}{L}}{\\partial \\color{teal}{\\theta}_n} \\\\\n\\end{bmatrix}\n\\]\n\n\n Vector in parameterspace\n\n\n Gradient"
-  },
-  {
-    "objectID": "slides/4-training.html#gradient-descent-1",
-    "href": "slides/4-training.html#gradient-descent-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Gradient descent",
-    "text": "Gradient descent\n\n\n\n\n\n\n\nWith the gradient in place, we take steps downward (along the negative gradient), towards the optimal solution:\n\\[\n\\small\n\\boldsymbol{\\color{teal}{\\theta}}^{n+1} = \\boldsymbol{\\color{teal}{\\theta}}^n - \\eta \\nabla \\color{Purple}{L}\n\\]\nHere \\(\\eta\\) is the learning rate"
-  },
-  {
-    "objectID": "slides/4-training.html#learning-rate",
-    "href": "slides/4-training.html#learning-rate",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Learning rate",
-    "text": "Learning rate\n\n\n\nLearning rate is a hyperparameter\n\n\n\n\n\n\n\n\n\nTo small (slow convergence)\n\n\n\n\n\n\n\nJust right\n\n\n\n\n\n\n\nTo high (no convergence)"
-  },
-  {
-    "objectID": "slides/4-training.html#practical-problems",
-    "href": "slides/4-training.html#practical-problems",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Practical problems",
-    "text": "Practical problems"
-  },
-  {
-    "objectID": "slides/4-training.html#practical-problems-1",
-    "href": "slides/4-training.html#practical-problems-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Practical problems",
-    "text": "Practical problems\n\n\nLocalminimum -&gt; bad predictions"
-  },
-  {
-    "objectID": "slides/4-training.html#practical-problems-2",
-    "href": "slides/4-training.html#practical-problems-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Practical problems",
-    "text": "Practical problems\n\n\nLocalminimum -&gt; bad predictions\n\n\nPlateau -&gt; slow convergence\n\n\nWill try to solve theseproblems on Thursday"
-  },
-  {
-    "objectID": "slides/4-training.html#vanishing-and-exploding-gradients",
-    "href": "slides/4-training.html#vanishing-and-exploding-gradients",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Vanishing and exploding gradients",
-    "text": "Vanishing and exploding gradients\nWhen backpropagation steps through the network layers, we can get unfortunate amplification effects:\n\nVanishing gradients:    Gradients go towards zero  no learning\nExploding gradients:    Gradients go towards infinity  no learning\n\n\nGet improved training stability if we can make the variance of the output of a layer to be similar to the variance or the input:"
-  },
-  {
-    "objectID": "slides/4-training.html#some-tricks",
-    "href": "slides/4-training.html#some-tricks",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Some tricks",
-    "text": "Some tricks\n\n\nCommon apporaches to avoid vanishing/exploding gradients:\n\nChoose a non-saturating activation function (like ReLU)\n\n\n\nInitialise each layer’s parameters according to number of input and output connections\n\n\n\n\n\nInitialisation method\nActivation function\n\n\n\n\nGlorot\nNone, tanh, sigmoid, softmax\n\n\nHe (Kaiming)\nReLU, GELU, Swish, …\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSigmoid\n\n\n\n\n\n\n\n\n\nReLU"
-  },
-  {
-    "objectID": "slides/4-training.html#some-tricks-1",
-    "href": "slides/4-training.html#some-tricks-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Some tricks",
-    "text": "Some tricks\n\n\nCommon apporaches to avoid vanishing/exploding gradients:\n\nChoose a non-saturating activation function (like ReLU)\n\n\n\n\n\nInitialise each layer’s parameters according to number of input and output connections\n\n\n\n\n\nInitialisation method\nActivation function\n\n\n\n\nGlorot\nNone, tanh, sigmoid, softmax\n\n\nHe (Kaiming)\nReLU, GELU, Swish, …\n\n\n\n\n\nkeras.layers.Dense(\n    units,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    lora_rank=None,\n    **kwargs\n)"
-  },
-  {
-    "objectID": "slides/4-training.html#some-tricks-2",
-    "href": "slides/4-training.html#some-tricks-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Some tricks",
-    "text": "Some tricks\n\n\nCommon apporaches to avoid vanishing/exploding gradients:\n\nChoose a non-saturating activation function (like ReLU)\n\n\n\n\n\nInitialise each layer’s parameters according to number of input and output connections\n\n\n\n\n\nAdd normalisation layers to the model"
-  },
-  {
-    "objectID": "slides/4-training.html#normalisation-layers",
-    "href": "slides/4-training.html#normalisation-layers",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Normalisation layers",
-    "text": "Normalisation layers\n\n\nMost common: keras.layers.BatchNormalisation\n\nFrom the documentation: (read the textbook for further details)\n\nBatch normalization applies a transformation that maintains the mean output close to 0 and the output standard deviation close to 1.\nImportantly, batch normalization works differently during training and during inference.\n\n\n\n\n\n\nkeras.layers.BatchNormalization(\n    axis=-1,\n    momentum=0.99,\n    epsilon=0.001,\n    center=True,\n    scale=True,\n    beta_initializer=\"zeros\",\n    gamma_initializer=\"ones\",\n    moving_mean_initializer=\"zeros\",\n    moving_variance_initializer=\"ones\",\n    beta_regularizer=None,\n    gamma_regularizer=None,\n    beta_constraint=None,\n    gamma_constraint=None,\n    synchronized=False,\n    **kwargs\n)\n\n Comes with sensible defaults"
-  },
-  {
-    "objectID": "slides/4-training.html#regularisation",
-    "href": "slides/4-training.html#regularisation",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Regularisation",
-    "text": "Regularisation\nThe usual L1 and L2 regularisation can be applied to neural network nodes\nTechnically three different options for where to add it (see docs):\nlayer = keras.layers.Dense(\n    units=64, \n    kernel_regularizer=keras.regularizers.L1L2(l1=1e-5, l2=1e-4),\n    bias_regularizer=keras.regularizers.L2(1e-4),\n    activity_regularizer=keras.regularizers.L1(1e-5)\n)"
-  },
-  {
-    "objectID": "slides/4-training.html#dropout-regularisation",
-    "href": "slides/4-training.html#dropout-regularisation",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Dropout regularisation",
-    "text": "Dropout regularisation\nOne of the most common regularisation techniques is very simple:\nAt each training step, randomly remove a fraction of the neurons\n\n\n\n\n\nPrevents neuron co-adaptation\n(should be enabled during training time only)"
-  },
-  {
-    "objectID": "slides/4-training.html#dropout-regularisation-1",
-    "href": "slides/4-training.html#dropout-regularisation-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Dropout regularisation",
-    "text": "Dropout regularisation\nThe rate adjusts the percentage of nodes dropped\n\n\n\nkeras.layers.Dropout(rate, noise_shape=None, seed=None, **kwargs)\n\n\n\nAfter convolutional layers it is recommended to rather use spatial dropout, which drops entire feature maps\n\n\n\nkeras.layers.SpatialDropout2D(\n    rate, data_format=None, seed=None, name=None, dtype=None\n)"
-  },
-  {
-    "objectID": "slides/4-training.html#putting-together-an-improved-network",
-    "href": "slides/4-training.html#putting-together-an-improved-network",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Putting together an improved network",
-    "text": "Putting together an improved network\nfrom keras.layers import (\n  Input, Rescaling, Conv2D, BatchNormalization,\n  MaxPooling2D, Activation, Dropout, Dense\n)\n\nmodel = keras.Sequential([\n  keras.Input(shape=(128, 128, 3)),\n  Rescaling(1.0 / 255),\n  Conv2D(128, kernel_size=3, kernel_initializer=\"he_uniform\", padding=\"same\"),\n  BatchNormalization(),\n  Activation(\"relu\"),\n  MaxPooling2D(3, padding=\"same\"),\n  # ...\n  # (more layers)\n  # ...\n  Conv2D(128, kernel_size=3, kernel_initializer=\"he_uniform\", padding=\"same\"),\n  BatchNormalization(),\n  layers.Activation(\"relu\"),\n  MaxPooling2D(3, padding=\"same\"),\n  Flatten(),\n  Dropout(0.3),\n  Dense(num_classes, activation=\"softmax\"),\n])"
-  },
-  {
-    "objectID": "slides/4-training.html#best-practices",
-    "href": "slides/4-training.html#best-practices",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Best practices",
-    "text": "Best practices\nWith the choice of\n\nArchitecture (layers and nodes)\nParameter initialisers\nActivation functions\nRegularisation\nOptimisation algorithm\nLearning rate and scheduling\n\nthe search space for finding the optimal solution is huge\nGuidelines from this and next week are meant to save time, but are not absolute.\n(Better guidelines will come along the next few years anyway)"
-  },
-  {
-    "objectID": "slides/4-training.html#ai-assistant",
-    "href": "slides/4-training.html#ai-assistant",
-    "title": "DAT255: Deep learning engineering",
-    "section": "AI Assistant",
-    "text": "AI Assistant"
   }
 ]
