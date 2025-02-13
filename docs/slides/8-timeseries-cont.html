@@ -194,7 +194,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 7</u> – Sequences and time series</p>
+  <p class="subtitle"><u>Lecture 8</u> – Sequences continued</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -205,60 +205,38 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="sequences" class="slide level2">
-<h2>Sequences</h2>
-<p>Sequences are <strong>ordered</strong> series. For instance</p>
+<section id="project" class="slide level2" data-background-color="#FCE4EC">
+<h2>Project</h2>
+<p>On Canvas:</p>
+<ul>
+<li>Look at the project catalog<br>(unless you decided on topic already)</li>
+<li>Add your group</li>
+</ul>
+<hr>
 <div class="columns">
 <div class="column" style="width:50%;">
-<ul>
-<li><p><strong>Natural language</strong></p>
-<p><em>I only drink coffee</em> <span class="fragment color-text-muted">(<span class="math inline">\(\neq\)</span> <em>only I drink coffee</em>)</span></p></li>
-</ul>
 <div class="fragment">
+<p><span class="color-pink-dark"><em>Thursday next week:</em></span> <strong>Project kick-off</strong></p>
 <ul>
-<li><p><strong>Time series</strong></p>
-<table class="caption-top">
-<tbody>
-<tr class="odd">
-<td><strong>Time</strong></td>
-<td style="text-align: right;">11:00</td>
-<td style="text-align: right;">12:00</td>
-<td style="text-align: right;">13:00</td>
-<td style="text-align: right;">14:00</td>
-<td style="text-align: right;">15:00</td>
-</tr>
-<tr class="even">
-<td><strong>Temp</strong></td>
-<td style="text-align: right;">7°C</td>
-<td style="text-align: right;">8°C</td>
-<td style="text-align: right;">10°C</td>
-<td style="text-align: right;">12 °C</td>
-<td style="text-align: right;">12 °C</td>
-</tr>
-</tbody>
-</table></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p><strong>Audio</strong></p>
-<p><img data-src="figures/lecture7/waveform.jpg" width="350"></p></li>
+<li>We go through requirements and expectations</li>
+<li>Start planning</li>
 </ul>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="fragment">
+<p><span class="color-pink-dark"><em>Week after next week:</em></span> <strong>Project work</strong></p>
 <ul>
-<li><p><strong>Video</strong></p>
-<p><video data-src="https://cdn.openai.com/sora-ga/dev/features/hq/feature-loop-flower-double.mp4.mp4" autoplay="true" loop="true" width="300" controls=""><a href="https://cdn.openai.com/sora-ga/dev/features/hq/feature-loop-flower-double.mp4.mp4">Video</a></video></p></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p><strong>DNA</strong></p>
-<p><img data-src="figures/lecture7/dna.png" width="260"></p></li>
+<li><p>Decide on topic, data, and models</p></li>
+<li><p>Get help/hints/feedback</p></li>
+<li><p>Get project approval</p></li>
+<li><p>Start working!</p>
+<p><span class="color-text-muted">(no ordinary lectures)</span></p></li>
 </ul>
 </div>
 </div></div>
+<div class="absolute" style="top: -3%; right: 0%; width: 200px; ">
+<p><img data-src="figures/lecture1/project_example.jpg"></p>
+</div>
 </section>
 <section id="sequence-prediction-tasks" class="slide level2">
 <h2>Sequence prediction tasks</h2>
@@ -302,130 +280,6 @@ sma@hvl.no
 </div>
 </div></div>
 </section>
-<section id="sequence-classification" class="slide level2">
-<h2>Sequence classification</h2>
-<ul>
-<li><p>For <strong>images</strong> we looked for patterns between neighbouring pixels, in 2D</p></li>
-<li><p>For <strong>sequences</strong> we equivalently look for patterns between neighbouring elements (e.g.&nbsp;points in time), in 1D</p>
-<ul>
-<li>While 1D, we can still have multiple channels</li>
-</ul></li>
-</ul>
-<div style="padding-top: 50px;">
-
-</div>
-<div class="columns">
-<div class="column" style="width:70%;">
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>2D (images)</th>
-<th></th>
-<th>1D (sequences)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>keras.layers.Conv2D</code></td>
-<td><code>-&gt;</code></td>
-<td><code>keras.layers.Conv1D</code></td>
-</tr>
-<tr class="even">
-<td><code>keras.layers.Conv2DTranspose</code></td>
-<td><code>-&gt;</code></td>
-<td><code>keras.layers.Conv1DTranspose</code></td>
-</tr>
-<tr class="odd">
-<td><code>keras.layers.MaxPooling2D</code></td>
-<td><code>-&gt;</code></td>
-<td><code>keras.layers.MaxPooling1D</code></td>
-</tr>
-</tbody>
-</table>
-</div></div>
-</section>
-<section id="convolutions-recap" class="slide level2">
-<h2>Convolutions recap</h2>
-<p><img data-src="figures/lecture7/conv1d-0.png"></p>
-</section>
-<section id="convolutions-recap-1" class="slide level2">
-<h2>Convolutions recap</h2>
-<p><img data-src="figures/lecture7/conv1d-1.png"></p>
-</section>
-<section id="convolutions-recap-2" class="slide level2">
-<h2>Convolutions recap</h2>
-<p><img data-src="figures/lecture7/conv1d-2.png"></p>
-</section>
-<section id="convolutions-recap-3" class="slide level2">
-<h2>Convolutions recap</h2>
-<p><img data-src="figures/lecture7/conv1d-3.png"></p>
-</section>
-<section id="convolutions-recap-4" class="slide level2">
-<h2>Convolutions recap</h2>
-<p><img data-src="figures/lecture7/conv1d-4.png"></p>
-</section>
-<section id="convolutions-recap-5" class="slide level2">
-<h2>Convolutions recap</h2>
-<p><img data-src="figures/lecture7/conv1d-last.png"></p>
-</section>
-<section id="convolutions-detour" class="slide level2">
-<h2>Convolutions detour</h2>
-<p>If the take the convolution operation</p>
-<p><span class="math display">\[
-\small
-(f \ast g)(t) \equiv \int_{-\infty}^{\infty} f(\tau) g(t-\tau) d\tau
-\]</span></p>
-<p>but reverse one of the functions (<span class="math inline">\(\small f(t) \to f(-t)\)</span>), we get the similar operation called <em>cross-correlation</em>:</p>
-<div style="margin-top: -30px;">
-<p><span class="math display">\[
-\small
-f \star g \equiv f(-t) \ast g(t)
-\]</span></p>
-</div>
-<div class="fragment">
-<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/7/71/Cross_correlation_animation.gif"></p>
-</div>
-</section>
-<section id="convolutions-detour-1" class="slide level2">
-<h2>Convolutions detour</h2>
-<p>If the take the convolution operation</p>
-<p><span class="math display">\[
-\small
-f \ast g \equiv \int_{-\infty}^{\infty} f(\tau) g(t-\tau) d\tau
-\]</span></p>
-<p>but reverse one of the functions (<span class="math inline">\(\small f(t) \to f(-t)\)</span>), we get the similar operation called <em>cross-correlation</em>:</p>
-<div style="margin-top: -30px;">
-<p><span class="math display">\[
-\small
-f \star g \equiv f(-t) \ast g(t)
-\]</span></p>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture7/box-crosscorrelation.png" class="quarto-figure quarto-figure-center" style="margin-top: 0px;" width="550"></p>
-</figure>
-</div>
-<div class="fragment fade-out rectangle absolute" style="background-color: #fff; border: 0px;left: 200px; bottom: -20px; width: 650px; height: 100px; ">
-
-</div>
-</section>
-<section id="sequencing-forecasting-predicting-the-future" class="slide level2">
-<h2>Sequencing <em>forecasting</em>: Predicting the future</h2>
-<p>CNNs are great for classification because of <em>translation invariance</em></p>
-<p>For <em>forecasting</em>, we typically don’t want this.</p>
-<div class="fragment">
-<p><span class="color-green-dark">New assumption:</span></p>
-<ul>
-<li><strong>Recent</strong> data is more informative than <strong>old</strong> data</li>
-</ul>
-</div>
-<p><img data-src="figures/lecture7/nvda.png"></p>
-</section>
 <section id="recurrent-neural-networks-rnns" class="slide level2">
 <h2>Recurrent neural networks (RNNs)</h2>
 <p>Our neural networks up until now have no <em>state</em> (can’t remember anything)</p>
@@ -449,83 +303,6 @@ f \star g \equiv f(-t) \ast g(t)
 <figure>
 <p><img data-src="figures/lecture7/rnn-layer.png" class="quarto-figure quarto-figure-center" width="700"></p>
 </figure>
-</div>
-</section>
-<section id="recurrent-neural-networks-rnns-2" class="slide level2">
-<h2>Recurrent neural networks (RNNs)</h2>
-<p>Recall that a regular <code>Dense</code> layer computes its output by</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a>outputs <span class="op">=</span> activation(tf.dot(W, inputs) <span class="op">+</span> b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>(where <code>W</code> is the weight matrix, <code>inputs</code> is the vector of features and <code>b</code> is the bias vector)</p>
-<div class="fragment">
-<p>The recurrent node has two sets of weights:</p>
-<ul>
-<li>The usual ones, call them <code>W_x</code></li>
-<li>Those to be applied to the previous output, call them <code>W_y</code></li>
-</ul>
-</div>
-<div class="fragment">
-<p>The outputs then become</p>
-<div class="sourceCode" id="cb2" data-code-line-numbers="1|1-2|3-4|3-6|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>state_t <span class="op">=</span> tf.zeros(shape<span class="op">=</span>(num_output_features))</span>
-<span id="cb2-2"><a></a>outputs <span class="op">=</span> []</span>
-<span id="cb2-3"><a></a><span class="cf">for</span> input_t <span class="kw">in</span> input_sequence:  <span class="co"># loop over inputs at time t</span></span>
-<span id="cb2-4"><a></a>  output_t <span class="op">=</span> activation(tf.dot(W_y, inputs) <span class="op">+</span> tf.dot(W_y, state_t) <span class="op">+</span> b)</span>
-<span id="cb2-5"><a></a>  outputs.append(output_t)</span>
-<span id="cb2-6"><a></a>  state_t <span class="op">=</span> output_t</span>
-<span id="cb2-7"><a></a>output_sequence <span class="op">=</span> tf.stack(outputs, axis<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Implemented in Keras as <code>keras.layers.SimpleRNN</code></p>
-</div>
-</section>
-<section id="input-and-output-sequences" class="slide level2">
-<h2>Input and output sequences</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture7/input-output-sequences.png" class="quarto-figure quarto-figure-center" width="800"></p>
-</figure>
-</div>
-</section>
-<section id="intermezzo-autoregressive-models" class="slide level2">
-<h2>Intermezzo: Autoregressive models</h2>
-<p>Simplest possible forecast:</p>
-<p>The value <strong>tomorrow</strong> is the same as the value <strong>today</strong>. <span class="math display">\[
-\small
-y_i = y_{t-1}
-\]</span></p>
-<div class="columns">
-<div class="column" style="width:60%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture7/ridership.png"></p>
-<figcaption>Number of rail and bus passengers in Chicago 2019</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:40%;">
-<div class="fragment">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture7/partial-autocorrelation.png"></p>
-<figcaption>Partial autocorrelation</figcaption>
-</figure>
-</div>
-</div>
-</div></div>
-</section>
-<section id="intermezzo-autoregressive-models-1" class="slide level2">
-<h2>Intermezzo: Autoregressive models</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>More advanced forecast:</p>
-<p>The value tomorrow is given by a weighted sum of the <span class="math inline">\(p\)</span> previous time steps, plus a noise term</p>
-<p><span class="math display">\[
-\small
-y_i = \sum^p \varphi_i y_{t-i} + \epsilon_t
-\]</span></p>
-<p>(<span class="math inline">\(\varphi_i\)</span> are the parameters of the model)</p>
-</div><div class="column" style="width:50%;">
-<p><img data-src="figures/lecture7/ridership.png"></p>
-</div></div>
-<div class="fragment">
-<p>Can add <em>moving average</em> to get an <strong>ARMA</strong> model, look at differences to get <strong>ARIMA</strong>, add seasonality to get <strong>SARIMA</strong>, …</p>
-<p>Lots of work on (traditional) statistical time series modelling - usually worth trying out before going to deep learning.</p>
 </div>
 </section>
 <section id="improved-memory-cells" class="slide level2">
@@ -570,53 +347,30 @@ y_i = \sum^p \varphi_i y_{t-i} + \epsilon_t
 <h2>Stacking recurrent layers</h2>
 <p>As usual, we can increase the capacity by stacking layers.</p>
 <p>Note when building a <strong><em>deep</em></strong> RNN: Intermediate layers should return the entire sequence</p>
-<div class="sourceCode" id="cb3" data-code-line-numbers="|2-3|2-4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>inputs <span class="op">=</span> keras.Input(shape<span class="op">=</span>(sequence_length, raw_data.shape[<span class="op">-</span><span class="dv">1</span>]))</span>
-<span id="cb3-2"><a></a>x <span class="op">=</span> layers.GRU(<span class="dv">32</span>, return_sequences<span class="op">=</span><span class="va">True</span>)(inputs)</span>
-<span id="cb3-3"><a></a>x <span class="op">=</span> layers.GRU(<span class="dv">32</span>, return_sequences<span class="op">=</span><span class="va">True</span>)(x)</span>
-<span id="cb3-4"><a></a>x <span class="op">=</span> layers.GRU(<span class="dv">32</span>)(x)</span>
-<span id="cb3-5"><a></a>outputs <span class="op">=</span> layers.Dense(<span class="dv">1</span>)(x)</span>
-<span id="cb3-6"><a></a>model <span class="op">=</span> keras.Model(inputs, outputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1" data-code-line-numbers="|2-3|2-4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>inputs <span class="op">=</span> keras.Input(shape<span class="op">=</span>(sequence_length, raw_data.shape[<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb1-2"><a></a>x <span class="op">=</span> layers.GRU(<span class="dv">32</span>, return_sequences<span class="op">=</span><span class="va">True</span>)(inputs)</span>
+<span id="cb1-3"><a></a>x <span class="op">=</span> layers.GRU(<span class="dv">32</span>, return_sequences<span class="op">=</span><span class="va">True</span>)(x)</span>
+<span id="cb1-4"><a></a>x <span class="op">=</span> layers.GRU(<span class="dv">32</span>)(x)</span>
+<span id="cb1-5"><a></a>outputs <span class="op">=</span> layers.Dense(<span class="dv">1</span>)(x)</span>
+<span id="cb1-6"><a></a>model <span class="op">=</span> keras.Model(inputs, outputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figures/lecture7/stacked-rnn.png" class="quarto-figure quarto-figure-center" width="550"></p>
 </figure>
 </div>
 </section>
-<section id="training-rnns" class="slide level2">
-<h2>Training RNNs</h2>
-<p>Some tricks to efficiently training recurrent networks:</p>
-<div class="highlight-last">
-<ul>
-<li class="fragment"><p>Use saturating activation functions (tanh, sigmoid)</p>
-<p><code>layers.LSTM(units, activation="tanh", recurrent_activation="sigmoid")</code></p></li>
-<li class="fragment"><p>Use layer normalisation (<code>keras.layers.LayerNormalization</code>) instead of batch normalisation</p></li>
-<li class="fragment"><p>Add recurrent dropout (potentially in addition to regular dropout)</p>
-<p><code>x = layers.LSTM(32, recurrent_dropout=0.25)(inputs)</code></p></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p>Test if training runs faster on CPU than on GPU</p>
-<ul>
-<li>NVIDIA backend only available if using default arguments for <code>LSTM</code>/<code>GRU</code> layers</li>
-<li><code>for</code> loops in recurrent nodes reduces parallelisability
-<ul>
-<li><p>Can optionally <em>unroll</em> <code>for</code> loops (memory intensive):</p>
-<p><code>x = layers.LSTM(32, unroll=True)(inputs)</code></p></li>
-</ul></li>
-</ul></li>
-</ul>
-</div>
+<section id="section" class="slide level2" data-menu-title="RNN visualisation" data-background-iframe="https://distill.pub/2019/memorization-in-rnns/" data-background-interactive="true">
+<h2></h2>
 </section>
 <section id="bonus-trick-1-cnn-processing" class="slide level2">
 <h2>Bonus trick #1: CNN processing</h2>
 <p>Even with the previous tricks up out sleeve, getting RNNs to learn patterns over &gt;100 time steps is difficult.</p>
 <p>Can extract small-scale patterns with convolutional layers first, then apply recurrent layers:</p>
-<div class="sourceCode" id="cb4" data-code-line-numbers="|2|2,3|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>model <span class="op">=</span> keras.Sequential([</span>
-<span id="cb4-2"><a></a>  keras.layers.Conv1D(filters<span class="op">=</span><span class="dv">32</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>),</span>
-<span id="cb4-3"><a></a>  keras.layers.GRU(<span class="dv">32</span>, return_sequences<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb4-4"><a></a>  keras.layers.Dense(<span class="dv">14</span>)</span>
-<span id="cb4-5"><a></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2" data-code-line-numbers="|2|2,3|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>model <span class="op">=</span> keras.Sequential([</span>
+<span id="cb2-2"><a></a>  keras.layers.Conv1D(filters<span class="op">=</span><span class="dv">32</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>),</span>
+<span id="cb2-3"><a></a>  keras.layers.GRU(<span class="dv">32</span>, return_sequences<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-4"><a></a>  keras.layers.Dense(<span class="dv">14</span>)</span>
+<span id="cb2-5"><a></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>(add <code>stride</code> &gt; 1 to downsample)</p>
 </section>
 <section id="bonus-trick-1-cnn-processing-1" class="slide level2">
@@ -629,14 +383,14 @@ y_i = \sum^p \varphi_i y_{t-i} + \epsilon_t
 <p><img data-src="figures/lecture7/wavenet.gif" class="quarto-figure quarto-figure-center" width="600"></p>
 </figure>
 </div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a>keras.layers.Conv1D(..., padding<span class="op">=</span><span class="st">"casual"</span>)  <span class="co"># Look only backwards</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a>keras.layers.Conv1D(..., padding<span class="op">=</span><span class="st">"casual"</span>)  <span class="co"># Look only backwards</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="bonus-trick-2-bidirectional-rnns" class="slide level2">
 <h2>Bonus trick #2: <em>bidirectional</em> RNNs</h2>
 <p>For time series we expect the most recent data points to be most important</p>
 <p><i class="bi bi-arrow-right"></i> Chronological ordering makes sense</p>
 <div class="fragment">
-<p>Sometimes this is not the case - for instance for text</p>
+<p>Sometimes this is not entirely the case - for instance for text</p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <blockquote>
@@ -655,10 +409,10 @@ y_i = \sum^p \varphi_i y_{t-i} + \epsilon_t
 <div style="padding-top: 20px;">
 
 </div>
-<div class="sourceCode" id="cb6" data-code-line-numbers="2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>inputs <span class="op">=</span> keras.Input(shape<span class="op">=</span>(...))</span>
-<span id="cb6-2"><a></a>x <span class="op">=</span> layers.Bidirectional(layers.LSTM(<span class="dv">16</span>))(inputs)</span>
-<span id="cb6-3"><a></a>outputs <span class="op">=</span> layers.Dense(<span class="dv">1</span>)(x)</span>
-<span id="cb6-4"><a></a>model <span class="op">=</span> keras.Model(inputs, outputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4" data-code-line-numbers="2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>inputs <span class="op">=</span> keras.Input(shape<span class="op">=</span>(...))</span>
+<span id="cb4-2"><a></a>x <span class="op">=</span> layers.Bidirectional(layers.LSTM(<span class="dv">16</span>))(inputs)</span>
+<span id="cb4-3"><a></a>outputs <span class="op">=</span> layers.Dense(<span class="dv">1</span>)(x)</span>
+<span id="cb4-4"><a></a>model <span class="op">=</span> keras.Model(inputs, outputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:40%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -668,7 +422,10 @@ y_i = \sum^p \varphi_i y_{t-i} + \epsilon_t
 </div></div>
 </div>
 </section>
-<section id="section" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<section id="quiz" class="slide level2 center" data-background-color="#F3E5F5">
+<h2>Quiz</h2>
+</section>
+<section id="section-1" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>
