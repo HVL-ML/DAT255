@@ -735,76 +735,6 @@
     "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 4 (last):"
   },
   {
-    "objectID": "slides/10-kickoff.html#project-kickoff",
-    "href": "slides/10-kickoff.html#project-kickoff",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Project kickoff",
-    "text": "Project kickoff\n\n\n\nToday:\n\nA second look at project topics\nSome cool examples by Vegard and Jobjørn\nDetails about:\n\nProject scope\nRequirements and recommendations\nReport and material"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#project-topic",
-    "href": "slides/10-kickoff.html#project-topic",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Project topic",
-    "text": "Project topic\nUp to you! Be creative but reasonable\n\nWe have one rule: Relevant data must exist and be readily available\n(IRL it never is, but this is not our concern right now)\n\n\n\nand one guideline:\nPick something you find interesting and motivating\n\n\n\nProjects are approved by sending in short description on Canvas, deadline next Friday, 28 Feb"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#demo",
-    "href": "slides/10-kickoff.html#demo",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Demo",
-    "text": "Demo"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#assignment-description",
-    "href": "slides/10-kickoff.html#assignment-description",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Assignment description",
-    "text": "Assignment description\n… is now on Canvas:\n\n\n\n\n\nNote: The final submission will be on WiseFlow. Details to follow later"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#formalities",
-    "href": "slides/10-kickoff.html#formalities",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Formalities",
-    "text": "Formalities\n\n\nProject counts for 50% of the final grade\nExam counts for the other 50%\nYou need a passing grade on the project in order to take the exam\nThe deadline is 25 April\n\nSince the project is graded and goes into the strict WiseFlow system, there is no possibility for an extension. Zero, 0, none."
-  },
-  {
-    "objectID": "slides/10-kickoff.html#scope-and-expectations",
-    "href": "slides/10-kickoff.html#scope-and-expectations",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Scope and expectations",
-    "text": "Scope and expectations\n\n\nMandatory to do:\n\nIdentify a use case for deep learning methods\nConstruct and train a deep neural network\nMake an objective evaluation of model performance\n\n\n\nRecommended to do:\n\nCompare different methods and strategies\nMake use of tools for effective optimisation/monitoring/experimentation\nInvestigate quality of the model prediction\n\n\n\n\nVery recommended: Deploy our model as a web app\n\n\n\n\n\nIn short: Show what you’ve learnt in the course"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#submission-format",
-    "href": "slides/10-kickoff.html#submission-format",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Submission format",
-    "text": "Submission format\nWe want to see two things:\n\n\nA report\nMotivate your choices, describe the implementation, document your experiments, and analyse the outcome. Was it a success? What could have gone better?\nA template for the report will be provided.\n\n\n\n\nThe code\nEverything needed to reproduce your results must be put in a GitHub repo and made accessible. The code must be understandable\n\nThe exact evaluation criteria are listed on Canvas"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#faq",
-    "href": "slides/10-kickoff.html#faq",
-    "title": "DAT255: Deep learning engineering",
-    "section": "FAQ 💬",
-    "text": "FAQ 💬\n\n\nCan I copy code from StackOverflow? Yes, but you must always cite your sources\n\n\n\n\nCan I use ChatGPT / Cursor / &lt;some AI tool&gt; for coding and report writing? Yes, but you must always cite your sources\n\n\n\n\nCan I use pretrained models? Yes, a long as you modify and retrain at least one model\n\n\n\n\nCan I use API calls to OpenAI / DeepSeek / &lt;some service&gt; instead of training my own model? No, but you can use it in addition to your own model"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#next-week-project-week",
-    "href": "slides/10-kickoff.html#next-week-project-week",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Next week: Project week 🙌",
-    "text": "Next week: Project week 🙌\n\n\n\n\nNo lectures, work on the project\n\n\n\n\n\nRemember to submit project description\n\n\n\n\n\nHelp / hints / questions:\n\nI will be available both on Zoom and in physical form in lecture & lab hours\nSend me a message to find a time\n\n\n\n\n\n\nUsual lectures again the week after"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "DAT255 lecture notes",
-    "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates\nMonday week 6: Augmentation and advanced computer vision\nMonday week 7: Sequences, time series, recurrent networks\nThursday week 7: Time series and recurrence (continued)\nMonday week 8: Gradients ++"
-  },
-  {
     "objectID": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
     "href": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
     "title": "DAT255: Deep learning engineering",
@@ -985,6 +915,13 @@
     "title": "DAT255: Deep learning engineering",
     "section": "",
     "text": "TensorFlowplayground"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DAT255 lecture notes",
+    "section": "",
+    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates\nMonday week 6: Augmentation and advanced computer vision\nMonday week 7: Sequences, time series, recurrent networks\nThursday week 7: Time series and recurrence (continued)\nMonday week 8: Gradients ++"
   },
   {
     "objectID": "slides/2-tools.html#frameworks",
@@ -1545,5 +1482,75 @@
     "title": "DAT255: Deep learning engineering",
     "section": "Quiz",
     "text": "Quiz"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#project-kickoff",
+    "href": "slides/10-kickoff.html#project-kickoff",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Project kickoff",
+    "text": "Project kickoff\n\n\n\nToday:\n\nA second look at project topics\nSome cool examples by Vegard and Jobjørn\nDetails about:\n\nProject scope\nRequirements and recommendations\nReport and material"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#project-topic",
+    "href": "slides/10-kickoff.html#project-topic",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Project topic",
+    "text": "Project topic\nUp to you! Be creative but reasonable\n\nWe have one rule: Relevant data must exist and be readily available\n(IRL it never is, but this is not our concern right now)\n\n\n\nand one guideline:\nPick something you find interesting and motivating\n\n\n\nProjects are approved by sending in short description on Canvas, deadline next Friday, 28 Feb"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#demo",
+    "href": "slides/10-kickoff.html#demo",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Demo",
+    "text": "Demo"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#assignment-description",
+    "href": "slides/10-kickoff.html#assignment-description",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Assignment description",
+    "text": "Assignment description\n… is now on Canvas:\n\n\n\n\n\nNote: The final submission will be on WiseFlow. Details to follow later"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#formalities",
+    "href": "slides/10-kickoff.html#formalities",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Formalities",
+    "text": "Formalities\n\n\nProject counts for 50% of the final grade\nExam counts for the other 50%\nYou need a passing grade on the project in order to take the exam\n\n\n\n\n\nThe deadline is 25 April\n\nSince the project is graded and goes into the strict WiseFlow system, thereis no possibility for an extension. (Zero, 0, none)"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#scope-and-expectations",
+    "href": "slides/10-kickoff.html#scope-and-expectations",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Scope and expectations",
+    "text": "Scope and expectations\n\n\nMandatory to do:\n\nIdentify a use case for deep learning methods\nConstruct and train a deep neural network\nMake an objective evaluation of model performance\n\n\n\nRecommended to do:\n\nCompare different methods and strategies\nMake use of tools for effective optimisation/monitoring/experimentation\nInvestigate quality of the model prediction\n\n\n\n\nVery recommended: Deploy our model as a web app\n\n\n\n\n\nIn short: Show what you’ve learnt in the course"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#submission-format",
+    "href": "slides/10-kickoff.html#submission-format",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Submission format",
+    "text": "Submission format\nWe want to see two things:\n\n\nA report\nMotivate your choices, describe the implementation, document your experiments, and analyse the outcome. Was it a success? What could have gone better?\nA template for the report will be provided.\n\n\n\n\nThe code\nEverything needed to reproduce your results must be put in a GitHub repo and made accessible. The code must be understandable\n\nThe exact evaluation criteria are listed on Canvas"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#faq",
+    "href": "slides/10-kickoff.html#faq",
+    "title": "DAT255: Deep learning engineering",
+    "section": "FAQ 💬",
+    "text": "FAQ 💬\n\n\nCan I copy code from StackOverflow? Yes, but you must always cite your sources\n\n\n\n\nCan I use ChatGPT / Cursor / &lt;some AI tool&gt; for coding and report writing? Yes, but you must always cite your sources\n\n\n\n\nCan I use pretrained models? Yes, a long as you modify and retrain at least one model\n\n\n\n\nCan I use API calls to OpenAI / DeepSeek / &lt;some service&gt; instead of training my own model? No, but you can use it in addition to your own model"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#next-week-project-week",
+    "href": "slides/10-kickoff.html#next-week-project-week",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Next week: Project week 🙌",
+    "text": "Next week: Project week 🙌\n\n\n\n\nNo lectures, work on the project\n\n\n\n\n\nRemember to submit project description\n\n\n\n\n\nHelp / hints / questions:\n\nI will be available both on Zoom and in physical form in lecture & lab hours\nSend me a message to find a time\n\n\n\n\n\n\nUsual lectures again the week after"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#remember-to-think-about-your-future",
+    "href": "slides/10-kickoff.html#remember-to-think-about-your-future",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Remember to think about your future",
+    "text": "Remember to think about your future\n\n\n\nMany good options for doing more advanced deep learning"
   }
 ]
