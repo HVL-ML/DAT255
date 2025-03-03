@@ -1,62 +1,31 @@
-# DAT255: Deep Learning Engineering
+# Course notebooks
+<p><img width=20% src="assets/jupyter.png">
+</p>
 
-![](assets/DAT255-logo.png)
+<p>
+Here you will find all the Jupyter notebooks used in the course. 
+They will be added as the course progresses.
+</p>
 
-<!-- <p>
-[![kaggle](./assets/kaggle.svg)](https://www.kaggle.com/alexanderlundervold/code) &nbsp;  [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/) &nbsp; [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/HVL-ML/DAT255/HEAD) &nbsp; [![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.svg)](https://nbviewer.org/github/HVL-ML/DAT255/tree/main/)
-</p> -->
+| Notebook | Colab link |
+| --- | --- | 
+| [1: Digit classification](1_digit_classification.ipynb)<br>Deep learning 101: Classifying handwritten numbers. This notebook serves as a quick intro to the [Keras](keras.io) deep learning framework. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/1_digit_classification.ipynb) |
+| [2: _Fashion MNIST_ classification](2_fashion_MNIST_classification.ipynb)<br>In this notebook we go a little further in computer vision. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/2_fashion_MNIST_classification.ipynb) |
+| [3: Advanced image classification](3_advanced_image_classification.ipynb)<br> Time to do more advanced stuff, which requires a more powerful approach to constructing neural networks in Keras, namely the [functional model API](https://keras.io/guides/functional_api/). Here we also start using TensorFlow datasets, image augmentation, and look at _fine-tuning_ of existing models. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/3_advanced_image_classification.ipynb) |
+| [4: Visualising ConvNets](4-convnet-visualisation.ipynb)<br> Plot activations of the different filters in a convnet, to visualise how patterns are encoded from the first to the last layer.  | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/4-convnet-visualisation.ipynb) |
+| [5: Activations and initialisers](5-activations-and-initialisers.ipynb)<br> Plot different activation functions and try them out along with different parameter initialisation schemes.  | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/5-activations-and-initialisers.ipynb) |
+| [6: Callbacks and schedulers](6-callbacks-and-schedulers.ipynb)<br> Dynamically modify the optimiser settings during training.  | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/6-callbacks-and-schedulers.ipynb) |
+| [7: Optimisers](7-optimisers.ipynb)<br> Compare and evaluate different optimisation methods.  | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/7-optimisers.ipynb) |
+| [8: Data loading in TensorFlow](8_dataloading.ipynb)<br> Intro to efficient data loading with `tf.data.Dataset`.  | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/8_dataloading.ipynb) |
+| [9: Augmentation](9_augmentation.ipynb)<br> Test different augmentation methods for computer vision.  | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/9_augmentation.ipynb) |
+| [10: ResNets and modern convolutional networks](10_resnets.ipynb)<br> Implement modern, non-sequential network architectures. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/10_resnets.ipynb) |
+| [11: Image segmentation](11_image_segmentation.ipynb)<br> Train a model for semantic segmentation. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/11_image_segmentation.ipynb) |
+| [12: YOLO models](12_yolo_.ipynb)<br> Optional exercise: Try out pre-trained segmentation models from the YOLO family.  | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/12_yolo.ipynb) |
+| [13: Image denoising with autoencoders](13_image_denoiser.ipynb)<br> Yet another computer vision task: Enhance images by removing noise.  | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/13_image_denoiser.ipynb) |
+| [14: Process sequences with RNNs](14_processing_sequences_with_rnns.ipynb)<br> Test different methods for forecasting passenger numbers on public transport, following the approach in Ch 14. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/14_processing_sequences_with_rnns.ipynb) |
+| [15: Weather forecasting with RNNs](15_rnn_weather_forecasting.ipynb)<br> Another forecasting task, where we try even further deep learning approaches. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/15_rnn_weather_forecasting.ipynb) |
+| [16: Translate languages with a sequence-to-sequence model](16_sequence_to_sequence_RNN.ipynb)<br> Here we train a recurrent network to predict entire sequences. For a given input sentence in English, we train a model to predict the Frensh translation. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/16_sequence_to_sequence_RNN.ipynb) |
+| [17: Anomaly detection](17_anomaly_detection.ipynb)<br> Train an autoencoder to detect anomalous data in time series. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/17_anomaly_detection.ipynb) |
+| [18: Hacking CNNs with adversarial examples](18_adversarial_examples.ipynb)<br> Try to fool an advanced pre-trained convolutional network into making bad predictions, by sprinkling some magic at the input images. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/18_adversarial_examples.ipynb) |
+| [19: Compare neural networks to tree-based models on tabular data](19_simple_tabular_data.ipynb)<br> Compare the predictive performance of neural networks and decision trees, when applied to tabular datasets. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/19_simple_tabular_data.ipynb) |
 
-> Material used in the 2025 version of the course DAT255 at HVL. More information can be found on the course website: https://hvl.instructure.com/courses/28951. 
-
-## About the course
-:eyes: Deep learning is a sub-field of machine learning and is what both launched and propels the recent surge of interest in artificial intelligence. The course focuses on deep learning and its applications in computer vision, natural language processing, generative AI, and recommendation systems. The methods, tools, and techniques covered by the course are widely applicable, and the course aims to be instructive to anyone wanting to apply deep learning to any task.
-
-:eyes: In addition to a solid understanding of deep learning, the course will provide you with hands-on experience designing and deploying deep learning solutions for practical, real-life problems using state-of-the-art techniques and software frameworks from machine learning, machine learning engineering, and deep learning. You will experience first-hand how deep learning engineering relates to the broader software engineering discipline. Upon completing this course, you'll be well-equipped to tackle challenges in AI-driven software development.
-
-## Content
-
-:point_right: Go to [`/notebooks`](/notebooks) to find the course material. 
-
-
-## Setup 
-
-The simplest way to run the notebooks is through a cloud service like [https://colab.research.google.com/](Colab). However, if you want to run on your own computer, the setup is relatively simple. The commands below assume a `bash` shell -- if you are on Mac, have a look at these [instructions](https://developer.apple.com/metal/tensorflow-plugin/) (note you need python 3.9 or 3.10), and if you are on Windows, just Google what to do.
-
-1. **Create a virtual environment (optional)**<br>
-    If you have [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html) installed, run 
-    ```bash
-    conda create --name dat255 python=3.12
-    conda activate dat255-env
-    ```
-    otherwise use the built-in virtual environment tool by running
-    ```bash
-    python3 -m venv dat255-env
-    source dat255-env/bin/activate
-    ```
-2. **Clone our repository**
-    ```bash
-    git clone git@github.com:HVL-ML/DAT255.git
-    cd DAT255
-    ```
-3. **Install the frameworks we need**
-    ```bash
-    pip install -r requirements.txt
-    ```
-4. **Run notebooks**
-    ```bash
-    cd notebooks
-    jupyter notebook
-    ```
-
-More in-depth details about installing TensorFlow (the most important and most difficult thing to install) are listed in the [documentation](https://www.tensorflow.org/install/pip).
-
-For help with any of the above, visit the lab on Mondays!
-
----
-
-> A course from the AI Engineering Group at the Western Norway University of Applied Sciences.
-<center>
-<a href="https://github.com/HVL-ML">
-<img width=40% src="assets/AI-eng.png"></img>
-</a>
-</center>
