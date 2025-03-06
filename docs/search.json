@@ -735,144 +735,221 @@
     "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 4 (last):"
   },
   {
-    "objectID": "slides/11-tabular-data.html#this-week",
-    "href": "slides/11-tabular-data.html#this-week",
+    "objectID": "slides/12-tools.html#this-week",
+    "href": "slides/12-tools.html#this-week",
     "title": "DAT255: Deep learning engineering",
     "section": "This week",
     "text": "This week\n\n\n\nToday:\n\nDeep learning on tabular data\nData preprocessing with Keras\n\nFeature scaling\nConverting text and categorical values\nQuick look at embeddings\n\n\nThursday:\n\nCustom Keras objects\nSome ML experiment monitoring tools"
   },
   {
-    "objectID": "slides/11-tabular-data.html#tabular-data",
-    "href": "slides/11-tabular-data.html#tabular-data",
+    "objectID": "slides/12-tools.html#customising-keras",
+    "href": "slides/12-tools.html#customising-keras",
     "title": "DAT255: Deep learning engineering",
-    "section": "Tabular data",
-    "text": "Tabular data\nData that makes sense to put in a table:\n\n\n\n\n\n\n\n\n\n\n\npatient_id\nage\nvisits\nblood_type\ndiag_code\nsymptoms\n\n\n\n\n321\n28\n1\n“A”\nnone\n“headache, fatigue”\n\n\n602\n64\n4\n“AB”\n32, 12\n“complains about headache, joint pains”\n\n\n201\n62\n2\n“0”\n12\n“dizzyness, headache”\n\n\n491\n57\n1\n“A”\n6\n“headache, fever”\n\n\n\n\nCompare to e.g. images and time series:"
+    "section": "Customising Keras",
+    "text": "Customising Keras\nKeras typically have most of what we need, but occasionally we have to add functionality ourselves\nThings we might need to customise:\n\nCallbacks\nMetrics\nLoss functions\nLayers\nModel behaviour undertraining vs inference"
   },
   {
-    "objectID": "slides/11-tabular-data.html#feature-normalisation",
-    "href": "slides/11-tabular-data.html#feature-normalisation",
+    "objectID": "slides/12-tools.html#custom-callbacks",
+    "href": "slides/12-tools.html#custom-callbacks",
     "title": "DAT255: Deep learning engineering",
-    "section": "Feature normalisation",
-    "text": "Feature normalisation\nConsider optimisation where\n\nFeatures have similar scale\nFeatures have different scale"
+    "section": "Custom callbacks",
+    "text": "Custom callbacks\nA callback is run before/after certain events during training\nUse cases:\n\nSave model checkpoint efter each epoch\nChange learning rate\nWrite results to log file or monitoring tool\n\n\n\n\nclass CustomCallback(keras.callbacks.Callback):\n\n    def on_train_begin(self, logs=None):\n        keys = list(logs.keys())\n        print(\"Starting training; got log keys: {}\".format(keys))\n\n    def on_train_end(self, logs=None):\n        keys = list(logs.keys())\n        print(\"Stop training; got log keys: {}\".format(keys))\n\n    def on_epoch_begin(self, epoch, logs=None):\n      ...\n\n    # and more!"
   },
   {
-    "objectID": "slides/11-tabular-data.html#feature-normalisation-1",
-    "href": "slides/11-tabular-data.html#feature-normalisation-1",
+    "objectID": "slides/12-tools.html#custom-metrics",
+    "href": "slides/12-tools.html#custom-metrics",
     "title": "DAT255: Deep learning engineering",
-    "section": "Feature normalisation",
-    "text": "Feature normalisation\nConsider optimisation where\n\nFeatures have similar scale\nFeatures have different scale\n\nRemember also relation between input and output variances:"
+    "section": "Custom metrics",
+    "text": "Custom metrics\nNeed some exotic metric you invented yourself, or that is only available in scikit-learn?\nSubclass the abstract keras.metrics.Metrics class and implement the following methods:\nclass MyMetric(keras.metrics.Metric):\n\n  def __init__(self, ..., **kwargs):\n    super().__init__(**kwargs)\n\n    # class variables\n    self.result = self.add_variable(shape=(), initializer='zeros')\n\n  def update_state(self, y_true, y_pred, sample_weight=None):\n\n    # this is where the result is calculated\n    # doesn't return anything\n    result = ...\n    self.result.add_assign(result)\n\n  def result(self):\n    return self.result"
   },
   {
-    "objectID": "slides/11-tabular-data.html#feature-normalisation-2",
-    "href": "slides/11-tabular-data.html#feature-normalisation-2",
+    "objectID": "slides/12-tools.html#custom-loss-functions",
+    "href": "slides/12-tools.html#custom-loss-functions",
     "title": "DAT255: Deep learning engineering",
-    "section": "Feature normalisation",
-    "text": "Feature normalisation\n\n\n\nNormalisation:\nMake features look like a normal distribution with mean = 0 and variance = 1\nUsual approach:\nimport numpy as np\nx_normalised = (x - np.mean(x)) / np.std(x)\n\n\n\nProvided by\n\nsklearn.preprocessing.StandardScaler()\nkeras.layers.Normalization()"
+    "section": "Custom loss functions",
+    "text": "Custom loss functions\nCustom loss functions can either subclassing keras.losses.Loss, or they can simply be regular functions, with two inputs (y_true, y_pred) and one output.\n\nImportant:\nThe loss function must be differentiable.\n\n\n\ndef mean_squared_error(y_true, y_pred):\n    return tf.reduce_mean(tf.square(y_true - y_pred), axis=-1)\n    \nmodel.compile(loss=mean_squared_error)\n\n\n\n\n\nAlso important:\nFor performance reasons, avoid loops, conditionals, and most python built-ins.\nWrite vectorisable code, ideally in the backend framework (i.e. TensorFlow) or using keras.ops."
   },
   {
-    "objectID": "slides/11-tabular-data.html#feature-transformations",
-    "href": "slides/11-tabular-data.html#feature-transformations",
+    "objectID": "slides/12-tools.html#custom-layers",
+    "href": "slides/12-tools.html#custom-layers",
     "title": "DAT255: Deep learning engineering",
-    "section": "Feature transformations",
-    "text": "Feature transformations"
+    "section": "Custom layers",
+    "text": "Custom layers\nThe simplest custom layer: keras.layers.Lambda\n(has no weights)\n\n\n\nexponential_layer = tf.keras.layers.Lambda(lambda x: tf.exp(x))\n\nmodel = keras.Sequential([\n  keras.layers.Input(shape=input_shape),\n  exponential_layer(),\n  keras.layers.Dense(10)\n])"
   },
   {
-    "objectID": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data",
-    "href": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data",
+    "objectID": "slides/12-tools.html#custom-layers-1",
+    "href": "slides/12-tools.html#custom-layers-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Dealing with text and categorical data",
-    "text": "Dealing with text and categorical data\n\n\n\n\n\n\n\n\n\n\n\npatient_id\nage\nvisits\nblood_type\ndiag_code\nsymptoms\n\n\n\n\n321\n28\n1\n“A”\nnone\n“headache, fatigue”\n\n\n602\n64\n4\n“AB”\n32, 12\n“complains about headache, joint pains”\n\n\n201\n62\n2\n“0”\n12\n“dizzyness, headache”\n\n\n491\n57\n1\n“A”\n6\n“headache, fever”\n\n\n\nEncoding categorical data, like blood_type:\n\n\n\n\nOption 1: Ordinal encoding\n{\"0\": 0, \"A\": 1, \"B\": 2, \"AB\": 3}\n-&gt; imposes an ordering which may not be meaningful\n\n\n\n\n\nOption 2: “One-hot” encoding\n# patient_id    0  A  B  AB\n  321         [ 0  1  0  0 ]\n  602         [ 0  0  0  1 ]\n  201         [ 1  0  0  0 ]\n  491         [ 0  1  0  0 ]\n-&gt; no implicit assumption about ordering"
+    "section": "Custom layers",
+    "text": "Custom layers\nFor stateful layers, subclass the abstract keras.layers.Layer class.\nNeed three methods: __init__, call, and build.\n\n\n\nclass Linear(keras.layers.Layer):\n\n    def __init__(self, units=32):\n        super().__init__()\n        self.units = units\n\n    def build(self, input_shape):\n        self.w = self.add_weight(\n            shape=(input_shape[-1], self.units), initializer=\"random_normal\", trainable=True,\n        )\n        self.b = self.add_weight(\n            shape=(self.units,), initializer=\"random_normal\", trainable=True\n        )\n\n    def call(self, inputs):\n        return tf.linalg.matmul(inputs, self.w) + self.b"
   },
   {
-    "objectID": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data-1",
-    "href": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data-1",
+    "objectID": "slides/12-tools.html#custom-models",
+    "href": "slides/12-tools.html#custom-models",
     "title": "DAT255: Deep learning engineering",
-    "section": "Dealing with text and categorical data",
-    "text": "Dealing with text and categorical data\n\n\n\n\n\n\n\n\n\n\n\npatient_id\nage\nvisits\nblood_type\ndiag_code\nsymptoms\n\n\n\n\n321\n28\n1\n“A”\nnone\n“headache, fatigue”\n\n\n602\n64\n4\n“AB”\n32, 12\n“complains about headache, joint pains”\n\n\n201\n62\n2\n“0”\n12\n“dizzyness, headache”\n\n\n491\n57\n1\n“A”\n6\n“headache, fever”\n\n\n\nEncoding categorical data with vector entries, like diag_code:\n\n\n\n\nOption 1: Ordinal encoding, with one category for each combination\n{\"none\": 0, \"32, 12\": 1, \"12\": 2, \"6\": 3}\n-&gt; assumes combination is distinct from the separate entries\n\n\n\n\n\nOption 2: “One-hot” encoding\n# patient_id   32  12   6\n  321         [ 0   0   0 ]\n  602         [ 1   1   0 ]\n  201         [ 0   1   0 ]\n  491         [ 0   0   1 ]\n-&gt; model will have to learn correlations between columns"
+    "section": "Custom models",
+    "text": "Custom models\nTypically we compose complicated models by writing reuseable blocks of layers, as a function\nOccasionally, however, we might want to rewrite it as a class.\n\n\n\n\n\ndef conv_block(inputs):\n  x = layers.Rescaling(1.0 / 255)(inputs)\n  x = layers.Conv2D(128, 3, strides=2)(x)\n  x = layers.BatchNormalization()(x)\n  x = layers.Activation(\"relu\")(x)\n\n  return x\n\n\nclass ConvBlock(keras.layers.Layer):\n\n  def __init__(self, **kwargs):\n    super().__init__(**kwargs)\n\n    self.conv2d = layers.Conv2D(128, 3, strides=2)\n    self.batchnorm = layers.BatchNormalization()\n\n  def call(self, inputs):\n    x = layers.Rescaling(1.0 / 255)(inputs)\n    x = self.conv2d(x)\n    x = self.bathnorm(x) \n    out = layers.Activation(\"relu\")(x)\n\n    return out"
   },
   {
-    "objectID": "slides/11-tabular-data.html#dealing-with-text-data",
-    "href": "slides/11-tabular-data.html#dealing-with-text-data",
+    "objectID": "slides/12-tools.html#the-ml-project-lifecycle",
+    "href": "slides/12-tools.html#the-ml-project-lifecycle",
     "title": "DAT255: Deep learning engineering",
-    "section": "Dealing with text data",
-    "text": "Dealing with text data\nSophisticated text processing will be the topic for next week\nFor “simple” text we can extend the one-hot encoding scheme and to feature hashing:\n\n\n\n\n\n\n\n\n\n\n\npatient_id\n…\nsymptoms\n\n\n\n\n321\n\n“headache, fatigue”\n\n\n602\n\n“complains about headache, joint pains”\n\n\n201\n\n“dizzyness, headache”\n\n\n491\n\n“headache, fever”\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nheadache\nfatigue\ncomplains\nabout\njoint\npains\ndizzyness\nfever\n\n\n\n\n1\n1\n0\n0\n0\n0\n0\n0\n\n\n1\n0\n1\n1\n1\n1\n0\n0\n\n\n1\n0\n0\n0\n0\n0\n1\n0\n\n\n1\n0\n0\n0\n0\n0\n0\n1"
+    "section": "The ML project lifecycle",
+    "text": "The ML project lifecycle"
   },
   {
-    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data",
-    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data",
+    "objectID": "slides/12-tools.html#experiment-tracking",
+    "href": "slides/12-tools.html#experiment-tracking",
     "title": "DAT255: Deep learning engineering",
-    "section": "Keras convenience layers for categorical data",
-    "text": "Keras convenience layers for categorical data\nEncoding integers, when knowing how many categories exist: CategoryEncoding\n\n\n\n&gt;&gt;&gt; layer = keras.layers.CategoryEncoding(num_tokens=3, output_mode=\"one_hot\")\n&gt;&gt;&gt; data = [2,0,1]\n&gt;&gt;&gt; layer(data)\narray([[0., 0., 1.],\n       [1., 0., 0.],\n       [0., 1., 0.]])\nEncoding data that can be vectors of integers:\n\n\n\n&gt;&gt;&gt; layer = keras.layers.CategoryEncoding(num_tokens=3, output_mode=\"one_hot\")\n&gt;&gt;&gt; data = tf.ragged.constant([[2],[0,1],[0,1,2]])  # uequal lengths -&gt; use tf.ragged\n&gt;&gt;&gt; layer(data)\narray([[0., 0., 1.],\n       [1., 1., 0.],\n       [1., 1., 1.]])"
+    "section": "Experiment tracking 🧑‍🔬",
+    "text": "Experiment tracking 🧑‍🔬\nDuring training: Monitor and diagnose\n\nIs my model still improving?\nAre gradients stable?\nIs the model overfitting?\n\nAfter training: Compare and select\n\nWhich of my models performed best?\n…and most importantly: What was the configuration of the best model?\n\nBefore next training: Hyperparameter selection\n\nWhich new models and hyperparameters should I try?"
   },
   {
-    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-1",
-    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-1",
+    "objectID": "slides/12-tools.html#tools-for-experiment-tracking",
+    "href": "slides/12-tools.html#tools-for-experiment-tracking",
     "title": "DAT255: Deep learning engineering",
-    "section": "Keras convenience layers for categorical data",
-    "text": "Keras convenience layers for categorical data\nEncoding (single) strings: StringLookup\n(For sentences we will use TextVectorization next week)\nCan either provide the list of known strings (aka the vocabulary), of learn it from data:\n\n\n\n&gt;&gt;&gt; layer = keras.layers.StringLookup()\n&gt;&gt;&gt; data = ['a', 'b', 'c']\n&gt;&gt;&gt; layer.adapt(data)\n&gt;&gt;&gt; layer.get_vocabulary()\n['[UNK]', 'c', 'b', 'a']\n&gt;&gt;&gt; layer(data)\narray([3, 2, 1])\n&gt;&gt;&gt; other_data = ['b', 'c', 'd']\n&gt;&gt;&gt; layer(other_data)\narray([2, 1, 0])\nOut-Of-Vocabulary (OOV) gets mapped to [UNK], meaning unknown"
+    "section": "Tools for experiment tracking",
+    "text": "Tools for experiment tracking\nSome options: TensorBoard\n\n\n\n\n\n+ Integrates well with TensorFlow/Keras - Integrates poorly with other frameworks - Less functionality than other tools"
   },
   {
-    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-2",
-    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-2",
+    "objectID": "slides/12-tools.html#tools-for-experiment-tracking-1",
+    "href": "slides/12-tools.html#tools-for-experiment-tracking-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Keras convenience layers for categorical data",
-    "text": "Keras convenience layers for categorical data\nCan also use the same approach for integers, when we don’t know how many categories exist: IntegerLookup\n\n\n\n&gt;&gt;&gt; layer = keras.layers.IntegerLookup()\n&gt;&gt;&gt; data = [12, 14, 46]\n&gt;&gt;&gt; layer.adapt(data)\n&gt;&gt;&gt; layer.get_vocabulary()\n[-1, np.int64(46), np.int64(14), np.int64(12)]\n&gt;&gt;&gt; layer([14, 12, 317])\n&lt;tf.Tensor: shape=(3,), dtype=int64, numpy=array([2, 3, 0])&gt;\n\n\n\nOut-Of-Vocabulary (OOV) numbers get mapped to -1\nCan also have multiple OOV tokens. Check the documentation"
+    "section": "Tools for experiment tracking",
+    "text": "Tools for experiment tracking\nSome options: Weights & Biases\n\n\n\n\n\n+ Loads of functionality, including hyperparameter optimisation + Integrates with practically all frameworks - Commercial product (although free for academic use)"
   },
   {
-    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-3",
-    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-3",
+    "objectID": "slides/12-tools.html#tools-for-experiment-tracking-2",
+    "href": "slides/12-tools.html#tools-for-experiment-tracking-2",
     "title": "DAT255: Deep learning engineering",
-    "section": "Keras convenience layers for categorical data",
-    "text": "Keras convenience layers for categorical data\nOften your dataset will contain a mix of diffent types, requiring different preprocessing.\nA do-it-all solution is to use keras.utils.FeatureSpace. From example in docs:\nfeature_space = FeatureSpace(\n    features={\n        # Categorical features encoded as integers\n        \"fbs\": \"integer_categorical\",\n        \"restecg\": \"integer_categorical\",\n        # Categorical feature encoded as string\n        \"thal\": \"string_categorical\",\n        # Numerical features to discretize\n        \"age\": \"float_discretized\",\n        # Numerical features to normalize\n        \"trestbps\": \"float_normalized\",\n        \"chol\": \"float_normalized\",\n        \"thalach\": \"float_normalized\",\n    },\n    # Our utility will one-hot encode all categorical\n    # features and concat all features into a single\n    # vector (one vector per sample).\n    output_mode=\"concat\",\n)\n# Adapt to training data\nfeature_space.adapt(train_ds)"
+    "section": "Tools for experiment tracking",
+    "text": "Tools for experiment tracking\nSome options: AIM\n\n\n\n\n\n+ Loads of functionality + Integrates with practically all frameworks - Open-source, self-hosted (although paid plans exist)\n\nPlus others too: MLflow, Sacred, Comet, Neptune"
   },
   {
-    "objectID": "slides/11-tabular-data.html#embeddings",
-    "href": "slides/11-tabular-data.html#embeddings",
+    "objectID": "slides/12-tools.html#hyperparameter-optimisation",
+    "href": "slides/12-tools.html#hyperparameter-optimisation",
     "title": "DAT255: Deep learning engineering",
-    "section": "Embeddings",
-    "text": "Embeddings\nProblem:\nIf one-hot encoding many categorical features, each with many categories, we get very many new feature columns\n-&gt; Our data becomes a sparse matrix, meaning most of the elements are zero.\nIs there a more efficient way to encode our data?\n\nEnter embeddings:\nLet’s create a lookup table that maps categorical entries to numerical vectors\n\n\nInstead of\n{\"0\": 0, \"A\": 1, \"B\": 2, \"AB\": 3}\nwe do (for instance)\n{\"0\": [0.2, 1.1], \"A\": [1.6, -0.2], \"B\": [-0.3, 0.7], \"AB\": [1.4, -0.1]}"
+    "section": "Hyperparameter optimisation",
+    "text": "Hyperparameter optimisation\n\nHow many settings can you tweak in your neural network?\n\nHyperparameters cannot be optimised via gradient descent\nNeed to select them through experimentation.\nSince one experiment (one training run) can be very expensive, new settings should be chosen carefully."
   },
   {
-    "objectID": "slides/11-tabular-data.html#embeddings-1",
-    "href": "slides/11-tabular-data.html#embeddings-1",
+    "objectID": "slides/12-tools.html#hyperparameter-optimisation-grid-scan",
+    "href": "slides/12-tools.html#hyperparameter-optimisation-grid-scan",
     "title": "DAT255: Deep learning engineering",
-    "section": "Embeddings",
-    "text": "Embeddings\nNow the magic✨ is:\nThe embeddings are learnt from data\n# These values are updated during training\n# You can have any dimension you like\n{\"0\": [0.2, 1.1], \"A\": [1.6, -0.2], \"B\": [-0.3, 0.7], \"AB\": [1.4, -0.1]}\nWe can treat the embedding space as an Euclidian space where elements close to another are similar or somehow related.\n\nFor categorical data we call it entity embeddings (while next week we’ll look at word embeddings)\nIn Keras:\nkeras.layers.Embedding(input_dim, output_dim)\n\ninput_dim: length of vocabulary\noutput_dim: dimensions of embedding space (you choose)"
+    "section": "Hyperparameter optimisation: Grid scan",
+    "text": "Hyperparameter optimisation: Grid scan\nOption 1: Grid scan\n\n\nDivide the range of each hyperparameter into fixed steps, and test all combinations.\n+ Simple\n+ Parallelisable\n– The higher the dimensionality, the bigger the distance between grid points. Need a big number of experiments to have good coverage"
   },
   {
-    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data",
-    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data",
+    "objectID": "slides/12-tools.html#hyperparameter-optimisation-random-search",
+    "href": "slides/12-tools.html#hyperparameter-optimisation-random-search",
     "title": "DAT255: Deep learning engineering",
-    "section": "Network architectures for tabular data",
-    "text": "Network architectures for tabular data\n\n\n\n\n\nMost common: Straight-up Dense network\nBenefits from:\n\nFeature engineering\nEnsembling\n\n\n\n\nTypically the data rows and columns have no specific ordering or neighbouring relation -&gt; convolutions or recurrence make little sense."
+    "section": "Hyperparameter optimisation: Random search",
+    "text": "Hyperparameter optimisation: Random search\nOption 2: Random search\n\n\nProbabilistic approach: Pick hyperparameter values at random\n+ Simple\n+ Parallelisable\n+ Likely to find a better optimum than grid scan in fewer number of tries\n– Information about one experiment doesn’t help selecting the next\n\n\n\nShould always prefer this over grid search."
   },
   {
-    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data-1",
-    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data-1",
+    "objectID": "slides/12-tools.html#hyperparameter-optimisation-intelligent-choices",
+    "href": "slides/12-tools.html#hyperparameter-optimisation-intelligent-choices",
     "title": "DAT255: Deep learning engineering",
-    "section": "Network architectures for tabular data",
-    "text": "Network architectures for tabular data\n\n\n\nA variation: Wide and deep network"
+    "section": "Hyperparameter optimisation: Intelligent choices",
+    "text": "Hyperparameter optimisation: Intelligent choices\nOption 3: Bayesian optimisation, evolutionary algorithms, and other derivative-free optimisation algorithms\n\n\nLet the result of one experiment influence the choice of the next one\n+ Efficient\n+ Several good frameworks exist\n– Not parallelisable\n\n\n\n\n\n\n\n\nAlways prefer this, except for the most simple cases"
   },
   {
-    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data-2",
-    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data-2",
+    "objectID": "slides/12-tools.html#tools-for-hyperparameter-optimisation",
+    "href": "slides/12-tools.html#tools-for-hyperparameter-optimisation",
     "title": "DAT255: Deep learning engineering",
-    "section": "Network architectures for tabular data",
-    "text": "Network architectures for tabular data\nModern models are often based on the Transformer architecture\n\n\n\n\n\nhttps://arxiv.org/pdf/2410.12034"
+    "section": "Tools for hyperparameter optimisation",
+    "text": "Tools for hyperparameter optimisation\nSome options: KerasTuner, for simple integration with Keras:\n\n\n\ndef model_builder(hp):\n  model = keras.Sequential()\n  model.add(keras.layers.Flatten(input_shape=(28, 28)))\n\n  # Tune the number of units in the first Dense layer\n  units = hp.Int('units', min_value=32, max_value=512, step=32)\n  model.add(keras.layers.Dense(units=units, activation='relu'))\n  model.add(keras.layers.Dense(10), activation=\"softmax\")\n\n  # Tune the learning rate for the optimizer -- choose between 0.01, 0.001, or 0.0001\n  learning_rate = hp.Choice('learning_rate', values=[1e-2, 1e-3, 1e-4])\n\n  model.compile(\n    optimizer=keras.optimizers.Adam(learning_rate=learning_rate),\n    loss=\"categorical_crossentropy\",\n    metrics=['accuracy']\n  )\n\n  return model\n\n\n\n\ntuner = kt.BayesianOptimization(model_builder, objective='val_accuracy')"
   },
   {
-    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data-3",
-    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data-3",
+    "objectID": "slides/12-tools.html#tools-for-hyperparameter-optimisation-1",
+    "href": "slides/12-tools.html#tools-for-hyperparameter-optimisation-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Network architectures for tabular data",
-    "text": "Network architectures for tabular data\nA transformer model for tabular data: TabTransformer\n\n\n\n\n\n\n\n\n\nTabTransformer significantly outperforms MLP and recent deep networks for tabular data while matching the performance of tree-based ensemble models (GBDT).\n\n\n\n\nhttps://arxiv.org/pdf/2012.06678"
+    "section": "Tools for hyperparameter optimisation",
+    "text": "Tools for hyperparameter optimisation\nSome options:\nOptuna, for integration with any framework\nSeveral optimisations algorithms available.\n\n\n\n  units = trial.suggest_int('units', 32, 512)\n  model.add(keras.layers.Dense(units=units, activation='relu'))\n  ...\nComes with visualisation dashboard, VSCode extension"
   },
   {
-    "objectID": "slides/11-tabular-data.html#the-best-model-for-tabular-data",
-    "href": "slides/11-tabular-data.html#the-best-model-for-tabular-data",
+    "objectID": "slides/12-tools.html#tools-for-hyperparameter-optimisation-2",
+    "href": "slides/12-tools.html#tools-for-hyperparameter-optimisation-2",
     "title": "DAT255: Deep learning engineering",
-    "section": "The best model for tabular data",
-    "text": "The best model for tabular data\n\nhttps://arxiv.org/pdf/2207.08815"
+    "section": "Tools for hyperparameter optimisation",
+    "text": "Tools for hyperparameter optimisation\nSome options:\nRay Tune, which interfaces with KerasTuner, Optuna and other optimisation libraries\n\n\n\nsearch_space = {\n  'units': tune.randint(32, 512)\n}\n\ndef model_builder(config):\n  ...\n  units = config['units']\n  model.add(keras.layers.Dense(units=units, activation='relu'))\n  ..."
+  },
+  {
+    "objectID": "slides/10-kickoff.html#project-kickoff",
+    "href": "slides/10-kickoff.html#project-kickoff",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Project kickoff",
+    "text": "Project kickoff\n\n\n\nToday:\n\nA second look at project topics\nSome cool examples by Vegard and Jobjørn\nDetails about:\n\nProject scope\nRequirements and recommendations\nReport and material"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#project-topic",
+    "href": "slides/10-kickoff.html#project-topic",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Project topic",
+    "text": "Project topic\nUp to you! Be creative but reasonable\n\nWe have one rule: Relevant data must exist and be readily available\n(IRL it never is, but this is not our concern right now)\n\n\n\nand one guideline:\nPick something you find interesting and motivating\n\n\n\nProjects are approved by sending in short description on Canvas, deadline next Friday, 28 Feb"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#demo",
+    "href": "slides/10-kickoff.html#demo",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Demo",
+    "text": "Demo"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#assignment-description",
+    "href": "slides/10-kickoff.html#assignment-description",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Assignment description",
+    "text": "Assignment description\n… is now on Canvas:\n\n\n\n\n\nNote: The final submission will be on WiseFlow. Details to follow later"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#formalities",
+    "href": "slides/10-kickoff.html#formalities",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Formalities",
+    "text": "Formalities\n\n\nProject counts for 50% of the final grade\nExam counts for the other 50%\nYou need a passing grade on the project in order to take the exam\n\n\n\n\n\nThe deadline is 25 April\n\nSince the project is graded and goes into the strict WiseFlow system, thereis no possibility for an extension. (Zero, 0, none)"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#scope-and-expectations",
+    "href": "slides/10-kickoff.html#scope-and-expectations",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Scope and expectations",
+    "text": "Scope and expectations\n\n\nMandatory to do:\n\nIdentify a use case for deep learning methods\nConstruct and train a deep neural network\nMake an objective evaluation of model performance\n\n\n\nRecommended to do:\n\nCompare different methods and strategies\nMake use of tools for effective optimisation/monitoring/experimentation\nInvestigate quality of the model prediction\n\n\n\n\nVery recommended: Deploy our model as a web app\n\n\n\n\n\nIn short: Show what you’ve learnt in the course"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#submission-format",
+    "href": "slides/10-kickoff.html#submission-format",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Submission format",
+    "text": "Submission format\nWe want to see two things:\n\n\nA report\nMotivate your choices, describe the implementation, document your experiments, and analyse the outcome. Was it a success? What could have gone better?\nA template for the report will be provided.\n\n\n\n\nThe code\nEverything needed to reproduce your results must be put in a GitHub repo and made accessible. The code must be understandable\n\nThe exact evaluation criteria are listed on Canvas"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#faq",
+    "href": "slides/10-kickoff.html#faq",
+    "title": "DAT255: Deep learning engineering",
+    "section": "FAQ 💬",
+    "text": "FAQ 💬\n\n\nCan I copy code from StackOverflow? Yes, but you must always cite your sources\n\n\n\n\nCan I use ChatGPT / Cursor / &lt;some AI tool&gt; for coding and report writing? Yes, but you must always cite your sources\n\n\n\n\nCan I use pretrained models? Yes, a long as you modify and retrain at least one model\n\n\n\n\nCan I use API calls to OpenAI / DeepSeek / &lt;some service&gt; instead of training my own model? No, but you can use it in addition to your own model"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#next-week-project-week",
+    "href": "slides/10-kickoff.html#next-week-project-week",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Next week: Project week 🙌",
+    "text": "Next week: Project week 🙌\n\n\n\n\nNo lectures, work on the project\n\n\n\n\n\nRemember to submit project description\n\n\n\n\n\nHelp / hints / questions:\n\nI will be available both on Zoom and in physical form in lecture & lab hours\nSend me a message to find a time\n\n\n\n\n\n\nUsual lectures again the week after"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#remember-to-think-about-your-future",
+    "href": "slides/10-kickoff.html#remember-to-think-about-your-future",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Remember to think about your future",
+    "text": "Remember to think about your future\n\n\n\nMany good options for doing more advanced deep learning"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DAT255 lecture notes",
+    "section": "",
+    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates\nMonday week 6: Augmentation and advanced computer vision\nMonday week 7: Sequences, time series, recurrent networks\nThursday week 7: Time series and recurrence (continued)\nMonday week 8: Gradients ++\nThursday week 8: Project kickoff\nMonday week 8: Tabular data"
   },
   {
     "objectID": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
@@ -1057,81 +1134,144 @@
     "text": "TensorFlowplayground"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "DAT255 lecture notes",
-    "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates\nMonday week 6: Augmentation and advanced computer vision\nMonday week 7: Sequences, time series, recurrent networks\nThursday week 7: Time series and recurrence (continued)\nMonday week 8: Gradients ++\nThursday week 8: Project kickoff\nMonday week 8: Tabular data"
+    "objectID": "slides/11-tabular-data.html#this-week",
+    "href": "slides/11-tabular-data.html#this-week",
+    "title": "DAT255: Deep learning engineering",
+    "section": "This week",
+    "text": "This week\n\n\n\nToday:\n\nDeep learning on tabular data\nData preprocessing with Keras\n\nFeature scaling\nConverting text and categorical values\nQuick look at embeddings\n\n\nThursday:\n\nCustom Keras objects\nSome ML experiment monitoring tools"
   },
   {
-    "objectID": "slides/10-kickoff.html#project-kickoff",
-    "href": "slides/10-kickoff.html#project-kickoff",
+    "objectID": "slides/11-tabular-data.html#tabular-data",
+    "href": "slides/11-tabular-data.html#tabular-data",
     "title": "DAT255: Deep learning engineering",
-    "section": "Project kickoff",
-    "text": "Project kickoff\n\n\n\nToday:\n\nA second look at project topics\nSome cool examples by Vegard and Jobjørn\nDetails about:\n\nProject scope\nRequirements and recommendations\nReport and material"
+    "section": "Tabular data",
+    "text": "Tabular data\nData that makes sense to put in a table:\n\n\n\n\n\n\n\n\n\n\n\npatient_id\nage\nvisits\nblood_type\ndiag_code\nsymptoms\n\n\n\n\n321\n28\n1\n“A”\nnone\n“headache, fatigue”\n\n\n602\n64\n4\n“AB”\n32, 12\n“complains about headache, joint pains”\n\n\n201\n62\n2\n“0”\n12\n“dizzyness, headache”\n\n\n491\n57\n1\n“A”\n6\n“headache, fever”\n\n\n\n\nCompare to e.g. images and time series:"
   },
   {
-    "objectID": "slides/10-kickoff.html#project-topic",
-    "href": "slides/10-kickoff.html#project-topic",
+    "objectID": "slides/11-tabular-data.html#feature-normalisation",
+    "href": "slides/11-tabular-data.html#feature-normalisation",
     "title": "DAT255: Deep learning engineering",
-    "section": "Project topic",
-    "text": "Project topic\nUp to you! Be creative but reasonable\n\nWe have one rule: Relevant data must exist and be readily available\n(IRL it never is, but this is not our concern right now)\n\n\n\nand one guideline:\nPick something you find interesting and motivating\n\n\n\nProjects are approved by sending in short description on Canvas, deadline next Friday, 28 Feb"
+    "section": "Feature normalisation",
+    "text": "Feature normalisation\nConsider optimisation where\n\nFeatures have similar scale\nFeatures have different scale"
   },
   {
-    "objectID": "slides/10-kickoff.html#demo",
-    "href": "slides/10-kickoff.html#demo",
+    "objectID": "slides/11-tabular-data.html#feature-normalisation-1",
+    "href": "slides/11-tabular-data.html#feature-normalisation-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Demo",
-    "text": "Demo"
+    "section": "Feature normalisation",
+    "text": "Feature normalisation\nConsider optimisation where\n\nFeatures have similar scale\nFeatures have different scale\n\nRemember also relation between input and output variances:"
   },
   {
-    "objectID": "slides/10-kickoff.html#assignment-description",
-    "href": "slides/10-kickoff.html#assignment-description",
+    "objectID": "slides/11-tabular-data.html#feature-normalisation-2",
+    "href": "slides/11-tabular-data.html#feature-normalisation-2",
     "title": "DAT255: Deep learning engineering",
-    "section": "Assignment description",
-    "text": "Assignment description\n… is now on Canvas:\n\n\n\n\n\nNote: The final submission will be on WiseFlow. Details to follow later"
+    "section": "Feature normalisation",
+    "text": "Feature normalisation\n\n\n\nNormalisation:\nMake features look like a normal distribution with mean = 0 and variance = 1\nUsual approach:\nimport numpy as np\nx_normalised = (x - np.mean(x)) / np.std(x)\n\n\n\nProvided by\n\nsklearn.preprocessing.StandardScaler()\nkeras.layers.Normalization()"
   },
   {
-    "objectID": "slides/10-kickoff.html#formalities",
-    "href": "slides/10-kickoff.html#formalities",
+    "objectID": "slides/11-tabular-data.html#feature-transformations",
+    "href": "slides/11-tabular-data.html#feature-transformations",
     "title": "DAT255: Deep learning engineering",
-    "section": "Formalities",
-    "text": "Formalities\n\n\nProject counts for 50% of the final grade\nExam counts for the other 50%\nYou need a passing grade on the project in order to take the exam\n\n\n\n\n\nThe deadline is 25 April\n\nSince the project is graded and goes into the strict WiseFlow system, thereis no possibility for an extension. (Zero, 0, none)"
+    "section": "Feature transformations",
+    "text": "Feature transformations"
   },
   {
-    "objectID": "slides/10-kickoff.html#scope-and-expectations",
-    "href": "slides/10-kickoff.html#scope-and-expectations",
+    "objectID": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data",
+    "href": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data",
     "title": "DAT255: Deep learning engineering",
-    "section": "Scope and expectations",
-    "text": "Scope and expectations\n\n\nMandatory to do:\n\nIdentify a use case for deep learning methods\nConstruct and train a deep neural network\nMake an objective evaluation of model performance\n\n\n\nRecommended to do:\n\nCompare different methods and strategies\nMake use of tools for effective optimisation/monitoring/experimentation\nInvestigate quality of the model prediction\n\n\n\n\nVery recommended: Deploy our model as a web app\n\n\n\n\n\nIn short: Show what you’ve learnt in the course"
+    "section": "Dealing with text and categorical data",
+    "text": "Dealing with text and categorical data\n\n\n\n\n\n\n\n\n\n\n\npatient_id\nage\nvisits\nblood_type\ndiag_code\nsymptoms\n\n\n\n\n321\n28\n1\n“A”\nnone\n“headache, fatigue”\n\n\n602\n64\n4\n“AB”\n32, 12\n“complains about headache, joint pains”\n\n\n201\n62\n2\n“0”\n12\n“dizzyness, headache”\n\n\n491\n57\n1\n“A”\n6\n“headache, fever”\n\n\n\nEncoding categorical data, like blood_type:\n\n\n\n\nOption 1: Ordinal encoding\n{\"0\": 0, \"A\": 1, \"B\": 2, \"AB\": 3}\n-&gt; imposes an ordering which may not be meaningful\n\n\n\n\n\nOption 2: “One-hot” encoding\n# patient_id    0  A  B  AB\n  321         [ 0  1  0  0 ]\n  602         [ 0  0  0  1 ]\n  201         [ 1  0  0  0 ]\n  491         [ 0  1  0  0 ]\n-&gt; no implicit assumption about ordering"
   },
   {
-    "objectID": "slides/10-kickoff.html#submission-format",
-    "href": "slides/10-kickoff.html#submission-format",
+    "objectID": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data-1",
+    "href": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Submission format",
-    "text": "Submission format\nWe want to see two things:\n\n\nA report\nMotivate your choices, describe the implementation, document your experiments, and analyse the outcome. Was it a success? What could have gone better?\nA template for the report will be provided.\n\n\n\n\nThe code\nEverything needed to reproduce your results must be put in a GitHub repo and made accessible. The code must be understandable\n\nThe exact evaluation criteria are listed on Canvas"
+    "section": "Dealing with text and categorical data",
+    "text": "Dealing with text and categorical data\n\n\n\n\n\n\n\n\n\n\n\npatient_id\nage\nvisits\nblood_type\ndiag_code\nsymptoms\n\n\n\n\n321\n28\n1\n“A”\nnone\n“headache, fatigue”\n\n\n602\n64\n4\n“AB”\n32, 12\n“complains about headache, joint pains”\n\n\n201\n62\n2\n“0”\n12\n“dizzyness, headache”\n\n\n491\n57\n1\n“A”\n6\n“headache, fever”\n\n\n\nEncoding categorical data with vector entries, like diag_code:\n\n\n\n\nOption 1: Ordinal encoding, with one category for each combination\n{\"none\": 0, \"32, 12\": 1, \"12\": 2, \"6\": 3}\n-&gt; assumes combination is distinct from the separate entries\n\n\n\n\n\nOption 2: “One-hot” encoding\n# patient_id   32  12   6\n  321         [ 0   0   0 ]\n  602         [ 1   1   0 ]\n  201         [ 0   1   0 ]\n  491         [ 0   0   1 ]\n-&gt; model will have to learn correlations between columns"
   },
   {
-    "objectID": "slides/10-kickoff.html#faq",
-    "href": "slides/10-kickoff.html#faq",
+    "objectID": "slides/11-tabular-data.html#dealing-with-text-data",
+    "href": "slides/11-tabular-data.html#dealing-with-text-data",
     "title": "DAT255: Deep learning engineering",
-    "section": "FAQ 💬",
-    "text": "FAQ 💬\n\n\nCan I copy code from StackOverflow? Yes, but you must always cite your sources\n\n\n\n\nCan I use ChatGPT / Cursor / &lt;some AI tool&gt; for coding and report writing? Yes, but you must always cite your sources\n\n\n\n\nCan I use pretrained models? Yes, a long as you modify and retrain at least one model\n\n\n\n\nCan I use API calls to OpenAI / DeepSeek / &lt;some service&gt; instead of training my own model? No, but you can use it in addition to your own model"
+    "section": "Dealing with text data",
+    "text": "Dealing with text data\nSophisticated text processing will be the topic for next week\nFor “simple” text we can extend the one-hot encoding scheme and to feature hashing:\n\n\n\n\n\n\n\n\n\n\n\npatient_id\n…\nsymptoms\n\n\n\n\n321\n\n“headache, fatigue”\n\n\n602\n\n“complains about headache, joint pains”\n\n\n201\n\n“dizzyness, headache”\n\n\n491\n\n“headache, fever”\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nheadache\nfatigue\ncomplains\nabout\njoint\npains\ndizzyness\nfever\n\n\n\n\n1\n1\n0\n0\n0\n0\n0\n0\n\n\n1\n0\n1\n1\n1\n1\n0\n0\n\n\n1\n0\n0\n0\n0\n0\n1\n0\n\n\n1\n0\n0\n0\n0\n0\n0\n1"
   },
   {
-    "objectID": "slides/10-kickoff.html#next-week-project-week",
-    "href": "slides/10-kickoff.html#next-week-project-week",
+    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data",
+    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data",
     "title": "DAT255: Deep learning engineering",
-    "section": "Next week: Project week 🙌",
-    "text": "Next week: Project week 🙌\n\n\n\n\nNo lectures, work on the project\n\n\n\n\n\nRemember to submit project description\n\n\n\n\n\nHelp / hints / questions:\n\nI will be available both on Zoom and in physical form in lecture & lab hours\nSend me a message to find a time\n\n\n\n\n\n\nUsual lectures again the week after"
+    "section": "Keras convenience layers for categorical data",
+    "text": "Keras convenience layers for categorical data\nEncoding integers, when knowing how many categories exist: CategoryEncoding\n\n\n\n&gt;&gt;&gt; layer = keras.layers.CategoryEncoding(num_tokens=3, output_mode=\"one_hot\")\n&gt;&gt;&gt; data = [2,0,1]\n&gt;&gt;&gt; layer(data)\narray([[0., 0., 1.],\n       [1., 0., 0.],\n       [0., 1., 0.]])\nEncoding data that can be vectors of integers:\n\n\n\n&gt;&gt;&gt; layer = keras.layers.CategoryEncoding(num_tokens=3, output_mode=\"one_hot\")\n&gt;&gt;&gt; data = tf.ragged.constant([[2],[0,1],[0,1,2]])  # uequal lengths -&gt; use tf.ragged\n&gt;&gt;&gt; layer(data)\narray([[0., 0., 1.],\n       [1., 1., 0.],\n       [1., 1., 1.]])"
   },
   {
-    "objectID": "slides/10-kickoff.html#remember-to-think-about-your-future",
-    "href": "slides/10-kickoff.html#remember-to-think-about-your-future",
+    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-1",
+    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Remember to think about your future",
-    "text": "Remember to think about your future\n\n\n\nMany good options for doing more advanced deep learning"
+    "section": "Keras convenience layers for categorical data",
+    "text": "Keras convenience layers for categorical data\nEncoding (single) strings: StringLookup\n(For sentences we will use TextVectorization next week)\nCan either provide the list of known strings (aka the vocabulary), of learn it from data:\n\n\n\n&gt;&gt;&gt; layer = keras.layers.StringLookup()\n&gt;&gt;&gt; data = ['a', 'b', 'c']\n&gt;&gt;&gt; layer.adapt(data)\n&gt;&gt;&gt; layer.get_vocabulary()\n['[UNK]', 'c', 'b', 'a']\n&gt;&gt;&gt; layer(data)\narray([3, 2, 1])\n&gt;&gt;&gt; other_data = ['b', 'c', 'd']\n&gt;&gt;&gt; layer(other_data)\narray([2, 1, 0])\nOut-Of-Vocabulary (OOV) gets mapped to [UNK], meaning unknown"
+  },
+  {
+    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-2",
+    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Keras convenience layers for categorical data",
+    "text": "Keras convenience layers for categorical data\nCan also use the same approach for integers, when we don’t know how many categories exist: IntegerLookup\n\n\n\n&gt;&gt;&gt; layer = keras.layers.IntegerLookup()\n&gt;&gt;&gt; data = [12, 14, 46]\n&gt;&gt;&gt; layer.adapt(data)\n&gt;&gt;&gt; layer.get_vocabulary()\n[-1, np.int64(46), np.int64(14), np.int64(12)]\n&gt;&gt;&gt; layer([14, 12, 317])\n&lt;tf.Tensor: shape=(3,), dtype=int64, numpy=array([2, 3, 0])&gt;\n\n\n\nOut-Of-Vocabulary (OOV) numbers get mapped to -1\nCan also have multiple OOV tokens. Check the documentation"
+  },
+  {
+    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-3",
+    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Keras convenience layers for categorical data",
+    "text": "Keras convenience layers for categorical data\nOften your dataset will contain a mix of diffent types, requiring different preprocessing.\nA do-it-all solution is to use keras.utils.FeatureSpace. From example in docs:\nfeature_space = FeatureSpace(\n    features={\n        # Categorical features encoded as integers\n        \"fbs\": \"integer_categorical\",\n        \"restecg\": \"integer_categorical\",\n        # Categorical feature encoded as string\n        \"thal\": \"string_categorical\",\n        # Numerical features to discretize\n        \"age\": \"float_discretized\",\n        # Numerical features to normalize\n        \"trestbps\": \"float_normalized\",\n        \"chol\": \"float_normalized\",\n        \"thalach\": \"float_normalized\",\n    },\n    # Our utility will one-hot encode all categorical\n    # features and concat all features into a single\n    # vector (one vector per sample).\n    output_mode=\"concat\",\n)\n# Adapt to training data\nfeature_space.adapt(train_ds)"
+  },
+  {
+    "objectID": "slides/11-tabular-data.html#embeddings",
+    "href": "slides/11-tabular-data.html#embeddings",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings\nProblem:\nIf one-hot encoding many categorical features, each with many categories, we get very many new feature columns\n-&gt; Our data becomes a sparse matrix, meaning most of the elements are zero.\nIs there a more efficient way to encode our data?\n\nEnter embeddings:\nLet’s create a lookup table that maps categorical entries to numerical vectors\n\n\nInstead of\n{\"0\": 0, \"A\": 1, \"B\": 2, \"AB\": 3}\nwe do (for instance)\n{\"0\": [0.2, 1.1], \"A\": [1.6, -0.2], \"B\": [-0.3, 0.7], \"AB\": [1.4, -0.1]}"
+  },
+  {
+    "objectID": "slides/11-tabular-data.html#embeddings-1",
+    "href": "slides/11-tabular-data.html#embeddings-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings\nNow the magic✨ is:\nThe embeddings are learnt from data\n# These values are updated during training\n# You can have any dimension you like\n{\"0\": [0.2, 1.1], \"A\": [1.6, -0.2], \"B\": [-0.3, 0.7], \"AB\": [1.4, -0.1]}\nWe can treat the embedding space as an Euclidian space where elements close to another are similar or somehow related.\n\nFor categorical data we call it entity embeddings (while next week we’ll look at word embeddings)\nIn Keras:\nkeras.layers.Embedding(input_dim, output_dim)\n\ninput_dim: length of vocabulary\noutput_dim: dimensions of embedding space (you choose)"
+  },
+  {
+    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data",
+    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Network architectures for tabular data",
+    "text": "Network architectures for tabular data\n\n\n\n\n\nMost common: Straight-up Dense network\nBenefits from:\n\nFeature engineering\nEnsembling\n\n\n\n\nTypically the data rows and columns have no specific ordering or neighbouring relation -&gt; convolutions or recurrence make little sense."
+  },
+  {
+    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data-1",
+    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Network architectures for tabular data",
+    "text": "Network architectures for tabular data\n\n\n\nA variation: Wide and deep network"
+  },
+  {
+    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data-2",
+    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Network architectures for tabular data",
+    "text": "Network architectures for tabular data\nModern models are often based on the Transformer architecture\n\n\n\n\n\nhttps://arxiv.org/pdf/2410.12034"
+  },
+  {
+    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data-3",
+    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Network architectures for tabular data",
+    "text": "Network architectures for tabular data\nA transformer model for tabular data: TabTransformer\n\n\n\n\n\n\n\n\n\nTabTransformer significantly outperforms MLP and recent deep networks for tabular data while matching the performance of tree-based ensemble models (GBDT).\n\n\n\n\nhttps://arxiv.org/pdf/2012.06678"
+  },
+  {
+    "objectID": "slides/11-tabular-data.html#the-best-model-for-tabular-data",
+    "href": "slides/11-tabular-data.html#the-best-model-for-tabular-data",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The best model for tabular data",
+    "text": "The best model for tabular data\n\nhttps://arxiv.org/pdf/2207.08815"
   },
   {
     "objectID": "slides/2-tools.html#frameworks",
