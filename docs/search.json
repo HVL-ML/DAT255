@@ -735,6 +735,223 @@
     "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 4 (last):"
   },
   {
+    "objectID": "slides/14-nlp2.html#natural-language-processing-nlp",
+    "href": "slides/14-nlp2.html#natural-language-processing-nlp",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Natural language processing (NLP)",
+    "text": "Natural language processing (NLP)\n(as opposed to machine language)\nSince most human knowledge is stored as text, NLP is an important field of study\n\n\nKnowing grammar, syntax and language structure (i.e. linguistics), can we write down the set of rules required to do a language task like translation?\n\n\n\nNot really, no.\n\n\n\nKnowing basically nothing, but having a library of example text, can we statistically infer the rules required to do a language task?\n\n\n\nYes!\n\n\nDisclaimer: There’s loads of interesting NLP stuff that we will skip, because it has been obsoleted by transformer models. Look at the supplemental reading on Canvas."
+  },
+  {
+    "objectID": "slides/14-nlp2.html#nlp-tasks",
+    "href": "slides/14-nlp2.html#nlp-tasks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "NLP tasks",
+    "text": "NLP tasks\n\nText classification:\nWhat is the topic of this text?\nContent filtering:\nIs this email spam? Does this post contain swearing?\nSentiment analysis:\nIs this review positive or negative?\nTranslation:\nWhat is this text in French?\nSummarisation:\nCan you give a short summary of this article?"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#plan",
+    "href": "slides/14-nlp2.html#plan",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Plan",
+    "text": "Plan\nThis week:\nBasics of natural language processing\nPreprocessing: - Text vectorisation - Tokenisation\nNext week:\n\nTransformers and the attention mechanism"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#our-toolbox-so-far",
+    "href": "slides/14-nlp2.html#our-toolbox-so-far",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Our toolbox so far:",
+    "text": "Our toolbox so far:\nWe know how to do\n\nSequence processing:\nKnow how to construct RNNs, CNNs\nInput encoding:\nLooked at embeddings last week\n\nWith this, we can build an NLP model at 2017 level (will do so this week)\nNext week we will learn about\n\nTransformers (not the electrical kind)\n\nWith this, we can build an NLP model at 2022 level\n\n\n\n\nMMLU benchmark"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#getting-text-into-our-model",
+    "href": "slides/14-nlp2.html#getting-text-into-our-model",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Getting text into our model",
+    "text": "Getting text into our model\n\n\nText vectorisation: Converting text to numeric data.\nTypical approach consists of several steps\n\n\nStandardisation:Remove diacritics, punctuation, convert to lowercase\nTokenisation:Split text into tokens which can be words, subwords, or groups of words\nIndexing:Convert tokens to integer values\nEncoding:Convert indices into embeddings or one-hot encoding\n\n\n\n\n\n\nDeep Learning with Python, F. Chollet"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#text-vectorisation",
+    "href": "slides/14-nlp2.html#text-vectorisation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text vectorisation",
+    "text": "Text vectorisation\nCan do all the processing steps with the keras.layers.TextVectorization layer\n\nA preprocessing layer which maps text features to integer sequences.\n\n\n\n\nkeras.layers.TextVectorization(\n  max_tokens=None,\n  standardize=\"lower_and_strip_punctuation\",\n  split=\"whitespace\",\n  ngrams=None,\n  output_mode=\"int\",\n  output_sequence_length=None,\n  vocabulary=None,\n  ...\n)\nstandardize and split can be custom functions."
+  },
+  {
+    "objectID": "slides/14-nlp2.html#text-vectorisation-1",
+    "href": "slides/14-nlp2.html#text-vectorisation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text vectorisation",
+    "text": "Text vectorisation\nCan do all the processing steps with the keras.layers.TextVectorization layer\n\n\n\nThe vocabulary is built automatically from data by calling adapt():\n\n\n\nvectorize_layer = keras.layers.TextVectorization(\n  max_tokens=1000,\n  standardize=\"lower_and_strip_punctuation\",\n  output_sequence_length=250\n)\n\nvectorize_layer.adapt(dataset)\nvectorize_layer.get_vocabulary()[:10]\n# ['', '[UNK]', 'the', 'and', 'a', 'of', 'to', 'is', 'in', 'it']\n\n\n\n\nWe reserve index 1 ('[UNK]') for unknown, out-of-vocabulary tokens\nWe reserve index 0 ('') for the mask token, which used to pad sequences"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#text-vectorisation-2",
+    "href": "slides/14-nlp2.html#text-vectorisation-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text vectorisation",
+    "text": "Text vectorisation\nTest sentence from the IMDb movie review dataset:\n\n\n\nText:     I   am  shocked.  Shocked  and  dismayed  that  the   428   of   you   IMDB  users\nEncoded: 10  238     2355      2355    3         1    12    2     1    5    23    933   5911\nDecoded:  i   am  shocked   shocked  and     [UNK]  that  the  [UNK]  of   you   imdb  users\n\nCan remove HTML tags (or other uninteresting stuff) by using regexes:\n\n\n\ndef custom_standardization(input_data):\n  lowercase = tf.strings.lower(input_data)\n  without_html = tf.strings.regex_replace(lowercase, '&lt;[^&gt;]*&gt;', ' ')\n  without_punctuation = tf.strings.regex_replace(without_html, '[{}]'.format(string.punctuation), '')\n  return without_punctuation\n\nvectorize_layer = keras.layers.TextVectorization(\n  standardize=custom_standardization\n)\nNote: TextVectorization is based on TensorFlow operations, so using it with other backend frameworks is complicated."
+  },
+  {
+    "objectID": "slides/14-nlp2.html#detour-n-grams",
+    "href": "slides/14-nlp2.html#detour-n-grams",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Detour: N-grams",
+    "text": "Detour: N-grams\nSo far all words receive a separate index; we assume no relation between them.\nSince text is not strictly ordered, how about training a Dense model on the presence of words, and just ignore the ordering?\nConsider the IMDb review dataset again:\n\n\n\n\n\n\n\n\n\n\nReview\nSentiment\n\n\n\n\nProbably my all-time favorite movie, a story of selflessness, sacrifice and dedication to …\npositive\n\n\nIf you like original gut wrenching laughter you will like this movie. If you are young …\npositive\n\n\nThis movie made it into one of my top 10 most awful movies. Horrible. There wasn’t …\nnegative\n\n\n\n\n\n\nCan classify decently well by learning correlations between single words and sentiment.\nIn this case we treat the text as a set and not a sequence."
+  },
+  {
+    "objectID": "slides/14-nlp2.html#detour-n-grams-1",
+    "href": "slides/14-nlp2.html#detour-n-grams-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Detour: N-grams",
+    "text": "Detour: N-grams\nThere are still some word combinations that throw us off:\n\n\"good\" is very different from \"not good\".\n\n\n\n\n\nSuch modifiers are placed close, so we can extend our vocabulary with pairs:\n\n“… not really expecting much,”\n   {“not”, “not really”, “really”, “really expecting”, “expecting”, “expecting much”]}\n\n\n\n\nThis approach of keeping some ordering, popular around 2010, is called\n\nbigrams (for pairs for words)\ntrigrams (for triplets of words)\nN-grams (for N words)"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#detour-n-grams-2",
+    "href": "slides/14-nlp2.html#detour-n-grams-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Detour: N-grams",
+    "text": "Detour: N-grams\n\nN-grams apply to other data as well, for instance\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSequence\n1-gram\n2-gram\n3-gram\n\n\n\n\nProtein sequencing\nCys-Gly-Leu-Ser-Trp\nCys, Gly, Leu, Ser, Trp,\nCys-Gly, Gly-Leu, Leu-Ser, Ser-Trp\nCys-Gly-Leu, Gly-Leu-Ser, Leu-Ser-Trp\n\n\nDNA sequencing\nAGCTTCGA\nA, G, C, T, T, C, G, A\nAG, GC, CT, TT, TC, CG, GA\nAGC, GCT, CTT, TTC, TCG, CGA,\n\n\n\n\n\n\nFor language research purpuses N-grams are still useful; have a look atthe Google N-gram Viewer"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#embeddings",
+    "href": "slides/14-nlp2.html#embeddings",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings\nLet’s return to single words.\nOur text is converted into numbers – We can convert them further into good numbers, by creating word embeddings.\nRecall we could map categorical values to vectors of floating-point values:\n\n\n\nmy_embedding = {\n  'the': [-1.46, -0.86,  0.09],\n  'and': [-0.27,  1.15,  1.19],\n  'a':   [ 1.17,  0.06, -0.16],\n  'of':  [ 0.60,  0.10,  0.22],\n  ...\n}\nAt first, these values are randomly initialised\nThen, we optimise them during training."
+  },
+  {
+    "objectID": "slides/14-nlp2.html#embeddings-1",
+    "href": "slides/14-nlp2.html#embeddings-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings\nEmbedding layers are practically the same as one-hot encoding, followed by a linear Dense layer (without the bias term):\n\n\n\n\n\n\nthe  [ 0     1     0     0 ]\n\n\n[ -1.46 -0.86  0.09 ]\n\n\n\n\n\nembedding = keras.Sequential([\n  keras.layers.StringLookup(output_mode=\"one-hot\"),\n  keras.layers.Dense(\n    units=embedding_dim,\n    use_bias=False,\n    activation=None\n  )\n])\n\n\nDifference is that Embedding layers are implemented in a much more efficient way."
+  },
+  {
+    "objectID": "slides/14-nlp2.html#demo",
+    "href": "slides/14-nlp2.html#demo",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Demo",
+    "text": "Demo\n\n\n\nLet’s visualise some embeddings"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#embeddings-2",
+    "href": "slides/14-nlp2.html#embeddings-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#computing-similarity-in-embedding-space",
+    "href": "slides/14-nlp2.html#computing-similarity-in-embedding-space",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Computing similarity in embedding space",
+    "text": "Computing similarity in embedding space\nWe’ve seen there is a relation between semantics and position in embedding space.\nHow can we measure token similarity?\n\n\nOption 1: Euclidian (L2) norm\n-&gt; distance between positions \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\)\n\n\\[\n\\small\n|| (\\mathbf{a} - \\mathbf{b}) ||_2 = \\sqrt{(a_1 - b_1)^2 + ... \\ (a_n - b_n)^2}\n\\]\n\n\n\nOption 2: Cosine similarity\n-&gt; angular difference between positions \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\) (ignores vector lengths)\n\n\\[\n\\small\n\\cos(\\mathbf{a}, \\mathbf{b}) = \\frac{\\mathbf{a} \\cdot \\mathbf{b}}{||\\mathbf{a}|| \\cdot ||\\mathbf{b}||}\n\\]"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#computing-similarity-in-embedding-space-1",
+    "href": "slides/14-nlp2.html#computing-similarity-in-embedding-space-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Computing similarity in embedding space",
+    "text": "Computing similarity in embedding space\nHow to interpret Euclidian vs cosine similarity?\nConsider this example from StackOverflow:\n\nYou run an online shop and want to compare customers.\n\nUser 1 bought 1x eggs, 1x flour and 1x sugar.\nUser 2 bought 100x eggs, 100x flour and 100x sugar.\nUser 3 bought 1x eggs, 1x Vodka and 1x Red Bull.\n\n\n\n-&gt; By cosine similarity, user 1 and user 2 are more similar\n-&gt; By Euclidian similarity, user 1 and user 3 are more similar\nWord embeddings are affected by word frequency, so cosine similarity is often preferred."
+  },
+  {
+    "objectID": "slides/14-nlp2.html#embeddings-3",
+    "href": "slides/14-nlp2.html#embeddings-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#better-text-tokenisation",
+    "href": "slides/14-nlp2.html#better-text-tokenisation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Better text tokenisation",
+    "text": "Better text tokenisation\n\n\n\nSome words are obviously variants of the same; but conjugated, in plural, etc.\n\nam, is, are are all variants of the lemma that is be\n\n\n\n\nWe can collapse these in order to simplify the vocabulary our model needs to learn:\n\nHe is reading books -&gt; He be read book\n\n\n\n\nManually composed algorithms for this lemmatization have been developed over long time."
+  },
+  {
+    "objectID": "slides/14-nlp2.html#better-text-tokenisation-1",
+    "href": "slides/14-nlp2.html#better-text-tokenisation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Better text tokenisation",
+    "text": "Better text tokenisation\nModern tokenisation algorithms are not inspired by linguistics, but rather substring frequencies in data.\nDifferent LLMs use different algorithms, but they are mostly based on splitting words into individual characters and recombing them into common subwords.\n\nThe final vocabulary is under no obligation to make sense to us 🤷\nRandomly selected tokens from the GPT-2 tokeniser vocabulary:\n\n\n\n\n objective         stacked             USB                Energy\n 306               booster            Bird                learn\n stationary        nighttime          85                  rice\n tensions         mission             iency               quitting\nagging             hypers             OOOOOOOO           Typ\n reopen           finding              Spoon              Plate\n nat              Ïĥ                   climates           Druid\ndownload          isition             æĦ                  partic\n predis            calf                Object            annie\n\nDifferent tokenisers example"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#pretrained-embeddings-and-models",
+    "href": "slides/14-nlp2.html#pretrained-embeddings-and-models",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Pretrained embeddings and models",
+    "text": "Pretrained embeddings and models\n\n\nFor image classification tasks we could use take pretrained models and fine-tune, without having to retrain the first layers\n\nFirst layers were general enough to transfer well to basically all other tasks\n\nSame for NLP models:\nEmbeddings are general and can be reused for other models or tasks."
+  },
+  {
+    "objectID": "slides/14-nlp2.html#resources",
+    "href": "slides/14-nlp2.html#resources",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Resources",
+    "text": "Resources\nTensorFlow text library https://www.tensorflow.org/text/guide/tf_text_intro\nHuggingface"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#canvas",
+    "href": "slides/14-nlp2.html#canvas",
+    "title": "DAT255: Deep learning engineering",
+    "section": "CANVAS",
+    "text": "CANVAS\njurafsky chap 6\nnext week jurafsky chap 10"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#rnns-thursday",
+    "href": "slides/14-nlp2.html#rnns-thursday",
+    "title": "DAT255: Deep learning engineering",
+    "section": "RNNs THURSDAY",
+    "text": "RNNs THURSDAY\nMention we spend little time on RNNs compared to the book\nRNNs and embedding masking (Chollet p 333)"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#shakespeare-character-rnn",
+    "href": "slides/14-nlp2.html#shakespeare-character-rnn",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Shakespeare character RNN",
+    "text": "Shakespeare character RNN"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#llms-as-autoregressive-probability-calculators",
+    "href": "slides/14-nlp2.html#llms-as-autoregressive-probability-calculators",
+    "title": "DAT255: Deep learning engineering",
+    "section": "LLMs as autoregressive probability calculators",
+    "text": "LLMs as autoregressive probability calculators\n— Next week"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#attention",
+    "href": "slides/14-nlp2.html#attention",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Attention",
+    "text": "Attention"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#transformers",
+    "href": "slides/14-nlp2.html#transformers",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Transformers",
+    "text": "Transformers\nStarcraft transformer model\nhttps://deepmind.google/discover/blog/alphastar-mastering-the-real-time-strategy-game-starcraft-ii/"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#pretrained-embeddings-and-models-1",
+    "href": "slides/14-nlp2.html#pretrained-embeddings-and-models-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Pretrained embeddings and models",
+    "text": "Pretrained embeddings and models\n(compare to pretrained CNNs)\nHuggingface etc"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#some-notable-open-source-models",
+    "href": "slides/14-nlp2.html#some-notable-open-source-models",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Some notable open-source models",
+    "text": "Some notable open-source models"
+  },
+  {
+    "objectID": "slides/14-nlp2.html#multi-modal-models",
+    "href": "slides/14-nlp2.html#multi-modal-models",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Multi-modal models",
+    "text": "Multi-modal models"
+  },
+  {
     "objectID": "slides/12-tools.html#this-week",
     "href": "slides/12-tools.html#this-week",
     "title": "DAT255: Deep learning engineering",
@@ -949,7 +1166,7 @@
     "href": "index.html",
     "title": "DAT255 lecture notes",
     "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates\nMonday week 6: Augmentation and advanced computer vision\nMonday week 7: Sequences, time series, recurrent networks\nThursday week 7: Time series and recurrence (continued)\nMonday week 8: Gradients ++\nThursday week 8: Project kickoff\nMonday week 8: Tabular data"
+    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates\nMonday week 6: Augmentation and advanced computer vision\nMonday week 7: Sequences, time series, recurrent networks\nThursday week 7: Time series and recurrence (continued)\nMonday week 8: Gradients ++\nThursday week 8: Project kickoff\nMonday week 10: Tabular data\nThursday week 10: Custom Keras object and development tools\nMonday week 11: Natural language processing 1: Text vectorisation"
   },
   {
     "objectID": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
@@ -1272,6 +1489,160 @@
     "title": "DAT255: Deep learning engineering",
     "section": "The best model for tabular data",
     "text": "The best model for tabular data\n\nhttps://arxiv.org/pdf/2207.08815"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#natural-language-processing-nlp",
+    "href": "slides/13-nlp-basics.html#natural-language-processing-nlp",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Natural language processing (NLP)",
+    "text": "Natural language processing (NLP)\n(as opposed to machine language)\nSince most human knowledge is stored as text, NLP is an important field of study\n\n\nKnowing grammar, syntax and language structure (i.e. linguistics), can we write down the set of rules required to do a language task like translation?\n\n\n\nNot really, no.\n\n\n\nKnowing basically nothing, but having a library of example text, can we statistically infer the rules required to do a language task?\n\n\n\nYes!\n\n\nDisclaimer: There’s loads of interesting NLP stuff that we will skip, because it has been obsoleted by transformer models. Look at the supplemental reading on Canvas."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#nlp-tasks",
+    "href": "slides/13-nlp-basics.html#nlp-tasks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "NLP tasks",
+    "text": "NLP tasks\n\nText classification:\nWhat is the topic of this text?\nContent filtering:\nIs this email spam? Does this post contain swearing?\nSentiment analysis:\nIs this review positive or negative?\nTranslation:\nWhat is this text in French?\nSummarisation:\nCan you give a short summary of this article?"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#our-toolbox-so-far",
+    "href": "slides/13-nlp-basics.html#our-toolbox-so-far",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Our toolbox so far:",
+    "text": "Our toolbox so far:\nWe know how to do\n\nSequence processing:\nKnow how to construct RNNs, CNNs\nInput encoding:\nLooked at embeddings last week\n\nWith this, we can build an NLP model at 2017 level (will do so this week)\nNext week we will learn about\n\nTransformers (not the electrical kind)\n\nWith this, we can build an NLP model at 2022 level\n\n\n\n\nMMLU benchmark"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#getting-text-into-our-model",
+    "href": "slides/13-nlp-basics.html#getting-text-into-our-model",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Getting text into our model",
+    "text": "Getting text into our model\n\n\nText vectorisation: Converting text to numeric data.\nTypical approach consists of several steps\n\n\nStandardisation:Remove diacritics, punctuation, convert to lowercase\nTokenisation:Split text into tokens which can be words, subwords, or groups of words\nIndexing:Convert tokens to integer values\nEncoding:Convert indices into embeddings or one-hot encoding\n\n\n\n\n\n\nDeep Learning with Python, F. Chollet"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#text-vectorisation",
+    "href": "slides/13-nlp-basics.html#text-vectorisation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text vectorisation",
+    "text": "Text vectorisation\nCan do all the processing steps with the keras.layers.TextVectorization layer\n\nA preprocessing layer which maps text features to integer sequences.\n\n\n\n\nkeras.layers.TextVectorization(\n  max_tokens=None,\n  standardize=\"lower_and_strip_punctuation\",\n  split=\"whitespace\",\n  ngrams=None,\n  output_mode=\"int\",\n  output_sequence_length=None,\n  vocabulary=None,\n  ...\n)\nstandardize and split can be custom functions."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#text-vectorisation-1",
+    "href": "slides/13-nlp-basics.html#text-vectorisation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text vectorisation",
+    "text": "Text vectorisation\nCan do all the processing steps with the keras.layers.TextVectorization layer\n\n\n\nThe vocabulary is built automatically from data by calling adapt():\n\n\n\nvectorize_layer = keras.layers.TextVectorization(\n  max_tokens=1000,\n  standardize=\"lower_and_strip_punctuation\",\n  output_sequence_length=250\n)\n\nvectorize_layer.adapt(dataset)\nvectorize_layer.get_vocabulary()[:10]\n# ['', '[UNK]', 'the', 'and', 'a', 'of', 'to', 'is', 'in', 'it']\n\n\n\n\nWe reserve index 1 ('[UNK]') for unknown, out-of-vocabulary tokens\nWe reserve index 0 ('') for the mask token, which used to pad sequences"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#text-vectorisation-2",
+    "href": "slides/13-nlp-basics.html#text-vectorisation-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text vectorisation",
+    "text": "Text vectorisation\nTest sentence from the IMDb movie review dataset:\n\n\n\nText:     I   am  shocked.  Shocked  and  dismayed  that  the   428   of   you   IMDB  users\nEncoded: 10  238     2355      2355    3         1    12    2     1    5    23    933   5911\nDecoded:  i   am  shocked   shocked  and     [UNK]  that  the  [UNK]  of   you   imdb  users\n\nCan remove HTML tags (or other uninteresting stuff) by using regexes:\n\n\n\ndef custom_standardization(input_data):\n  lowercase = tf.strings.lower(input_data)\n  without_html = tf.strings.regex_replace(lowercase, '&lt;[^&gt;]*&gt;', ' ')\n  without_punctuation = tf.strings.regex_replace(without_html, '[{}]'.format(string.punctuation), '')\n  return without_punctuation\n\nvectorize_layer = keras.layers.TextVectorization(\n  standardize=custom_standardization\n)\nNote: TextVectorization is based on TensorFlow operations, so using it with other backend frameworks is complicated."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#detour-n-grams",
+    "href": "slides/13-nlp-basics.html#detour-n-grams",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Detour: N-grams",
+    "text": "Detour: N-grams\nSo far all words receive a separate index; we assume no relation between them.\nSince text is not strictly ordered, how about training a Dense model on the presence of words, and just ignore the ordering?\nConsider the IMDb review dataset again:\n\n\n\n\n\n\n\n\n\n\nReview\nSentiment\n\n\n\n\nProbably my all-time favorite movie, a story of selflessness, sacrifice and dedication to …\npositive\n\n\nIf you like original gut wrenching laughter you will like this movie. If you are young …\npositive\n\n\nThis movie made it into one of my top 10 most awful movies. Horrible. There wasn’t …\nnegative\n\n\n\n\n\n\nCan classify decently well by learning correlations between single words and sentiment.\nIn this case we treat the text as a set and not a sequence."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#detour-n-grams-1",
+    "href": "slides/13-nlp-basics.html#detour-n-grams-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Detour: N-grams",
+    "text": "Detour: N-grams\nThere are still some word combinations that throw us off:\n\n\"good\" is very different from \"not good\".\n\n\n\n\n\nSuch modifiers are placed close, so we can extend our vocabulary with pairs:\n\n“… not really expecting much,”\n   {“not”, “not really”, “really”, “really expecting”, “expecting”, “expecting much”]}\n\n\n\n\nThis approach of keeping some ordering, popular around 2010, is called\n\nbigrams (for pairs for words)\ntrigrams (for triplets of words)\nN-grams (for N words)"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#detour-n-grams-2",
+    "href": "slides/13-nlp-basics.html#detour-n-grams-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Detour: N-grams",
+    "text": "Detour: N-grams\n\nN-grams apply to other data as well, for instance\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSequence\n1-gram\n2-gram\n3-gram\n\n\n\n\nProtein sequencing\nCys-Gly-Leu-Ser-Trp\nCys, Gly, Leu, Ser, Trp,\nCys-Gly, Gly-Leu, Leu-Ser, Ser-Trp\nCys-Gly-Leu, Gly-Leu-Ser, Leu-Ser-Trp\n\n\nDNA sequencing\nAGCTTCGA\nA, G, C, T, T, C, G, A\nAG, GC, CT, TT, TC, CG, GA\nAGC, GCT, CTT, TTC, TCG, CGA,\n\n\n\n\n\n\nFor language research purpuses N-grams are still useful; have a look atthe Google N-gram Viewer"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#embeddings",
+    "href": "slides/13-nlp-basics.html#embeddings",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings\nLet’s return to single words.\nOur text is converted into numbers – We can convert them further into good numbers, by creating word embeddings.\nRecall we could map categorical values to vectors of floating-point values:\n\n\n\nmy_embedding = {\n  'the': [-1.46, -0.86,  0.09],\n  'and': [-0.27,  1.15,  1.19],\n  'a':   [ 1.17,  0.06, -0.16],\n  'of':  [ 0.60,  0.10,  0.22],\n  ...\n}\nAt first, these values are randomly initialised\nThen, we optimise them during training."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#embeddings-1",
+    "href": "slides/13-nlp-basics.html#embeddings-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings\nEmbedding layers are practically the same as one-hot encoding, followed by a linear Dense layer (without the bias term):\n\n\n\n\n\n\nthe  [ 0     1     0     0 ]\n\n\n[ -1.46 -0.86  0.09 ]\n\n\n\n\n\nembedding = keras.Sequential([\n  keras.layers.StringLookup(output_mode=\"one-hot\"),\n  keras.layers.Dense(\n    units=embedding_dim,\n    use_bias=False,\n    activation=None\n  )\n])\n\n\nDifference is that Embedding layers are implemented in a much more efficient way."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#demo",
+    "href": "slides/13-nlp-basics.html#demo",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Demo",
+    "text": "Demo\n\n\n\nLet’s visualise some embeddings"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#embeddings-2",
+    "href": "slides/13-nlp-basics.html#embeddings-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#computing-similarity-in-embedding-space",
+    "href": "slides/13-nlp-basics.html#computing-similarity-in-embedding-space",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Computing similarity in embedding space",
+    "text": "Computing similarity in embedding space\nWe’ve seen there is a relation between semantics and position in embedding space.\nHow can we measure token similarity?\n\n\nOption 1: Euclidian (L2) norm\n-&gt; distance between positions \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\)\n\n\\[\n\\small\n|| (\\mathbf{a} - \\mathbf{b}) ||_2 = \\sqrt{(a_1 - b_1)^2 + ... \\ (a_n - b_n)^2}\n\\]\n\n\n\nOption 2: Cosine similarity\n-&gt; angular difference between positions \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\) (ignores vector lengths)\n\n\\[\n\\small\n\\cos(\\mathbf{a}, \\mathbf{b}) = \\frac{\\mathbf{a} \\cdot \\mathbf{b}}{||\\mathbf{a}|| \\cdot ||\\mathbf{b}||}\n\\]"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#computing-similarity-in-embedding-space-1",
+    "href": "slides/13-nlp-basics.html#computing-similarity-in-embedding-space-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Computing similarity in embedding space",
+    "text": "Computing similarity in embedding space\nHow to interpret Euclidian vs cosine similarity?\nConsider this example from StackOverflow:\n\nYou run an online shop and want to compare customers.\n\nUser 1 bought 1x eggs, 1x flour and 1x sugar.\nUser 2 bought 100x eggs, 100x flour and 100x sugar.\nUser 3 bought 1x eggs, 1x Vodka and 1x Red Bull.\n\n\n\n-&gt; By cosine similarity, user 1 and user 2 are more similar\n-&gt; By Euclidian similarity, user 1 and user 3 are more similar\nWord embeddings are affected by word frequency, so cosine similarity is often preferred."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#embeddings-3",
+    "href": "slides/13-nlp-basics.html#embeddings-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#better-text-tokenisation",
+    "href": "slides/13-nlp-basics.html#better-text-tokenisation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Better text tokenisation",
+    "text": "Better text tokenisation\n\n\n\nSome words are obviously variants of the same; but conjugated, in plural, etc.\n\nam, is, are are all variants of the lemma that is be\n\n\n\n\nWe can collapse these in order to simplify the vocabulary our model needs to learn:\n\nHe is reading books -&gt; He be read book\n\n\n\n\nManually composed algorithms for this lemmatization have been developed over long time."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#better-text-tokenisation-1",
+    "href": "slides/13-nlp-basics.html#better-text-tokenisation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Better text tokenisation",
+    "text": "Better text tokenisation\nModern tokenisation algorithms are not inspired by linguistics, but rather substring frequencies in data.\nDifferent LLMs use different algorithms, but they are mostly based on splitting words into individual characters and recombing them into common subwords.\n\nThe final vocabulary is under no obligation to make sense to us 🤷\nRandomly selected tokens from the GPT-2 tokeniser vocabulary:\n\n\n\n\n objective         stacked             USB                Energy\n 306               booster            Bird                learn\n stationary        nighttime          85                  rice\n tensions         mission             iency               quitting\nagging             hypers             OOOOOOOO           Typ\n reopen           finding              Spoon              Plate\n nat              Ïĥ                   climates           Druid\ndownload          isition             æĦ                  partic\n predis            calf                Object            annie\n\nDifferent tokenisers example"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#pretrained-embeddings-and-models",
+    "href": "slides/13-nlp-basics.html#pretrained-embeddings-and-models",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Pretrained embeddings and models",
+    "text": "Pretrained embeddings and models\n\n\nFor image classification tasks we could use take pretrained models and fine-tune, without having to retrain the first layers\n\nFirst layers were general enough to transfer well to basically all other tasks\n\nSame for NLP models:\nEmbeddings are general and can be reused for other models or tasks."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#nlp-resources",
+    "href": "slides/13-nlp-basics.html#nlp-resources",
+    "title": "DAT255: Deep learning engineering",
+    "section": "NLP resources",
+    "text": "NLP resources\n\nTensorflow Text"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#nlp-resources-1",
+    "href": "slides/13-nlp-basics.html#nlp-resources-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "NLP resources",
+    "text": "NLP resources\n\nTensorflow Text\nHuggingface models and ML library"
   },
   {
     "objectID": "slides/2-tools.html#frameworks",

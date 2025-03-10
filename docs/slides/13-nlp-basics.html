@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-57476271c5f0467c372e20ff5d25630e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.40">
+
+  <meta name="author" content="sma@hvl.no">
+  <title>DAT255 – DAT255: Deep learning engineering</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2bbe76ccb3935761c1164eb48532166d.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-pointer/pointer.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
+  <h1 class="title">DAT255: Deep learning engineering</h1>
+  <p class="subtitle"><u>Lecture 13</u> – Natural language processing 1: Text vectorisation</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+sma@hvl.no 
+</div>
+</div>
+</div>
+
+</section>
+<section id="natural-language-processing-nlp" class="slide level2">
+<h2>Natural language processing (NLP)</h2>
+<p><span class="color-teal-dark">(as opposed to <em>machine language</em>)</span></p>
+<p>Since most human knowledge is stored as text, <strong>NLP</strong> is an important field of study</p>
+<div class="fragment">
+<blockquote>
+<p>Knowing grammar, syntax and language structure (i.e.&nbsp;<em>linguistics</em>), can we write down the set of rules required to do a language task like translation?</p>
+</blockquote>
+</div>
+<div class="fragment color-red-dark" style="text-indent: 25px;">
+<p>Not really, no.</p>
+</div>
+<div class="fragment">
+<blockquote>
+<p>Knowing basically nothing, but having a library of example text, can we statistically infer the rules required to do a language task?</p>
+</blockquote>
+</div>
+<div class="fragment color-green-dark" style="text-indent: 25px;">
+<p>Yes!</p>
+</div>
+<div class="fragment">
+<p><span class="color-indigo"><em>Disclaimer:</em></span><br> There’s loads of interesting NLP stuff that we will skip, because it has been obsoleted by transformer models. Look at the supplemental reading on Canvas.</p>
+</div>
+</section>
+<section id="nlp-tasks" class="slide level2" data-background-color="#F5F5F5">
+<h2>NLP tasks</h2>
+<ul>
+<li><p><span class="color-indigo">Text classification:</span></p>
+<p><em>What is the topic of this text?</em></p></li>
+<li><p><span class="color-indigo">Content filtering:</span></p>
+<p><em>Is this email spam? Does this post contain swearing?</em></p></li>
+<li><p><span class="color-pink-dark">Sentiment analysis:</span></p>
+<p><em>Is this review positive or negative?</em></p></li>
+<li><p><span class="color-pink-dark">Translation:</span></p>
+<p><em>What is this text in French?</em></p></li>
+<li><p><span class="color-pink-dark">Summarisation:</span></p>
+<p><em>Can you give a short summary of this article?</em></p></li>
+</ul>
+</section>
+<section id="our-toolbox-so-far" class="slide level2">
+<h2>Our toolbox so far:</h2>
+<p>We know how to do</p>
+<ul>
+<li><p><strong>Sequence processing:</strong></p>
+<p>Know how to construct RNNs, CNNs</p></li>
+<li><p><strong>Input encoding:</strong></p>
+<p>Looked at <em>embeddings</em> last week</p></li>
+</ul>
+<p>With this, we can build an <strong>NLP model at <span class="color-purple">2017 level</span></strong><br> (will do so this week)</p>
+<p>Next week we will learn about</p>
+<ul>
+<li><strong>Transformers</strong> <span class="color-text-muted">(not the electrical kind)</span></li>
+</ul>
+<p>With this, we can build an <strong>NLP model at <span class="color-deep-orange">2022 level</span></strong></p>
+<div class="absolute" style="top: 15%; right: 0%; width: 400px; ">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture13/mmlu.png"></p>
+<figcaption><a href="https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu">MMLU</a> benchmark</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="getting-text-into-our-model" class="slide level2">
+<h2>Getting text into our model</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><strong>Text vectorisation</strong>: Converting text to numeric data.</p>
+<p>Typical approach consists of several steps</p>
+<div>
+<ol type="1">
+<li class="fragment"><strong><em>Standardisation:</em></strong><br>Remove diacritics, punctuation, convert to lowercase</li>
+<li class="fragment"><strong><em>Tokenisation:</em></strong><br>Split text into <strong><em>tokens</em></strong> which can be words, subwords, or groups of words</li>
+<li class="fragment"><strong><em>Indexing:</em></strong><br>Convert tokens to integer values</li>
+<li class="fragment"><strong><em>Encoding:</em></strong><br>Convert indices into embeddings or one-hot encoding</li>
+</ol>
+</div>
+</div></div>
+<div class="absolute" style="top: 5%; right: 0%; width: 350px; ">
+<p><img data-src="figures/lecture13/text-vectorisation.png"></p>
+</div>
+<p><span class="absolute" style="font-size: 0.5em;bottom: -2%; right: 5%; "><em>Deep Learning with Python</em>, F. Chollet</span></p>
+</section>
+<section id="text-vectorisation" class="slide level2">
+<h2>Text vectorisation</h2>
+<p>Can do all the processing steps with the <code>keras.layers.TextVectorization</code> layer</p>
+<blockquote>
+<p>A preprocessing layer which maps text features to integer sequences.</p>
+</blockquote>
+<div style="padding-top: 30px;">
+
+</div>
+<div class="sourceCode" id="cb1" data-code-line-numbers="|2|3|4|5|6|7|8|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>keras.layers.TextVectorization(</span>
+<span id="cb1-2"><a></a>  max_tokens<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-3"><a></a>  standardize<span class="op">=</span><span class="st">"lower_and_strip_punctuation"</span>,</span>
+<span id="cb1-4"><a></a>  split<span class="op">=</span><span class="st">"whitespace"</span>,</span>
+<span id="cb1-5"><a></a>  ngrams<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-6"><a></a>  output_mode<span class="op">=</span><span class="st">"int"</span>,</span>
+<span id="cb1-7"><a></a>  output_sequence_length<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-8"><a></a>  vocabulary<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-9"><a></a>  ...</span>
+<span id="cb1-10"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>standardize</code> and <code>split</code> can be custom functions.</p>
+</section>
+<section id="text-vectorisation-1" class="slide level2">
+<h2>Text vectorisation</h2>
+<p>Can do all the processing steps with the <code>keras.layers.TextVectorization</code> layer</p>
+<div style="padding-top: 30px;">
+
+</div>
+<p>The vocabulary is built automatically from data by calling <code>adapt()</code>:</p>
+<div style="padding-top: 30px;">
+
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer <span class="op">=</span> keras.layers.TextVectorization(</span>
+<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>  max_tokens<span class="op">=</span><span class="dv">1000</span>,</span>
+<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>  standardize<span class="op">=</span><span class="st">"lower_and_strip_punctuation"</span>,</span>
+<span id="cb2-4"><a aria-hidden="true" tabindex="-1"></a>  output_sequence_length<span class="op">=</span><span class="dv">250</span></span>
+<span id="cb2-5"><a aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer.adapt(dataset)</span>
+<span id="cb2-8"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer.get_vocabulary()[:<span class="dv">10</span>]</span>
+<span id="cb2-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># ['', '[UNK]', 'the', 'and', 'a', 'of', 'to', 'is', 'in', 'it']</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div style="padding-top: 30px;">
+
+</div>
+<ul>
+<li>We reserve index 1 (<code>'[UNK]'</code>) for unknown, out-of-vocabulary tokens</li>
+<li>We reserve index 0 (<code>''</code>) for the <em>mask token</em>, which used to pad sequences</li>
+</ul>
+</section>
+<section id="text-vectorisation-2" class="slide level2">
+<h2>Text vectorisation</h2>
+<p>Test sentence from the <a href="https://ai.stanford.edu/~amaas/data/sentiment/">IMDb movie review</a> dataset:</p>
+<div style="padding-top: 20px">
+
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Text:</span>     I   am  shocked.  Shocked  and  dismayed  that  the   428   of   you   IMDB  users</span>
+<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Encoded:</span> 10  238     2355      2355    3         1    12    2     1    5    23    933   5911</span>
+<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Decoded:</span>  i   am  shocked   shocked  and     <span class="pp">[</span><span class="ss">UNK</span><span class="pp">]</span>  that  the  <span class="pp">[</span><span class="ss">UNK</span><span class="pp">]</span>  of   you   imdb  users</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="fragment">
+<p>Can remove HTML tags (or other uninteresting stuff) by using regexes:</p>
+<div style="padding-top: 20px">
+
+</div>
+<div class="sourceCode" id="cb4" data-code-line-numbers="|2|3|4|7-9|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> custom_standardization(input_data):</span>
+<span id="cb4-2"><a></a>  lowercase <span class="op">=</span> tf.strings.lower(input_data)</span>
+<span id="cb4-3"><a></a>  without_html <span class="op">=</span> tf.strings.regex_replace(lowercase, <span class="st">'&lt;[^&gt;]*&gt;'</span>, <span class="st">' '</span>)</span>
+<span id="cb4-4"><a></a>  without_punctuation <span class="op">=</span> tf.strings.regex_replace(without_html, <span class="st">'[</span><span class="sc">{}</span><span class="st">]'</span>.<span class="bu">format</span>(string.punctuation), <span class="st">''</span>)</span>
+<span id="cb4-5"><a></a>  <span class="cf">return</span> without_punctuation</span>
+<span id="cb4-6"><a></a></span>
+<span id="cb4-7"><a></a>vectorize_layer <span class="op">=</span> keras.layers.TextVectorization(</span>
+<span id="cb4-8"><a></a>  standardize<span class="op">=</span>custom_standardization</span>
+<span id="cb4-9"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Note:</em> <code>TextVectorization</code> is based on TensorFlow operations, so using it with other backend frameworks is complicated.</p>
+</div>
+</section>
+<section id="detour-n-grams" class="slide level2">
+<h2>Detour: N-grams</h2>
+<p>So far all words receive a separate index; we assume <span class="color-red-dark">no relation</span> between them.</p>
+<p>Since text is not strictly ordered, how about training a <code>Dense</code> model on the <em>presence</em> of words, and just ignore the ordering?</p>
+<p>Consider the IMDb review dataset again:</p>
+<div style="padding-top: 20px">
+
+</div>
+<table class="caption-top">
+<colgroup>
+<col style="width: 85%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Review</th>
+<th>Sentiment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Probably my all-time favorite movie, a story of selflessness, sacrifice and dedication to …</td>
+<td><span class="color-green-dark">positive</span></td>
+</tr>
+<tr class="even">
+<td>If you like original gut wrenching laughter you will like this movie. If you are young …</td>
+<td><span class="color-green-dark">positive</span></td>
+</tr>
+<tr class="odd">
+<td>This movie made it into one of my top 10 most awful movies. Horrible. There wasn’t …</td>
+<td><span class="color-red-dark">negative</span></td>
+</tr>
+</tbody>
+</table>
+<div style="padding-top: 20px">
+
+</div>
+<p>Can classify decently well by learning correlations between single words and sentiment.</p>
+<p>In this case we treat the text as a <span class="color-teal-dark"><strong><em>set</em></strong></span> and not a <span class="color-teal-dark"><strong><em>sequence</em></strong></span>.</p>
+</section>
+<section id="detour-n-grams-1" class="slide level2">
+<h2>Detour: N-grams</h2>
+<p>There are still some word combinations that throw us off:</p>
+<div style="text-align: center;">
+<p><code>"good"</code> is very different from <code>"not good"</code>.</p>
+</div>
+<div style="padding-top: 30px">
+
+</div>
+<div class="fragment">
+<p>Such modifiers are placed close, so we can extend our vocabulary with <span class="color-deep-orange-dark"><em>pairs</em></span>:</p>
+<div style="text-align: center;">
+<p><span class="color-blue-dark">“… not really expecting much,”</span></p>
+<p><i class="bi bi-arrow-right"></i> &nbsp; {<span class="color-blue-dark">“not”</span>, <span class="color-purple-dark">“not really”</span>, <span class="color-blue-dark">“really”</span>, <span class="color-purple-dark">“really expecting”</span>, <span class="color-blue-dark">“expecting”</span>, <span class="color-purple-dark">“expecting much”</span>]}</p>
+</div>
+<div style="padding-top: 30px">
+
+</div>
+<p>This approach of keeping <em>some</em> ordering, popular around 2010, is called</p>
+<ul>
+<li>bigrams (for pairs for words)</li>
+<li>trigrams (for triplets of words)</li>
+<li>N-grams (for N words)</li>
+</ul>
+</div>
+</section>
+<section id="detour-n-grams-2" class="slide level2">
+<h2>Detour: N-grams</h2>
+<!-- ## Text as _sequences_ vs _sets_ -->
+<p>N-grams apply to other data as well, for instance</p>
+<div style="padding-top: 20px">
+
+</div>
+<table class="caption-top">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 20%">
+<col style="width: 15%">
+<col style="width: 20%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Sequence</th>
+<th>1-gram</th>
+<th>2-gram</th>
+<th>3-gram</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Protein sequencing</td>
+<td>Cys-Gly-Leu-Ser-Trp</td>
+<td>Cys, Gly, Leu, Ser, Trp,</td>
+<td>Cys-Gly, Gly-Leu, Leu-Ser, Ser-Trp</td>
+<td>Cys-Gly-Leu, Gly-Leu-Ser, Leu-Ser-Trp</td>
+</tr>
+<tr class="even">
+<td>DNA sequencing</td>
+<td>AGCTTCGA</td>
+<td>A, G, C, T, T, C, G, A</td>
+<td>AG, GC, CT, TT, TC, CG, GA</td>
+<td>AGC, GCT, CTT, TTC, TCG, CGA,</td>
+</tr>
+</tbody>
+</table>
+<div style="padding-top: 20px">
+
+</div>
+<p>For language research purpuses N-grams are still useful; have a look at<br>the Google <a href="https://books.google.com/ngrams/">N-gram Viewer</a></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture13/ngram-viewer.png" class="quarto-figure quarto-figure-center" width="450"></p>
+</figure>
+</div>
+</section>
+<section id="embeddings" class="slide level2">
+<h2>Embeddings</h2>
+<p>Let’s return to single words.</p>
+<p>Our text is converted into numbers – We can convert them further into <span class="color-green-dark"><em>good</em></span> numbers, by creating <strong>word embeddings</strong>.</p>
+<p>Recall we could map categorical values to vectors of floating-point values:</p>
+<div style="padding-top: 20px">
+
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a>my_embedding <span class="op">=</span> {</span>
+<span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">'the'</span>: [<span class="op">-</span><span class="fl">1.46</span>, <span class="op">-</span><span class="fl">0.86</span>,  <span class="fl">0.09</span>],</span>
+<span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">'and'</span>: [<span class="op">-</span><span class="fl">0.27</span>,  <span class="fl">1.15</span>,  <span class="fl">1.19</span>],</span>
+<span id="cb5-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">'a'</span>:   [ <span class="fl">1.17</span>,  <span class="fl">0.06</span>, <span class="op">-</span><span class="fl">0.16</span>],</span>
+<span id="cb5-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">'of'</span>:  [ <span class="fl">0.60</span>,  <span class="fl">0.10</span>,  <span class="fl">0.22</span>],</span>
+<span id="cb5-6"><a aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb5-7"><a aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>At first, these values are randomly initialised</p>
+<p>Then, we optimise them during training.</p>
+</section>
+<section id="embeddings-1" class="slide level2">
+<h2>Embeddings</h2>
+<p><code>Embedding</code> layers are practically the same as one-hot encoding, followed by a linear <code>Dense</code> layer (without the bias term):</p>
+<div class="columns">
+<div class="column" style="width:43%;">
+<div class="absolute" style="top: 41%; left: 5%; width: 350px; ">
+<p><img data-src="figures/lecture13/embedding-layer.png"></p>
+</div>
+<div class="absolute" style="text-align: center;top: 24%; left: 4.5%; ">
+<p><code>the</code><br> <i class="bi bi-arrow-down"></i><br> <code>[ 0     1     0     0 ]</code></p>
+</div>
+<div class="absolute" style="left: 5%; bottom: 9%; ">
+<p><code>[ -1.46 -0.86  0.09 ]</code></p>
+</div>
+</div><div class="column" style="width:57%;">
+<div style="padding-top: 150px;">
+
+</div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a>embedding <span class="op">=</span> keras.Sequential([</span>
+<span id="cb6-2"><a aria-hidden="true" tabindex="-1"></a>  keras.layers.StringLookup(output_mode<span class="op">=</span><span class="st">"one-hot"</span>),</span>
+<span id="cb6-3"><a aria-hidden="true" tabindex="-1"></a>  keras.layers.Dense(</span>
+<span id="cb6-4"><a aria-hidden="true" tabindex="-1"></a>    units<span class="op">=</span>embedding_dim,</span>
+<span id="cb6-5"><a aria-hidden="true" tabindex="-1"></a>    use_bias<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb6-6"><a aria-hidden="true" tabindex="-1"></a>    activation<span class="op">=</span><span class="va">None</span></span>
+<span id="cb6-7"><a aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-8"><a aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+<div class="absolute" style="bottom: -1%; ">
+<p>Difference is that <code>Embedding</code> layers are implemented in a much more efficient way.</p>
+</div>
+</section>
+<section id="demo" class="slide level2" data-background-color="#FFF8E1">
+<h2>Demo</h2>
+<div style="padding-top: 50px">
+
+</div>
+<p>Let’s visualise some embeddings</p>
+</section>
+<section id="embeddings-2" class="slide level2">
+<h2>Embeddings</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture13/improving-embeddings.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</section>
+<section id="computing-similarity-in-embedding-space" class="slide level2">
+<h2>Computing similarity in embedding space</h2>
+<p>We’ve seen there is a relation between semantics and position in embedding space.</p>
+<p>How can we measure token similarity?</p>
+<div class="fragment">
+<ul>
+<li><p>Option 1: <strong>Euclidian (<em>L2</em>) norm</strong></p>
+<p><code>-&gt;</code> distance between positions <span class="math inline">\(\mathbf{a}\)</span>&nbsp;and <span class="math inline">\(\mathbf{b}\)</span></p></li>
+</ul>
+<p><span class="math display">\[
+\small
+|| (\mathbf{a} - \mathbf{b}) ||_2 = \sqrt{(a_1 - b_1)^2 + ... \ (a_n - b_n)^2}
+\]</span></p>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Option 2: <strong>Cosine similarity</strong></p>
+<p><code>-&gt;</code> angular difference between positions <span class="math inline">\(\mathbf{a}\)</span>&nbsp;and <span class="math inline">\(\mathbf{b}\)</span> (ignores vector lengths)</p></li>
+</ul>
+<p><span class="math display">\[
+\small
+\cos(\mathbf{a}, \mathbf{b}) = \frac{\mathbf{a} \cdot \mathbf{b}}{||\mathbf{a}|| \cdot ||\mathbf{b}||}
+\]</span></p>
+</div>
+</section>
+<section id="computing-similarity-in-embedding-space-1" class="slide level2">
+<h2>Computing similarity in embedding space</h2>
+<p><em>How to interpret Euclidian vs cosine similarity?</em></p>
+<p>Consider this <a href="https://datascience.stackexchange.com/questions/27726/when-to-use-cosine-simlarity-over-euclidean-similarity">example</a> from StackOverflow:</p>
+<div class="color-indigo-dark" style="text-align: center;">
+<p>You run an online shop and want to compare customers.</p>
+<ul>
+<li>User 1 bought 1x eggs, 1x flour and 1x sugar.</li>
+<li>User 2 bought 100x eggs, 100x flour and 100x sugar.</li>
+<li>User 3 bought 1x eggs, 1x Vodka and 1x Red Bull.</li>
+</ul>
+</div>
+<div class="fragment">
+<p><code>-&gt;</code> By <strong>cosine</strong> similarity, user 1 and user 2 are more similar</p>
+<p><code>-&gt;</code> By <strong>Euclidian</strong> similarity, user 1 and user 3 are more similar</p>
+<p>Word embeddings are affected by word frequency, so cosine similarity is often preferred.</p>
+</div>
+</section>
+<section id="embeddings-3" class="slide level2">
+<h2>Embeddings</h2>
+<div style="padding-top: 50px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture13/word2vec.jpg" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+<!-- ![](figures/lecture13/embedding-arithmetic.png) -->
+</section>
+<section id="better-text-tokenisation" class="slide level2">
+<h2>Better text tokenisation</h2>
+<div style="padding-top: 20px;">
+
+</div>
+<p>Some words are obviously variants of the same; but conjugated, in plural, etc.</p>
+<div style="text-align: center;">
+<p><span class="color-purple-dark"><em>am, is, are</em></span> are all variants of the <strong>lemma</strong> that is <span class="color-purple-dark"><em>be</em></span></p>
+</div>
+<div style="padding-top: 20px;">
+
+</div>
+<p>We can collapse these in order to simplify the vocabulary our model needs to learn:</p>
+<div style="text-align: center;">
+<p><span class="color-pink-dark"><em>He is reading books</em></span> <code>-&gt;</code> <span class="color-teal-dark"><em>He be read book</em></span></p>
+</div>
+<div style="padding-top: 20px;">
+
+</div>
+<p>Manually composed algorithms for this <em>lemmatization</em> have been developed over long time.</p>
+</section>
+<section id="better-text-tokenisation-1" class="slide level2">
+<h2>Better text tokenisation</h2>
+<p>Modern <span class="color-indigo">tokenisation algorithms</span> are not inspired by linguistics, but rather <em>substring frequencies</em> in data.</p>
+<p>Different LLMs use different algorithms, but they are mostly based on splitting words into individual characters and recombing them into common subwords.</p>
+<div class="fragment">
+<p>The final vocabulary is under no obligation to make sense to us 🤷</p>
+<p>Randomly selected tokens from the GPT-2 tokeniser vocabulary:</p>
+<div class="columns">
+<div class="column" style="width:10%;">
+
+</div><div class="column" style="width:80%;">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a> objective         stacked             USB                Energy</span>
+<span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a> <span class="dv">306</span>               booster            Bird                learn</span>
+<span id="cb7-3"><a aria-hidden="true" tabindex="-1"></a> stationary        nighttime          <span class="dv">85</span>                  rice</span>
+<span id="cb7-4"><a aria-hidden="true" tabindex="-1"></a> tensions         mission             iency               quitting</span>
+<span id="cb7-5"><a aria-hidden="true" tabindex="-1"></a>agging             hypers             OOOOOOOO           Typ</span>
+<span id="cb7-6"><a aria-hidden="true" tabindex="-1"></a> reopen           finding              Spoon              Plate</span>
+<span id="cb7-7"><a aria-hidden="true" tabindex="-1"></a> nat              Ïĥ                   climates           Druid</span>
+<span id="cb7-8"><a aria-hidden="true" tabindex="-1"></a>download          isition             æĦ                  partic</span>
+<span id="cb7-9"><a aria-hidden="true" tabindex="-1"></a> predis            calf                Object            annie</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+<p>Different tokenisers <a href="https://huggingface.co/spaces/Xenova/the-tokenizer-playground">example</a></p>
+</div>
+</section>
+<section id="pretrained-embeddings-and-models" class="slide level2">
+<h2>Pretrained embeddings and models</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>For image classification tasks we could use take pretrained models and <em>fine-tune</em>, without having to retrain the first layers</p>
+<ul>
+<li>First layers were general enough to transfer well to basically all other tasks</li>
+</ul>
+<p>Same for NLP models:</p>
+<p>Embeddings are general and can be reused for other models or tasks.</p>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture13/cnn-layer-1.png" class="quarto-figure quarto-figure-center" width="100"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture13/cnn-layer-2_1.png" class="quarto-figure quarto-figure-center" width="200"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture13/cnn-layer-2_2.png" class="quarto-figure quarto-figure-center" width="200"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="nlp-resources" class="slide level2">
+<h2>NLP resources</h2>
+<ul>
+<li>Tensorflow <a href="https://www.tensorflow.org/text">Text</a></li>
+</ul>
+<div class="absolute" style="left: 10%; bottom: 0%; width: 900px; ">
+<p><img data-src="figures/lecture13/tensorflow-text.png"></p>
+</div>
+</section>
+<section id="nlp-resources-1" class="slide level2">
+<h2>NLP resources</h2>
+<ul>
+<li><p>Tensorflow <a href="https://www.tensorflow.org/text">Text</a></p></li>
+<li><p>Huggingface <a href="https://huggingface.co/models">models</a> and <a href="https://huggingface.co/docs">ML library</a></p></li>
+</ul>
+<div class="absolute" style="left: 5%; bottom: 0%; width: 1000px; ">
+<p><img data-src="figures/lecture13/huggingface.png"></p>
+</div>
+</section>
+<section id="section" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<h2></h2>
+<div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
+<p><img data-src="figures/hvl_logo_engelsk.png"></p>
+</div>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-pointer/pointer.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'pointer': {"key":"q","color":"red","pointerSize":16,"alwaysVisible":false},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: true,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealPointer, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
