@@ -735,438 +735,634 @@
     "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 4 (last):"
   },
   {
-    "objectID": "slides/14-nlp2.html#natural-language-processing-nlp",
-    "href": "slides/14-nlp2.html#natural-language-processing-nlp",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Natural language processing (NLP)",
-    "text": "Natural language processing (NLP)\n(as opposed to machine language)\nSince most human knowledge is stored as text, NLP is an important field of study\n\n\nKnowing grammar, syntax and language structure (i.e. linguistics), can we write down the set of rules required to do a language task like translation?\n\n\n\nNot really, no.\n\n\n\nKnowing basically nothing, but having a library of example text, can we statistically infer the rules required to do a language task?\n\n\n\nYes!\n\n\nDisclaimer: There’s loads of interesting NLP stuff that we will skip, because it has been obsoleted by transformer models. Look at the supplemental reading on Canvas."
-  },
-  {
-    "objectID": "slides/14-nlp2.html#nlp-tasks",
-    "href": "slides/14-nlp2.html#nlp-tasks",
-    "title": "DAT255: Deep learning engineering",
-    "section": "NLP tasks",
-    "text": "NLP tasks\n\nText classification:\nWhat is the topic of this text?\nContent filtering:\nIs this email spam? Does this post contain swearing?\nSentiment analysis:\nIs this review positive or negative?\nTranslation:\nWhat is this text in French?\nSummarisation:\nCan you give a short summary of this article?"
-  },
-  {
-    "objectID": "slides/14-nlp2.html#plan",
-    "href": "slides/14-nlp2.html#plan",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Plan",
-    "text": "Plan\nThis week:\nBasics of natural language processing\nPreprocessing: - Text vectorisation - Tokenisation\nNext week:\n\nTransformers and the attention mechanism"
-  },
-  {
-    "objectID": "slides/14-nlp2.html#our-toolbox-so-far",
-    "href": "slides/14-nlp2.html#our-toolbox-so-far",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Our toolbox so far:",
-    "text": "Our toolbox so far:\nWe know how to do\n\nSequence processing:\nKnow how to construct RNNs, CNNs\nInput encoding:\nLooked at embeddings last week\n\nWith this, we can build an NLP model at 2017 level (will do so this week)\nNext week we will learn about\n\nTransformers (not the electrical kind)\n\nWith this, we can build an NLP model at 2022 level\n\n\n\n\nMMLU benchmark"
-  },
-  {
-    "objectID": "slides/14-nlp2.html#getting-text-into-our-model",
-    "href": "slides/14-nlp2.html#getting-text-into-our-model",
+    "objectID": "slides/16-nlp-3.html#getting-text-into-our-model",
+    "href": "slides/16-nlp-3.html#getting-text-into-our-model",
     "title": "DAT255: Deep learning engineering",
     "section": "Getting text into our model",
     "text": "Getting text into our model\n\n\nText vectorisation: Converting text to numeric data.\nTypical approach consists of several steps\n\n\nStandardisation:Remove diacritics, punctuation, convert to lowercase\nTokenisation:Split text into tokens which can be words, subwords, or groups of words\nIndexing:Convert tokens to integer values\nEncoding:Convert indices into embeddings or one-hot encoding\n\n\n\n\n\n\nDeep Learning with Python, F. Chollet"
   },
   {
-    "objectID": "slides/14-nlp2.html#text-vectorisation",
-    "href": "slides/14-nlp2.html#text-vectorisation",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Text vectorisation",
-    "text": "Text vectorisation\nCan do all the processing steps with the keras.layers.TextVectorization layer\n\nA preprocessing layer which maps text features to integer sequences.\n\n\n\n\nkeras.layers.TextVectorization(\n  max_tokens=None,\n  standardize=\"lower_and_strip_punctuation\",\n  split=\"whitespace\",\n  ngrams=None,\n  output_mode=\"int\",\n  output_sequence_length=None,\n  vocabulary=None,\n  ...\n)\nstandardize and split can be custom functions."
-  },
-  {
-    "objectID": "slides/14-nlp2.html#text-vectorisation-1",
-    "href": "slides/14-nlp2.html#text-vectorisation-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Text vectorisation",
-    "text": "Text vectorisation\nCan do all the processing steps with the keras.layers.TextVectorization layer\n\n\n\nThe vocabulary is built automatically from data by calling adapt():\n\n\n\nvectorize_layer = keras.layers.TextVectorization(\n  max_tokens=1000,\n  standardize=\"lower_and_strip_punctuation\",\n  output_sequence_length=250\n)\n\nvectorize_layer.adapt(dataset)\nvectorize_layer.get_vocabulary()[:10]\n# ['', '[UNK]', 'the', 'and', 'a', 'of', 'to', 'is', 'in', 'it']\n\n\n\n\nWe reserve index 1 ('[UNK]') for unknown, out-of-vocabulary tokens\nWe reserve index 0 ('') for the mask token, which used to pad sequences"
-  },
-  {
-    "objectID": "slides/14-nlp2.html#text-vectorisation-2",
-    "href": "slides/14-nlp2.html#text-vectorisation-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Text vectorisation",
-    "text": "Text vectorisation\nTest sentence from the IMDb movie review dataset:\n\n\n\nText:     I   am  shocked.  Shocked  and  dismayed  that  the   428   of   you   IMDB  users\nEncoded: 10  238     2355      2355    3         1    12    2     1    5    23    933   5911\nDecoded:  i   am  shocked   shocked  and     [UNK]  that  the  [UNK]  of   you   imdb  users\n\nCan remove HTML tags (or other uninteresting stuff) by using regexes:\n\n\n\ndef custom_standardization(input_data):\n  lowercase = tf.strings.lower(input_data)\n  without_html = tf.strings.regex_replace(lowercase, '&lt;[^&gt;]*&gt;', ' ')\n  without_punctuation = tf.strings.regex_replace(without_html, '[{}]'.format(string.punctuation), '')\n  return without_punctuation\n\nvectorize_layer = keras.layers.TextVectorization(\n  standardize=custom_standardization\n)\nNote: TextVectorization is based on TensorFlow operations, so using it with other backend frameworks is complicated."
-  },
-  {
-    "objectID": "slides/14-nlp2.html#detour-n-grams",
-    "href": "slides/14-nlp2.html#detour-n-grams",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Detour: N-grams",
-    "text": "Detour: N-grams\nSo far all words receive a separate index; we assume no relation between them.\nSince text is not strictly ordered, how about training a Dense model on the presence of words, and just ignore the ordering?\nConsider the IMDb review dataset again:\n\n\n\n\n\n\n\n\n\n\nReview\nSentiment\n\n\n\n\nProbably my all-time favorite movie, a story of selflessness, sacrifice and dedication to …\npositive\n\n\nIf you like original gut wrenching laughter you will like this movie. If you are young …\npositive\n\n\nThis movie made it into one of my top 10 most awful movies. Horrible. There wasn’t …\nnegative\n\n\n\n\n\n\nCan classify decently well by learning correlations between single words and sentiment.\nIn this case we treat the text as a set and not a sequence."
-  },
-  {
-    "objectID": "slides/14-nlp2.html#detour-n-grams-1",
-    "href": "slides/14-nlp2.html#detour-n-grams-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Detour: N-grams",
-    "text": "Detour: N-grams\nThere are still some word combinations that throw us off:\n\n\"good\" is very different from \"not good\".\n\n\n\n\n\nSuch modifiers are placed close, so we can extend our vocabulary with pairs:\n\n“… not really expecting much,”\n   {“not”, “not really”, “really”, “really expecting”, “expecting”, “expecting much”]}\n\n\n\n\nThis approach of keeping some ordering, popular around 2010, is called\n\nbigrams (for pairs for words)\ntrigrams (for triplets of words)\nN-grams (for N words)"
-  },
-  {
-    "objectID": "slides/14-nlp2.html#detour-n-grams-2",
-    "href": "slides/14-nlp2.html#detour-n-grams-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Detour: N-grams",
-    "text": "Detour: N-grams\n\nN-grams apply to other data as well, for instance\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSequence\n1-gram\n2-gram\n3-gram\n\n\n\n\nProtein sequencing\nCys-Gly-Leu-Ser-Trp\nCys, Gly, Leu, Ser, Trp,\nCys-Gly, Gly-Leu, Leu-Ser, Ser-Trp\nCys-Gly-Leu, Gly-Leu-Ser, Leu-Ser-Trp\n\n\nDNA sequencing\nAGCTTCGA\nA, G, C, T, T, C, G, A\nAG, GC, CT, TT, TC, CG, GA\nAGC, GCT, CTT, TTC, TCG, CGA,\n\n\n\n\n\n\nFor language research purpuses N-grams are still useful; have a look atthe Google N-gram Viewer"
-  },
-  {
-    "objectID": "slides/14-nlp2.html#embeddings",
-    "href": "slides/14-nlp2.html#embeddings",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Embeddings",
-    "text": "Embeddings\nLet’s return to single words.\nOur text is converted into numbers – We can convert them further into good numbers, by creating word embeddings.\nRecall we could map categorical values to vectors of floating-point values:\n\n\n\nmy_embedding = {\n  'the': [-1.46, -0.86,  0.09],\n  'and': [-0.27,  1.15,  1.19],\n  'a':   [ 1.17,  0.06, -0.16],\n  'of':  [ 0.60,  0.10,  0.22],\n  ...\n}\nAt first, these values are randomly initialised\nThen, we optimise them during training."
-  },
-  {
-    "objectID": "slides/14-nlp2.html#embeddings-1",
-    "href": "slides/14-nlp2.html#embeddings-1",
+    "objectID": "slides/16-nlp-3.html#embeddings",
+    "href": "slides/16-nlp-3.html#embeddings",
     "title": "DAT255: Deep learning engineering",
     "section": "Embeddings",
     "text": "Embeddings\nEmbedding layers are practically the same as one-hot encoding, followed by a linear Dense layer (without the bias term):\n\n\n\n\n\n\nthe  [ 0     1     0     0 ]\n\n\n[ -1.46 -0.86  0.09 ]\n\n\n\n\n\nembedding = keras.Sequential([\n  keras.layers.StringLookup(output_mode=\"one-hot\"),\n  keras.layers.Dense(\n    units=embedding_dim,\n    use_bias=False,\n    activation=None\n  )\n])\n\n\nDifference is that Embedding layers are implemented in a much more efficient way."
   },
   {
-    "objectID": "slides/14-nlp2.html#demo",
-    "href": "slides/14-nlp2.html#demo",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Demo",
-    "text": "Demo\n\n\n\nLet’s visualise some embeddings"
-  },
-  {
-    "objectID": "slides/14-nlp2.html#embeddings-2",
-    "href": "slides/14-nlp2.html#embeddings-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Embeddings",
-    "text": "Embeddings"
-  },
-  {
-    "objectID": "slides/14-nlp2.html#computing-similarity-in-embedding-space",
-    "href": "slides/14-nlp2.html#computing-similarity-in-embedding-space",
+    "objectID": "slides/16-nlp-3.html#computing-similarity-in-embedding-space",
+    "href": "slides/16-nlp-3.html#computing-similarity-in-embedding-space",
     "title": "DAT255: Deep learning engineering",
     "section": "Computing similarity in embedding space",
     "text": "Computing similarity in embedding space\nWe’ve seen there is a relation between semantics and position in embedding space.\nHow can we measure token similarity?\n\n\nOption 1: Euclidian (L2) norm\n-&gt; distance between positions \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\)\n\n\\[\n\\small\n|| (\\mathbf{a} - \\mathbf{b}) ||_2 = \\sqrt{(a_1 - b_1)^2 + ... \\ (a_n - b_n)^2}\n\\]\n\n\n\nOption 2: Cosine similarity\n-&gt; angular difference between positions \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\) (ignores vector lengths)\n\n\\[\n\\small\n\\cos(\\mathbf{a}, \\mathbf{b}) = \\frac{\\mathbf{a} \\cdot \\mathbf{b}}{||\\mathbf{a}|| \\cdot ||\\mathbf{b}||}\n\\]"
   },
   {
-    "objectID": "slides/14-nlp2.html#computing-similarity-in-embedding-space-1",
-    "href": "slides/14-nlp2.html#computing-similarity-in-embedding-space-1",
+    "objectID": "slides/16-nlp-3.html#other-uses-of-embeddings",
+    "href": "slides/16-nlp-3.html#other-uses-of-embeddings",
     "title": "DAT255: Deep learning engineering",
-    "section": "Computing similarity in embedding space",
-    "text": "Computing similarity in embedding space\nHow to interpret Euclidian vs cosine similarity?\nConsider this example from StackOverflow:\n\nYou run an online shop and want to compare customers.\n\nUser 1 bought 1x eggs, 1x flour and 1x sugar.\nUser 2 bought 100x eggs, 100x flour and 100x sugar.\nUser 3 bought 1x eggs, 1x Vodka and 1x Red Bull.\n\n\n\n-&gt; By cosine similarity, user 1 and user 2 are more similar\n-&gt; By Euclidian similarity, user 1 and user 3 are more similar\nWord embeddings are affected by word frequency, so cosine similarity is often preferred."
+    "section": "Other uses of embeddings",
+    "text": "Other uses of embeddings\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncloud.google.com/blog"
   },
   {
-    "objectID": "slides/14-nlp2.html#embeddings-3",
-    "href": "slides/14-nlp2.html#embeddings-3",
+    "objectID": "slides/16-nlp-3.html#embed-everything",
+    "href": "slides/16-nlp-3.html#embed-everything",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embed everything",
+    "text": "Embed everything\nWe have covered word embeddings, but we can create embeddings for other objects too\n\nSentences\nImages\nAudio\n…\n\n This is what allows us to train multi-modal machine learning models"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#sentence-embedding",
+    "href": "slides/16-nlp-3.html#sentence-embedding",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Sentence embedding",
+    "text": "Sentence embedding\n\n\n\nExample: Universal sentence encoder\n\n\n\n\n\n\n\nMeasures similariy between on entire sentences\n\nhttps://arxiv.org/abs/1803.11175"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#image-embedding",
+    "href": "slides/16-nlp-3.html#image-embedding",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Image embedding",
+    "text": "Image embedding\n\n\n        \n\n\n\n\n        \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFor images we can’t take the same direct approach:\nIndividual pixels don’t carry semantic meaning, only groups of pixels do.\n\nBut we already know well how to do feature extraction with CNNs\n\n\n Let the (flattened) output of the last Conv layer be the embedding space"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#audio-embedding",
+    "href": "slides/16-nlp-3.html#audio-embedding",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Audio embedding",
+    "text": "Audio embedding\nUse CNNs here too:\n\n\n\n\nWhisper (OpenAI)\n\n\n\n\n\n\n\nLanguage model"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#latent-spaces",
+    "href": "slides/16-nlp-3.html#latent-spaces",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Latent spaces",
+    "text": "Latent spaces\n\n\nThe output of embedding layers, convolutional layers, an all feature extraction layers, form a latent feature space\n\nThis latent space can contain knowledge applicable to a variety of tasks, allowing for transfer learning:\nTraining a model on one task, but using it (with little modification) on a different task.\n\n\nThis is nice because we can\n\nPretrain on some task that is easy to set up and evaluate\nFine-tune on a task that we actually want to solve, but is difficult to evaluate\n\n(particularly common for language models )"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#pretrained-embeddings",
+    "href": "slides/16-nlp-3.html#pretrained-embeddings",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Pretrained embeddings",
+    "text": "Pretrained embeddings\nEmbedding leaderboard"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#measuring-embedding-quality",
+    "href": "slides/16-nlp-3.html#measuring-embedding-quality",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Measuring embedding quality",
+    "text": "Measuring embedding quality\n\n\nEvaluating semantic textual similarity is generally a difficult thing\nFor this, and other NLP model performance measurements, we rely on benchmark tasks:\nVarious classification / clustering / information retrieval problems with human annotated solutions.\n\nsentences1 = [\n    \"The new movie is awesome\",\n    \"The cat sits outside\",\n    \"A man is playing guitar\",\n]\n\nsentences2 = [\n    \"The dog plays in the garden\",\n    \"The new movie is so great\",\n    \"A woman watches TV\",\n]\n\n# Compute embeddings for both lists\nembeddings1 = model.encode(sentences1)\nembeddings2 = model.encode(sentences2)\n\n# Compute cosine similarities\nsimilarities = model.similarity(\n  embeddings1, embeddings2\n)\nThe new movie is awesome\n- The dog plays in the garden   : 0.0543\n- The new movie is so great     : 0.8939\n- A woman watches TV            : -0.0502"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#contextualised-word-embeddings",
+    "href": "slides/16-nlp-3.html#contextualised-word-embeddings",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Contextualised word embeddings",
+    "text": "Contextualised word embeddings\nAfter training, embedding layers are static – a given token is always mapped to the same embedding vector.\nHowever, a single token can have multiple meanings:\n\nYou are right about this\nMake a right turn at the intersection\n\nOur model can infer the correct meaning from context, as long as we treat the input as a sequence."
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#embedding-quality-mteb-etc",
+    "href": "slides/16-nlp-3.html#embedding-quality-mteb-etc",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embedding quality: MTEB etc",
+    "text": "Embedding quality: MTEB etc"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#sentence-embeddings",
+    "href": "slides/16-nlp-3.html#sentence-embeddings",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Sentence embeddings",
+    "text": "Sentence embeddings"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#image-embeddings",
+    "href": "slides/16-nlp-3.html#image-embeddings",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Image embeddings",
+    "text": "Image embeddings"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#text-generation-metrics",
+    "href": "slides/16-nlp-3.html#text-generation-metrics",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text generation metrics",
+    "text": "Text generation metrics\nBLEU etc"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#multi-gpu-training",
+    "href": "slides/16-nlp-3.html#multi-gpu-training",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Multi-gpu training",
+    "text": "Multi-gpu training"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#natural-language-processing-nlp",
+    "href": "slides/16-nlp-3.html#natural-language-processing-nlp",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Natural language processing (NLP)",
+    "text": "Natural language processing (NLP)\n(as opposed to machine language)\nSince most human knowledge is stored as text, NLP is an important field of study\n\n\nKnowing grammar, syntax and language structure (i.e. linguistics), can we write down the set of rules required to do a language task like translation?\n\n\n\nNot really, no.\n\n\n\nKnowing basically nothing, but having a library of example text, can we statistically infer the rules required to do a language task?\n\n\n\nYes!\n\n\nDisclaimer: There’s loads of interesting NLP stuff that we will skip, because it has been obsoleted by transformer models. Look at the supplemental reading on Canvas."
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#nlp-tasks",
+    "href": "slides/16-nlp-3.html#nlp-tasks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "NLP tasks",
+    "text": "NLP tasks\n\nText classification:\nWhat is the topic of this text?\nContent filtering:\nIs this email spam? Does this post contain swearing?\nSentiment analysis:\nIs this review positive or negative?\nTranslation:\nWhat is this text in French?\nSummarisation:\nCan you give a short summary of this article?"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#plan",
+    "href": "slides/16-nlp-3.html#plan",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Plan",
+    "text": "Plan\nThis week:\nBasics of natural language processing\nPreprocessing: - Text vectorisation - Tokenisation\nNext week:\n\nTransformers and the attention mechanism"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#our-toolbox-so-far",
+    "href": "slides/16-nlp-3.html#our-toolbox-so-far",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Our toolbox so far:",
+    "text": "Our toolbox so far:\nWe know how to do\n\nSequence processing:\nKnow how to construct RNNs, CNNs\nInput encoding:\nLooked at embeddings last week\n\nWith this, we can build an NLP model at 2017 level (will do so this week)\nNext week we will learn about\n\nTransformers (not the electrical kind)\n\nWith this, we can build an NLP model at 2022 level\n\n\n\n\nMMLU benchmark"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#getting-text-into-our-model-1",
+    "href": "slides/16-nlp-3.html#getting-text-into-our-model-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Getting text into our model",
+    "text": "Getting text into our model\n\n\nText vectorisation: Converting text to numeric data.\nTypical approach consists of several steps\n\n\nStandardisation:Remove diacritics, punctuation, convert to lowercase\nTokenisation:Split text into tokens which can be words, subwords, or groups of words\nIndexing:Convert tokens to integer values\nEncoding:Convert indices into embeddings or one-hot encoding\n\n\n\n\n\n\nDeep Learning with Python, F. Chollet"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#text-vectorisation",
+    "href": "slides/16-nlp-3.html#text-vectorisation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text vectorisation",
+    "text": "Text vectorisation\nCan do all the processing steps with the keras.layers.TextVectorization layer\n\nA preprocessing layer which maps text features to integer sequences.\n\n\n\n\nkeras.layers.TextVectorization(\n  max_tokens=None,\n  standardize=\"lower_and_strip_punctuation\",\n  split=\"whitespace\",\n  ngrams=None,\n  output_mode=\"int\",\n  output_sequence_length=None,\n  vocabulary=None,\n  ...\n)\nstandardize and split can be custom functions."
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#text-vectorisation-1",
+    "href": "slides/16-nlp-3.html#text-vectorisation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text vectorisation",
+    "text": "Text vectorisation\nCan do all the processing steps with the keras.layers.TextVectorization layer\n\n\n\nThe vocabulary is built automatically from data by calling adapt():\n\n\n\nvectorize_layer = keras.layers.TextVectorization(\n  max_tokens=1000,\n  standardize=\"lower_and_strip_punctuation\",\n  output_sequence_length=250\n)\n\nvectorize_layer.adapt(dataset)\nvectorize_layer.get_vocabulary()[:10]\n# ['', '[UNK]', 'the', 'and', 'a', 'of', 'to', 'is', 'in', 'it']\n\n\n\n\nWe reserve index 1 ('[UNK]') for unknown, out-of-vocabulary tokens\nWe reserve index 0 ('') for the mask token, which used to pad sequences"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#text-vectorisation-2",
+    "href": "slides/16-nlp-3.html#text-vectorisation-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text vectorisation",
+    "text": "Text vectorisation\nTest sentence from the IMDb movie review dataset:\n\n\n\nText:     I   am  shocked.  Shocked  and  dismayed  that  the   428   of   you   IMDB  users\nEncoded: 10  238     2355      2355    3         1    12    2     1    5    23    933   5911\nDecoded:  i   am  shocked   shocked  and     [UNK]  that  the  [UNK]  of   you   imdb  users\n\nCan remove HTML tags (or other uninteresting stuff) by using regexes:\n\n\n\ndef custom_standardization(input_data):\n  lowercase = tf.strings.lower(input_data)\n  without_html = tf.strings.regex_replace(lowercase, '&lt;[^&gt;]*&gt;', ' ')\n  without_punctuation = tf.strings.regex_replace(without_html, '[{}]'.format(string.punctuation), '')\n  return without_punctuation\n\nvectorize_layer = keras.layers.TextVectorization(\n  standardize=custom_standardization\n)\nNote: TextVectorization is based on TensorFlow operations, so using it with other backend frameworks is complicated."
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#detour-n-grams",
+    "href": "slides/16-nlp-3.html#detour-n-grams",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Detour: N-grams",
+    "text": "Detour: N-grams\nSo far all words receive a separate index; we assume no relation between them.\nSince text is not strictly ordered, how about training a Dense model on the presence of words, and just ignore the ordering?\nConsider the IMDb review dataset again:\n\n\n\n\n\n\n\n\n\n\nReview\nSentiment\n\n\n\n\nProbably my all-time favorite movie, a story of selflessness, sacrifice and dedication to …\npositive\n\n\nIf you like original gut wrenching laughter you will like this movie. If you are young …\npositive\n\n\nThis movie made it into one of my top 10 most awful movies. Horrible. There wasn’t …\nnegative\n\n\n\n\n\n\nCan classify decently well by learning correlations between single words and sentiment.\nIn this case we treat the text as a set and not a sequence."
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#detour-n-grams-1",
+    "href": "slides/16-nlp-3.html#detour-n-grams-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Detour: N-grams",
+    "text": "Detour: N-grams\nThere are still some word combinations that throw us off:\n\n\"good\" is very different from \"not good\".\n\n\n\n\n\nSuch modifiers are placed close, so we can extend our vocabulary with pairs:\n\n“… not really expecting much,”\n   {“not”, “not really”, “really”, “really expecting”, “expecting”, “expecting much”]}\n\n\n\n\nThis approach of keeping some ordering, popular around 2010, is called\n\nbigrams (for pairs for words)\ntrigrams (for triplets of words)\nN-grams (for N words)"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#detour-n-grams-2",
+    "href": "slides/16-nlp-3.html#detour-n-grams-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Detour: N-grams",
+    "text": "Detour: N-grams\n\nN-grams apply to other data as well, for instance\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSequence\n1-gram\n2-gram\n3-gram\n\n\n\n\nProtein sequencing\nCys-Gly-Leu-Ser-Trp\nCys, Gly, Leu, Ser, Trp,\nCys-Gly, Gly-Leu, Leu-Ser, Ser-Trp\nCys-Gly-Leu, Gly-Leu-Ser, Leu-Ser-Trp\n\n\nDNA sequencing\nAGCTTCGA\nA, G, C, T, T, C, G, A\nAG, GC, CT, TT, TC, CG, GA\nAGC, GCT, CTT, TTC, TCG, CGA,\n\n\n\n\n\n\nFor language research purpuses N-grams are still useful; have a look atthe Google N-gram Viewer"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#embeddings-1",
+    "href": "slides/16-nlp-3.html#embeddings-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings\nLet’s return to single words.\nOur text is converted into numbers – We can convert them further into good numbers, by creating word embeddings.\nRecall we could map categorical values to vectors of floating-point values:\n\n\n\nmy_embedding = {\n  'the': [-1.46, -0.86,  0.09],\n  'and': [-0.27,  1.15,  1.19],\n  'a':   [ 1.17,  0.06, -0.16],\n  'of':  [ 0.60,  0.10,  0.22],\n  ...\n}\nAt first, these values are randomly initialised\nThen, we optimise them during training."
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#embeddings-2",
+    "href": "slides/16-nlp-3.html#embeddings-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings\nEmbedding layers are practically the same as one-hot encoding, followed by a linear Dense layer (without the bias term):\n\n\n\n\n\n\nthe  [ 0     1     0     0 ]\n\n\n[ -1.46 -0.86  0.09 ]\n\n\n\n\n\nembedding = keras.Sequential([\n  keras.layers.StringLookup(output_mode=\"one-hot\"),\n  keras.layers.Dense(\n    units=embedding_dim,\n    use_bias=False,\n    activation=None\n  )\n])\n\n\nDifference is that Embedding layers are implemented in a much more efficient way."
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#demo",
+    "href": "slides/16-nlp-3.html#demo",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Demo",
+    "text": "Demo\n\n\n\nLet’s visualise some embeddings"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#embeddings-3",
+    "href": "slides/16-nlp-3.html#embeddings-3",
     "title": "DAT255: Deep learning engineering",
     "section": "Embeddings",
     "text": "Embeddings"
   },
   {
-    "objectID": "slides/14-nlp2.html#better-text-tokenisation",
-    "href": "slides/14-nlp2.html#better-text-tokenisation",
+    "objectID": "slides/16-nlp-3.html#computing-similarity-in-embedding-space-1",
+    "href": "slides/16-nlp-3.html#computing-similarity-in-embedding-space-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Computing similarity in embedding space",
+    "text": "Computing similarity in embedding space\nWe’ve seen there is a relation between semantics and position in embedding space.\nHow can we measure token similarity?\n\n\nOption 1: Euclidian (L2) norm\n-&gt; distance between positions \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\)\n\n\\[\n\\small\n|| (\\mathbf{a} - \\mathbf{b}) ||_2 = \\sqrt{(a_1 - b_1)^2 + ... \\ (a_n - b_n)^2}\n\\]\n\n\n\nOption 2: Cosine similarity\n-&gt; angular difference between positions \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\) (ignores vector lengths)\n\n\\[\n\\small\n\\cos(\\mathbf{a}, \\mathbf{b}) = \\frac{\\mathbf{a} \\cdot \\mathbf{b}}{||\\mathbf{a}|| \\cdot ||\\mathbf{b}||}\n\\]"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#computing-similarity-in-embedding-space-2",
+    "href": "slides/16-nlp-3.html#computing-similarity-in-embedding-space-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Computing similarity in embedding space",
+    "text": "Computing similarity in embedding space\nHow to interpret Euclidian vs cosine similarity?\nConsider this example from StackOverflow:\n\nYou run an online shop and want to compare customers.\n\nUser 1 bought 1x eggs, 1x flour and 1x sugar.\nUser 2 bought 100x eggs, 100x flour and 100x sugar.\nUser 3 bought 1x eggs, 1x Vodka and 1x Red Bull.\n\n\n\n-&gt; By cosine similarity, user 1 and user 2 are more similar\n-&gt; By Euclidian similarity, user 1 and user 3 are more similar\nWord embeddings are affected by word frequency, so cosine similarity is often preferred."
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#embeddings-4",
+    "href": "slides/16-nlp-3.html#embeddings-4",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings"
+  },
+  {
+    "objectID": "slides/16-nlp-3.html#better-text-tokenisation",
+    "href": "slides/16-nlp-3.html#better-text-tokenisation",
     "title": "DAT255: Deep learning engineering",
     "section": "Better text tokenisation",
     "text": "Better text tokenisation\n\n\n\nSome words are obviously variants of the same; but conjugated, in plural, etc.\n\nam, is, are are all variants of the lemma that is be\n\n\n\n\nWe can collapse these in order to simplify the vocabulary our model needs to learn:\n\nHe is reading books -&gt; He be read book\n\n\n\n\nManually composed algorithms for this lemmatization have been developed over long time."
   },
   {
-    "objectID": "slides/14-nlp2.html#better-text-tokenisation-1",
-    "href": "slides/14-nlp2.html#better-text-tokenisation-1",
+    "objectID": "slides/16-nlp-3.html#better-text-tokenisation-1",
+    "href": "slides/16-nlp-3.html#better-text-tokenisation-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Better text tokenisation",
     "text": "Better text tokenisation\nModern tokenisation algorithms are not inspired by linguistics, but rather substring frequencies in data.\nDifferent LLMs use different algorithms, but they are mostly based on splitting words into individual characters and recombing them into common subwords.\n\nThe final vocabulary is under no obligation to make sense to us 🤷\nRandomly selected tokens from the GPT-2 tokeniser vocabulary:\n\n\n\n\n objective         stacked             USB                Energy\n 306               booster            Bird                learn\n stationary        nighttime          85                  rice\n tensions         mission             iency               quitting\nagging             hypers             OOOOOOOO           Typ\n reopen           finding              Spoon              Plate\n nat              Ïĥ                   climates           Druid\ndownload          isition             æĦ                  partic\n predis            calf                Object            annie\n\nDifferent tokenisers example"
   },
   {
-    "objectID": "slides/14-nlp2.html#pretrained-embeddings-and-models",
-    "href": "slides/14-nlp2.html#pretrained-embeddings-and-models",
+    "objectID": "slides/16-nlp-3.html#pretrained-embeddings-and-models",
+    "href": "slides/16-nlp-3.html#pretrained-embeddings-and-models",
     "title": "DAT255: Deep learning engineering",
     "section": "Pretrained embeddings and models",
     "text": "Pretrained embeddings and models\n\n\nFor image classification tasks we could use take pretrained models and fine-tune, without having to retrain the first layers\n\nFirst layers were general enough to transfer well to basically all other tasks\n\nSame for NLP models:\nEmbeddings are general and can be reused for other models or tasks."
   },
   {
-    "objectID": "slides/14-nlp2.html#resources",
-    "href": "slides/14-nlp2.html#resources",
+    "objectID": "slides/16-nlp-3.html#resources",
+    "href": "slides/16-nlp-3.html#resources",
     "title": "DAT255: Deep learning engineering",
     "section": "Resources",
     "text": "Resources\nTensorFlow text library https://www.tensorflow.org/text/guide/tf_text_intro\nHuggingface"
   },
   {
-    "objectID": "slides/14-nlp2.html#canvas",
-    "href": "slides/14-nlp2.html#canvas",
+    "objectID": "slides/16-nlp-3.html#canvas",
+    "href": "slides/16-nlp-3.html#canvas",
     "title": "DAT255: Deep learning engineering",
     "section": "CANVAS",
     "text": "CANVAS\njurafsky chap 6\nnext week jurafsky chap 10"
   },
   {
-    "objectID": "slides/14-nlp2.html#rnns-thursday",
-    "href": "slides/14-nlp2.html#rnns-thursday",
+    "objectID": "slides/16-nlp-3.html#rnns-thursday",
+    "href": "slides/16-nlp-3.html#rnns-thursday",
     "title": "DAT255: Deep learning engineering",
     "section": "RNNs THURSDAY",
     "text": "RNNs THURSDAY\nMention we spend little time on RNNs compared to the book\nRNNs and embedding masking (Chollet p 333)"
   },
   {
-    "objectID": "slides/14-nlp2.html#shakespeare-character-rnn",
-    "href": "slides/14-nlp2.html#shakespeare-character-rnn",
+    "objectID": "slides/16-nlp-3.html#shakespeare-character-rnn",
+    "href": "slides/16-nlp-3.html#shakespeare-character-rnn",
     "title": "DAT255: Deep learning engineering",
     "section": "Shakespeare character RNN",
     "text": "Shakespeare character RNN"
   },
   {
-    "objectID": "slides/14-nlp2.html#llms-as-autoregressive-probability-calculators",
-    "href": "slides/14-nlp2.html#llms-as-autoregressive-probability-calculators",
+    "objectID": "slides/16-nlp-3.html#llms-as-autoregressive-probability-calculators",
+    "href": "slides/16-nlp-3.html#llms-as-autoregressive-probability-calculators",
     "title": "DAT255: Deep learning engineering",
     "section": "LLMs as autoregressive probability calculators",
     "text": "LLMs as autoregressive probability calculators\n— Next week"
   },
   {
-    "objectID": "slides/14-nlp2.html#attention",
-    "href": "slides/14-nlp2.html#attention",
+    "objectID": "slides/16-nlp-3.html#attention",
+    "href": "slides/16-nlp-3.html#attention",
     "title": "DAT255: Deep learning engineering",
     "section": "Attention",
     "text": "Attention"
   },
   {
-    "objectID": "slides/14-nlp2.html#transformers",
-    "href": "slides/14-nlp2.html#transformers",
+    "objectID": "slides/16-nlp-3.html#transformers",
+    "href": "slides/16-nlp-3.html#transformers",
     "title": "DAT255: Deep learning engineering",
     "section": "Transformers",
     "text": "Transformers\nStarcraft transformer model\nhttps://deepmind.google/discover/blog/alphastar-mastering-the-real-time-strategy-game-starcraft-ii/"
   },
   {
-    "objectID": "slides/14-nlp2.html#pretrained-embeddings-and-models-1",
-    "href": "slides/14-nlp2.html#pretrained-embeddings-and-models-1",
+    "objectID": "slides/16-nlp-3.html#pretrained-embeddings-and-models-1",
+    "href": "slides/16-nlp-3.html#pretrained-embeddings-and-models-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Pretrained embeddings and models",
     "text": "Pretrained embeddings and models\n(compare to pretrained CNNs)\nHuggingface etc"
   },
   {
-    "objectID": "slides/14-nlp2.html#some-notable-open-source-models",
-    "href": "slides/14-nlp2.html#some-notable-open-source-models",
+    "objectID": "slides/16-nlp-3.html#some-notable-open-source-models",
+    "href": "slides/16-nlp-3.html#some-notable-open-source-models",
     "title": "DAT255: Deep learning engineering",
     "section": "Some notable open-source models",
     "text": "Some notable open-source models"
   },
   {
-    "objectID": "slides/14-nlp2.html#multi-modal-models",
-    "href": "slides/14-nlp2.html#multi-modal-models",
+    "objectID": "slides/16-nlp-3.html#multi-modal-models",
+    "href": "slides/16-nlp-3.html#multi-modal-models",
     "title": "DAT255: Deep learning engineering",
     "section": "Multi-modal models",
     "text": "Multi-modal models"
   },
   {
-    "objectID": "slides/12-tools.html#this-week",
-    "href": "slides/12-tools.html#this-week",
+    "objectID": "slides/13-nlp-basics.html#natural-language-processing-nlp",
+    "href": "slides/13-nlp-basics.html#natural-language-processing-nlp",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Natural language processing (NLP)",
+    "text": "Natural language processing (NLP)\n(as opposed to machine language)\nSince most human knowledge is stored as text, NLP is an important field of study\n\n\nKnowing grammar, syntax and language structure (i.e. linguistics), can we write down the set of rules required to do a language task like translation?\n\n\n\nNot really, no.\n\n\n\nKnowing basically nothing, but having a library of example text, can we statistically infer the rules required to do a language task?\n\n\n\nYes!\n\n\nDisclaimer: There’s loads of interesting NLP stuff that we will skip, because it has been obsoleted by transformer models. Look at the supplemental reading on Canvas."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#nlp-tasks",
+    "href": "slides/13-nlp-basics.html#nlp-tasks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "NLP tasks",
+    "text": "NLP tasks\n\nText classification:\nWhat is the topic of this text?\nContent filtering:\nIs this email spam? Does this post contain swearing?\nSentiment analysis:\nIs this review positive or negative?\nTranslation:\nWhat is this text in French?\nSummarisation:\nCan you give a short summary of this article?"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#our-toolbox-so-far",
+    "href": "slides/13-nlp-basics.html#our-toolbox-so-far",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Our toolbox so far:",
+    "text": "Our toolbox so far:\nWe know how to do\n\nSequence processing:\nKnow how to construct RNNs, CNNs\nInput encoding:\nLooked at embeddings last week\n\nWith this, we can build an NLP model at 2017 level (will do so this week)\nNext week we will learn about\n\nTransformers (not the electrical kind)\n\nWith this, we can build an NLP model at 2022 level\n\n\n\n\nMMLU benchmark"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#getting-text-into-our-model",
+    "href": "slides/13-nlp-basics.html#getting-text-into-our-model",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Getting text into our model",
+    "text": "Getting text into our model\n\n\nText vectorisation: Converting text to numeric data.\nTypical approach consists of several steps\n\n\nStandardisation:Remove diacritics, punctuation, convert to lowercase\nTokenisation:Split text into tokens which can be words, subwords, or groups of words\nIndexing:Convert tokens to integer values\nEncoding:Convert indices into embeddings or one-hot encoding\n\n\n\n\n\n\nDeep Learning with Python, F. Chollet"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#text-vectorisation",
+    "href": "slides/13-nlp-basics.html#text-vectorisation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text vectorisation",
+    "text": "Text vectorisation\nCan do all the processing steps with the keras.layers.TextVectorization layer\n\nA preprocessing layer which maps text features to integer sequences.\n\n\n\n\nkeras.layers.TextVectorization(\n  max_tokens=None,\n  standardize=\"lower_and_strip_punctuation\",\n  split=\"whitespace\",\n  ngrams=None,\n  output_mode=\"int\",\n  output_sequence_length=None,\n  vocabulary=None,\n  ...\n)\nstandardize and split can be custom functions."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#text-vectorisation-1",
+    "href": "slides/13-nlp-basics.html#text-vectorisation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text vectorisation",
+    "text": "Text vectorisation\nCan do all the processing steps with the keras.layers.TextVectorization layer\n\n\n\nThe vocabulary is built automatically from data by calling adapt():\n\n\n\nvectorize_layer = keras.layers.TextVectorization(\n  max_tokens=1000,\n  standardize=\"lower_and_strip_punctuation\",\n  output_sequence_length=250\n)\n\nvectorize_layer.adapt(dataset)\nvectorize_layer.get_vocabulary()[:10]\n# ['', '[UNK]', 'the', 'and', 'a', 'of', 'to', 'is', 'in', 'it']\n\n\n\n\nWe reserve index 1 ('[UNK]') for unknown, out-of-vocabulary tokens\nWe reserve index 0 ('') for the mask token, which used to pad sequences"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#text-vectorisation-2",
+    "href": "slides/13-nlp-basics.html#text-vectorisation-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text vectorisation",
+    "text": "Text vectorisation\nTest sentence from the IMDb movie review dataset:\n\n\n\nText:     I   am  shocked.  Shocked  and  dismayed  that  the   428   of   you   IMDB  users\nEncoded: 10  238     2355      2355    3         1    12    2     1    5    23    933   5911\nDecoded:  i   am  shocked   shocked  and     [UNK]  that  the  [UNK]  of   you   imdb  users\n\nCan remove HTML tags (or other uninteresting stuff) by using regexes:\n\n\n\ndef custom_standardization(input_data):\n  lowercase = tf.strings.lower(input_data)\n  without_html = tf.strings.regex_replace(lowercase, '&lt;[^&gt;]*&gt;', ' ')\n  without_punctuation = tf.strings.regex_replace(without_html, '[{}]'.format(string.punctuation), '')\n  return without_punctuation\n\nvectorize_layer = keras.layers.TextVectorization(\n  standardize=custom_standardization\n)\nNote: TextVectorization is based on TensorFlow operations, so using it with other backend frameworks is complicated."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#detour-n-grams",
+    "href": "slides/13-nlp-basics.html#detour-n-grams",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Detour: N-grams",
+    "text": "Detour: N-grams\nSo far all words receive a separate index; we assume no relation between them.\nSince text is not strictly ordered, how about training a Dense model on the presence of words, and just ignore the ordering?\nConsider the IMDb review dataset again:\n\n\n\n\n\n\n\n\n\n\nReview\nSentiment\n\n\n\n\nProbably my all-time favorite movie, a story of selflessness, sacrifice and dedication to …\npositive\n\n\nIf you like original gut wrenching laughter you will like this movie. If you are young …\npositive\n\n\nThis movie made it into one of my top 10 most awful movies. Horrible. There wasn’t …\nnegative\n\n\n\n\n\n\nCan classify decently well by learning correlations between single words and sentiment.\nIn this case we treat the text as a set and not a sequence."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#detour-n-grams-1",
+    "href": "slides/13-nlp-basics.html#detour-n-grams-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Detour: N-grams",
+    "text": "Detour: N-grams\nThere are still some word combinations that throw us off:\n\n\"good\" is very different from \"not good\".\n\n\n\n\n\nSuch modifiers are placed close, so we can extend our vocabulary with pairs:\n\n“… not really expecting much,”\n   {“not”, “not really”, “really”, “really expecting”, “expecting”, “expecting much”]}\n\n\n\n\nThis approach of keeping some ordering, popular around 2010, is called\n\nbigrams (for pairs for words)\ntrigrams (for triplets of words)\nN-grams (for N words)"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#detour-n-grams-2",
+    "href": "slides/13-nlp-basics.html#detour-n-grams-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Detour: N-grams",
+    "text": "Detour: N-grams\n\nN-grams apply to other data as well, for instance\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSequence\n1-gram\n2-gram\n3-gram\n\n\n\n\nProtein sequencing\nCys-Gly-Leu-Ser-Trp\nCys, Gly, Leu, Ser, Trp,\nCys-Gly, Gly-Leu, Leu-Ser, Ser-Trp\nCys-Gly-Leu, Gly-Leu-Ser, Leu-Ser-Trp\n\n\nDNA sequencing\nAGCTTCGA\nA, G, C, T, T, C, G, A\nAG, GC, CT, TT, TC, CG, GA\nAGC, GCT, CTT, TTC, TCG, CGA,\n\n\n\n\n\n\nFor language research purpuses N-grams are still useful; have a look atthe Google N-gram Viewer"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#embeddings",
+    "href": "slides/13-nlp-basics.html#embeddings",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings\nLet’s return to single words.\nOur text is converted into numbers – We can convert them further into good numbers, by creating word embeddings.\nRecall we could map categorical values to vectors of floating-point values:\n\n\n\nmy_embedding = {\n  'the': [-1.46, -0.86,  0.09],\n  'and': [-0.27,  1.15,  1.19],\n  'a':   [ 1.17,  0.06, -0.16],\n  'of':  [ 0.60,  0.10,  0.22],\n  ...\n}\nAt first, these values are randomly initialised\nThen, we optimise them during training."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#embeddings-1",
+    "href": "slides/13-nlp-basics.html#embeddings-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings\nEmbedding layers are practically the same as one-hot encoding, followed by a linear Dense layer (without the bias term):\n\n\n\n\n\n\nthe  [ 0     1     0     0 ]\n\n\n[ -1.46 -0.86  0.09 ]\n\n\n\n\n\nembedding = keras.Sequential([\n  keras.layers.StringLookup(output_mode=\"one-hot\"),\n  keras.layers.Dense(\n    units=embedding_dim,\n    use_bias=False,\n    activation=None\n  )\n])\n\n\nDifference is that Embedding layers are implemented in a much more efficient way."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#demo",
+    "href": "slides/13-nlp-basics.html#demo",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Demo",
+    "text": "Demo\n\n\n\nLet’s visualise some embeddings"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#embeddings-2",
+    "href": "slides/13-nlp-basics.html#embeddings-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#computing-similarity-in-embedding-space",
+    "href": "slides/13-nlp-basics.html#computing-similarity-in-embedding-space",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Computing similarity in embedding space",
+    "text": "Computing similarity in embedding space\nWe’ve seen there is a relation between semantics and position in embedding space.\nHow can we measure token similarity?\n\n\nOption 1: Euclidian (L2) norm\n-&gt; distance between positions \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\)\n\n\\[\n\\small\n|| (\\mathbf{a} - \\mathbf{b}) ||_2 = \\sqrt{(a_1 - b_1)^2 + ... \\ (a_n - b_n)^2}\n\\]\n\n\n\nOption 2: Cosine similarity\n-&gt; angular difference between positions \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\) (ignores vector lengths)\n\n\\[\n\\small\n\\cos(\\mathbf{a}, \\mathbf{b}) = \\frac{\\mathbf{a} \\cdot \\mathbf{b}}{||\\mathbf{a}|| \\cdot ||\\mathbf{b}||}\n\\]"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#computing-similarity-in-embedding-space-1",
+    "href": "slides/13-nlp-basics.html#computing-similarity-in-embedding-space-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Computing similarity in embedding space",
+    "text": "Computing similarity in embedding space\nHow to interpret Euclidian vs cosine similarity?\nConsider this example from StackOverflow:\n\nYou run an online shop and want to compare customers.\n\nUser 1 bought 1x eggs, 1x flour and 1x sugar.\nUser 2 bought 100x eggs, 100x flour and 100x sugar.\nUser 3 bought 1x eggs, 1x Vodka and 1x Red Bull.\n\n\n\n-&gt; By cosine similarity, user 1 and user 2 are more similar\n-&gt; By Euclidian similarity, user 1 and user 3 are more similar\nWord embeddings are affected by word frequency, so cosine similarity is often preferred."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#embeddings-3",
+    "href": "slides/13-nlp-basics.html#embeddings-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Embeddings",
+    "text": "Embeddings"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#better-text-tokenisation",
+    "href": "slides/13-nlp-basics.html#better-text-tokenisation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Better text tokenisation",
+    "text": "Better text tokenisation\n\n\n\nSome words are obviously variants of the same; but conjugated, in plural, etc.\n\nam, is, are are all variants of the lemma that is be\n\n\n\n\nWe can collapse these in order to simplify the vocabulary our model needs to learn:\n\nHe is reading books -&gt; He be read book\n\n\n\n\nManually composed algorithms for this lemmatization have been developed over long time."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#better-text-tokenisation-1",
+    "href": "slides/13-nlp-basics.html#better-text-tokenisation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Better text tokenisation",
+    "text": "Better text tokenisation\nModern tokenisation algorithms are not inspired by linguistics, but rather substring frequencies in data.\nDifferent LLMs use different algorithms, but they are mostly based on splitting words into individual characters and recombing them into common subwords.\n\nThe final vocabulary is under no obligation to make sense to us 🤷\nRandomly selected tokens from the GPT-2 tokeniser vocabulary:\n\n\n\n\n objective         stacked             USB                Energy\n 306               booster            Bird                learn\n stationary        nighttime          85                  rice\n tensions         mission             iency               quitting\nagging             hypers             OOOOOOOO           Typ\n reopen           finding              Spoon              Plate\n nat              Ïĥ                   climates           Druid\ndownload          isition             æĦ                  partic\n predis            calf                Object            annie\n\nDifferent tokenisers example"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#pretrained-embeddings-and-models",
+    "href": "slides/13-nlp-basics.html#pretrained-embeddings-and-models",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Pretrained embeddings and models",
+    "text": "Pretrained embeddings and models\n\n\nFor image classification tasks we could use take pretrained models and fine-tune, without having to retrain the first layers\n\nFirst layers were general enough to transfer well to basically all other tasks\n\nSame for NLP models:\nEmbeddings are general and can be reused for other models or tasks."
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#nlp-resources",
+    "href": "slides/13-nlp-basics.html#nlp-resources",
+    "title": "DAT255: Deep learning engineering",
+    "section": "NLP resources",
+    "text": "NLP resources\n\nTensorflow Text"
+  },
+  {
+    "objectID": "slides/13-nlp-basics.html#nlp-resources-1",
+    "href": "slides/13-nlp-basics.html#nlp-resources-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "NLP resources",
+    "text": "NLP resources\n\nTensorflow Text\nHuggingface models and ML library"
+  },
+  {
+    "objectID": "slides/11-tabular-data.html#this-week",
+    "href": "slides/11-tabular-data.html#this-week",
     "title": "DAT255: Deep learning engineering",
     "section": "This week",
     "text": "This week\n\n\n\nToday:\n\nDeep learning on tabular data\nData preprocessing with Keras\n\nFeature scaling\nConverting text and categorical values\nQuick look at embeddings\n\n\nThursday:\n\nCustom Keras objects\nSome ML experiment monitoring tools"
   },
   {
-    "objectID": "slides/12-tools.html#customising-keras",
-    "href": "slides/12-tools.html#customising-keras",
+    "objectID": "slides/11-tabular-data.html#tabular-data",
+    "href": "slides/11-tabular-data.html#tabular-data",
     "title": "DAT255: Deep learning engineering",
-    "section": "Customising Keras",
-    "text": "Customising Keras\nKeras typically have most of what we need, but occasionally we have to add functionality ourselves\nThings we might need to customise:\n\nCallbacks\nMetrics\nLoss functions\nLayers\nModel behaviour undertraining vs inference"
+    "section": "Tabular data",
+    "text": "Tabular data\nData that makes sense to put in a table:\n\n\n\n\n\n\n\n\n\n\n\npatient_id\nage\nvisits\nblood_type\ndiag_code\nsymptoms\n\n\n\n\n321\n28\n1\n“A”\nnone\n“headache, fatigue”\n\n\n602\n64\n4\n“AB”\n32, 12\n“complains about headache, joint pains”\n\n\n201\n62\n2\n“0”\n12\n“dizzyness, headache”\n\n\n491\n57\n1\n“A”\n6\n“headache, fever”\n\n\n\n\nCompare to e.g. images and time series:"
   },
   {
-    "objectID": "slides/12-tools.html#custom-callbacks",
-    "href": "slides/12-tools.html#custom-callbacks",
+    "objectID": "slides/11-tabular-data.html#feature-normalisation",
+    "href": "slides/11-tabular-data.html#feature-normalisation",
     "title": "DAT255: Deep learning engineering",
-    "section": "Custom callbacks",
-    "text": "Custom callbacks\nA callback is run before/after certain events during training\nUse cases:\n\nSave model checkpoint efter each epoch\nChange learning rate\nWrite results to log file or monitoring tool\n\n\n\n\nclass CustomCallback(keras.callbacks.Callback):\n\n    def on_train_begin(self, logs=None):\n        keys = list(logs.keys())\n        print(\"Starting training; got log keys: {}\".format(keys))\n\n    def on_train_end(self, logs=None):\n        keys = list(logs.keys())\n        print(\"Stop training; got log keys: {}\".format(keys))\n\n    def on_epoch_begin(self, epoch, logs=None):\n      ...\n\n    # and more!"
+    "section": "Feature normalisation",
+    "text": "Feature normalisation\nConsider optimisation where\n\nFeatures have similar scale\nFeatures have different scale"
   },
   {
-    "objectID": "slides/12-tools.html#custom-metrics",
-    "href": "slides/12-tools.html#custom-metrics",
+    "objectID": "slides/11-tabular-data.html#feature-normalisation-1",
+    "href": "slides/11-tabular-data.html#feature-normalisation-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Custom metrics",
-    "text": "Custom metrics\nNeed some exotic metric you invented yourself, or that is only available in scikit-learn?\nSubclass the abstract keras.metrics.Metrics class and implement the following methods:\nclass MyMetric(keras.metrics.Metric):\n\n  def __init__(self, ..., **kwargs):\n    super().__init__(**kwargs)\n\n    # class variables\n    self.result = self.add_variable(shape=(), initializer='zeros')\n\n  def update_state(self, y_true, y_pred, sample_weight=None):\n\n    # this is where the result is calculated\n    # doesn't return anything\n    result = ...\n    self.result.add_assign(result)\n\n  def result(self):\n    return self.result"
+    "section": "Feature normalisation",
+    "text": "Feature normalisation\nConsider optimisation where\n\nFeatures have similar scale\nFeatures have different scale\n\nRemember also relation between input and output variances:"
   },
   {
-    "objectID": "slides/12-tools.html#custom-loss-functions",
-    "href": "slides/12-tools.html#custom-loss-functions",
+    "objectID": "slides/11-tabular-data.html#feature-normalisation-2",
+    "href": "slides/11-tabular-data.html#feature-normalisation-2",
     "title": "DAT255: Deep learning engineering",
-    "section": "Custom loss functions",
-    "text": "Custom loss functions\nCustom loss functions can either subclassing keras.losses.Loss, or they can simply be regular functions, with two inputs (y_true, y_pred) and one output.\n\nImportant:\nThe loss function must be differentiable.\n\n\n\ndef mean_squared_error(y_true, y_pred):\n    return tf.reduce_mean(tf.square(y_true - y_pred), axis=-1)\n    \nmodel.compile(loss=mean_squared_error)\n\n\n\n\n\nAlso important:\nFor performance reasons, avoid loops, conditionals, and most python built-ins.\nWrite vectorisable code, ideally in the backend framework (i.e. TensorFlow) or using keras.ops."
+    "section": "Feature normalisation",
+    "text": "Feature normalisation\n\n\n\nNormalisation:\nMake features look like a normal distribution with mean = 0 and variance = 1\nUsual approach:\nimport numpy as np\nx_normalised = (x - np.mean(x)) / np.std(x)\n\n\n\nProvided by\n\nsklearn.preprocessing.StandardScaler()\nkeras.layers.Normalization()"
   },
   {
-    "objectID": "slides/12-tools.html#custom-layers",
-    "href": "slides/12-tools.html#custom-layers",
+    "objectID": "slides/11-tabular-data.html#feature-transformations",
+    "href": "slides/11-tabular-data.html#feature-transformations",
     "title": "DAT255: Deep learning engineering",
-    "section": "Custom layers",
-    "text": "Custom layers\nThe simplest custom layer: keras.layers.Lambda\n(has no weights)\n\n\n\nexponential_layer = tf.keras.layers.Lambda(lambda x: tf.exp(x))\n\nmodel = keras.Sequential([\n  keras.layers.Input(shape=input_shape),\n  exponential_layer(),\n  keras.layers.Dense(10)\n])"
+    "section": "Feature transformations",
+    "text": "Feature transformations"
   },
   {
-    "objectID": "slides/12-tools.html#custom-layers-1",
-    "href": "slides/12-tools.html#custom-layers-1",
+    "objectID": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data",
+    "href": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data",
     "title": "DAT255: Deep learning engineering",
-    "section": "Custom layers",
-    "text": "Custom layers\nFor stateful layers, subclass the abstract keras.layers.Layer class.\nNeed three methods: __init__, call, and build.\n\n\n\nclass Linear(keras.layers.Layer):\n\n    def __init__(self, units=32):\n        super().__init__()\n        self.units = units\n\n    def build(self, input_shape):\n        self.w = self.add_weight(\n            shape=(input_shape[-1], self.units), initializer=\"random_normal\", trainable=True,\n        )\n        self.b = self.add_weight(\n            shape=(self.units,), initializer=\"random_normal\", trainable=True\n        )\n\n    def call(self, inputs):\n        return tf.linalg.matmul(inputs, self.w) + self.b"
+    "section": "Dealing with text and categorical data",
+    "text": "Dealing with text and categorical data\n\n\n\n\n\n\n\n\n\n\n\npatient_id\nage\nvisits\nblood_type\ndiag_code\nsymptoms\n\n\n\n\n321\n28\n1\n“A”\nnone\n“headache, fatigue”\n\n\n602\n64\n4\n“AB”\n32, 12\n“complains about headache, joint pains”\n\n\n201\n62\n2\n“0”\n12\n“dizzyness, headache”\n\n\n491\n57\n1\n“A”\n6\n“headache, fever”\n\n\n\nEncoding categorical data, like blood_type:\n\n\n\n\nOption 1: Ordinal encoding\n{\"0\": 0, \"A\": 1, \"B\": 2, \"AB\": 3}\n-&gt; imposes an ordering which may not be meaningful\n\n\n\n\n\nOption 2: “One-hot” encoding\n# patient_id    0  A  B  AB\n  321         [ 0  1  0  0 ]\n  602         [ 0  0  0  1 ]\n  201         [ 1  0  0  0 ]\n  491         [ 0  1  0  0 ]\n-&gt; no implicit assumption about ordering"
   },
   {
-    "objectID": "slides/12-tools.html#custom-models",
-    "href": "slides/12-tools.html#custom-models",
+    "objectID": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data-1",
+    "href": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Custom models",
-    "text": "Custom models\nTypically we compose complicated models by writing reuseable blocks of layers, as a function\nOccasionally, however, we might want to rewrite it as a class.\n\n\n\n\n\ndef conv_block(inputs):\n  x = layers.Rescaling(1.0 / 255)(inputs)\n  x = layers.Conv2D(128, 3, strides=2)(x)\n  x = layers.BatchNormalization()(x)\n  x = layers.Activation(\"relu\")(x)\n\n  return x\n\n\nclass ConvBlock(keras.layers.Layer):\n\n  def __init__(self, **kwargs):\n    super().__init__(**kwargs)\n\n    self.conv2d = layers.Conv2D(128, 3, strides=2)\n    self.batchnorm = layers.BatchNormalization()\n\n  def call(self, inputs):\n    x = layers.Rescaling(1.0 / 255)(inputs)\n    x = self.conv2d(x)\n    x = self.bathnorm(x) \n    out = layers.Activation(\"relu\")(x)\n\n    return out"
+    "section": "Dealing with text and categorical data",
+    "text": "Dealing with text and categorical data\n\n\n\n\n\n\n\n\n\n\n\npatient_id\nage\nvisits\nblood_type\ndiag_code\nsymptoms\n\n\n\n\n321\n28\n1\n“A”\nnone\n“headache, fatigue”\n\n\n602\n64\n4\n“AB”\n32, 12\n“complains about headache, joint pains”\n\n\n201\n62\n2\n“0”\n12\n“dizzyness, headache”\n\n\n491\n57\n1\n“A”\n6\n“headache, fever”\n\n\n\nEncoding categorical data with vector entries, like diag_code:\n\n\n\n\nOption 1: Ordinal encoding, with one category for each combination\n{\"none\": 0, \"32, 12\": 1, \"12\": 2, \"6\": 3}\n-&gt; assumes combination is distinct from the separate entries\n\n\n\n\n\nOption 2: “One-hot” encoding\n# patient_id   32  12   6\n  321         [ 0   0   0 ]\n  602         [ 1   1   0 ]\n  201         [ 0   1   0 ]\n  491         [ 0   0   1 ]\n-&gt; model will have to learn correlations between columns"
   },
   {
-    "objectID": "slides/12-tools.html#the-ml-project-lifecycle",
-    "href": "slides/12-tools.html#the-ml-project-lifecycle",
+    "objectID": "slides/11-tabular-data.html#dealing-with-text-data",
+    "href": "slides/11-tabular-data.html#dealing-with-text-data",
     "title": "DAT255: Deep learning engineering",
-    "section": "The ML project lifecycle",
-    "text": "The ML project lifecycle"
+    "section": "Dealing with text data",
+    "text": "Dealing with text data\nSophisticated text processing will be the topic for next week\nFor “simple” text we can extend the one-hot encoding scheme and to feature hashing:\n\n\n\n\n\n\n\n\n\n\n\npatient_id\n…\nsymptoms\n\n\n\n\n321\n\n“headache, fatigue”\n\n\n602\n\n“complains about headache, joint pains”\n\n\n201\n\n“dizzyness, headache”\n\n\n491\n\n“headache, fever”\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nheadache\nfatigue\ncomplains\nabout\njoint\npains\ndizzyness\nfever\n\n\n\n\n1\n1\n0\n0\n0\n0\n0\n0\n\n\n1\n0\n1\n1\n1\n1\n0\n0\n\n\n1\n0\n0\n0\n0\n0\n1\n0\n\n\n1\n0\n0\n0\n0\n0\n0\n1"
   },
   {
-    "objectID": "slides/12-tools.html#experiment-tracking",
-    "href": "slides/12-tools.html#experiment-tracking",
+    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data",
+    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data",
     "title": "DAT255: Deep learning engineering",
-    "section": "Experiment tracking 🧑‍🔬",
-    "text": "Experiment tracking 🧑‍🔬\nDuring training: Monitor and diagnose\n\nIs my model still improving?\nAre gradients stable?\nIs the model overfitting?\n\nAfter training: Compare and select\n\nWhich of my models performed best?\n…and most importantly: What was the configuration of the best model?\n\nBefore next training: Hyperparameter selection\n\nWhich new models and hyperparameters should I try?"
+    "section": "Keras convenience layers for categorical data",
+    "text": "Keras convenience layers for categorical data\nEncoding integers, when knowing how many categories exist: CategoryEncoding\n\n\n\n&gt;&gt;&gt; layer = keras.layers.CategoryEncoding(num_tokens=3, output_mode=\"one_hot\")\n&gt;&gt;&gt; data = [2,0,1]\n&gt;&gt;&gt; layer(data)\narray([[0., 0., 1.],\n       [1., 0., 0.],\n       [0., 1., 0.]])\nEncoding data that can be vectors of integers:\n\n\n\n&gt;&gt;&gt; layer = keras.layers.CategoryEncoding(num_tokens=3, output_mode=\"one_hot\")\n&gt;&gt;&gt; data = tf.ragged.constant([[2],[0,1],[0,1,2]])  # uequal lengths -&gt; use tf.ragged\n&gt;&gt;&gt; layer(data)\narray([[0., 0., 1.],\n       [1., 1., 0.],\n       [1., 1., 1.]])"
   },
   {
-    "objectID": "slides/12-tools.html#tools-for-experiment-tracking",
-    "href": "slides/12-tools.html#tools-for-experiment-tracking",
+    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-1",
+    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Tools for experiment tracking",
-    "text": "Tools for experiment tracking\nSome options: TensorBoard\n\n\n\n\n\n+ Integrates well with TensorFlow/Keras - Integrates poorly with other frameworks - Less functionality than other tools"
+    "section": "Keras convenience layers for categorical data",
+    "text": "Keras convenience layers for categorical data\nEncoding (single) strings: StringLookup\n(For sentences we will use TextVectorization next week)\nCan either provide the list of known strings (aka the vocabulary), of learn it from data:\n\n\n\n&gt;&gt;&gt; layer = keras.layers.StringLookup()\n&gt;&gt;&gt; data = ['a', 'b', 'c']\n&gt;&gt;&gt; layer.adapt(data)\n&gt;&gt;&gt; layer.get_vocabulary()\n['[UNK]', 'c', 'b', 'a']\n&gt;&gt;&gt; layer(data)\narray([3, 2, 1])\n&gt;&gt;&gt; other_data = ['b', 'c', 'd']\n&gt;&gt;&gt; layer(other_data)\narray([2, 1, 0])\nOut-Of-Vocabulary (OOV) gets mapped to [UNK], meaning unknown"
   },
   {
-    "objectID": "slides/12-tools.html#tools-for-experiment-tracking-1",
-    "href": "slides/12-tools.html#tools-for-experiment-tracking-1",
+    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-2",
+    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-2",
     "title": "DAT255: Deep learning engineering",
-    "section": "Tools for experiment tracking",
-    "text": "Tools for experiment tracking\nSome options: Weights & Biases\n\n\n\n\n\n+ Loads of functionality, including hyperparameter optimisation + Integrates with practically all frameworks - Commercial product (although free for academic use)"
+    "section": "Keras convenience layers for categorical data",
+    "text": "Keras convenience layers for categorical data\nCan also use the same approach for integers, when we don’t know how many categories exist: IntegerLookup\n\n\n\n&gt;&gt;&gt; layer = keras.layers.IntegerLookup()\n&gt;&gt;&gt; data = [12, 14, 46]\n&gt;&gt;&gt; layer.adapt(data)\n&gt;&gt;&gt; layer.get_vocabulary()\n[-1, np.int64(46), np.int64(14), np.int64(12)]\n&gt;&gt;&gt; layer([14, 12, 317])\n&lt;tf.Tensor: shape=(3,), dtype=int64, numpy=array([2, 3, 0])&gt;\n\n\n\nOut-Of-Vocabulary (OOV) numbers get mapped to -1\nCan also have multiple OOV tokens. Check the documentation"
   },
   {
-    "objectID": "slides/12-tools.html#tools-for-experiment-tracking-2",
-    "href": "slides/12-tools.html#tools-for-experiment-tracking-2",
+    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-3",
+    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-3",
     "title": "DAT255: Deep learning engineering",
-    "section": "Tools for experiment tracking",
-    "text": "Tools for experiment tracking\nSome options: AIM\n\n\n\n\n\n+ Loads of functionality + Integrates with practically all frameworks - Open-source, self-hosted (although paid plans exist)\n\nPlus others too: MLflow, Sacred, Comet, Neptune"
+    "section": "Keras convenience layers for categorical data",
+    "text": "Keras convenience layers for categorical data\nOften your dataset will contain a mix of diffent types, requiring different preprocessing.\nA do-it-all solution is to use keras.utils.FeatureSpace. From example in docs:\nfeature_space = FeatureSpace(\n    features={\n        # Categorical features encoded as integers\n        \"fbs\": \"integer_categorical\",\n        \"restecg\": \"integer_categorical\",\n        # Categorical feature encoded as string\n        \"thal\": \"string_categorical\",\n        # Numerical features to discretize\n        \"age\": \"float_discretized\",\n        # Numerical features to normalize\n        \"trestbps\": \"float_normalized\",\n        \"chol\": \"float_normalized\",\n        \"thalach\": \"float_normalized\",\n    },\n    # Our utility will one-hot encode all categorical\n    # features and concat all features into a single\n    # vector (one vector per sample).\n    output_mode=\"concat\",\n)\n# Adapt to training data\nfeature_space.adapt(train_ds)"
   },
   {
-    "objectID": "slides/12-tools.html#hyperparameter-optimisation",
-    "href": "slides/12-tools.html#hyperparameter-optimisation",
+    "objectID": "slides/11-tabular-data.html#embeddings",
+    "href": "slides/11-tabular-data.html#embeddings",
     "title": "DAT255: Deep learning engineering",
-    "section": "Hyperparameter optimisation",
-    "text": "Hyperparameter optimisation\n\nHow many settings can you tweak in your neural network?\n\nHyperparameters cannot be optimised via gradient descent\nNeed to select them through experimentation.\nSince one experiment (one training run) can be very expensive, new settings should be chosen carefully."
+    "section": "Embeddings",
+    "text": "Embeddings\nProblem:\nIf one-hot encoding many categorical features, each with many categories, we get very many new feature columns\n-&gt; Our data becomes a sparse matrix, meaning most of the elements are zero.\nIs there a more efficient way to encode our data?\n\nEnter embeddings:\nLet’s create a lookup table that maps categorical entries to numerical vectors\n\n\nInstead of\n{\"0\": 0, \"A\": 1, \"B\": 2, \"AB\": 3}\nwe do (for instance)\n{\"0\": [0.2, 1.1], \"A\": [1.6, -0.2], \"B\": [-0.3, 0.7], \"AB\": [1.4, -0.1]}"
   },
   {
-    "objectID": "slides/12-tools.html#hyperparameter-optimisation-grid-scan",
-    "href": "slides/12-tools.html#hyperparameter-optimisation-grid-scan",
+    "objectID": "slides/11-tabular-data.html#embeddings-1",
+    "href": "slides/11-tabular-data.html#embeddings-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Hyperparameter optimisation: Grid scan",
-    "text": "Hyperparameter optimisation: Grid scan\nOption 1: Grid scan\n\n\nDivide the range of each hyperparameter into fixed steps, and test all combinations.\n+ Simple\n+ Parallelisable\n– The higher the dimensionality, the bigger the distance between grid points. Need a big number of experiments to have good coverage"
+    "section": "Embeddings",
+    "text": "Embeddings\nNow the magic✨ is:\nThe embeddings are learnt from data\n# These values are updated during training\n# You can have any dimension you like\n{\"0\": [0.2, 1.1], \"A\": [1.6, -0.2], \"B\": [-0.3, 0.7], \"AB\": [1.4, -0.1]}\nWe can treat the embedding space as an Euclidian space where elements close to another are similar or somehow related.\n\nFor categorical data we call it entity embeddings (while next week we’ll look at word embeddings)\nIn Keras:\nkeras.layers.Embedding(input_dim, output_dim)\n\ninput_dim: length of vocabulary\noutput_dim: dimensions of embedding space (you choose)"
   },
   {
-    "objectID": "slides/12-tools.html#hyperparameter-optimisation-random-search",
-    "href": "slides/12-tools.html#hyperparameter-optimisation-random-search",
+    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data",
+    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data",
     "title": "DAT255: Deep learning engineering",
-    "section": "Hyperparameter optimisation: Random search",
-    "text": "Hyperparameter optimisation: Random search\nOption 2: Random search\n\n\nProbabilistic approach: Pick hyperparameter values at random\n+ Simple\n+ Parallelisable\n+ Likely to find a better optimum than grid scan in fewer number of tries\n– Information about one experiment doesn’t help selecting the next\n\n\n\nShould always prefer this over grid search."
+    "section": "Network architectures for tabular data",
+    "text": "Network architectures for tabular data\n\n\n\n\n\nMost common: Straight-up Dense network\nBenefits from:\n\nFeature engineering\nEnsembling\n\n\n\n\nTypically the data rows and columns have no specific ordering or neighbouring relation -&gt; convolutions or recurrence make little sense."
   },
   {
-    "objectID": "slides/12-tools.html#hyperparameter-optimisation-intelligent-choices",
-    "href": "slides/12-tools.html#hyperparameter-optimisation-intelligent-choices",
+    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data-1",
+    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Hyperparameter optimisation: Intelligent choices",
-    "text": "Hyperparameter optimisation: Intelligent choices\nOption 3: Bayesian optimisation, evolutionary algorithms, and other derivative-free optimisation algorithms\n\n\nLet the result of one experiment influence the choice of the next one\n+ Efficient\n+ Several good frameworks exist\n– Not parallelisable\n\n\n\n\n\n\n\n\nAlways prefer this, except for the most simple cases"
+    "section": "Network architectures for tabular data",
+    "text": "Network architectures for tabular data\n\n\n\nA variation: Wide and deep network"
   },
   {
-    "objectID": "slides/12-tools.html#tools-for-hyperparameter-optimisation",
-    "href": "slides/12-tools.html#tools-for-hyperparameter-optimisation",
+    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data-2",
+    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data-2",
     "title": "DAT255: Deep learning engineering",
-    "section": "Tools for hyperparameter optimisation",
-    "text": "Tools for hyperparameter optimisation\nSome options: KerasTuner, for simple integration with Keras:\n\n\n\ndef model_builder(hp):\n  model = keras.Sequential()\n  model.add(keras.layers.Flatten(input_shape=(28, 28)))\n\n  # Tune the number of units in the first Dense layer\n  units = hp.Int('units', min_value=32, max_value=512, step=32)\n  model.add(keras.layers.Dense(units=units, activation='relu'))\n  model.add(keras.layers.Dense(10), activation=\"softmax\")\n\n  # Tune the learning rate for the optimizer -- choose between 0.01, 0.001, or 0.0001\n  learning_rate = hp.Choice('learning_rate', values=[1e-2, 1e-3, 1e-4])\n\n  model.compile(\n    optimizer=keras.optimizers.Adam(learning_rate=learning_rate),\n    loss=\"categorical_crossentropy\",\n    metrics=['accuracy']\n  )\n\n  return model\n\n\n\n\ntuner = kt.BayesianOptimization(model_builder, objective='val_accuracy')"
+    "section": "Network architectures for tabular data",
+    "text": "Network architectures for tabular data\nModern models are often based on the Transformer architecture\n\n\n\n\n\nhttps://arxiv.org/pdf/2410.12034"
   },
   {
-    "objectID": "slides/12-tools.html#tools-for-hyperparameter-optimisation-1",
-    "href": "slides/12-tools.html#tools-for-hyperparameter-optimisation-1",
+    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data-3",
+    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data-3",
     "title": "DAT255: Deep learning engineering",
-    "section": "Tools for hyperparameter optimisation",
-    "text": "Tools for hyperparameter optimisation\nSome options:\nOptuna, for integration with any framework\nSeveral optimisations algorithms available.\n\n\n\n  units = trial.suggest_int('units', 32, 512)\n  model.add(keras.layers.Dense(units=units, activation='relu'))\n  ...\nComes with visualisation dashboard, VSCode extension"
+    "section": "Network architectures for tabular data",
+    "text": "Network architectures for tabular data\nA transformer model for tabular data: TabTransformer\n\n\n\n\n\n\n\n\n\nTabTransformer significantly outperforms MLP and recent deep networks for tabular data while matching the performance of tree-based ensemble models (GBDT).\n\n\n\n\nhttps://arxiv.org/pdf/2012.06678"
   },
   {
-    "objectID": "slides/12-tools.html#tools-for-hyperparameter-optimisation-2",
-    "href": "slides/12-tools.html#tools-for-hyperparameter-optimisation-2",
+    "objectID": "slides/11-tabular-data.html#the-best-model-for-tabular-data",
+    "href": "slides/11-tabular-data.html#the-best-model-for-tabular-data",
     "title": "DAT255: Deep learning engineering",
-    "section": "Tools for hyperparameter optimisation",
-    "text": "Tools for hyperparameter optimisation\nSome options:\nRay Tune, which interfaces with KerasTuner, Optuna and other optimisation libraries\n\n\n\nsearch_space = {\n  'units': tune.randint(32, 512)\n}\n\ndef model_builder(config):\n  ...\n  units = config['units']\n  model.add(keras.layers.Dense(units=units, activation='relu'))\n  ..."
-  },
-  {
-    "objectID": "slides/10-kickoff.html#project-kickoff",
-    "href": "slides/10-kickoff.html#project-kickoff",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Project kickoff",
-    "text": "Project kickoff\n\n\n\nToday:\n\nA second look at project topics\nSome cool examples by Vegard and Jobjørn\nDetails about:\n\nProject scope\nRequirements and recommendations\nReport and material"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#project-topic",
-    "href": "slides/10-kickoff.html#project-topic",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Project topic",
-    "text": "Project topic\nUp to you! Be creative but reasonable\n\nWe have one rule: Relevant data must exist and be readily available\n(IRL it never is, but this is not our concern right now)\n\n\n\nand one guideline:\nPick something you find interesting and motivating\n\n\n\nProjects are approved by sending in short description on Canvas, deadline next Friday, 28 Feb"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#demo",
-    "href": "slides/10-kickoff.html#demo",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Demo",
-    "text": "Demo"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#assignment-description",
-    "href": "slides/10-kickoff.html#assignment-description",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Assignment description",
-    "text": "Assignment description\n… is now on Canvas:\n\n\n\n\n\nNote: The final submission will be on WiseFlow. Details to follow later"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#formalities",
-    "href": "slides/10-kickoff.html#formalities",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Formalities",
-    "text": "Formalities\n\n\nProject counts for 50% of the final grade\nExam counts for the other 50%\nYou need a passing grade on the project in order to take the exam\n\n\n\n\n\nThe deadline is 25 April\n\nSince the project is graded and goes into the strict WiseFlow system, thereis no possibility for an extension. (Zero, 0, none)"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#scope-and-expectations",
-    "href": "slides/10-kickoff.html#scope-and-expectations",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Scope and expectations",
-    "text": "Scope and expectations\n\n\nMandatory to do:\n\nIdentify a use case for deep learning methods\nConstruct and train a deep neural network\nMake an objective evaluation of model performance\n\n\n\nRecommended to do:\n\nCompare different methods and strategies\nMake use of tools for effective optimisation/monitoring/experimentation\nInvestigate quality of the model prediction\n\n\n\n\nVery recommended: Deploy our model as a web app\n\n\n\n\n\nIn short: Show what you’ve learnt in the course"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#submission-format",
-    "href": "slides/10-kickoff.html#submission-format",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Submission format",
-    "text": "Submission format\nWe want to see two things:\n\n\nA report\nMotivate your choices, describe the implementation, document your experiments, and analyse the outcome. Was it a success? What could have gone better?\nA template for the report will be provided.\n\n\n\n\nThe code\nEverything needed to reproduce your results must be put in a GitHub repo and made accessible. The code must be understandable\n\nThe exact evaluation criteria are listed on Canvas"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#faq",
-    "href": "slides/10-kickoff.html#faq",
-    "title": "DAT255: Deep learning engineering",
-    "section": "FAQ 💬",
-    "text": "FAQ 💬\n\n\nCan I copy code from StackOverflow? Yes, but you must always cite your sources\n\n\n\n\nCan I use ChatGPT / Cursor / &lt;some AI tool&gt; for coding and report writing? Yes, but you must always cite your sources\n\n\n\n\nCan I use pretrained models? Yes, a long as you modify and retrain at least one model\n\n\n\n\nCan I use API calls to OpenAI / DeepSeek / &lt;some service&gt; instead of training my own model? No, but you can use it in addition to your own model"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#next-week-project-week",
-    "href": "slides/10-kickoff.html#next-week-project-week",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Next week: Project week 🙌",
-    "text": "Next week: Project week 🙌\n\n\n\n\nNo lectures, work on the project\n\n\n\n\n\nRemember to submit project description\n\n\n\n\n\nHelp / hints / questions:\n\nI will be available both on Zoom and in physical form in lecture & lab hours\nSend me a message to find a time\n\n\n\n\n\n\nUsual lectures again the week after"
-  },
-  {
-    "objectID": "slides/10-kickoff.html#remember-to-think-about-your-future",
-    "href": "slides/10-kickoff.html#remember-to-think-about-your-future",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Remember to think about your future",
-    "text": "Remember to think about your future\n\n\n\nMany good options for doing more advanced deep learning"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "DAT255 lecture notes",
-    "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates\nMonday week 6: Augmentation and advanced computer vision\nMonday week 7: Sequences, time series, recurrent networks\nThursday week 7: Time series and recurrence (continued)\nMonday week 8: Gradients ++\nThursday week 8: Project kickoff\nMonday week 10: Tabular data\nThursday week 10: Custom Keras object and development tools\nMonday week 11: Natural language processing 1: Text vectorisation"
+    "section": "The best model for tabular data",
+    "text": "The best model for tabular data\n\nhttps://arxiv.org/pdf/2207.08815"
   },
   {
     "objectID": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
@@ -1351,298 +1547,319 @@
     "text": "TensorFlowplayground"
   },
   {
-    "objectID": "slides/11-tabular-data.html#this-week",
-    "href": "slides/11-tabular-data.html#this-week",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DAT255 lecture notes",
+    "section": "",
+    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates\nMonday week 6: Augmentation and advanced computer vision\nMonday week 7: Sequences, time series, recurrent networks\nThursday week 7: Time series and recurrence (continued)\nMonday week 8: Gradients ++\nThursday week 8: Project kickoff\nMonday week 10: Tabular data\nThursday week 10: Custom Keras object and development tools\nMonday week 11: Natural language processing: Text vectorisation\nMonday week 11: Natural language processing: More on embeddings"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#project-kickoff",
+    "href": "slides/10-kickoff.html#project-kickoff",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Project kickoff",
+    "text": "Project kickoff\n\n\n\nToday:\n\nA second look at project topics\nSome cool examples by Vegard and Jobjørn\nDetails about:\n\nProject scope\nRequirements and recommendations\nReport and material"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#project-topic",
+    "href": "slides/10-kickoff.html#project-topic",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Project topic",
+    "text": "Project topic\nUp to you! Be creative but reasonable\n\nWe have one rule: Relevant data must exist and be readily available\n(IRL it never is, but this is not our concern right now)\n\n\n\nand one guideline:\nPick something you find interesting and motivating\n\n\n\nProjects are approved by sending in short description on Canvas, deadline next Friday, 28 Feb"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#demo",
+    "href": "slides/10-kickoff.html#demo",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Demo",
+    "text": "Demo"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#assignment-description",
+    "href": "slides/10-kickoff.html#assignment-description",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Assignment description",
+    "text": "Assignment description\n… is now on Canvas:\n\n\n\n\n\nNote: The final submission will be on WiseFlow. Details to follow later"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#formalities",
+    "href": "slides/10-kickoff.html#formalities",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Formalities",
+    "text": "Formalities\n\n\nProject counts for 50% of the final grade\nExam counts for the other 50%\nYou need a passing grade on the project in order to take the exam\n\n\n\n\n\nThe deadline is 25 April\n\nSince the project is graded and goes into the strict WiseFlow system, thereis no possibility for an extension. (Zero, 0, none)"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#scope-and-expectations",
+    "href": "slides/10-kickoff.html#scope-and-expectations",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Scope and expectations",
+    "text": "Scope and expectations\n\n\nMandatory to do:\n\nIdentify a use case for deep learning methods\nConstruct and train a deep neural network\nMake an objective evaluation of model performance\n\n\n\nRecommended to do:\n\nCompare different methods and strategies\nMake use of tools for effective optimisation/monitoring/experimentation\nInvestigate quality of the model prediction\n\n\n\n\nVery recommended: Deploy our model as a web app\n\n\n\n\n\nIn short: Show what you’ve learnt in the course"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#submission-format",
+    "href": "slides/10-kickoff.html#submission-format",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Submission format",
+    "text": "Submission format\nWe want to see two things:\n\n\nA report\nMotivate your choices, describe the implementation, document your experiments, and analyse the outcome. Was it a success? What could have gone better?\nA template for the report will be provided.\n\n\n\n\nThe code\nEverything needed to reproduce your results must be put in a GitHub repo and made accessible. The code must be understandable\n\nThe exact evaluation criteria are listed on Canvas"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#faq",
+    "href": "slides/10-kickoff.html#faq",
+    "title": "DAT255: Deep learning engineering",
+    "section": "FAQ 💬",
+    "text": "FAQ 💬\n\n\nCan I copy code from StackOverflow? Yes, but you must always cite your sources\n\n\n\n\nCan I use ChatGPT / Cursor / &lt;some AI tool&gt; for coding and report writing? Yes, but you must always cite your sources\n\n\n\n\nCan I use pretrained models? Yes, a long as you modify and retrain at least one model\n\n\n\n\nCan I use API calls to OpenAI / DeepSeek / &lt;some service&gt; instead of training my own model? No, but you can use it in addition to your own model"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#next-week-project-week",
+    "href": "slides/10-kickoff.html#next-week-project-week",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Next week: Project week 🙌",
+    "text": "Next week: Project week 🙌\n\n\n\n\nNo lectures, work on the project\n\n\n\n\n\nRemember to submit project description\n\n\n\n\n\nHelp / hints / questions:\n\nI will be available both on Zoom and in physical form in lecture & lab hours\nSend me a message to find a time\n\n\n\n\n\n\nUsual lectures again the week after"
+  },
+  {
+    "objectID": "slides/10-kickoff.html#remember-to-think-about-your-future",
+    "href": "slides/10-kickoff.html#remember-to-think-about-your-future",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Remember to think about your future",
+    "text": "Remember to think about your future\n\n\n\nMany good options for doing more advanced deep learning"
+  },
+  {
+    "objectID": "slides/12-tools.html#this-week",
+    "href": "slides/12-tools.html#this-week",
     "title": "DAT255: Deep learning engineering",
     "section": "This week",
     "text": "This week\n\n\n\nToday:\n\nDeep learning on tabular data\nData preprocessing with Keras\n\nFeature scaling\nConverting text and categorical values\nQuick look at embeddings\n\n\nThursday:\n\nCustom Keras objects\nSome ML experiment monitoring tools"
   },
   {
-    "objectID": "slides/11-tabular-data.html#tabular-data",
-    "href": "slides/11-tabular-data.html#tabular-data",
+    "objectID": "slides/12-tools.html#customising-keras",
+    "href": "slides/12-tools.html#customising-keras",
     "title": "DAT255: Deep learning engineering",
-    "section": "Tabular data",
-    "text": "Tabular data\nData that makes sense to put in a table:\n\n\n\n\n\n\n\n\n\n\n\npatient_id\nage\nvisits\nblood_type\ndiag_code\nsymptoms\n\n\n\n\n321\n28\n1\n“A”\nnone\n“headache, fatigue”\n\n\n602\n64\n4\n“AB”\n32, 12\n“complains about headache, joint pains”\n\n\n201\n62\n2\n“0”\n12\n“dizzyness, headache”\n\n\n491\n57\n1\n“A”\n6\n“headache, fever”\n\n\n\n\nCompare to e.g. images and time series:"
+    "section": "Customising Keras",
+    "text": "Customising Keras\nKeras typically have most of what we need, but occasionally we have to add functionality ourselves\nThings we might need to customise:\n\nCallbacks\nMetrics\nLoss functions\nLayers\nModel behaviour undertraining vs inference"
   },
   {
-    "objectID": "slides/11-tabular-data.html#feature-normalisation",
-    "href": "slides/11-tabular-data.html#feature-normalisation",
+    "objectID": "slides/12-tools.html#custom-callbacks",
+    "href": "slides/12-tools.html#custom-callbacks",
     "title": "DAT255: Deep learning engineering",
-    "section": "Feature normalisation",
-    "text": "Feature normalisation\nConsider optimisation where\n\nFeatures have similar scale\nFeatures have different scale"
+    "section": "Custom callbacks",
+    "text": "Custom callbacks\nA callback is run before/after certain events during training\nUse cases:\n\nSave model checkpoint efter each epoch\nChange learning rate\nWrite results to log file or monitoring tool\n\n\n\n\nclass CustomCallback(keras.callbacks.Callback):\n\n    def on_train_begin(self, logs=None):\n        keys = list(logs.keys())\n        print(\"Starting training; got log keys: {}\".format(keys))\n\n    def on_train_end(self, logs=None):\n        keys = list(logs.keys())\n        print(\"Stop training; got log keys: {}\".format(keys))\n\n    def on_epoch_begin(self, epoch, logs=None):\n      ...\n\n    # and more!"
   },
   {
-    "objectID": "slides/11-tabular-data.html#feature-normalisation-1",
-    "href": "slides/11-tabular-data.html#feature-normalisation-1",
+    "objectID": "slides/12-tools.html#custom-metrics",
+    "href": "slides/12-tools.html#custom-metrics",
     "title": "DAT255: Deep learning engineering",
-    "section": "Feature normalisation",
-    "text": "Feature normalisation\nConsider optimisation where\n\nFeatures have similar scale\nFeatures have different scale\n\nRemember also relation between input and output variances:"
+    "section": "Custom metrics",
+    "text": "Custom metrics\nNeed some exotic metric you invented yourself, or that is only available in scikit-learn?\nSubclass the abstract keras.metrics.Metrics class and implement the following methods:\nclass MyMetric(keras.metrics.Metric):\n\n  def __init__(self, ..., **kwargs):\n    super().__init__(**kwargs)\n\n    # class variables\n    self.result = self.add_variable(shape=(), initializer='zeros')\n\n  def update_state(self, y_true, y_pred, sample_weight=None):\n\n    # this is where the result is calculated\n    # doesn't return anything\n    result = ...\n    self.result.add_assign(result)\n\n  def result(self):\n    return self.result"
   },
   {
-    "objectID": "slides/11-tabular-data.html#feature-normalisation-2",
-    "href": "slides/11-tabular-data.html#feature-normalisation-2",
+    "objectID": "slides/12-tools.html#custom-loss-functions",
+    "href": "slides/12-tools.html#custom-loss-functions",
     "title": "DAT255: Deep learning engineering",
-    "section": "Feature normalisation",
-    "text": "Feature normalisation\n\n\n\nNormalisation:\nMake features look like a normal distribution with mean = 0 and variance = 1\nUsual approach:\nimport numpy as np\nx_normalised = (x - np.mean(x)) / np.std(x)\n\n\n\nProvided by\n\nsklearn.preprocessing.StandardScaler()\nkeras.layers.Normalization()"
+    "section": "Custom loss functions",
+    "text": "Custom loss functions\nCustom loss functions can either subclassing keras.losses.Loss, or they can simply be regular functions, with two inputs (y_true, y_pred) and one output.\n\nImportant:\nThe loss function must be differentiable.\n\n\n\ndef mean_squared_error(y_true, y_pred):\n    return tf.reduce_mean(tf.square(y_true - y_pred), axis=-1)\n    \nmodel.compile(loss=mean_squared_error)\n\n\n\n\n\nAlso important:\nFor performance reasons, avoid loops, conditionals, and most python built-ins.\nWrite vectorisable code, ideally in the backend framework (i.e. TensorFlow) or using keras.ops."
   },
   {
-    "objectID": "slides/11-tabular-data.html#feature-transformations",
-    "href": "slides/11-tabular-data.html#feature-transformations",
+    "objectID": "slides/12-tools.html#custom-layers",
+    "href": "slides/12-tools.html#custom-layers",
     "title": "DAT255: Deep learning engineering",
-    "section": "Feature transformations",
-    "text": "Feature transformations"
+    "section": "Custom layers",
+    "text": "Custom layers\nThe simplest custom layer: keras.layers.Lambda\n(has no weights)\n\n\n\nexponential_layer = tf.keras.layers.Lambda(lambda x: tf.exp(x))\n\nmodel = keras.Sequential([\n  keras.layers.Input(shape=input_shape),\n  exponential_layer(),\n  keras.layers.Dense(10)\n])"
   },
   {
-    "objectID": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data",
-    "href": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data",
+    "objectID": "slides/12-tools.html#custom-layers-1",
+    "href": "slides/12-tools.html#custom-layers-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Dealing with text and categorical data",
-    "text": "Dealing with text and categorical data\n\n\n\n\n\n\n\n\n\n\n\npatient_id\nage\nvisits\nblood_type\ndiag_code\nsymptoms\n\n\n\n\n321\n28\n1\n“A”\nnone\n“headache, fatigue”\n\n\n602\n64\n4\n“AB”\n32, 12\n“complains about headache, joint pains”\n\n\n201\n62\n2\n“0”\n12\n“dizzyness, headache”\n\n\n491\n57\n1\n“A”\n6\n“headache, fever”\n\n\n\nEncoding categorical data, like blood_type:\n\n\n\n\nOption 1: Ordinal encoding\n{\"0\": 0, \"A\": 1, \"B\": 2, \"AB\": 3}\n-&gt; imposes an ordering which may not be meaningful\n\n\n\n\n\nOption 2: “One-hot” encoding\n# patient_id    0  A  B  AB\n  321         [ 0  1  0  0 ]\n  602         [ 0  0  0  1 ]\n  201         [ 1  0  0  0 ]\n  491         [ 0  1  0  0 ]\n-&gt; no implicit assumption about ordering"
+    "section": "Custom layers",
+    "text": "Custom layers\nFor stateful layers, subclass the abstract keras.layers.Layer class.\nNeed three methods: __init__, call, and build.\n\n\n\nclass Linear(keras.layers.Layer):\n\n    def __init__(self, units=32):\n        super().__init__()\n        self.units = units\n\n    def build(self, input_shape):\n        self.w = self.add_weight(\n            shape=(input_shape[-1], self.units), initializer=\"random_normal\", trainable=True,\n        )\n        self.b = self.add_weight(\n            shape=(self.units,), initializer=\"random_normal\", trainable=True\n        )\n\n    def call(self, inputs):\n        return tf.linalg.matmul(inputs, self.w) + self.b"
   },
   {
-    "objectID": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data-1",
-    "href": "slides/11-tabular-data.html#dealing-with-text-and-categorical-data-1",
+    "objectID": "slides/12-tools.html#custom-models",
+    "href": "slides/12-tools.html#custom-models",
     "title": "DAT255: Deep learning engineering",
-    "section": "Dealing with text and categorical data",
-    "text": "Dealing with text and categorical data\n\n\n\n\n\n\n\n\n\n\n\npatient_id\nage\nvisits\nblood_type\ndiag_code\nsymptoms\n\n\n\n\n321\n28\n1\n“A”\nnone\n“headache, fatigue”\n\n\n602\n64\n4\n“AB”\n32, 12\n“complains about headache, joint pains”\n\n\n201\n62\n2\n“0”\n12\n“dizzyness, headache”\n\n\n491\n57\n1\n“A”\n6\n“headache, fever”\n\n\n\nEncoding categorical data with vector entries, like diag_code:\n\n\n\n\nOption 1: Ordinal encoding, with one category for each combination\n{\"none\": 0, \"32, 12\": 1, \"12\": 2, \"6\": 3}\n-&gt; assumes combination is distinct from the separate entries\n\n\n\n\n\nOption 2: “One-hot” encoding\n# patient_id   32  12   6\n  321         [ 0   0   0 ]\n  602         [ 1   1   0 ]\n  201         [ 0   1   0 ]\n  491         [ 0   0   1 ]\n-&gt; model will have to learn correlations between columns"
+    "section": "Custom models",
+    "text": "Custom models\nTypically we compose complicated models by writing reuseable blocks of layers, as a function\nOccasionally, however, we might want to rewrite it as a class.\n\n\n\n\n\ndef conv_block(inputs):\n  x = layers.Rescaling(1.0 / 255)(inputs)\n  x = layers.Conv2D(128, 3, strides=2)(x)\n  x = layers.BatchNormalization()(x)\n  x = layers.Activation(\"relu\")(x)\n\n  return x\n\n\nclass ConvBlock(keras.layers.Layer):\n\n  def __init__(self, **kwargs):\n    super().__init__(**kwargs)\n\n    self.conv2d = layers.Conv2D(128, 3, strides=2)\n    self.batchnorm = layers.BatchNormalization()\n\n  def call(self, inputs):\n    x = layers.Rescaling(1.0 / 255)(inputs)\n    x = self.conv2d(x)\n    x = self.bathnorm(x) \n    out = layers.Activation(\"relu\")(x)\n\n    return out"
   },
   {
-    "objectID": "slides/11-tabular-data.html#dealing-with-text-data",
-    "href": "slides/11-tabular-data.html#dealing-with-text-data",
+    "objectID": "slides/12-tools.html#the-ml-project-lifecycle",
+    "href": "slides/12-tools.html#the-ml-project-lifecycle",
     "title": "DAT255: Deep learning engineering",
-    "section": "Dealing with text data",
-    "text": "Dealing with text data\nSophisticated text processing will be the topic for next week\nFor “simple” text we can extend the one-hot encoding scheme and to feature hashing:\n\n\n\n\n\n\n\n\n\n\n\npatient_id\n…\nsymptoms\n\n\n\n\n321\n\n“headache, fatigue”\n\n\n602\n\n“complains about headache, joint pains”\n\n\n201\n\n“dizzyness, headache”\n\n\n491\n\n“headache, fever”\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nheadache\nfatigue\ncomplains\nabout\njoint\npains\ndizzyness\nfever\n\n\n\n\n1\n1\n0\n0\n0\n0\n0\n0\n\n\n1\n0\n1\n1\n1\n1\n0\n0\n\n\n1\n0\n0\n0\n0\n0\n1\n0\n\n\n1\n0\n0\n0\n0\n0\n0\n1"
+    "section": "The ML project lifecycle",
+    "text": "The ML project lifecycle"
   },
   {
-    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data",
-    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data",
+    "objectID": "slides/12-tools.html#experiment-tracking",
+    "href": "slides/12-tools.html#experiment-tracking",
     "title": "DAT255: Deep learning engineering",
-    "section": "Keras convenience layers for categorical data",
-    "text": "Keras convenience layers for categorical data\nEncoding integers, when knowing how many categories exist: CategoryEncoding\n\n\n\n&gt;&gt;&gt; layer = keras.layers.CategoryEncoding(num_tokens=3, output_mode=\"one_hot\")\n&gt;&gt;&gt; data = [2,0,1]\n&gt;&gt;&gt; layer(data)\narray([[0., 0., 1.],\n       [1., 0., 0.],\n       [0., 1., 0.]])\nEncoding data that can be vectors of integers:\n\n\n\n&gt;&gt;&gt; layer = keras.layers.CategoryEncoding(num_tokens=3, output_mode=\"one_hot\")\n&gt;&gt;&gt; data = tf.ragged.constant([[2],[0,1],[0,1,2]])  # uequal lengths -&gt; use tf.ragged\n&gt;&gt;&gt; layer(data)\narray([[0., 0., 1.],\n       [1., 1., 0.],\n       [1., 1., 1.]])"
+    "section": "Experiment tracking 🧑‍🔬",
+    "text": "Experiment tracking 🧑‍🔬\nDuring training: Monitor and diagnose\n\nIs my model still improving?\nAre gradients stable?\nIs the model overfitting?\n\nAfter training: Compare and select\n\nWhich of my models performed best?\n…and most importantly: What was the configuration of the best model?\n\nBefore next training: Hyperparameter selection\n\nWhich new models and hyperparameters should I try?"
   },
   {
-    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-1",
-    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-1",
+    "objectID": "slides/12-tools.html#tools-for-experiment-tracking",
+    "href": "slides/12-tools.html#tools-for-experiment-tracking",
     "title": "DAT255: Deep learning engineering",
-    "section": "Keras convenience layers for categorical data",
-    "text": "Keras convenience layers for categorical data\nEncoding (single) strings: StringLookup\n(For sentences we will use TextVectorization next week)\nCan either provide the list of known strings (aka the vocabulary), of learn it from data:\n\n\n\n&gt;&gt;&gt; layer = keras.layers.StringLookup()\n&gt;&gt;&gt; data = ['a', 'b', 'c']\n&gt;&gt;&gt; layer.adapt(data)\n&gt;&gt;&gt; layer.get_vocabulary()\n['[UNK]', 'c', 'b', 'a']\n&gt;&gt;&gt; layer(data)\narray([3, 2, 1])\n&gt;&gt;&gt; other_data = ['b', 'c', 'd']\n&gt;&gt;&gt; layer(other_data)\narray([2, 1, 0])\nOut-Of-Vocabulary (OOV) gets mapped to [UNK], meaning unknown"
+    "section": "Tools for experiment tracking",
+    "text": "Tools for experiment tracking\nSome options: TensorBoard\n\n\n\n\n\n+ Integrates well with TensorFlow/Keras - Integrates poorly with other frameworks - Less functionality than other tools"
   },
   {
-    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-2",
-    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-2",
+    "objectID": "slides/12-tools.html#tools-for-experiment-tracking-1",
+    "href": "slides/12-tools.html#tools-for-experiment-tracking-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Keras convenience layers for categorical data",
-    "text": "Keras convenience layers for categorical data\nCan also use the same approach for integers, when we don’t know how many categories exist: IntegerLookup\n\n\n\n&gt;&gt;&gt; layer = keras.layers.IntegerLookup()\n&gt;&gt;&gt; data = [12, 14, 46]\n&gt;&gt;&gt; layer.adapt(data)\n&gt;&gt;&gt; layer.get_vocabulary()\n[-1, np.int64(46), np.int64(14), np.int64(12)]\n&gt;&gt;&gt; layer([14, 12, 317])\n&lt;tf.Tensor: shape=(3,), dtype=int64, numpy=array([2, 3, 0])&gt;\n\n\n\nOut-Of-Vocabulary (OOV) numbers get mapped to -1\nCan also have multiple OOV tokens. Check the documentation"
+    "section": "Tools for experiment tracking",
+    "text": "Tools for experiment tracking\nSome options: Weights & Biases\n\n\n\n\n\n+ Loads of functionality, including hyperparameter optimisation + Integrates with practically all frameworks - Commercial product (although free for academic use)"
   },
   {
-    "objectID": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-3",
-    "href": "slides/11-tabular-data.html#keras-convenience-layers-for-categorical-data-3",
+    "objectID": "slides/12-tools.html#tools-for-experiment-tracking-2",
+    "href": "slides/12-tools.html#tools-for-experiment-tracking-2",
     "title": "DAT255: Deep learning engineering",
-    "section": "Keras convenience layers for categorical data",
-    "text": "Keras convenience layers for categorical data\nOften your dataset will contain a mix of diffent types, requiring different preprocessing.\nA do-it-all solution is to use keras.utils.FeatureSpace. From example in docs:\nfeature_space = FeatureSpace(\n    features={\n        # Categorical features encoded as integers\n        \"fbs\": \"integer_categorical\",\n        \"restecg\": \"integer_categorical\",\n        # Categorical feature encoded as string\n        \"thal\": \"string_categorical\",\n        # Numerical features to discretize\n        \"age\": \"float_discretized\",\n        # Numerical features to normalize\n        \"trestbps\": \"float_normalized\",\n        \"chol\": \"float_normalized\",\n        \"thalach\": \"float_normalized\",\n    },\n    # Our utility will one-hot encode all categorical\n    # features and concat all features into a single\n    # vector (one vector per sample).\n    output_mode=\"concat\",\n)\n# Adapt to training data\nfeature_space.adapt(train_ds)"
+    "section": "Tools for experiment tracking",
+    "text": "Tools for experiment tracking\nSome options: AIM\n\n\n\n\n\n+ Loads of functionality + Integrates with practically all frameworks - Open-source, self-hosted (although paid plans exist)\n\nPlus others too: MLflow, Sacred, Comet, Neptune"
   },
   {
-    "objectID": "slides/11-tabular-data.html#embeddings",
-    "href": "slides/11-tabular-data.html#embeddings",
+    "objectID": "slides/12-tools.html#hyperparameter-optimisation",
+    "href": "slides/12-tools.html#hyperparameter-optimisation",
     "title": "DAT255: Deep learning engineering",
-    "section": "Embeddings",
-    "text": "Embeddings\nProblem:\nIf one-hot encoding many categorical features, each with many categories, we get very many new feature columns\n-&gt; Our data becomes a sparse matrix, meaning most of the elements are zero.\nIs there a more efficient way to encode our data?\n\nEnter embeddings:\nLet’s create a lookup table that maps categorical entries to numerical vectors\n\n\nInstead of\n{\"0\": 0, \"A\": 1, \"B\": 2, \"AB\": 3}\nwe do (for instance)\n{\"0\": [0.2, 1.1], \"A\": [1.6, -0.2], \"B\": [-0.3, 0.7], \"AB\": [1.4, -0.1]}"
+    "section": "Hyperparameter optimisation",
+    "text": "Hyperparameter optimisation\n\nHow many settings can you tweak in your neural network?\n\nHyperparameters cannot be optimised via gradient descent\nNeed to select them through experimentation.\nSince one experiment (one training run) can be very expensive, new settings should be chosen carefully."
   },
   {
-    "objectID": "slides/11-tabular-data.html#embeddings-1",
-    "href": "slides/11-tabular-data.html#embeddings-1",
+    "objectID": "slides/12-tools.html#hyperparameter-optimisation-grid-scan",
+    "href": "slides/12-tools.html#hyperparameter-optimisation-grid-scan",
     "title": "DAT255: Deep learning engineering",
-    "section": "Embeddings",
-    "text": "Embeddings\nNow the magic✨ is:\nThe embeddings are learnt from data\n# These values are updated during training\n# You can have any dimension you like\n{\"0\": [0.2, 1.1], \"A\": [1.6, -0.2], \"B\": [-0.3, 0.7], \"AB\": [1.4, -0.1]}\nWe can treat the embedding space as an Euclidian space where elements close to another are similar or somehow related.\n\nFor categorical data we call it entity embeddings (while next week we’ll look at word embeddings)\nIn Keras:\nkeras.layers.Embedding(input_dim, output_dim)\n\ninput_dim: length of vocabulary\noutput_dim: dimensions of embedding space (you choose)"
+    "section": "Hyperparameter optimisation: Grid scan",
+    "text": "Hyperparameter optimisation: Grid scan\nOption 1: Grid scan\n\n\nDivide the range of each hyperparameter into fixed steps, and test all combinations.\n+ Simple\n+ Parallelisable\n– The higher the dimensionality, the bigger the distance between grid points. Need a big number of experiments to have good coverage"
   },
   {
-    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data",
-    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data",
+    "objectID": "slides/12-tools.html#hyperparameter-optimisation-random-search",
+    "href": "slides/12-tools.html#hyperparameter-optimisation-random-search",
     "title": "DAT255: Deep learning engineering",
-    "section": "Network architectures for tabular data",
-    "text": "Network architectures for tabular data\n\n\n\n\n\nMost common: Straight-up Dense network\nBenefits from:\n\nFeature engineering\nEnsembling\n\n\n\n\nTypically the data rows and columns have no specific ordering or neighbouring relation -&gt; convolutions or recurrence make little sense."
+    "section": "Hyperparameter optimisation: Random search",
+    "text": "Hyperparameter optimisation: Random search\nOption 2: Random search\n\n\nProbabilistic approach: Pick hyperparameter values at random\n+ Simple\n+ Parallelisable\n+ Likely to find a better optimum than grid scan in fewer number of tries\n– Information about one experiment doesn’t help selecting the next\n\n\n\nShould always prefer this over grid search."
   },
   {
-    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data-1",
-    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data-1",
+    "objectID": "slides/12-tools.html#hyperparameter-optimisation-intelligent-choices",
+    "href": "slides/12-tools.html#hyperparameter-optimisation-intelligent-choices",
     "title": "DAT255: Deep learning engineering",
-    "section": "Network architectures for tabular data",
-    "text": "Network architectures for tabular data\n\n\n\nA variation: Wide and deep network"
+    "section": "Hyperparameter optimisation: Intelligent choices",
+    "text": "Hyperparameter optimisation: Intelligent choices\nOption 3: Bayesian optimisation, evolutionary algorithms, and other derivative-free optimisation algorithms\n\n\nLet the result of one experiment influence the choice of the next one\n+ Efficient\n+ Several good frameworks exist\n– Not parallelisable\n\n\n\n\n\n\n\n\nAlways prefer this, except for the most simple cases"
   },
   {
-    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data-2",
-    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data-2",
+    "objectID": "slides/12-tools.html#tools-for-hyperparameter-optimisation",
+    "href": "slides/12-tools.html#tools-for-hyperparameter-optimisation",
     "title": "DAT255: Deep learning engineering",
-    "section": "Network architectures for tabular data",
-    "text": "Network architectures for tabular data\nModern models are often based on the Transformer architecture\n\n\n\n\n\nhttps://arxiv.org/pdf/2410.12034"
+    "section": "Tools for hyperparameter optimisation",
+    "text": "Tools for hyperparameter optimisation\nSome options: KerasTuner, for simple integration with Keras:\n\n\n\ndef model_builder(hp):\n  model = keras.Sequential()\n  model.add(keras.layers.Flatten(input_shape=(28, 28)))\n\n  # Tune the number of units in the first Dense layer\n  units = hp.Int('units', min_value=32, max_value=512, step=32)\n  model.add(keras.layers.Dense(units=units, activation='relu'))\n  model.add(keras.layers.Dense(10), activation=\"softmax\")\n\n  # Tune the learning rate for the optimizer -- choose between 0.01, 0.001, or 0.0001\n  learning_rate = hp.Choice('learning_rate', values=[1e-2, 1e-3, 1e-4])\n\n  model.compile(\n    optimizer=keras.optimizers.Adam(learning_rate=learning_rate),\n    loss=\"categorical_crossentropy\",\n    metrics=['accuracy']\n  )\n\n  return model\n\n\n\n\ntuner = kt.BayesianOptimization(model_builder, objective='val_accuracy')"
   },
   {
-    "objectID": "slides/11-tabular-data.html#network-architectures-for-tabular-data-3",
-    "href": "slides/11-tabular-data.html#network-architectures-for-tabular-data-3",
+    "objectID": "slides/12-tools.html#tools-for-hyperparameter-optimisation-1",
+    "href": "slides/12-tools.html#tools-for-hyperparameter-optimisation-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Network architectures for tabular data",
-    "text": "Network architectures for tabular data\nA transformer model for tabular data: TabTransformer\n\n\n\n\n\n\n\n\n\nTabTransformer significantly outperforms MLP and recent deep networks for tabular data while matching the performance of tree-based ensemble models (GBDT).\n\n\n\n\nhttps://arxiv.org/pdf/2012.06678"
+    "section": "Tools for hyperparameter optimisation",
+    "text": "Tools for hyperparameter optimisation\nSome options:\nOptuna, for integration with any framework\nSeveral optimisations algorithms available.\n\n\n\n  units = trial.suggest_int('units', 32, 512)\n  model.add(keras.layers.Dense(units=units, activation='relu'))\n  ...\nComes with visualisation dashboard, VSCode extension"
   },
   {
-    "objectID": "slides/11-tabular-data.html#the-best-model-for-tabular-data",
-    "href": "slides/11-tabular-data.html#the-best-model-for-tabular-data",
+    "objectID": "slides/12-tools.html#tools-for-hyperparameter-optimisation-2",
+    "href": "slides/12-tools.html#tools-for-hyperparameter-optimisation-2",
     "title": "DAT255: Deep learning engineering",
-    "section": "The best model for tabular data",
-    "text": "The best model for tabular data\n\nhttps://arxiv.org/pdf/2207.08815"
+    "section": "Tools for hyperparameter optimisation",
+    "text": "Tools for hyperparameter optimisation\nSome options:\nRay Tune, which interfaces with KerasTuner, Optuna and other optimisation libraries\n\n\n\nsearch_space = {\n  'units': tune.randint(32, 512)\n}\n\ndef model_builder(config):\n  ...\n  units = config['units']\n  model.add(keras.layers.Dense(units=units, activation='relu'))\n  ..."
   },
   {
-    "objectID": "slides/13-nlp-basics.html#natural-language-processing-nlp",
-    "href": "slides/13-nlp-basics.html#natural-language-processing-nlp",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Natural language processing (NLP)",
-    "text": "Natural language processing (NLP)\n(as opposed to machine language)\nSince most human knowledge is stored as text, NLP is an important field of study\n\n\nKnowing grammar, syntax and language structure (i.e. linguistics), can we write down the set of rules required to do a language task like translation?\n\n\n\nNot really, no.\n\n\n\nKnowing basically nothing, but having a library of example text, can we statistically infer the rules required to do a language task?\n\n\n\nYes!\n\n\nDisclaimer: There’s loads of interesting NLP stuff that we will skip, because it has been obsoleted by transformer models. Look at the supplemental reading on Canvas."
-  },
-  {
-    "objectID": "slides/13-nlp-basics.html#nlp-tasks",
-    "href": "slides/13-nlp-basics.html#nlp-tasks",
-    "title": "DAT255: Deep learning engineering",
-    "section": "NLP tasks",
-    "text": "NLP tasks\n\nText classification:\nWhat is the topic of this text?\nContent filtering:\nIs this email spam? Does this post contain swearing?\nSentiment analysis:\nIs this review positive or negative?\nTranslation:\nWhat is this text in French?\nSummarisation:\nCan you give a short summary of this article?"
-  },
-  {
-    "objectID": "slides/13-nlp-basics.html#our-toolbox-so-far",
-    "href": "slides/13-nlp-basics.html#our-toolbox-so-far",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Our toolbox so far:",
-    "text": "Our toolbox so far:\nWe know how to do\n\nSequence processing:\nKnow how to construct RNNs, CNNs\nInput encoding:\nLooked at embeddings last week\n\nWith this, we can build an NLP model at 2017 level (will do so this week)\nNext week we will learn about\n\nTransformers (not the electrical kind)\n\nWith this, we can build an NLP model at 2022 level\n\n\n\n\nMMLU benchmark"
-  },
-  {
-    "objectID": "slides/13-nlp-basics.html#getting-text-into-our-model",
-    "href": "slides/13-nlp-basics.html#getting-text-into-our-model",
+    "objectID": "slides/14-nlp-embeddings.html#getting-text-into-our-model",
+    "href": "slides/14-nlp-embeddings.html#getting-text-into-our-model",
     "title": "DAT255: Deep learning engineering",
     "section": "Getting text into our model",
     "text": "Getting text into our model\n\n\nText vectorisation: Converting text to numeric data.\nTypical approach consists of several steps\n\n\nStandardisation:Remove diacritics, punctuation, convert to lowercase\nTokenisation:Split text into tokens which can be words, subwords, or groups of words\nIndexing:Convert tokens to integer values\nEncoding:Convert indices into embeddings or one-hot encoding\n\n\n\n\n\n\nDeep Learning with Python, F. Chollet"
   },
   {
-    "objectID": "slides/13-nlp-basics.html#text-vectorisation",
-    "href": "slides/13-nlp-basics.html#text-vectorisation",
+    "objectID": "slides/14-nlp-embeddings.html#tokenisation",
+    "href": "slides/14-nlp-embeddings.html#tokenisation",
     "title": "DAT255: Deep learning engineering",
-    "section": "Text vectorisation",
-    "text": "Text vectorisation\nCan do all the processing steps with the keras.layers.TextVectorization layer\n\nA preprocessing layer which maps text features to integer sequences.\n\n\n\n\nkeras.layers.TextVectorization(\n  max_tokens=None,\n  standardize=\"lower_and_strip_punctuation\",\n  split=\"whitespace\",\n  ngrams=None,\n  output_mode=\"int\",\n  output_sequence_length=None,\n  vocabulary=None,\n  ...\n)\nstandardize and split can be custom functions."
+    "section": "Tokenisation",
+    "text": "Tokenisation\n\n\n\n\n\nThere are several different tokenisation algorithms\nDifferent language models often use different schemes.\n\n\n\n\nTokeniser playground"
   },
   {
-    "objectID": "slides/13-nlp-basics.html#text-vectorisation-1",
-    "href": "slides/13-nlp-basics.html#text-vectorisation-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Text vectorisation",
-    "text": "Text vectorisation\nCan do all the processing steps with the keras.layers.TextVectorization layer\n\n\n\nThe vocabulary is built automatically from data by calling adapt():\n\n\n\nvectorize_layer = keras.layers.TextVectorization(\n  max_tokens=1000,\n  standardize=\"lower_and_strip_punctuation\",\n  output_sequence_length=250\n)\n\nvectorize_layer.adapt(dataset)\nvectorize_layer.get_vocabulary()[:10]\n# ['', '[UNK]', 'the', 'and', 'a', 'of', 'to', 'is', 'in', 'it']\n\n\n\n\nWe reserve index 1 ('[UNK]') for unknown, out-of-vocabulary tokens\nWe reserve index 0 ('') for the mask token, which used to pad sequences"
-  },
-  {
-    "objectID": "slides/13-nlp-basics.html#text-vectorisation-2",
-    "href": "slides/13-nlp-basics.html#text-vectorisation-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Text vectorisation",
-    "text": "Text vectorisation\nTest sentence from the IMDb movie review dataset:\n\n\n\nText:     I   am  shocked.  Shocked  and  dismayed  that  the   428   of   you   IMDB  users\nEncoded: 10  238     2355      2355    3         1    12    2     1    5    23    933   5911\nDecoded:  i   am  shocked   shocked  and     [UNK]  that  the  [UNK]  of   you   imdb  users\n\nCan remove HTML tags (or other uninteresting stuff) by using regexes:\n\n\n\ndef custom_standardization(input_data):\n  lowercase = tf.strings.lower(input_data)\n  without_html = tf.strings.regex_replace(lowercase, '&lt;[^&gt;]*&gt;', ' ')\n  without_punctuation = tf.strings.regex_replace(without_html, '[{}]'.format(string.punctuation), '')\n  return without_punctuation\n\nvectorize_layer = keras.layers.TextVectorization(\n  standardize=custom_standardization\n)\nNote: TextVectorization is based on TensorFlow operations, so using it with other backend frameworks is complicated."
-  },
-  {
-    "objectID": "slides/13-nlp-basics.html#detour-n-grams",
-    "href": "slides/13-nlp-basics.html#detour-n-grams",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Detour: N-grams",
-    "text": "Detour: N-grams\nSo far all words receive a separate index; we assume no relation between them.\nSince text is not strictly ordered, how about training a Dense model on the presence of words, and just ignore the ordering?\nConsider the IMDb review dataset again:\n\n\n\n\n\n\n\n\n\n\nReview\nSentiment\n\n\n\n\nProbably my all-time favorite movie, a story of selflessness, sacrifice and dedication to …\npositive\n\n\nIf you like original gut wrenching laughter you will like this movie. If you are young …\npositive\n\n\nThis movie made it into one of my top 10 most awful movies. Horrible. There wasn’t …\nnegative\n\n\n\n\n\n\nCan classify decently well by learning correlations between single words and sentiment.\nIn this case we treat the text as a set and not a sequence."
-  },
-  {
-    "objectID": "slides/13-nlp-basics.html#detour-n-grams-1",
-    "href": "slides/13-nlp-basics.html#detour-n-grams-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Detour: N-grams",
-    "text": "Detour: N-grams\nThere are still some word combinations that throw us off:\n\n\"good\" is very different from \"not good\".\n\n\n\n\n\nSuch modifiers are placed close, so we can extend our vocabulary with pairs:\n\n“… not really expecting much,”\n   {“not”, “not really”, “really”, “really expecting”, “expecting”, “expecting much”]}\n\n\n\n\nThis approach of keeping some ordering, popular around 2010, is called\n\nbigrams (for pairs for words)\ntrigrams (for triplets of words)\nN-grams (for N words)"
-  },
-  {
-    "objectID": "slides/13-nlp-basics.html#detour-n-grams-2",
-    "href": "slides/13-nlp-basics.html#detour-n-grams-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Detour: N-grams",
-    "text": "Detour: N-grams\n\nN-grams apply to other data as well, for instance\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSequence\n1-gram\n2-gram\n3-gram\n\n\n\n\nProtein sequencing\nCys-Gly-Leu-Ser-Trp\nCys, Gly, Leu, Ser, Trp,\nCys-Gly, Gly-Leu, Leu-Ser, Ser-Trp\nCys-Gly-Leu, Gly-Leu-Ser, Leu-Ser-Trp\n\n\nDNA sequencing\nAGCTTCGA\nA, G, C, T, T, C, G, A\nAG, GC, CT, TT, TC, CG, GA\nAGC, GCT, CTT, TTC, TCG, CGA,\n\n\n\n\n\n\nFor language research purpuses N-grams are still useful; have a look atthe Google N-gram Viewer"
-  },
-  {
-    "objectID": "slides/13-nlp-basics.html#embeddings",
-    "href": "slides/13-nlp-basics.html#embeddings",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Embeddings",
-    "text": "Embeddings\nLet’s return to single words.\nOur text is converted into numbers – We can convert them further into good numbers, by creating word embeddings.\nRecall we could map categorical values to vectors of floating-point values:\n\n\n\nmy_embedding = {\n  'the': [-1.46, -0.86,  0.09],\n  'and': [-0.27,  1.15,  1.19],\n  'a':   [ 1.17,  0.06, -0.16],\n  'of':  [ 0.60,  0.10,  0.22],\n  ...\n}\nAt first, these values are randomly initialised\nThen, we optimise them during training."
-  },
-  {
-    "objectID": "slides/13-nlp-basics.html#embeddings-1",
-    "href": "slides/13-nlp-basics.html#embeddings-1",
+    "objectID": "slides/14-nlp-embeddings.html#embeddings",
+    "href": "slides/14-nlp-embeddings.html#embeddings",
     "title": "DAT255: Deep learning engineering",
     "section": "Embeddings",
     "text": "Embeddings\nEmbedding layers are practically the same as one-hot encoding, followed by a linear Dense layer (without the bias term):\n\n\n\n\n\n\nthe  [ 0     1     0     0 ]\n\n\n[ -1.46 -0.86  0.09 ]\n\n\n\n\n\nembedding = keras.Sequential([\n  keras.layers.StringLookup(output_mode=\"one-hot\"),\n  keras.layers.Dense(\n    units=embedding_dim,\n    use_bias=False,\n    activation=None\n  )\n])\n\n\nDifference is that Embedding layers are implemented in a much more efficient way."
   },
   {
-    "objectID": "slides/13-nlp-basics.html#demo",
-    "href": "slides/13-nlp-basics.html#demo",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Demo",
-    "text": "Demo\n\n\n\nLet’s visualise some embeddings"
-  },
-  {
-    "objectID": "slides/13-nlp-basics.html#embeddings-2",
-    "href": "slides/13-nlp-basics.html#embeddings-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Embeddings",
-    "text": "Embeddings"
-  },
-  {
-    "objectID": "slides/13-nlp-basics.html#computing-similarity-in-embedding-space",
-    "href": "slides/13-nlp-basics.html#computing-similarity-in-embedding-space",
+    "objectID": "slides/14-nlp-embeddings.html#computing-similarity-in-embedding-space",
+    "href": "slides/14-nlp-embeddings.html#computing-similarity-in-embedding-space",
     "title": "DAT255: Deep learning engineering",
     "section": "Computing similarity in embedding space",
     "text": "Computing similarity in embedding space\nWe’ve seen there is a relation between semantics and position in embedding space.\nHow can we measure token similarity?\n\n\nOption 1: Euclidian (L2) norm\n-&gt; distance between positions \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\)\n\n\\[\n\\small\n|| (\\mathbf{a} - \\mathbf{b}) ||_2 = \\sqrt{(a_1 - b_1)^2 + ... \\ (a_n - b_n)^2}\n\\]\n\n\n\nOption 2: Cosine similarity\n-&gt; angular difference between positions \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\) (ignores vector lengths)\n\n\\[\n\\small\n\\cos(\\mathbf{a}, \\mathbf{b}) = \\frac{\\mathbf{a} \\cdot \\mathbf{b}}{||\\mathbf{a}|| \\cdot ||\\mathbf{b}||}\n\\]"
   },
   {
-    "objectID": "slides/13-nlp-basics.html#computing-similarity-in-embedding-space-1",
-    "href": "slides/13-nlp-basics.html#computing-similarity-in-embedding-space-1",
+    "objectID": "slides/14-nlp-embeddings.html#other-uses-of-embeddings",
+    "href": "slides/14-nlp-embeddings.html#other-uses-of-embeddings",
     "title": "DAT255: Deep learning engineering",
-    "section": "Computing similarity in embedding space",
-    "text": "Computing similarity in embedding space\nHow to interpret Euclidian vs cosine similarity?\nConsider this example from StackOverflow:\n\nYou run an online shop and want to compare customers.\n\nUser 1 bought 1x eggs, 1x flour and 1x sugar.\nUser 2 bought 100x eggs, 100x flour and 100x sugar.\nUser 3 bought 1x eggs, 1x Vodka and 1x Red Bull.\n\n\n\n-&gt; By cosine similarity, user 1 and user 2 are more similar\n-&gt; By Euclidian similarity, user 1 and user 3 are more similar\nWord embeddings are affected by word frequency, so cosine similarity is often preferred."
+    "section": "Other uses of embeddings",
+    "text": "Other uses of embeddings\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncloud.google.com/blog"
   },
   {
-    "objectID": "slides/13-nlp-basics.html#embeddings-3",
-    "href": "slides/13-nlp-basics.html#embeddings-3",
+    "objectID": "slides/14-nlp-embeddings.html#embed-everything",
+    "href": "slides/14-nlp-embeddings.html#embed-everything",
     "title": "DAT255: Deep learning engineering",
-    "section": "Embeddings",
-    "text": "Embeddings"
+    "section": "Embed everything",
+    "text": "Embed everything\nWe have covered word embeddings, but we can create embeddings for other objects too\n\n\n\nSentences\nImages\nAudio\n…\n\n\n This is what allows us to train multi-modal machine learning models"
   },
   {
-    "objectID": "slides/13-nlp-basics.html#better-text-tokenisation",
-    "href": "slides/13-nlp-basics.html#better-text-tokenisation",
+    "objectID": "slides/14-nlp-embeddings.html#sentence-embedding",
+    "href": "slides/14-nlp-embeddings.html#sentence-embedding",
     "title": "DAT255: Deep learning engineering",
-    "section": "Better text tokenisation",
-    "text": "Better text tokenisation\n\n\n\nSome words are obviously variants of the same; but conjugated, in plural, etc.\n\nam, is, are are all variants of the lemma that is be\n\n\n\n\nWe can collapse these in order to simplify the vocabulary our model needs to learn:\n\nHe is reading books -&gt; He be read book\n\n\n\n\nManually composed algorithms for this lemmatization have been developed over long time."
+    "section": "Sentence embedding",
+    "text": "Sentence embedding\n\n\n\nExample: Universal sentence encoder\n\n\n\n\n\n\n\nMeasures similariy between on entire sentences\n\nhttps://arxiv.org/abs/1803.11175"
   },
   {
-    "objectID": "slides/13-nlp-basics.html#better-text-tokenisation-1",
-    "href": "slides/13-nlp-basics.html#better-text-tokenisation-1",
+    "objectID": "slides/14-nlp-embeddings.html#image-embedding",
+    "href": "slides/14-nlp-embeddings.html#image-embedding",
     "title": "DAT255: Deep learning engineering",
-    "section": "Better text tokenisation",
-    "text": "Better text tokenisation\nModern tokenisation algorithms are not inspired by linguistics, but rather substring frequencies in data.\nDifferent LLMs use different algorithms, but they are mostly based on splitting words into individual characters and recombing them into common subwords.\n\nThe final vocabulary is under no obligation to make sense to us 🤷\nRandomly selected tokens from the GPT-2 tokeniser vocabulary:\n\n\n\n\n objective         stacked             USB                Energy\n 306               booster            Bird                learn\n stationary        nighttime          85                  rice\n tensions         mission             iency               quitting\nagging             hypers             OOOOOOOO           Typ\n reopen           finding              Spoon              Plate\n nat              Ïĥ                   climates           Druid\ndownload          isition             æĦ                  partic\n predis            calf                Object            annie\n\nDifferent tokenisers example"
+    "section": "Image embedding",
+    "text": "Image embedding\n\n\n        \n\n\n\n\n        \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFor images we can’t take the same direct approach:\nIndividual pixels don’t carry semantic meaning, only groups of pixels do.\n\nBut we already know well how to do feature extraction with CNNs\n\n\n Let the (flattened) output of the last Conv layer be the embedding space"
   },
   {
-    "objectID": "slides/13-nlp-basics.html#pretrained-embeddings-and-models",
-    "href": "slides/13-nlp-basics.html#pretrained-embeddings-and-models",
+    "objectID": "slides/14-nlp-embeddings.html#audio-embedding",
+    "href": "slides/14-nlp-embeddings.html#audio-embedding",
     "title": "DAT255: Deep learning engineering",
-    "section": "Pretrained embeddings and models",
-    "text": "Pretrained embeddings and models\n\n\nFor image classification tasks we could use take pretrained models and fine-tune, without having to retrain the first layers\n\nFirst layers were general enough to transfer well to basically all other tasks\n\nSame for NLP models:\nEmbeddings are general and can be reused for other models or tasks."
+    "section": "Audio embedding",
+    "text": "Audio embedding\nUse CNNs here too:\n\n\n\n\nWhisper (OpenAI)\n\n\n\n\n\n\n\nLanguage model"
   },
   {
-    "objectID": "slides/13-nlp-basics.html#nlp-resources",
-    "href": "slides/13-nlp-basics.html#nlp-resources",
+    "objectID": "slides/14-nlp-embeddings.html#latent-spaces",
+    "href": "slides/14-nlp-embeddings.html#latent-spaces",
     "title": "DAT255: Deep learning engineering",
-    "section": "NLP resources",
-    "text": "NLP resources\n\nTensorflow Text"
+    "section": "Latent spaces",
+    "text": "Latent spaces\n\n\nThe output of embedding layers, convolutional layers, an all feature extraction layers, form a latent feature space\n\nThis latent space can contain knowledge applicable to a variety of tasks, allowing for transfer learning:\nTraining a model on one task, but using it (with little modification) on a different task.\n\n\nThis is nice because we can\n\nPretrain on some task that is easy to set up and evaluate\nFine-tune on a task that we actually want to solve, but is difficult to evaluate\n\n(particularly common for language models )"
   },
   {
-    "objectID": "slides/13-nlp-basics.html#nlp-resources-1",
-    "href": "slides/13-nlp-basics.html#nlp-resources-1",
+    "objectID": "slides/14-nlp-embeddings.html#pretrained-embeddings",
+    "href": "slides/14-nlp-embeddings.html#pretrained-embeddings",
     "title": "DAT255: Deep learning engineering",
-    "section": "NLP resources",
-    "text": "NLP resources\n\nTensorflow Text\nHuggingface models and ML library"
+    "section": "Pretrained embeddings",
+    "text": "Pretrained embeddings\nEmbedding leaderboard"
+  },
+  {
+    "objectID": "slides/14-nlp-embeddings.html#measuring-embedding-quality",
+    "href": "slides/14-nlp-embeddings.html#measuring-embedding-quality",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Measuring embedding quality",
+    "text": "Measuring embedding quality\n\n\nEvaluating semantic textual similarity is generally a difficult thing\n\n\n\nFor this, and other NLP model performance measurements, we rely on benchmark tasks:\n\n\n\nVarious classification / clustering / information retrieval problems with human annotated solutions.\n\nsentences1 = [\n    \"The new movie is awesome\",\n ]\n\nsentences2 = [\n    \"The dog plays in the garden\",\n    \"The new movie is so great\",\n    \"A woman watches TV\",\n]\n\n# Compute embeddings for both lists\nembeddings1 = model.encode(sentences1)\nembeddings2 = model.encode(sentences2)\n\n# Compute cosine similarities\nsimilarities = model.similarity(\n  embeddings1, embeddings2\n)\nThe new movie is awesome\n- The dog plays in the garden   : 0.0543\n- The new movie is so great     : 0.8939\n- A woman watches TV            : -0.0502"
+  },
+  {
+    "objectID": "slides/14-nlp-embeddings.html#contextualised-word-embeddings",
+    "href": "slides/14-nlp-embeddings.html#contextualised-word-embeddings",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Contextualised word embeddings",
+    "text": "Contextualised word embeddings\nAfter training, embedding layers are static – a given token is always mapped to the same embedding vector.\nHowever, a single token can have multiple meanings:\n\nYou are right about this\nMake a right turn at the intersection\n\nOur model can infer the correct meaning from context, as long as we treat the input as a sequence."
+  },
+  {
+    "objectID": "slides/14-nlp-embeddings.html#additional-resources",
+    "href": "slides/14-nlp-embeddings.html#additional-resources",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Additional resources",
+    "text": "Additional resources\nPretrained models on KerasHub"
   },
   {
     "objectID": "slides/2-tools.html#frameworks",
