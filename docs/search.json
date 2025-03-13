@@ -1551,7 +1551,7 @@
     "href": "index.html",
     "title": "DAT255 lecture notes",
     "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates\nMonday week 6: Augmentation and advanced computer vision\nMonday week 7: Sequences, time series, recurrent networks\nThursday week 7: Time series and recurrence (continued)\nMonday week 8: Gradients ++\nThursday week 8: Project kickoff\nMonday week 10: Tabular data\nThursday week 10: Custom Keras object and development tools\nMonday week 11: Natural language processing: Text vectorisation\nMonday week 11: Natural language processing: More on embeddings"
+    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates\nMonday week 6: Augmentation and advanced computer vision\nMonday week 7: Sequences, time series, recurrent networks\nThursday week 7: Time series and recurrence (continued)\nMonday week 8: Gradients ++\nThursday week 8: Project kickoff\nMonday week 10: Tabular data\nThursday week 10: Custom Keras object and development tools\nMonday week 11: Natural language processing: Text vectorisation\nThursday week 11: Natural language processing: More on embeddings"
   },
   {
     "objectID": "slides/10-kickoff.html#project-kickoff",
