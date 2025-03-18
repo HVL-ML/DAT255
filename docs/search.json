@@ -1992,7 +1992,7 @@
     "href": "slides/15-transformers.html#multi-head-attention-3",
     "title": "DAT255: Deep learning engineering",
     "section": "Multi-head attention",
-    "text": "Multi-head attention\n\n\n\n\n\nIn the end, we can write the scaled dot-product self-attention for a single head as\n\\[\n\\small\n\\mathrm{attention}(Q, K, V) = \\mathrm{softmax}\\left[\\frac{QK^T}{\\sqrt{D}} \\right]\n\\]\nAnd to get the final output from all the attention heads, we simply concatenate the individial outputs.\n\n\n\n\nDeep Learning: Foundations and Concepts, C. Bishop"
+    "text": "Multi-head attention\n\n\n\n\n\nIn the end, we can write the scaled dot-product self-attention for a single head as\n\\[\n\\small\n\\mathrm{attention}(Q, K, V) = \\mathrm{softmax}\\left[\\frac{QK^T}{\\sqrt{D}} \\right] V\n\\]\nAnd to get the final output from all the attention heads, we simply concatenate the individial outputs.\n\n\n\n\nDeep Learning: Foundations and Concepts, C. Bishop"
   },
   {
     "objectID": "slides/15-transformers.html#multi-head-attention-4",
