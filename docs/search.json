@@ -735,6 +735,265 @@
     "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 4 (last):"
   },
   {
+    "objectID": "slides/18-more-transformers.html#training-decoder-models",
+    "href": "slides/18-more-transformers.html#training-decoder-models",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Training decoder models",
+    "text": "Training decoder models\nDecoder-type language models are next word predictors.\n\n\nSo we train them to do exactly this:\n\nMask the end of sentences\nUse the next token as the prediction target\nReveal token and move to next one\nContinue until end of text\n\nUsually call the procedure masked attention or causal attention, when model is only allowed to look “backwards”.\nCan train on large, unlabelled data in a self-supervised approach"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#generating-text-from-a-decoder-model",
+    "href": "slides/18-more-transformers.html#generating-text-from-a-decoder-model",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nAs for other classification models, last layer looks like\n\nDense(units=vocabulary_size, activation=\"softmax\")\n\n-&gt; output is a vector of softmax scores for all possible tokens.\n\n\n\nRun the model in an autoregressive loop:\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n(Stop if predicting end-of-sequence token)"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-1",
+    "href": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n\n\nThe cat sat on the _____\n\n\nfloor       7.72% bed         6.82% couch       5.70% ground      4.71% edge        4.66%"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-2",
+    "href": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n\n\nThe cat sat on the floor _____\n\n\n,           25.08% and         13.56% .            7.38% of           7.07% with         6.58%"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-3",
+    "href": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n\n\nThe cat sat on the floor, _____\n\n\nand         9.41% looking     3.23% the         1.78% he          1.63% his         1.48%"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-4",
+    "href": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-4",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n\n\nThe cat sat on the floor, and _____\n\n\nthe         8.40% he          5.72% I           4.55% she         3.65% his         3.56%"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-5",
+    "href": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-5",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\n\nMakes model deterministic, always outputs same output for a given input\nOften get stuck in sequence loops"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-6",
+    "href": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-6",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\n\nComputationally expensive\nCan also get stuck in loops\n\n\n\n\n\n\n\n\narXiv:1904.09751"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-7",
+    "href": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-7",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\nSampling: Use scores as probabilities and sample randomly\n\nWith large vocabularies the results can be nonsensical"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-8",
+    "href": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-8",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\nSampling: Use scores as probabilities and sample randomly\nTop-K sampling: Sample among the K tokens with highest score"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-9",
+    "href": "slides/18-more-transformers.html#generating-text-from-a-decoder-model-9",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\nSampling: Use scores as probabilities and sample randomly\nTop-K sampling: Sample among the K tokens with highest score\nAdjusted softmax sampling: Add a parameter T called temperature in the softmax function applied to the outputAdjusts how tokens are sampled"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#softmax-with-temperature",
+    "href": "slides/18-more-transformers.html#softmax-with-temperature",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Softmax with temperature",
+    "text": "Softmax with temperature\nDivide the logits a by temperature T in the softmax function:\n\\[\n\\small\ny_i = \\frac{\\exp(a_i/T)}{\\sum_j \\exp(a_j/T)}\n\\]\nChanges the distribution we sample from.\n\n\n\nLow T: Give highest score to the most likely token\n\nMore determinism\n\nHigh T: Give more equals scores to all tokens\n\nMore randomness / creativity"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#large-language-models-llms",
+    "href": "slides/18-more-transformers.html#large-language-models-llms",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Large language models (LLMs)",
+    "text": "Large language models (LLMs)\nLLM: language model with \\(\\small\\gtrsim 10^9\\) (1 billion) parameters"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#training-llms",
+    "href": "slides/18-more-transformers.html#training-llms",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Training LLMs",
+    "text": "Training LLMs\nTypical training procedure:\n\nSelf-supervised pre-training\nA general model that can be subsequently fine-tuned on different tasks is called a foundation model\nCost: $1 million to $100 million\nSupervised fine-tuning\nAdapt to more specific uses, such as\n\nChat / Question answering\nChain-of-thought reasoning\nDomain-specific used\n\nCost: Depends\nContinuous fine-tuning\nFine-tune an already fine-tuned model\nCost: $1 to $1000"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#training-data",
+    "href": "slides/18-more-transformers.html#training-data",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Training data",
+    "text": "Training data\nAs always, key to a good model is data\n\n\nPre-training:\nData scraped from\n\nWikipedia (multi-language)\nGitHub (code)\nArXiv (academic text)\nStackOverflow (Q&A)\nReddit etc (forums)\nProject Gutenberg (books)\n\nSee e.g. Common Crawl"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#training-data-1",
+    "href": "slides/18-more-transformers.html#training-data-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Training data",
+    "text": "Training data\nAs always, key to a good model is data\n\n\nPre-training:\nData scraped from\n\nWikipedia (multi-language)\nGitHub (code)\nArXiv (academic text)\nStackOverflow (Q&A)\nReddit etc (forums)\nProject Gutenberg (books)\n\nSee e.g. Common Crawl\n\nFine-tuning:\nNow we need annotated data\n\nSpecific datasets for question answering\nReinforcement learning from human feedback (RLHF)\n\n\nExact training data are business secrets (even for open-sourced models)"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#distributed-training",
+    "href": "slides/18-more-transformers.html#distributed-training",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Distributed training",
+    "text": "Distributed training\nOnce the model can’t fit on a single GPU, things get more complicated\n(for instance the full Llama 3.1 needs 3.3TB VRAM for training)\nWhat can be split and parallelised?\n\nData: Run different batches in parallel\nWeights: Distribute weight matrices over separate GPUs\nLayers: Distribute different layers over separate GPUs\nSequences: Partition the input data sequences\n\nUpdate entire model after each training step\nTensorFlow implements a set of methods for distributed training, while Hugging Face offers advanced ones"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#supervised-fine-tuning",
+    "href": "slides/18-more-transformers.html#supervised-fine-tuning",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Supervised fine-tuning",
+    "text": "Supervised fine-tuning\nA pre-trained model can only append text to an input\nMaking a useful chatbot requires instruction training\n{\"instruction\": \"Translate 'Good night' into Spanish.\", \"solution\": \"Buenas noches\"}\n{\"instruction\": \"Name primary colors.\", \"solution\": \"Red, blue, yellow\"}\nFor this step, high quality data is preferred to quantity\nOn the Hugging Face model hub you will often find two variants of the same model:\nmeta-llama/Llama-3.2-3B\n\nmeta-llama/Llama-3.2-3B-Instruct\n\nThe Llama 3.2 collection of multilingual large language models (LLMs) is a collection of pretrained and instruction-tuned generative models in 1B and 3B sizes (…)"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#llm-fine-tuning-with-limited-resources",
+    "href": "slides/18-more-transformers.html#llm-fine-tuning-with-limited-resources",
+    "title": "DAT255: Deep learning engineering",
+    "section": "LLM fine-tuning with limited resources",
+    "text": "LLM fine-tuning with limited resources\nFull model fine-tuning can be problematic for two reasons:\n\nHardware requirements (mainly VRAM)\nRisk of catastrophic forgetting (https://arxiv.org/abs/1312.6211)\n\nUseful techniques:\n\nPrompt tuning:\nAdd a small trainable model before the LLM, which outputs learned, task-specific tokens\nLow-rank adaptation (LoRA):\nAdd small traininable layers in parallel with the existing attention layers"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#low-rank-adaptation-lora",
+    "href": "slides/18-more-transformers.html#low-rank-adaptation-lora",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Low-rank adaptation (LoRA)",
+    "text": "Low-rank adaptation (LoRA)\n\nKeep original weight matrix \\(\\small W\\) frozen\nTrain new (small) matrices \\(\\small A\\) and \\(\\small B\\)\n\nAdds \\(\\small 2\\cdot R\\cdot D\\) new parameters (compared to \\(\\small D^2\\) in \\(\\small W\\))"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#quantization",
+    "href": "slides/18-more-transformers.html#quantization",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Quantization",
+    "text": "Quantization\nCan reduce memory cost of running inference by reducing numerical precision in weights and activations\n\nCan store float32 as float16 without much modification\nCan store float32 as int8 for use on embedded systems (requires more modification)\n\nModern quantisation schemes for LLMs are more extreme:\n\n\nGo down to anywhere between 6 to 2 bit\nDeepSeek-R1-Q4_K_M.gguf\nQ{bits per weight}_{type}_{variant}\n\n\n\n\n\n\n\nScheme\nCompression ratio(relative to f32)\nPerformance\n\n\n\n\nQ8_0\n1:4\nHigh quality\n\n\nQ4_K_M\n1:8\nMedium quality\n\n\nQ3_K_M\n1:11\nLow quality"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#knowledge-distillation",
+    "href": "slides/18-more-transformers.html#knowledge-distillation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Knowledge distillation",
+    "text": "Knowledge distillation\nTrain a small model to mimic the output of a bigger one:\nUse the output of the bigger model as labels to supervise the smaller model\n\n\nhttps://arxiv.org/abs/2305.02301"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#knowledge-distillation-1",
+    "href": "slides/18-more-transformers.html#knowledge-distillation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Knowledge distillation",
+    "text": "Knowledge distillation\nTrain a small model to mimic the output of a bigger one:\nUse the output of the bigger model as labels to supervise the smaller model"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#deploying-an-llm-based-application",
+    "href": "slides/18-more-transformers.html#deploying-an-llm-based-application",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Deploying an LLM-based application",
+    "text": "Deploying an LLM-based application"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#prompt-engineering",
+    "href": "slides/18-more-transformers.html#prompt-engineering",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Prompt engineering",
+    "text": "Prompt engineering"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#llm-p",
+    "href": "slides/18-more-transformers.html#llm-p",
+    "title": "DAT255: Deep learning engineering",
+    "section": "LLM P",
+    "text": "LLM P"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#moe",
+    "href": "slides/18-more-transformers.html#moe",
+    "title": "DAT255: Deep learning engineering",
+    "section": "MoE",
+    "text": "MoE"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#destillation",
+    "href": "slides/18-more-transformers.html#destillation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Destillation",
+    "text": "Destillation"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#nlp-metrics",
+    "href": "slides/18-more-transformers.html#nlp-metrics",
+    "title": "DAT255: Deep learning engineering",
+    "section": "NLP metrics",
+    "text": "NLP metrics"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#vision-transformers",
+    "href": "slides/18-more-transformers.html#vision-transformers",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Vision transformers",
+    "text": "Vision transformers"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#audio-transformers",
+    "href": "slides/18-more-transformers.html#audio-transformers",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Audio transformers",
+    "text": "Audio transformers\nhttps://huggingface.co/spaces/KingNish/Realtime-whisper-large-v3-turbo"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#hugging-face-libraries",
+    "href": "slides/18-more-transformers.html#hugging-face-libraries",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Hugging Face libraries",
+    "text": "Hugging Face libraries"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#destillation-1",
+    "href": "slides/18-more-transformers.html#destillation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Destillation",
+    "text": "Destillation"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#transformers-for-other-uses",
+    "href": "slides/18-more-transformers.html#transformers-for-other-uses",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Transformers for other uses",
+    "text": "Transformers for other uses"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#text-generation-metrics",
+    "href": "slides/18-more-transformers.html#text-generation-metrics",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Text generation metrics",
+    "text": "Text generation metrics\nBLEU etc\nStarcraft transformer model\nhttps://deepmind.google/discover/blog/alphastar-mastering-the-real-time-strategy-game-starcraft-ii/"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#chain-of-thought-reasoning",
+    "href": "slides/18-more-transformers.html#chain-of-thought-reasoning",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Chain-of-thought reasoning",
+    "text": "Chain-of-thought reasoning"
+  },
+  {
+    "objectID": "slides/18-more-transformers.html#llm-deployment",
+    "href": "slides/18-more-transformers.html#llm-deployment",
+    "title": "DAT255: Deep learning engineering",
+    "section": "LLM deployment",
+    "text": "LLM deployment\nAPIs, ollama, vLLM"
+  },
+  {
     "objectID": "slides/16-nlp-transformers.html#transformers-basic-idea",
     "href": "slides/16-nlp-transformers.html#transformers-basic-idea",
     "title": "DAT255: Deep learning engineering",
@@ -1271,7 +1530,7 @@
     "href": "index.html",
     "title": "DAT255 lecture notes",
     "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates\nMonday week 6: Augmentation and advanced computer vision\nMonday week 7: Sequences, time series, recurrent networks\nThursday week 7: Time series and recurrence (continued)\nMonday week 8: Gradients ++\nThursday week 8: Project kickoff\nMonday week 10: Tabular data\nThursday week 10: Custom Keras object and development tools\nMonday week 11: Natural language processing: Text vectorisation\nThursday week 11: Natural language processing: More on embeddings\nMonday week 12: Attention and Transformers\nThursday week 12: Transformers for natural language processing"
+    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nThursday week 3: The tools of deep learning\nMonday week 4: Computer vision and the concepts of layers\nMonday week 5: Training deep neural networks\nThursday week 5: Optimisation algorithms and learning rates\nMonday week 6: Augmentation and advanced computer vision\nMonday week 7: Sequences, time series, recurrent networks\nThursday week 7: Time series and recurrence (continued)\nMonday week 8: Gradients ++\nThursday week 8: Project kickoff\nMonday week 10: Tabular data\nThursday week 10: Custom Keras object and development tools\nMonday week 11: Natural language processing: Text vectorisation\nThursday week 11: Natural language processing: More on embeddings\nMonday week 12: Attention and Transformers\nThursday week 12: Transformers for natural language processing\nMonday week 13: Large language models"
   },
   {
     "objectID": "slides/1-welcome.html#what-can-you-do-with-deep-learning",
@@ -1916,6 +2175,174 @@
     "title": "DAT255: Deep learning engineering",
     "section": "Positional encodings",
     "text": "Positional encodings\n\nOption 1: Count token positions, then embed them\n\n\n\n\n\n\n\n\n\n\n\ntoken\nThe\nfood\nwas\ngood\n\n\ntoken embedding\n\\(\\mathbf{x}_1\\)\n\\(\\mathbf{x}_2\\)\n\\(\\mathbf{x}_3\\)\n\\(\\mathbf{x}_4\\)\n\n\ntoken position\n1\n2\n3\n4\n\n\nposition embedding\n\\(\\mathbf{r}_1\\)\n\\(\\mathbf{r}_2\\)\n\\(\\mathbf{r}_3\\)\n\\(\\mathbf{r}_4\\)\n\n\nfinal embedding\n\\(\\mathbf{x}_1 + \\mathbf{r}_1\\)\n\\(\\mathbf{x}_2 + \\mathbf{r}_2\\)\n\\(\\mathbf{x}_3 + \\mathbf{r}_3\\)\n\\(\\mathbf{x}_4 + \\mathbf{r}_4\\)\n\n\n\n\n\n\n\n\nOption 2: Sinusoidal encoding (see textbook p 613)"
+  },
+  {
+    "objectID": "slides/17-llms.html#training-decoder-models",
+    "href": "slides/17-llms.html#training-decoder-models",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Training decoder models",
+    "text": "Training decoder models\nDecoder-type language models are next word predictors.\n\n\nSo we train them to do exactly this:\n\nMask the end of sentences\nUse the next token as the prediction target\nReveal token and move to next one\nContinue until end of text\n\n\nUsually call the procedure masked attention or causal attention, when model is only allowed to look “backwards”.\nCan train on large, unlabelled data in a self-supervised approach"
+  },
+  {
+    "objectID": "slides/17-llms.html#generating-text-from-a-decoder-model",
+    "href": "slides/17-llms.html#generating-text-from-a-decoder-model",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nAs for other classification models, last layer looks like\n\nDense(units=vocabulary_size, activation=\"softmax\")\n\n-&gt; output is a vector of softmax scores for all possible tokens.\n\n\n\nRun the model in an autoregressive loop:\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n(Stop if predicting end-of-sequence token)"
+  },
+  {
+    "objectID": "slides/17-llms.html#generating-text-from-a-decoder-model-1",
+    "href": "slides/17-llms.html#generating-text-from-a-decoder-model-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nAs for other classification models, last layer looks like\n\nDense(units=vocabulary_size, activation=\"softmax\")\n\n-&gt; output is a vector of softmax scores for all possible tokens.\n\n\n\n\nDeep Learning with Python, F. Chollet"
+  },
+  {
+    "objectID": "slides/17-llms.html#generating-text-from-a-decoder-model-2",
+    "href": "slides/17-llms.html#generating-text-from-a-decoder-model-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n\n\nThe cat sat on the _____\n\n\nfloor       7.72% bed         6.82% couch       5.70% ground      4.71% edge        4.66%"
+  },
+  {
+    "objectID": "slides/17-llms.html#generating-text-from-a-decoder-model-3",
+    "href": "slides/17-llms.html#generating-text-from-a-decoder-model-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n\n\nThe cat sat on the floor _____\n\n\n,           25.08% and         13.56% .            7.38% of           7.07% with         6.58%"
+  },
+  {
+    "objectID": "slides/17-llms.html#generating-text-from-a-decoder-model-4",
+    "href": "slides/17-llms.html#generating-text-from-a-decoder-model-4",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n\n\nThe cat sat on the floor, _____\n\n\nand         9.41% looking     3.23% the         1.78% he          1.63% his         1.48%"
+  },
+  {
+    "objectID": "slides/17-llms.html#generating-text-from-a-decoder-model-5",
+    "href": "slides/17-llms.html#generating-text-from-a-decoder-model-5",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n\n\nThe cat sat on the floor, and _____\n\n\nthe         8.40% he          5.72% I           4.55% she         3.65% his         3.56%"
+  },
+  {
+    "objectID": "slides/17-llms.html#generating-text-from-a-decoder-model-6",
+    "href": "slides/17-llms.html#generating-text-from-a-decoder-model-6",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\n\nMakes model deterministic, always outputs same output for a given input\nOften get stuck in sequence loops"
+  },
+  {
+    "objectID": "slides/17-llms.html#generating-text-from-a-decoder-model-7",
+    "href": "slides/17-llms.html#generating-text-from-a-decoder-model-7",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\n\nComputationally expensive\nCan also get stuck in loops\n\n\n\n\n\n\n\n\n\n\n\narXiv:1904.09751"
+  },
+  {
+    "objectID": "slides/17-llms.html#generating-text-from-a-decoder-model-8",
+    "href": "slides/17-llms.html#generating-text-from-a-decoder-model-8",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\nSampling: Use scores as probabilities and sample randomly\n\nWith large vocabularies the results can be nonsensical"
+  },
+  {
+    "objectID": "slides/17-llms.html#generating-text-from-a-decoder-model-9",
+    "href": "slides/17-llms.html#generating-text-from-a-decoder-model-9",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\nSampling: Use scores as probabilities and sample randomly\nTop-K sampling: Sample among the K tokens with highest score"
+  },
+  {
+    "objectID": "slides/17-llms.html#generating-text-from-a-decoder-model-10",
+    "href": "slides/17-llms.html#generating-text-from-a-decoder-model-10",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Generating text from a decoder model",
+    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\nSampling: Use scores as probabilities and sample randomly\nTop-K sampling: Sample among the K tokens with highest score\nAdjusted softmax sampling: Add a parameter T called temperature in the softmax function applied to the outputAdjusts how tokens are sampled"
+  },
+  {
+    "objectID": "slides/17-llms.html#softmax-with-temperature",
+    "href": "slides/17-llms.html#softmax-with-temperature",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Softmax with temperature",
+    "text": "Softmax with temperature\nDivide the logits a by temperature T in the softmax function:\n\\[\n\\small\ny_i = \\frac{\\exp(a_i/T)}{\\sum_j \\exp(a_j/T)}\n\\]\nChanges the distribution we sample from.\n\n\n\nLow T: Give highest score to the most likely token\n\nMore determinism\n\n\n\n\n\n\nHigh T: Give more equals scores to all tokens\n\nMore randomness / creativity"
+  },
+  {
+    "objectID": "slides/17-llms.html#large-language-models-llms",
+    "href": "slides/17-llms.html#large-language-models-llms",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Large language models (LLMs)",
+    "text": "Large language models (LLMs)\nLLM: language model with \\(\\small\\gtrsim 10^9\\) (1 billion) parameters"
+  },
+  {
+    "objectID": "slides/17-llms.html#training-llms",
+    "href": "slides/17-llms.html#training-llms",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Training LLMs",
+    "text": "Training LLMs\nTypical training procedure:\n\n\n\nSelf-supervised pre-training\nA general model that can be subsequently fine-tuned on different tasks is called a foundation model\nCost: $1 million to $100 million\n\n\n\nSupervised fine-tuning\nAdapt to more specific uses, such as\n\nChat / Question answering\nChain-of-thought reasoning\nDomain-specific used\n\nCost: Depends\n\n\n\n\n\nContinuous fine-tuning\nFine-tune an already fine-tuned model\nCost: $1 to $1000"
+  },
+  {
+    "objectID": "slides/17-llms.html#training-data",
+    "href": "slides/17-llms.html#training-data",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Training data",
+    "text": "Training data\nAs always, key to a good model is data.\n\n\nPre-training:\nData scraped from …\n\nWikipedia (multi-language)\nGitHub (code)\nArXiv (academic text)\nStackOverflow (Q&A)\nReddit etc. (forums)\nProject Gutenberg (books)\n\nSee e.g. Common Crawl"
+  },
+  {
+    "objectID": "slides/17-llms.html#training-data-1",
+    "href": "slides/17-llms.html#training-data-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Training data",
+    "text": "Training data\nAs always, key to a good model is data.\n\n\nPre-training:\nData scraped from …\n\nWikipedia (multi-language)\nGitHub (code)\nArXiv (academic text)\nStackOverflow (Q&A)\nReddit etc. (forums)\nProject Gutenberg (books)\n\nSee e.g. Common Crawl\n\nFine-tuning:\nNow we need annotated data\n\nSpecific datasets for question answering\nReinforcement learning from human feedback (RLHF)\n\n\nExact training data are business secrets (even for open-sourced models)"
+  },
+  {
+    "objectID": "slides/17-llms.html#distributed-training",
+    "href": "slides/17-llms.html#distributed-training",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Distributed training",
+    "text": "Distributed training\nOnce the model can’t fit on a single GPU, things get more complicated\n\n(for instance the full Llama 3.1 needs 3.3TB VRAM for training)\n\n\nWhat can be split and parallelised?\n\nData: Run different batches in parallel\nWeights: Distribute weight matrices over separate GPUs\nLayers: Distribute different layers over separate GPUs\nSequences: Partition the input data sequences\n\nUpdate entire model after each training step\nTensorFlow implements a set of methods for distributed training, while Hugging Face offers advanced ones"
+  },
+  {
+    "objectID": "slides/17-llms.html#supervised-fine-tuning",
+    "href": "slides/17-llms.html#supervised-fine-tuning",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Supervised fine-tuning",
+    "text": "Supervised fine-tuning\nA pre-trained model can only append text to an input.\n\nMaking a useful chatbot requires instruction training\n{\n  \"instruction\": \"Translate 'Good night' into Spanish.\",\n  \"solution\": \"Buenas noches\"\n}\n{\n  \"instruction\": \"Name primary colors.\",\n  \"solution\": \"Red, blue, yellow\"\n}\n\n\n\nOn the Hugging Face model hub you will often find two variants of the same model:\n\n\n\n\nmeta-llama/Llama-3.2-3B meta-llama/Llama-3.2-3B-Instruct\n\n\n\nThe Llama 3.2 collection of multilingual large language models (LLMs) is a collection of pretrained and instruction-tuned generative models in 1B and 3B sizes (…)"
+  },
+  {
+    "objectID": "slides/17-llms.html#llm-fine-tuning-with-limited-resources",
+    "href": "slides/17-llms.html#llm-fine-tuning-with-limited-resources",
+    "title": "DAT255: Deep learning engineering",
+    "section": "LLM fine-tuning with limited resources",
+    "text": "LLM fine-tuning with limited resources\nFull model fine-tuning can be problematic for two reasons:\n\nHardware requirements (mainly VRAM)\nRisk of catastrophic forgetting (https://arxiv.org/abs/1312.6211)\n\n\nUseful techniques:\n\n\n\n\n\nPrompt tuning:\nAdd a small trainable model before the LLM, which outputs learned, task-specific tokens\n\n\n\n\nLow-rank adaptation (LoRA):\nAdd small traininable layers in parallel with the existing attention layers"
+  },
+  {
+    "objectID": "slides/17-llms.html#low-rank-adaptation-lora",
+    "href": "slides/17-llms.html#low-rank-adaptation-lora",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Low-rank adaptation (LoRA)",
+    "text": "Low-rank adaptation (LoRA)\n\n\n\n\n\nKeep original weight matrix \\(\\small W\\) frozen\nTrain new (small) matrices \\(\\small A\\) and \\(\\small B\\)\n\nAdds \\(\\small 2\\cdot R\\cdot D\\) new parameters (compared to \\(\\small D^2\\) in \\(\\small W\\))"
+  },
+  {
+    "objectID": "slides/17-llms.html#quantization",
+    "href": "slides/17-llms.html#quantization",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Quantization",
+    "text": "Quantization\nReduce memory cost of running inference by reducing numerical precision in weights and activations\n\nCan store float32 as float16 without much modification\nCan store float32 as int8 for use on embedded systems (requires more modification)\n\n\nModern quantisation schemes for LLMs are more extreme:\n\n\nGo down to anywhere between 6 to 2 bit\nExample:\nDeepSeek-R1-Q4_K_M.gguf\nQ{bits per weight}_{type}_{variant}\n\n\n\n\n\nScheme\nCompression ratio(relative to f32)\nPerformance\n\n\n\n\nQ8_0\n1:4\nHigh quality\n\n\nQ4_K_M\n1:8\nMedium quality\n\n\nQ3_K_M\n1:11\nLow quality"
+  },
+  {
+    "objectID": "slides/17-llms.html#knowledge-distillation",
+    "href": "slides/17-llms.html#knowledge-distillation",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Knowledge distillation",
+    "text": "Knowledge distillation\nTrain a small model to mimic the output of a bigger one:\nUse the output of the bigger model as labels to supervise the smaller model\n\n\n\n\n\n\n\n\n\nhttps://arxiv.org/abs/2305.02301"
+  },
+  {
+    "objectID": "slides/17-llms.html#knowledge-distillation-1",
+    "href": "slides/17-llms.html#knowledge-distillation-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Knowledge distillation",
+    "text": "Knowledge distillation\nTrain a small model to mimic the output of a bigger one:\nUse the output of the bigger model as labels to supervise the smaller model"
   },
   {
     "objectID": "slides/2-tools.html#frameworks",
