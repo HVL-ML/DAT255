@@ -667,7 +667,7 @@ V &amp;= X W^{(v)} \\
 <p>In the end, we can write the scaled dot-product self-attention for a single head as</p>
 <p><span class="math display">\[
 \small
-\mathrm{attention}(Q, K, V) = \mathrm{softmax}\left[\frac{QK^T}{\sqrt{D}} \right]
+\mathrm{attention}(Q, K, V) = \mathrm{softmax}\left[\frac{QK^T}{\sqrt{D}} \right] V
 \]</span></p>
 <p>And to get the final output from <em>all</em> the attention heads, we simply concatenate the individial outputs.</p>
 </div></div>

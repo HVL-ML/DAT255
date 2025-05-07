@@ -610,7 +610,7 @@ y_i = \sum^p \varphi_i y_{t-i} + \epsilon_t
 </section>
 <section id="bonus-trick-1-cnn-processing" class="slide level2">
 <h2>Bonus trick #1: CNN processing</h2>
-<p>Even with the previous tricks up out sleeve, getting RNNs to learn patterns over &gt;100 time steps is difficult.</p>
+<p>Even with the previous tricks up our sleeve, getting RNNs to learn patterns over &gt;100 time steps is difficult.</p>
 <p>Can extract small-scale patterns with convolutional layers first, then apply recurrent layers:</p>
 <div class="sourceCode" id="cb4" data-code-line-numbers="|2|2,3|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>model <span class="op">=</span> keras.Sequential([</span>
 <span id="cb4-2"><a></a>  keras.layers.Conv1D(filters<span class="op">=</span><span class="dv">32</span>, kernel_size<span class="op">=</span><span class="dv">4</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>),</span>

@@ -354,7 +354,7 @@
     "href": "slides/7-timeseries.html#bonus-trick-1-cnn-processing",
     "title": "DAT255: Deep learning engineering",
     "section": "Bonus trick #1: CNN processing",
-    "text": "Bonus trick #1: CNN processing\nEven with the previous tricks up out sleeve, getting RNNs to learn patterns over &gt;100 time steps is difficult.\nCan extract small-scale patterns with convolutional layers first, then apply recurrent layers:\nmodel = keras.Sequential([\n  keras.layers.Conv1D(filters=32, kernel_size=4, strides=2, activation=\"relu\"),\n  keras.layers.GRU(32, return_sequences=True)\n  keras.layers.Dense(14)\n])\n(add stride &gt; 1 to downsample)"
+    "text": "Bonus trick #1: CNN processing\nEven with the previous tricks up our sleeve, getting RNNs to learn patterns over &gt;100 time steps is difficult.\nCan extract small-scale patterns with convolutional layers first, then apply recurrent layers:\nmodel = keras.Sequential([\n  keras.layers.Conv1D(filters=32, kernel_size=4, strides=2, activation=\"relu\"),\n  keras.layers.GRU(32, return_sequences=True)\n  keras.layers.Dense(14)\n])\n(add stride &gt; 1 to downsample)"
   },
   {
     "objectID": "slides/7-timeseries.html#bonus-trick-1-cnn-processing-1",
@@ -1439,7 +1439,7 @@
     "href": "slides/12-tools.html#tools-for-experiment-tracking-2",
     "title": "DAT255: Deep learning engineering",
     "section": "Tools for experiment tracking",
-    "text": "Tools for experiment tracking\nSome options: AIM\n\n\n\n\n\n+ Loads of functionality + Integrates with practically all frameworks - Open-source, self-hosted (although paid plans exist)\n\nPlus others too: MLflow, Sacred, Comet, Neptune"
+    "text": "Tools for experiment tracking\nSome options: AIM\n\n\n\n\n\n+ Loads of functionality + Integrates with practically all frameworks + Open-source, self-hosted (although paid plans exist)\n\nPlus others too: MLflow, Sacred, Comet, Neptune"
   },
   {
     "objectID": "slides/12-tools.html#hyperparameter-optimisation",
@@ -2181,7 +2181,7 @@
     "href": "slides/15-transformers.html#multi-head-attention-4",
     "title": "DAT255: Deep learning engineering",
     "section": "Multi-head attention",
-    "text": "Multi-head attention\n\n\n\n\n\nIn the end, we can write the scaled dot-product self-attention for a single head as\n\\[\n\\small\n\\mathrm{attention}(Q, K, V) = \\mathrm{softmax}\\left[\\frac{QK^T}{\\sqrt{D}} \\right]\n\\]\nAnd to get the final output from all the attention heads, we simply concatenate the individial outputs."
+    "text": "Multi-head attention\n\n\n\n\n\nIn the end, we can write the scaled dot-product self-attention for a single head as\n\\[\n\\small\n\\mathrm{attention}(Q, K, V) = \\mathrm{softmax}\\left[\\frac{QK^T}{\\sqrt{D}} \\right] V\n\\]\nAnd to get the final output from all the attention heads, we simply concatenate the individial outputs."
   },
   {
     "objectID": "slides/15-transformers.html#bonus-feature",
