@@ -2,17 +2,77 @@
 <p><img width=20% src="assets/jupyter.png">
 </p>
 
-<p>
 Here you will find all the Jupyter notebooks used in the course. 
 They will be added as the course progresses.
-</p>
 
+**Tutorials:** Walk-throughs of important concepts and methods, where most of the code is given
+**Exercises:** Here less of the code is given to you, and you need to solve most of it by yourself
+
+> Errors, warnings, or stuff not working? Visit the lab or ask on Discord 💬
+
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Topic</th>
+      <th>Notebook</th>
+      <th>Links</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan=3>Intro to Deep Learning</td>
+      <td>
+        <h4>Tutorial: <a href="01_digit_classification.ipynb">01 - Digit classification</a></h4>
+        Deep learning 101: Classifying handwritten numbers. This notebook serves as a quick intro to the <a href="keras.io">Keras</a> deep learning framework.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/01_digit_classification.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/01_digit_classification.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h4>Exercise: <a href="02_fashion_MNIST_classification.ipynb">02 - <em>Fashion MNIST</em> classification</a></h4>
+        In this notebook we go a little further in computer vision.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/02_fashion_MNIST_classification.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/02_fashion_MNIST_classification.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Tutorial: <a href="03_advanced_image_classification.ipynb">03: Advanced image classification</a></h4>
+      Time to do more advanced stuff, which requires a more powerful approach to constructing neural networks in Keras, namely the <a href="https://keras.io/guides/functional_api/"functional model API></a>. Here we also start using TensorFlow datasets, image augmentation, and look at _fine-tuning_ of existing models.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/03_advanced_image_classification.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/03_advanced_image_classification.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!--
 | Week | Notebook | Colab link |
 | --- | --- | --- | 
 | | [1: Digit classification](01_digit_classification.ipynb)<br>Deep learning 101: Classifying handwritten numbers. This notebook serves as a quick intro to the [Keras](keras.io) deep learning framework. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/01_digit_classification.ipynb) |
 | | [2: _Fashion MNIST_ classification](02_fashion_MNIST_classification.ipynb)<br>In this notebook we go a little further in computer vision. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/02_fashion_MNIST_classification.ipynb) |
-
-<!--
 | | [3: Advanced image classification](3_advanced_image_classification.ipynb)<br> Time to do more advanced stuff, which requires a more powerful approach to constructing neural networks in Keras, namely the [functional model API](https://keras.io/guides/functional_api/). Here we also start using TensorFlow datasets, image augmentation, and look at _fine-tuning_ of existing models. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/3_advanced_image_classification.ipynb) |
 | | [4: Visualising ConvNets](4-convnet-visualisation.ipynb)<br> Plot activations of the different filters in a convnet, to visualise how patterns are encoded from the first to the last layer.  | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/4-convnet-visualisation.ipynb) |
 | | [5: Activations and initialisers](5-activations-and-initialisers.ipynb)<br> Plot different activation functions and try them out along with different parameter initialisation schemes.  | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/5-activations-and-initialisers.ipynb) |
