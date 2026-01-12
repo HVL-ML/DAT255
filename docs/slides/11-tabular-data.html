@@ -6,8 +6,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-57476271c5f0467c372e20ff5d25630e.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.40">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ac1a48248070c8bfbae4244efd7728e4.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="sma@hvl.no">
   <title>DAT255 – DAT255: Deep learning engineering</title>
@@ -29,8 +29,9 @@
       vertical-align: middle;
     }
     /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -41,7 +42,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -94,7 +95,7 @@
     code span.vs { color: #da4453; } /* VerbatimString */
     code span.wa { color: #da4453; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2bbe76ccb3935761c1164eb48532166d.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-3238b5e24b497df282e7c2810f3caeda.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -332,8 +333,8 @@ sma@hvl.no
 <p><strong>Normalisation:</strong></p>
 <p>Make features look like a <span class="color-indigo">normal distribution</span> with mean = 0 and variance = 1</p>
 <p>Usual approach:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>x_normalised <span class="op">=</span> (x <span class="op">-</span> np.mean(x)) <span class="op">/</span> np.std(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>x_normalised <span class="op">=</span> (x <span class="op">-</span> np.mean(x)) <span class="op">/</span> np.std(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="padding-top: 30px;">
 
 </div>
@@ -421,7 +422,7 @@ sma@hvl.no
 <div class="fragment">
 <ul>
 <li><p>Option 1: <strong>Ordinal</strong> encoding</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>{<span class="st">"0"</span>: <span class="dv">0</span>, <span class="st">"A"</span>: <span class="dv">1</span>, <span class="st">"B"</span>: <span class="dv">2</span>, <span class="st">"AB"</span>: <span class="dv">3</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>{<span class="st">"0"</span>: <span class="dv">0</span>, <span class="st">"A"</span>: <span class="dv">1</span>, <span class="st">"B"</span>: <span class="dv">2</span>, <span class="st">"AB"</span>: <span class="dv">3</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>-&gt;</code> imposes an ordering which may not be meaningful</p></li>
 </ul>
 </div>
@@ -429,11 +430,11 @@ sma@hvl.no
 <div class="fragment">
 <ul>
 <li><p>Option 2: “<strong>One-hot</strong>” encoding</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># patient_id    0  A  B  AB</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># patient_id    0  A  B  AB</span></span>
 <span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">321</span>         [ <span class="dv">0</span>  <span class="dv">1</span>  <span class="dv">0</span>  <span class="dv">0</span> ]</span>
 <span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">602</span>         [ <span class="dv">0</span>  <span class="dv">0</span>  <span class="dv">0</span>  <span class="dv">1</span> ]</span>
 <span id="cb3-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">201</span>         [ <span class="dv">1</span>  <span class="dv">0</span>  <span class="dv">0</span>  <span class="dv">0</span> ]</span>
-<span id="cb3-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">491</span>         [ <span class="dv">0</span>  <span class="dv">1</span>  <span class="dv">0</span>  <span class="dv">0</span> ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">491</span>         [ <span class="dv">0</span>  <span class="dv">1</span>  <span class="dv">0</span>  <span class="dv">0</span> ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>-&gt;</code> no implicit assumption about ordering</p></li>
 </ul>
 </div>
@@ -501,7 +502,7 @@ sma@hvl.no
 <div class="fragment">
 <ul>
 <li><p>Option 1: <strong>Ordinal</strong> encoding, with one category for each combination</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a aria-hidden="true" tabindex="-1"></a>{<span class="st">"none"</span>: <span class="dv">0</span>, <span class="st">"32, 12"</span>: <span class="dv">1</span>, <span class="st">"12"</span>: <span class="dv">2</span>, <span class="st">"6"</span>: <span class="dv">3</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a aria-hidden="true" tabindex="-1"></a>{<span class="st">"none"</span>: <span class="dv">0</span>, <span class="st">"32, 12"</span>: <span class="dv">1</span>, <span class="st">"12"</span>: <span class="dv">2</span>, <span class="st">"6"</span>: <span class="dv">3</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>-&gt;</code> assumes combination is distinct from the separate entries</p></li>
 </ul>
 </div>
@@ -509,11 +510,11 @@ sma@hvl.no
 <div class="fragment">
 <ul>
 <li><p>Option 2: “<strong>One-hot</strong>” encoding</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># patient_id   32  12   6</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># patient_id   32  12   6</span></span>
 <span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">321</span>         [ <span class="dv">0</span>   <span class="dv">0</span>   <span class="dv">0</span> ]</span>
 <span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">602</span>         [ <span class="dv">1</span>   <span class="dv">1</span>   <span class="dv">0</span> ]</span>
 <span id="cb5-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">201</span>         [ <span class="dv">0</span>   <span class="dv">1</span>   <span class="dv">0</span> ]</span>
-<span id="cb5-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">491</span>         [ <span class="dv">0</span>   <span class="dv">0</span>   <span class="dv">1</span> ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">491</span>         [ <span class="dv">0</span>   <span class="dv">0</span>   <span class="dv">1</span> ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>-&gt;</code> model will have to learn correlations between columns</p></li>
 </ul>
 </div>
@@ -638,22 +639,22 @@ sma@hvl.no
 <div style="padding-top: 10px;">
 
 </div>
-<div class="sourceCode" id="cb6" data-code-line-numbers="1|1-3|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="op">&gt;&gt;&gt;</span> layer <span class="op">=</span> keras.layers.CategoryEncoding(num_tokens<span class="op">=</span><span class="dv">3</span>, output_mode<span class="op">=</span><span class="st">"one_hot"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-code-line-numbers="1|1-3|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="op">&gt;&gt;&gt;</span> layer <span class="op">=</span> keras.layers.CategoryEncoding(num_tokens<span class="op">=</span><span class="dv">3</span>, output_mode<span class="op">=</span><span class="st">"one_hot"</span>)</span>
 <span id="cb6-2"><a></a><span class="op">&gt;&gt;&gt;</span> data <span class="op">=</span> [<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">1</span>]</span>
 <span id="cb6-3"><a></a><span class="op">&gt;&gt;&gt;</span> layer(data)</span>
 <span id="cb6-4"><a></a>array([[<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">1.</span>],</span>
 <span id="cb6-5"><a></a>       [<span class="fl">1.</span>, <span class="fl">0.</span>, <span class="fl">0.</span>],</span>
-<span id="cb6-6"><a></a>       [<span class="fl">0.</span>, <span class="fl">1.</span>, <span class="fl">0.</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-6"><a></a>       [<span class="fl">0.</span>, <span class="fl">1.</span>, <span class="fl">0.</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Encoding data that can be vectors of integers:</p>
 <div style="padding-top: 10px;">
 
 </div>
-<div class="sourceCode" id="cb7" data-code-line-numbers="1|2|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="op">&gt;&gt;&gt;</span> layer <span class="op">=</span> keras.layers.CategoryEncoding(num_tokens<span class="op">=</span><span class="dv">3</span>, output_mode<span class="op">=</span><span class="st">"one_hot"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-code-line-numbers="1|2|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="op">&gt;&gt;&gt;</span> layer <span class="op">=</span> keras.layers.CategoryEncoding(num_tokens<span class="op">=</span><span class="dv">3</span>, output_mode<span class="op">=</span><span class="st">"one_hot"</span>)</span>
 <span id="cb7-2"><a></a><span class="op">&gt;&gt;&gt;</span> data <span class="op">=</span> tf.ragged.constant([[<span class="dv">2</span>],[<span class="dv">0</span>,<span class="dv">1</span>],[<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>]])  <span class="co"># uequal lengths -&gt; use tf.ragged</span></span>
 <span id="cb7-3"><a></a><span class="op">&gt;&gt;&gt;</span> layer(data)</span>
 <span id="cb7-4"><a></a>array([[<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">1.</span>],</span>
 <span id="cb7-5"><a></a>       [<span class="fl">1.</span>, <span class="fl">1.</span>, <span class="fl">0.</span>],</span>
-<span id="cb7-6"><a></a>       [<span class="fl">1.</span>, <span class="fl">1.</span>, <span class="fl">1.</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-6"><a></a>       [<span class="fl">1.</span>, <span class="fl">1.</span>, <span class="fl">1.</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="keras-convenience-layers-for-categorical-data-1" class="slide level2">
 <h2>Keras convenience layers for categorical data</h2>
@@ -663,7 +664,7 @@ sma@hvl.no
 <div style="padding-top: 20px;">
 
 </div>
-<div class="sourceCode" id="cb8" data-code-line-numbers="1|1-3|1,2-5|1,6-7|1,8-10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="op">&gt;&gt;&gt;</span> layer <span class="op">=</span> keras.layers.StringLookup()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-code-line-numbers="1|1-3|1,2-5|1,6-7|1,8-10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="op">&gt;&gt;&gt;</span> layer <span class="op">=</span> keras.layers.StringLookup()</span>
 <span id="cb8-2"><a></a><span class="op">&gt;&gt;&gt;</span> data <span class="op">=</span> [<span class="st">'a'</span>, <span class="st">'b'</span>, <span class="st">'c'</span>]</span>
 <span id="cb8-3"><a></a><span class="op">&gt;&gt;&gt;</span> layer.adapt(data)</span>
 <span id="cb8-4"><a></a><span class="op">&gt;&gt;&gt;</span> layer.get_vocabulary()</span>
@@ -672,7 +673,7 @@ sma@hvl.no
 <span id="cb8-7"><a></a>array([<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>])</span>
 <span id="cb8-8"><a></a><span class="op">&gt;&gt;&gt;</span> other_data <span class="op">=</span> [<span class="st">'b'</span>, <span class="st">'c'</span>, <span class="st">'d'</span>]</span>
 <span id="cb8-9"><a></a><span class="op">&gt;&gt;&gt;</span> layer(other_data)</span>
-<span id="cb8-10"><a></a>array([<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-10"><a></a>array([<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Out-Of-Vocabulary</em> (OOV) gets mapped to <code>[UNK]</code>, meaning unknown</p>
 </section>
 <section id="keras-convenience-layers-for-categorical-data-2" class="slide level2">
@@ -681,13 +682,13 @@ sma@hvl.no
 <div style="padding-top: 20px;">
 
 </div>
-<div class="sourceCode" id="cb9" data-code-line-numbers="1|1-3|1,4-5|1,6-7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="op">&gt;&gt;&gt;</span> layer <span class="op">=</span> keras.layers.IntegerLookup()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-code-line-numbers="1|1-3|1,4-5|1,6-7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="op">&gt;&gt;&gt;</span> layer <span class="op">=</span> keras.layers.IntegerLookup()</span>
 <span id="cb9-2"><a></a><span class="op">&gt;&gt;&gt;</span> data <span class="op">=</span> [<span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">46</span>]</span>
 <span id="cb9-3"><a></a><span class="op">&gt;&gt;&gt;</span> layer.adapt(data)</span>
 <span id="cb9-4"><a></a><span class="op">&gt;&gt;&gt;</span> layer.get_vocabulary()</span>
 <span id="cb9-5"><a></a>[<span class="op">-</span><span class="dv">1</span>, np.int64(<span class="dv">46</span>), np.int64(<span class="dv">14</span>), np.int64(<span class="dv">12</span>)]</span>
 <span id="cb9-6"><a></a><span class="op">&gt;&gt;&gt;</span> layer([<span class="dv">14</span>, <span class="dv">12</span>, <span class="dv">317</span>])</span>
-<span id="cb9-7"><a></a><span class="op">&lt;</span>tf.Tensor: shape<span class="op">=</span>(<span class="dv">3</span>,), dtype<span class="op">=</span>int64, numpy<span class="op">=</span>array([<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>])<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-7"><a></a><span class="op">&lt;</span>tf.Tensor: shape<span class="op">=</span>(<span class="dv">3</span>,), dtype<span class="op">=</span>int64, numpy<span class="op">=</span>array([<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">0</span>])<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="padding-top: 20px;">
 
 </div>
@@ -698,7 +699,7 @@ sma@hvl.no
 <h2>Keras convenience layers for categorical data</h2>
 <p>Often your dataset will contain a mix of diffent types, requiring different preprocessing.</p>
 <p>A <span class="color-pink-dark">do-it-all solution</span> is to use <code>keras.utils.FeatureSpace</code>. From <a href="https://keras.io/examples/structured_data/structured_data_classification_with_feature_space/">example</a> in docs:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a aria-hidden="true" tabindex="-1"></a>feature_space <span class="op">=</span> FeatureSpace(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a aria-hidden="true" tabindex="-1"></a>feature_space <span class="op">=</span> FeatureSpace(</span>
 <span id="cb10-2"><a aria-hidden="true" tabindex="-1"></a>    features<span class="op">=</span>{</span>
 <span id="cb10-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="co"># Categorical features encoded as integers</span></span>
 <span id="cb10-4"><a aria-hidden="true" tabindex="-1"></a>        <span class="st">"fbs"</span>: <span class="st">"integer_categorical"</span>,</span>
@@ -718,7 +719,7 @@ sma@hvl.no
 <span id="cb10-18"><a aria-hidden="true" tabindex="-1"></a>    output_mode<span class="op">=</span><span class="st">"concat"</span>,</span>
 <span id="cb10-19"><a aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb10-20"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Adapt to training data</span></span>
-<span id="cb10-21"><a aria-hidden="true" tabindex="-1"></a>feature_space.adapt(train_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-21"><a aria-hidden="true" tabindex="-1"></a>feature_space.adapt(train_ds)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="embeddings" class="slide level2">
 <h2>Embeddings</h2>
@@ -732,9 +733,9 @@ sma@hvl.no
 </div>
 <div class="fragment">
 <p>Instead of</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a aria-hidden="true" tabindex="-1"></a>{<span class="st">"0"</span>: <span class="dv">0</span>, <span class="st">"A"</span>: <span class="dv">1</span>, <span class="st">"B"</span>: <span class="dv">2</span>, <span class="st">"AB"</span>: <span class="dv">3</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a aria-hidden="true" tabindex="-1"></a>{<span class="st">"0"</span>: <span class="dv">0</span>, <span class="st">"A"</span>: <span class="dv">1</span>, <span class="st">"B"</span>: <span class="dv">2</span>, <span class="st">"AB"</span>: <span class="dv">3</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>we do (for instance)</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a>{<span class="st">"0"</span>: [<span class="fl">0.2</span>, <span class="fl">1.1</span>], <span class="st">"A"</span>: [<span class="fl">1.6</span>, <span class="op">-</span><span class="fl">0.2</span>], <span class="st">"B"</span>: [<span class="op">-</span><span class="fl">0.3</span>, <span class="fl">0.7</span>], <span class="st">"AB"</span>: [<span class="fl">1.4</span>, <span class="op">-</span><span class="fl">0.1</span>]}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a>{<span class="st">"0"</span>: [<span class="fl">0.2</span>, <span class="fl">1.1</span>], <span class="st">"A"</span>: [<span class="fl">1.6</span>, <span class="op">-</span><span class="fl">0.2</span>], <span class="st">"B"</span>: [<span class="op">-</span><span class="fl">0.3</span>, <span class="fl">0.7</span>], <span class="st">"AB"</span>: [<span class="fl">1.4</span>, <span class="op">-</span><span class="fl">0.1</span>]}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <!-- https://arxiv.org/abs/1604.06737 -->
 </section>
@@ -742,14 +743,14 @@ sma@hvl.no
 <h2>Embeddings</h2>
 <p>Now the magic✨ is:</p>
 <p>The embeddings are <strong>learnt from data</strong></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># These values are updated during training</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># These values are updated during training</span></span>
 <span id="cb13-2"><a aria-hidden="true" tabindex="-1"></a><span class="co"># You can have any dimension you like</span></span>
-<span id="cb13-3"><a aria-hidden="true" tabindex="-1"></a>{<span class="st">"0"</span>: [<span class="fl">0.2</span>, <span class="fl">1.1</span>], <span class="st">"A"</span>: [<span class="fl">1.6</span>, <span class="op">-</span><span class="fl">0.2</span>], <span class="st">"B"</span>: [<span class="op">-</span><span class="fl">0.3</span>, <span class="fl">0.7</span>], <span class="st">"AB"</span>: [<span class="fl">1.4</span>, <span class="op">-</span><span class="fl">0.1</span>]}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-3"><a aria-hidden="true" tabindex="-1"></a>{<span class="st">"0"</span>: [<span class="fl">0.2</span>, <span class="fl">1.1</span>], <span class="st">"A"</span>: [<span class="fl">1.6</span>, <span class="op">-</span><span class="fl">0.2</span>], <span class="st">"B"</span>: [<span class="op">-</span><span class="fl">0.3</span>, <span class="fl">0.7</span>], <span class="st">"AB"</span>: [<span class="fl">1.4</span>, <span class="op">-</span><span class="fl">0.1</span>]}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We can treat the embedding space as an Euclidian space where elements <strong>close</strong> to another <strong>are similar</strong> or somehow related.</p>
 <div class="fragment">
 <p>For categorical data we call it <em>entity embeddings</em><br> <span class="color-text-muted">(while next week we’ll look at <em>word embeddings</em>)</span></p>
 <p>In Keras:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a aria-hidden="true" tabindex="-1"></a>keras.layers.Embedding(input_dim, output_dim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a aria-hidden="true" tabindex="-1"></a>keras.layers.Embedding(input_dim, output_dim)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>input_dim</code>: length of vocabulary</li>
 <li><code>output_dim</code>: dimensions of embedding space (you choose)</li>
@@ -1027,7 +1028,7 @@ sma@hvl.no
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -1054,190 +1055,173 @@ sma@hvl.no
       });
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const isCodeAnnotation = (el) => {
-        for (const clz of el.classList) {
-          if (clz.startsWith('code-annotation-')) {                     
-            return true;
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
           }
+          return false;
         }
-        return false;
-      }
-      const onCopySuccess = function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
           }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      }
-      const getTextToCopy = function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
           for (const childEl of codeEl.children) {
             if (isCodeAnnotation(childEl)) {
               childEl.remove();
             }
           }
           return codeEl.innerText;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-        text: getTextToCopy
-      });
-      clipboard.on('success', onCopySuccess);
-      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-          text: getTextToCopy,
-          container: window.document.getElementById('quarto-embedded-source-code-modal')
-        });
-        clipboardModal.on('success', onCopySuccess);
-      }
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
             }
           }
-        }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-        const config = {
-          allowHTML: true,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start',
-        };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
           }
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
           }
-        } else {
-          return undefined;
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
         }
-      };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
           });
         }
-      }
-    });
-    </script>
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
     
 
 </body></html>
