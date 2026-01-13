@@ -95,7 +95,7 @@
     code span.vs { color: #da4453; } /* VerbatimString */
     code span.wa { color: #da4453; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-2f1e77f5e11468624cfe9a35d42dc099.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-41d670d08b33858e423018f51d98f717.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -206,6 +206,59 @@ sma@hvl.no
 </div>
 
 </section>
+<section id="machine-learning" class="slide level2">
+<h2>Machine learning</h2>
+<div style="padding-top: 100px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch01/a-new-programming-paradigm.e8d1a1c2.png" width="600"></p>
+<figcaption>Chollet Fig 1.2</figcaption>
+</figure>
+</div>
+</section>
+<section id="classification" class="slide level2">
+<h2>Classification</h2>
+<div style="padding-top: 100px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch01/learning_representations.97fa3c4b.png" width="800"></p>
+<figcaption>Chollet Fig 1.4</figcaption>
+</figure>
+</div>
+<p>Classification threshold:</p>
+<p>x &lt; 0.5 <i class="bi bi-arrow-right"></i> <span style="height: 20px; width: 20px; border: 1px solid #000; background-color: #90CAF9; border-radius: 50%; display: inline-block;"></span></p>
+<p>x &gt; 0.5 <i class="bi bi-arrow-right"></i> <span style="height: 20px; width: 20px; border: 1px solid #000; background-color: #000; border-radius: 50%; display: inline-block;"></span></p>
+<div class="absolute fragment fade-out rectangle" style="background-color: #fff; border: 0px;top: 160px; left: 400px; width: 550px; height: 280px; ">
+
+</div>
+</section>
+<section id="section" class="slide level2" data-background-iframe="https://playground.tensorflow.org/#activation=tanh&amp;batchSize=10&amp;dataset=gauss&amp;regDataset=reg-plane&amp;learningRate=0.03&amp;regularizationRate=0&amp;noise=0&amp;networkShape=&amp;seed=0.87079&amp;showTestData=false&amp;discretize=false&amp;percTrainData=50&amp;x=true&amp;y=true&amp;xTimesY=false&amp;xSquared=false&amp;ySquared=false&amp;cosX=false&amp;sinX=false&amp;cosY=false&amp;sinY=false&amp;collectStats=false&amp;problem=classification&amp;initZero=false&amp;hideText=false" data-background-interactive="true" data-menu-title="TensorFlow playground">
+<h2></h2>
+<div class="absolute" style="font-size: 0.6em;bottom: 0%; right: 0%; ">
+<p><a href="https://playground.tensorflow.org">TensorFlow playground</a></p>
+</div>
+</section>
+<section id="what-do-we-need-from-our-tools" class="slide level2">
+<h2>What do we need from our tools</h2>
+<div style="padding-top: 60px;">
+
+</div>
+<p>A good deep learning framework should provide</p>
+<ul>
+<li>A data structure for representing <span class="math inline">\(\small{}N\)</span>-dimensional arrays (<span class="math inline">\(\small N \in \{0, 1, 2, \dots\}\)</span>), aka <span class="color-purple"><em>tensors</em></span></li>
+<li>A way to compute derivatives of arbitrary functions</li>
+<li>A way to run computations on hardware accelerators, such as GPUs</li>
+</ul>
+<div style="padding-top: 40px;">
+
+</div>
+<p>There are many of these; luckily most have converged to a “NumPy-like” API.</p>
+<p>Read about similarities and differences in <a href="https://deeplearningwithpython.io/chapters/chapter03_introduction-to-ml-frameworks/">Ch. 3</a> (optional)</p>
+</section>
 <section id="frameworks" class="slide level2">
 <h2>Frameworks</h2>
 <div class="r-stack">
@@ -240,6 +293,9 @@ sma@hvl.no
 </section>
 <section id="frameworks-1" class="slide level2">
 <h2>Frameworks</h2>
+<div style="padding-top: 40px;">
+
+</div>
 <p><code>python</code> is the de-facto language for deep learning</p>
 <p>In case you need a refresher, look at e.g.</p>
 <ul>
@@ -247,7 +303,7 @@ sma@hvl.no
 <li><em>Google Edu:</em> <a href="https://developers.google.com/edu/python">https://developers.google.com/edu/python</a></li>
 </ul>
 <div class="fragment">
-<p>Technically, we use python as a configuration language while the framework backends are C++/CUDA (but we won’t touch this)</p>
+<p>Technically, we use python as a configuration language while the framework backends <br>are C++/CUDA (but we won’t touch this)</p>
 <p>For deployment, there are hooks to Haskell / C# / Julia / Java / R / Ruby / Rust / Scala / Perl and others</p>
 <p><span class="color-pink-dark"><em>We assume you have been exposed to NumPy – although it’s no requirement</em></span></p>
 </div>
@@ -418,6 +474,141 @@ sma@hvl.no
 <div class="fragment" style="padding-top: 10px;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>tf.Tensor: shape<span class="op">=</span>(), dtype<span class="op">=</span>float32, numpy<span class="op">=</span><span class="fl">4.0</span><span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
+<section id="solving-linear-regression-with-autodiff" class="slide level2">
+<h2>Solving linear regression with autodiff</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Let’s say we have some data points <span class="math inline">\(\small\mathbf(X)\)</span> and want to fit a straight line to them. This <em>linear</em> model would look like</p>
+<p><span class="math display">\[
+\small
+\begin{align}
+\hat{\color{DarkBlue}{y}} &amp;= \color{teal}{\theta}_0
++ \color{teal}{\theta}_1 \color{DarkOrange}{x}_1
++ \cdots
++ \color{teal}{\theta}_n \color{DarkOrange}{x}_n \\
+&amp;= \boldsymbol{\color{teal}{\theta}}^{\intercal} \cdot \color{DarkOrange}{\mathbf{x}}
+\end{align}
+\]</span></p>
+<p>for <span class="math inline">\(n\)</span> features, with <span class="math inline">\(\small\boldsymbol{\color{teal}{\theta}}\)</span> being the <em>parameters</em> of the model.</p>
+</div><div class="column" style="width:7%;">
+
+</div><div class="column" style="width:30%;">
+<p><img data-src="figures/lecture2/linreg.png"></p>
+</div></div>
+<p>Or in code: <code>y_pred = theta.T.dot(X)</code> &nbsp;&nbsp;&nbsp;&nbsp; <span class="color-text-muted" style="font-size: 0.8em;">(or even <code>y_pred = theta.dot(X)</code>)</span></p>
+<div style="padding-top: 20px;">
+
+</div>
+<p>Now need a <strong>loss function</strong> (error function) to tell how much we missed by, for instance mean squared error (MSE):</p>
+<p><span class="math display">\[
+\small
+\begin{align}
+\color{MediumVioletRed}{L}_{\mathrm{MSE}}
+&amp;= \frac{1}{N}\sum_{i=1}^{N} \left(\boldsymbol{\color{teal}{\theta}}^{\intercal} \color{DarkOrange}{\mathbf{x}}^{(i)} - \color{DarkBlue}{y}^{(i)}\right)^2
+\end{align}
+\]</span></p>
+</section>
+<section id="solving-linear-regression-with-autodiff-1" class="slide level2">
+<h2>Solving linear regression with autodiff</h2>
+<p>Let’s write the loss function in TensorFlow:</p>
+<div style="padding-top: 20px;">
+
+</div>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><span class="math display">\[
+\small
+\begin{align}
+\color{MediumVioletRed}{L}_{\mathrm{MSE}}
+&amp;= \frac{1}{N}\sum_{i=1}^{N} \left(\boldsymbol{\color{teal}{\theta}}^{\intercal} \color{DarkOrange}{\mathbf{x}}^{(i)} - \color{DarkBlue}{y}^{(i)}\right)^2
+\end{align}
+\]</span></p>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div style="padding-top: 20px;">
+
+</div>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-code-line-numbers="1|2|3|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="kw">def</span> mse(y_pred, y_true):</span>
+<span id="cb11-2"><a></a>  <span class="cf">return</span> tf.reduce_mean(</span>
+<span id="cb11-3"><a></a>    tf.math.square(y_pred <span class="op">-</span> y_true)</span>
+<span id="cb11-4"><a></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div></div>
+<div class="absolute" style="top: 25%; left: 40%; ">
+<p><i class="bi bi-arrow-right"></i></p>
+</div>
+<div style="padding-top: 20px;">
+
+</div>
+<div class="fragment">
+<p>Notice this is a <strong>differentiable function</strong>.</p>
+</div>
+<div style="padding-top: 20px;">
+
+</div>
+<div class="fragment">
+<p>So we have</p>
+<ol type="1">
+<li>A differentiable function <span class="color-text-muted"><em>(mean squared error)</em></span></li>
+<li>A tool that can compute derivatives <span class="color-text-muted"><em>(TensorFlow)</em></span></li>
+</ol>
+<p>which means we are all set to do <span class="color-purple">gradient descent</span>.</p>
+</div>
+</section>
+<section id="gradient-descent" class="slide level2">
+<h2>Gradient descent</h2>
+<p>Recalling that minimum loss (error) is where the derivative of the function is zero, let’s find the optimal parameters <code>theta</code> numerically:</p>
+<div style="padding-top: 20px;">
+
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>theta <span class="op">=</span> tf.Variable([<span class="fl">0.21</span>, <span class="fl">1.43</span>]) <span class="co"># random values</span></span>
+<span id="cb12-2"><a></a></span>
+<span id="cb12-3"><a></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb12-4"><a></a></span>
+<span id="cb12-5"><a></a>  <span class="cf">with</span> tf.GradientTape() <span class="im">as</span> tape:</span>
+<span id="cb12-6"><a></a>    y_pred <span class="op">=</span> X.dot(theta)</span>
+<span id="cb12-7"><a></a>    loss <span class="op">=</span> mse(y_pred, y_true)</span>
+<span id="cb12-8"><a></a></span>
+<span id="cb12-9"><a></a>  better_theta <span class="op">=</span> theta <span class="op">-</span> learning_rate <span class="op">*</span> tape.gradient(loss, theta)</span>
+<span id="cb12-10"><a></a></span>
+<span id="cb12-11"><a></a>  theta.assign(better_theta)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="padding-top: 20px;">
+
+</div>
+<div class="fragment">
+<p>This loop is at the core of all neural network training</p>
+<p>(but with Keras we don’t write it out explicitly)</p>
+</div>
+</section>
+<section id="artificial-neural-networks" class="slide level2">
+<h2>Artificial neural networks</h2>
+<div style="padding-top: 20px;">
+
+</div>
+<div class="columns">
+<div class="column" style="width:35%;">
+<p><img data-src="figures/lecture1/ann.png"></p>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:57%;">
+<p>The base element of a neural network is the <span class="color-red-light">neuron</span>, which looks a lot like multiple linear regression: <span class="math display">\[
+\small
+a = b + \sum_{i=1}^{M} w_ix_i
+\]</span></p>
+<p>But we can solve <em>nonlinear</em> problems if we add a nonlinear transformation <span class="math inline">\(\small{}f\)</span>,</p>
+<p><span class="math display">\[
+\small
+y = f(a)
+\]</span></p>
+<p>which we call an <span class="color-indigo">activation function</span>.</p>
+</div></div>
+<div class="fragment">
+<p>Again we usually don’t bother writing this computation out explicitly, but rather interact with Keras <em>layers</em>.</p>
+<p>This one is called <code>keras.layers.Dense</code>, but we’ll look at several types next week</p>
+</div>
 <!-- ## Number of bits  -->
 </section>
 <section id="keras" class="slide level2">
@@ -447,7 +638,7 @@ sma@hvl.no
 <p><img data-src="figures/lecture2/uncle-sam.jpg"></p>
 </div>
 </section>
-<section id="section" class="slide level2" data-menu-title="Fin">
+<section id="section-1" class="slide level2" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>

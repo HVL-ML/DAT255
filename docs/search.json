@@ -1376,7 +1376,7 @@
     "href": "slides/02-tools.html#frameworks-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Frameworks",
-    "text": "Frameworks\npython is the de-facto language for deep learning\nIn case you need a refresher, look at e.g.\n\nKaggle Learn: https://www.kaggle.com/learn/python\nGoogle Edu: https://developers.google.com/edu/python\n\n\nTechnically, we use python as a configuration language while the framework backends are C++/CUDA (but we won’t touch this)\nFor deployment, there are hooks to Haskell / C# / Julia / Java / R / Ruby / Rust / Scala / Perl and others\nWe assume you have been exposed to NumPy – although it’s no requirement"
+    "text": "Frameworks\n\n\n\npython is the de-facto language for deep learning\nIn case you need a refresher, look at e.g.\n\nKaggle Learn: https://www.kaggle.com/learn/python\nGoogle Edu: https://developers.google.com/edu/python\n\n\nTechnically, we use python as a configuration language while the framework backends are C++/CUDA (but we won’t touch this)\nFor deployment, there are hooks to Haskell / C# / Julia / Java / R / Ruby / Rust / Scala / Perl and others\nWe assume you have been exposed to NumPy – although it’s no requirement"
   },
   {
     "objectID": "slides/02-tools.html#this-week",
@@ -3211,5 +3211,89 @@
     "title": "DAT255: Deep learning engineering",
     "section": "Generative adversarial networks",
     "text": "Generative adversarial networks\nTraining procedure is a little tricky, see the book for details\nWe can still do vector arithmetic in the latent space:\n\n\n\n\n\n\narXiv:1511.06434\n\n\nNote: GANs are well studied in research but seldom used in practice.\nThey are very sensitive to configuration of the training procedure, and are generally just difficult"
+  },
+  {
+    "objectID": "slides/02-tools.html#tf-playground",
+    "href": "slides/02-tools.html#tf-playground",
+    "title": "DAT255: Deep learning engineering",
+    "section": "TF playground",
+    "text": "TF playground\n(what is ML all about)"
+  },
+  {
+    "objectID": "slides/02-tools.html#machine-learning",
+    "href": "slides/02-tools.html#machine-learning",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Machine learning",
+    "text": "Machine learning\n\n\n\n\n\n\nChollet Fig 1.2"
+  },
+  {
+    "objectID": "slides/02-tools.html#classification",
+    "href": "slides/02-tools.html#classification",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Classification",
+    "text": "Classification\n\n\n\n\n\n\nChollet Fig 1.4\n\n\nClassification threshold:\nx &lt; 0.5  \nx &gt; 0.5"
+  },
+  {
+    "objectID": "slides/02-tools.html#what-do-we-need-from-our-tools",
+    "href": "slides/02-tools.html#what-do-we-need-from-our-tools",
+    "title": "DAT255: Deep learning engineering",
+    "section": "What do we need from our tools",
+    "text": "What do we need from our tools\n\n\n\nA good deep learning framework should provide\n\nA data structure for representing \\(\\small{}N\\)-dimensional arrays (\\(\\small N \\in \\{0, 1, 2, \\dots\\}\\)), aka tensors\nA way to compute derivatives of arbitrary functions\nA way to run computations on hardware accelerators, such as GPUs\n\n\n\n\nThere are many of these; luckily most have converged to a “NumPy-like” API.\nRead about similarities and differences in Ch. 3 (optional)"
+  },
+  {
+    "objectID": "slides/02-tools.html#dense-nn",
+    "href": "slides/02-tools.html#dense-nn",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Dense NN",
+    "text": "Dense NN"
+  },
+  {
+    "objectID": "slides/02-tools.html#solving-linear-regression-with-autodiff",
+    "href": "slides/02-tools.html#solving-linear-regression-with-autodiff",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Solving linear regression with autodiff",
+    "text": "Solving linear regression with autodiff\n\n\nLet’s say we have some data points \\(\\small\\mathbf(X)\\) and want to fit a straight line to them. This linear model would look like\n\\[\n\\small\n\\begin{align}\n\\hat{\\color{DarkBlue}{y}} &= \\color{teal}{\\theta}_0\n+ \\color{teal}{\\theta}_1 \\color{DarkOrange}{x}_1\n+ \\cdots\n+ \\color{teal}{\\theta}_n \\color{DarkOrange}{x}_n \\\\\n&= \\boldsymbol{\\color{teal}{\\theta}}^{\\intercal} \\cdot \\color{DarkOrange}{\\mathbf{x}}\n\\end{align}\n\\]\nfor \\(n\\) features, with \\(\\small\\boldsymbol{\\color{teal}{\\theta}}\\) being the parameters of the model.\n\n\n\n\n\nOr in code: y_pred = theta.T.dot(X)      (or even y_pred = theta.dot(X))\n\n\n\nNow need a loss function (error function) to tell how much we missed by, for instance mean squared error (MSE):\n\\[\n\\small\n\\begin{align}\n\\color{MediumVioletRed}{L}_{\\mathrm{MSE}}\n&= \\frac{1}{N}\\sum_{i=1}^{N} \\left(\\boldsymbol{\\color{teal}{\\theta}}^{\\intercal} \\color{DarkOrange}{\\mathbf{x}}^{(i)} - \\color{DarkBlue}{y}^{(i)}\\right)^2\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/02-tools.html#continue",
+    "href": "slides/02-tools.html#continue",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Continue",
+    "text": "Continue\nWe need a loss function (error function) to tell how much we missed by, for instance mean squared error (MSE):\n\\[\n\\small\n\\begin{align}\n\\color{MediumVioletRed}{L}_{\\mathrm{MSE}}\n&= \\frac{1}{N}\\sum_{i=1}^{N} \\left(\\hat{\\color{DarkBlue}{y}}^{(i)} - \\color{DarkBlue}{y}^{(i)}\\right)^2 \\\\[1em]\n&= \\frac{1}{N}\\sum_{i=1}^{N} \\left(\\boldsymbol{\\color{teal}{\\theta}}^{\\intercal} \\color{DarkOrange}{\\mathbf{x}}^{(i)} - \\color{DarkBlue}{y}^{(i)}\\right)^2\n\\end{align}\n\\]\ndef mse(y_pred, y_true):\n  return tf.reduce_mean(\n    tf.math.square(y_pred - y_true)\n  )\nNotice this is a differentiable function."
+  },
+  {
+    "objectID": "slides/02-tools.html#peek-at-gradient-descent",
+    "href": "slides/02-tools.html#peek-at-gradient-descent",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Peek at gradient descent",
+    "text": "Peek at gradient descent\nSo we have 1) a differentiable function, and 2) a tool that can differentiate.\nRecalling that minimum loss (error) is where the derivative of the function is zero, let’s find it numerically:\ntheta = tf.Variable([0.21, 1.43, ...]) # random values\n\nfor epoch in range(10):\n\n  with tf.GradientTape() as tape:\n    y_pred = X.dot(theta)\n    loss = mse(y_pred, y_true)\n\n  better_theta = theta - tape.gradient(loss, theta)\n\n  theta.assign(better_theta)"
+  },
+  {
+    "objectID": "slides/02-tools.html#solving-linear-regression-with-autodiff-1",
+    "href": "slides/02-tools.html#solving-linear-regression-with-autodiff-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Solving linear regression with autodiff",
+    "text": "Solving linear regression with autodiff\nLet’s write the loss function in TensorFlow:\n\n\n\n\n\n\\[\n\\small\n\\begin{align}\n\\color{MediumVioletRed}{L}_{\\mathrm{MSE}}\n&= \\frac{1}{N}\\sum_{i=1}^{N} \\left(\\boldsymbol{\\color{teal}{\\theta}}^{\\intercal} \\color{DarkOrange}{\\mathbf{x}}^{(i)} - \\color{DarkBlue}{y}^{(i)}\\right)^2\n\\end{align}\n\\]\n\n\n\n\n\n\n\ndef mse(y_pred, y_true):\n  return tf.reduce_mean(\n    tf.math.square(y_pred - y_true)\n  )\n\n\n\n\n\n\n\n\n\nNotice this is a differentiable function.\n\n\n\n\n\nSo we have\n\nA differentiable function (mean squared error)\nA tool that can compute derivatives (TensorFlow)\n\nwhich means we are all set to do gradient descent."
+  },
+  {
+    "objectID": "slides/02-tools.html#gradient-descent",
+    "href": "slides/02-tools.html#gradient-descent",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Gradient descent",
+    "text": "Gradient descent\nRecalling that minimum loss (error) is where the derivative of the function is zero, let’s find the optimal parameters theta numerically:\n\n\n\ntheta = tf.Variable([0.21, 1.43]) # random values\n\nfor epoch in range(10):\n\n  with tf.GradientTape() as tape:\n    y_pred = X.dot(theta)\n    loss = mse(y_pred, y_true)\n\n  better_theta = theta - learning_rate * tape.gradient(loss, theta)\n\n  theta.assign(better_theta)\n\n\n\n\nThis loop is at the core of all neural network training\n(but with Keras we don’t write it out explicitly)"
+  },
+  {
+    "objectID": "slides/02-tools.html#artificial-neural-networks",
+    "href": "slides/02-tools.html#artificial-neural-networks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Artificial neural networks",
+    "text": "Artificial neural networks\n\n\n\n\n\n\n\n\n\nThe base element of a neural network is the neuron, which looks a lot like multiple linear regression: \\[\n\\small\na = b + \\sum_{i=1}^{M} w_ix_i\n\\]\nBut we can solve nonlinear problems if we add a nonlinear transformation \\(\\small{}f\\),\n\\[\n\\small\ny = f(a)\n\\]\nwhich we call an activation function.\n\n\nAgain we usually don’t bother writing this computation out explicitly, but rather interact with Keras layers.\nThis one is called keras.layers.Dense, but we’ll look at several types next week"
+  },
+  {
+    "objectID": "slides/02-tools.html#section",
+    "href": "slides/02-tools.html#section",
+    "title": "DAT255: Deep learning engineering",
+    "section": "",
+    "text": "TensorFlow playground"
   }
 ]
