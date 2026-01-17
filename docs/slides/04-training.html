@@ -95,7 +95,7 @@
     code span.vs { color: #da4453; } /* VerbatimString */
     code span.wa { color: #da4453; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-3238b5e24b497df282e7c2810f3caeda.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e5387708f32441f66e167fb7200d552e.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -217,6 +217,7 @@ sma@hvl.no
 <p>where</p>
 <ul>
 <li><p><span class="math inline">\(\hat{\color{DarkBlue}{y}}\)</span> is the <em>prediction</em></p></li>
+<li><p><span class="math inline">\(\color{Purple}{f}\)</span> is a mathematical function, in our case a neural network</p></li>
 <li><p><span class="math inline">\(\color{DarkOrange}{\mathbf{x}}\)</span>&nbsp;is a data point</p></li>
 <li><p><span class="math inline">\(\boldsymbol{\color{teal}{\theta}}\)</span> are <em>parameters</em> of the model</p></li>
 </ul>
@@ -225,10 +226,10 @@ sma@hvl.no
 <h2>The parameters of a neural network</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture4/dense-nn.png" class="quarto-figure quarto-figure-center" style="padding-top: 40px;;width:50.0%"></p>
+<p><img data-src="figures/lecture4/dense-nn.png" class="quarto-figure quarto-figure-center" style="padding-top: 40px;" width="450"></p>
 </figure>
 </div>
-<p>The parameters of the simple fully-connected network are</p>
+<p>The parameters of the simple fully-connected (<em>dense</em>) network are</p>
 <ul>
 <li>one <strong>weight</strong> per connection (line)</li>
 <li>one <strong>bias</strong> term per node (circle)</li>
@@ -241,6 +242,9 @@ sma@hvl.no
 </section>
 <section id="the-activation-function" class="slide level2">
 <h2>The activation function</h2>
+<div style="margin-top: 50px">
+
+</div>
 <p>What separates a neural network from standard linear regression is the non-linear <strong>activation function</strong>.</p>
 <div class="fragment colorbox" style="background-color: #E0F2F1;">
 <p>(And not that we have many layers – stacking linear functions is still a linear function)</p>
@@ -257,6 +261,9 @@ sma@hvl.no
 </section>
 <section id="activation-function" class="slide level2">
 <h2>Activation function</h2>
+<div style="margin-top: 70px">
+
+</div>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>A good activation function is</p>
@@ -311,7 +318,7 @@ sma@hvl.no
 <p>In the final layer of the network, we need to choose an activation function that suits our task</p>
 <ul>
 <li class="fragment"><p><strong>Regression</strong>:</p>
-<p><em>No</em> activation – just sum the weighted connections. Output range <span class="math inline">\((-\infty, \infty)\)</span><br> Also called <em>linear</em> activation. <br> <code>keras.layers.Dense(units, activation=None)</code></p></li>
+<p>No activation – just sum the weighted connections. Output range <span class="math inline">\((-\infty, \infty)\)</span><br> Also called <em>linear</em> activation. <br> <code>keras.layers.Dense(units, activation=None)</code></p></li>
 <li class="fragment"><p><strong>Classification</strong>:</p>
 <p>Need something with output range <span class="math inline">\([0, 1]\)</span></p>
 <ul>
@@ -524,7 +531,7 @@ sma@hvl.no
 <p>Plateau<br> <code>-&gt;</code> <span class="color-red"><em>slow convergence</em></span></p>
 </div>
 <div class="fragment absolute colorbox" style="font-size: 0.75em; background-color: #FBE9E7;top: 0%; right: 0%; width: 250px; ">
-<p>Will try to solve these<br>problems on Thursday</p>
+<p>Will try to solve these<br>problems next week</p>
 </div>
 </section>
 <section id="vanishing-and-exploding-gradients" class="slide level2">
@@ -546,7 +553,7 @@ sma@hvl.no
 <section id="some-tricks" class="slide level2">
 <h2>Some tricks</h2>
 <div class="columns">
-<div class="column" style="width:60%;">
+<div class="column" style="width:55%;">
 <p>Common apporaches to avoid vanishing/exploding gradients:</p>
 <ul>
 <li>Choose a non-saturating activation function (like ReLU)</li>
@@ -604,7 +611,7 @@ sma@hvl.no
 <section id="some-tricks-1" class="slide level2">
 <h2>Some tricks</h2>
 <div class="columns">
-<div class="column" style="width:60%;">
+<div class="column" style="width:55%;">
 <p>Common apporaches to avoid vanishing/exploding gradients:</p>
 <ul>
 <li>Choose a non-saturating activation function (like ReLU)</li>
@@ -670,7 +677,7 @@ sma@hvl.no
 
 </div>
 <ul>
-<li>Add <strong>normalisation layers</strong> to the model</li>
+<li>Add <strong>normalisation layers</strong> to the model<br> <span class="color-text-muted">(this is in Ch. 9 (next week) but metioning it now already)</span></li>
 </ul>
 </div><div class="column" style="width:40%;">
 <div class="quarto-figure quarto-figure-center">
@@ -809,12 +816,9 @@ sma@hvl.no
 <li>Optimisation algorithm</li>
 <li>Learning rate and scheduling</li>
 </ul>
-<p>the search space for finding the <span class="color-yellow-dark">optimal</span> solution is huge</p>
+<p>the search space for finding the <span class="color-orange-dark">optimal</span> solution is huge</p>
 <p>Guidelines from this and next week are meant to save time, but are not absolute.</p>
-<p><em>(Better guidelines will come along the next few years anyway)</em></p>
-</section>
-<section id="ai-assistant" class="slide level2" data-background-image="figures/lecture4/ai-student-assistant.png" data-background-color="#000">
-<h2>AI Assistant</h2>
+<p><span class="color-text-muted"><em>(Better guidelines will come along the next few years anyway)</em></span></p>
 </section>
 <section id="section" class="slide level2" data-menu-title="Fin">
 <h2></h2>

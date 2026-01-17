@@ -1173,14 +1173,14 @@
     "href": "slides/04-training.html#the-parameters-of-a-neural-network",
     "title": "DAT255: Deep learning engineering",
     "section": "The parameters of a neural network",
-    "text": "The parameters of a neural network\nRecall the simple formulation of a machine learning model:\n\n\\[\n\\large \\hat{\\color{DarkBlue}{y}} = \\color{Purple}{f}(\\color{DarkOrange}{\\mathbf{x}}, \\boldsymbol{\\color{teal}{\\theta}})\n\\]\n\nwhere\n\n\\(\\hat{\\color{DarkBlue}{y}}\\) is the prediction\n\\(\\color{DarkOrange}{\\mathbf{x}}\\) is a data point\n\\(\\boldsymbol{\\color{teal}{\\theta}}\\) are parameters of the model"
+    "text": "The parameters of a neural network\nRecall the simple formulation of a machine learning model:\n\n\\[\n\\large \\hat{\\color{DarkBlue}{y}} = \\color{Purple}{f}(\\color{DarkOrange}{\\mathbf{x}}, \\boldsymbol{\\color{teal}{\\theta}})\n\\]\n\nwhere\n\n\\(\\hat{\\color{DarkBlue}{y}}\\) is the prediction\n\\(\\color{Purple}{f}\\) is a mathematical function, in our case a neural network\n\\(\\color{DarkOrange}{\\mathbf{x}}\\) is a data point\n\\(\\boldsymbol{\\color{teal}{\\theta}}\\) are parameters of the model"
   },
   {
     "objectID": "slides/04-training.html#the-parameters-of-a-neural-network-1",
     "href": "slides/04-training.html#the-parameters-of-a-neural-network-1",
     "title": "DAT255: Deep learning engineering",
     "section": "The parameters of a neural network",
-    "text": "The parameters of a neural network\n\n\n\n\n\nThe parameters of the simple fully-connected network are\n\none weight per connection (line)\none bias term per node (circle)\n\n(for other types of layers, there are other types of parameters)"
+    "text": "The parameters of a neural network\n\n\n\n\n\nThe parameters of the simple fully-connected (dense) network are\n\none weight per connection (line)\none bias term per node (circle)\n\n(for other types of layers, there are other types of parameters)"
   },
   {
     "objectID": "slides/04-training.html#the-parameters-of-a-neural-network-2",
@@ -1194,14 +1194,14 @@
     "href": "slides/04-training.html#the-activation-function",
     "title": "DAT255: Deep learning engineering",
     "section": "The activation function",
-    "text": "The activation function\nWhat separates a neural network from standard linear regression is the non-linear activation function.\n\n(And not that we have many layers – stacking linear functions is still a linear function)\n\\[\n\\small\n\\begin{aligned}\n\\color{DarkBlue}{f}(x) &= 2x + 3  & (\\mathrm{linear}) \\\\\n\\color{Purple}{g}(x) &= 5x -1 & (\\mathrm{linear}) \\\\\n\\color{DarkBlue}{f}(\\color{Purple}{g}(x)) &= 2(5x-1) +3 &  \\\\\n&= 10x + 1 & (\\mathrm{also\\;linear})\n\\end{aligned}\n\\]"
+    "text": "The activation function\n\n\n\nWhat separates a neural network from standard linear regression is the non-linear activation function.\n\n(And not that we have many layers – stacking linear functions is still a linear function)\n\\[\n\\small\n\\begin{aligned}\n\\color{DarkBlue}{f}(x) &= 2x + 3  & (\\mathrm{linear}) \\\\\n\\color{Purple}{g}(x) &= 5x -1 & (\\mathrm{linear}) \\\\\n\\color{DarkBlue}{f}(\\color{Purple}{g}(x)) &= 2(5x-1) +3 &  \\\\\n&= 10x + 1 & (\\mathrm{also\\;linear})\n\\end{aligned}\n\\]"
   },
   {
     "objectID": "slides/04-training.html#activation-function",
     "href": "slides/04-training.html#activation-function",
     "title": "DAT255: Deep learning engineering",
     "section": "Activation function",
-    "text": "Activation function\n\n\nA good activation function is\n\nNonlinear\nDifferentiable*\nSwitches from off for negative inputs to on for positive inputs\n\n\n\n\n\n\nSigmoid\n\n\n\n\n\ntanh\n\n\n\n\n\nReLU\n\n\n\n\n\nGELU\n\n\n\n\n\nSwish\n\n\n\n\n\n\n\n\n*At least piecewise differentiable"
+    "text": "Activation function\n\n\n\n\n\nA good activation function is\n\nNonlinear\nDifferentiable*\nSwitches from off for negative inputs to on for positive inputs\n\n\n\n\n\n\nSigmoid\n\n\n\n\n\ntanh\n\n\n\n\n\nReLU\n\n\n\n\n\nGELU\n\n\n\n\n\nSwish\n\n\n\n\n\n\n\n\n*At least piecewise differentiable"
   },
   {
     "objectID": "slides/04-training.html#last-layer-activation-functions",
@@ -1285,7 +1285,7 @@
     "href": "slides/04-training.html#practical-problems-2",
     "title": "DAT255: Deep learning engineering",
     "section": "Practical problems",
-    "text": "Practical problems\n\n\nLocalminimum -&gt; bad predictions\n\n\nPlateau -&gt; slow convergence\n\n\nWill try to solve theseproblems on Thursday"
+    "text": "Practical problems\n\n\nLocalminimum -&gt; bad predictions\n\n\nPlateau -&gt; slow convergence\n\n\nWill try to solve theseproblems next week"
   },
   {
     "objectID": "slides/04-training.html#vanishing-and-exploding-gradients",
@@ -1313,7 +1313,7 @@
     "href": "slides/04-training.html#some-tricks-2",
     "title": "DAT255: Deep learning engineering",
     "section": "Some tricks",
-    "text": "Some tricks\n\n\nCommon apporaches to avoid vanishing/exploding gradients:\n\nChoose a non-saturating activation function (like ReLU)\n\n\n\n\n\nInitialise each layer’s parameters according to number of input and output connections\n\n\n\n\n\nAdd normalisation layers to the model"
+    "text": "Some tricks\n\n\nCommon apporaches to avoid vanishing/exploding gradients:\n\nChoose a non-saturating activation function (like ReLU)\n\n\n\n\n\nInitialise each layer’s parameters according to number of input and output connections\n\n\n\n\n\nAdd normalisation layers to the model (this is in Ch. 9 (next week) but metioning it now already)"
   },
   {
     "objectID": "slides/04-training.html#normalisation-layers",
@@ -1358,11 +1358,32 @@
     "text": "Best practices\nWith the choice of\n\nArchitecture (layers and nodes)\nParameter initialisers\nActivation functions\nRegularisation\nOptimisation algorithm\nLearning rate and scheduling\n\nthe search space for finding the optimal solution is huge\nGuidelines from this and next week are meant to save time, but are not absolute.\n(Better guidelines will come along the next few years anyway)"
   },
   {
-    "objectID": "slides/04-training.html#ai-assistant",
-    "href": "slides/04-training.html#ai-assistant",
+    "objectID": "slides/02-tools.html#machine-learning",
+    "href": "slides/02-tools.html#machine-learning",
     "title": "DAT255: Deep learning engineering",
-    "section": "AI Assistant",
-    "text": "AI Assistant"
+    "section": "Machine learning",
+    "text": "Machine learning\n\n\n\n\n\n\nChollet Fig 1.2"
+  },
+  {
+    "objectID": "slides/02-tools.html#classification",
+    "href": "slides/02-tools.html#classification",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Classification",
+    "text": "Classification\n\n\n\n\n\n\nChollet Fig 1.4\n\n\nClassification threshold:\nx &lt; 0.5  \nx &gt; 0.5"
+  },
+  {
+    "objectID": "slides/02-tools.html#section",
+    "href": "slides/02-tools.html#section",
+    "title": "DAT255: Deep learning engineering",
+    "section": "",
+    "text": "TensorFlow playground"
+  },
+  {
+    "objectID": "slides/02-tools.html#what-do-we-need-from-our-tools",
+    "href": "slides/02-tools.html#what-do-we-need-from-our-tools",
+    "title": "DAT255: Deep learning engineering",
+    "section": "What do we need from our tools",
+    "text": "What do we need from our tools\n\n\n\nA good deep learning framework should provide\n\nA data structure for representing \\(\\small{}N\\)-dimensional arrays (\\(\\small N \\in \\{0, 1, 2, \\dots\\}\\)), aka tensors\nA way to compute derivatives of arbitrary functions\nA way to run computations on hardware accelerators, such as GPUs\n\n\n\n\nThere are many of these; luckily most have converged to a “NumPy-like” API.\nRead about similarities and differences in Ch. 3 (optional)"
   },
   {
     "objectID": "slides/02-tools.html#frameworks",
@@ -1442,6 +1463,34 @@
     "text": "Automatic differentiation\nLet’s try to compute this derivative:\n\\[\n\\small\n\\frac{\\mathrm{d}}{\\mathrm{d}x} \\Big|_{x=1} \\; x^2 + 2x - 5\n\\]\n\n\\[\n\\small\n= 2x + 2 \\big|_{x=1} = 2 \\cdot 1 + 2 = 4\n\\]\n\n\nTurns out TensorFlow can do it for us:\ndef f(x):\n  return x**2 + 2*x - 5\n\nx = tf.Variable(1.0)\n\nwith tf.GradientTape() as tape:\n  y = f(x)\n\nd_dx = tape.gradient(y, x)\nprint(d_dx)\n\n\n&lt;tf.Tensor: shape=(), dtype=float32, numpy=4.0&gt;"
   },
   {
+    "objectID": "slides/02-tools.html#solving-linear-regression-with-autodiff",
+    "href": "slides/02-tools.html#solving-linear-regression-with-autodiff",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Solving linear regression with autodiff",
+    "text": "Solving linear regression with autodiff\n\n\nLet’s say we have some data points \\(\\small\\mathbf(X)\\) and want to fit a straight line to them. This linear model would look like\n\\[\n\\small\n\\begin{align}\n\\hat{\\color{DarkBlue}{y}} &= \\color{teal}{\\theta}_0\n+ \\color{teal}{\\theta}_1 \\color{DarkOrange}{x}_1\n+ \\cdots\n+ \\color{teal}{\\theta}_n \\color{DarkOrange}{x}_n \\\\\n&= \\boldsymbol{\\color{teal}{\\theta}}^{\\intercal} \\cdot \\color{DarkOrange}{\\mathbf{x}}\n\\end{align}\n\\]\nfor \\(n\\) features, with \\(\\small\\boldsymbol{\\color{teal}{\\theta}}\\) being the parameters of the model.\n\n\n\n\n\nOr in code: y_pred = theta.T.dot(X)      (or even y_pred = theta.dot(X))\n\n\n\nNow need a loss function (error function) to tell how much we missed by, for instance mean squared error (MSE):\n\\[\n\\small\n\\begin{align}\n\\color{MediumVioletRed}{L}_{\\mathrm{MSE}}\n&= \\frac{1}{N}\\sum_{i=1}^{N} \\left(\\boldsymbol{\\color{teal}{\\theta}}^{\\intercal} \\color{DarkOrange}{\\mathbf{x}}^{(i)} - \\color{DarkBlue}{y}^{(i)}\\right)^2\n\\end{align}\n\\]"
+  },
+  {
+    "objectID": "slides/02-tools.html#solving-linear-regression-with-autodiff-1",
+    "href": "slides/02-tools.html#solving-linear-regression-with-autodiff-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Solving linear regression with autodiff",
+    "text": "Solving linear regression with autodiff\nLet’s write the loss function in TensorFlow:\n\n\n\n\n\n\\[\n\\small\n\\begin{align}\n\\color{MediumVioletRed}{L}_{\\mathrm{MSE}}\n&= \\frac{1}{N}\\sum_{i=1}^{N} \\left(\\boldsymbol{\\color{teal}{\\theta}}^{\\intercal} \\color{DarkOrange}{\\mathbf{x}}^{(i)} - \\color{DarkBlue}{y}^{(i)}\\right)^2\n\\end{align}\n\\]\n\n\n\n\n\n\n\ndef mse(y_pred, y_true):\n  return tf.reduce_mean(\n    tf.math.square(y_pred - y_true)\n  )\n\n\n\n\n\n\n\n\n\nNotice this is a differentiable function.\n\n\n\n\n\nSo we have\n\nA differentiable function (mean squared error)\nA tool that can compute derivatives (TensorFlow)\n\nwhich means we are all set to do gradient descent."
+  },
+  {
+    "objectID": "slides/02-tools.html#gradient-descent",
+    "href": "slides/02-tools.html#gradient-descent",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Gradient descent",
+    "text": "Gradient descent\nRecalling that minimum loss (error) is where the derivative of the function is zero, let’s find the optimal parameters theta numerically:\n\n\n\ntheta = tf.Variable([0.21, 1.43]) # random values\n\nfor epoch in range(10):\n\n  with tf.GradientTape() as tape:\n    y_pred = X.dot(theta)\n    loss = mse(y_pred, y_true)\n\n  better_theta = theta - learning_rate * tape.gradient(loss, theta)\n\n  theta.assign(better_theta)\n\n\n\n\nThis loop is at the core of all neural network training\n(but with Keras we don’t write it out explicitly)"
+  },
+  {
+    "objectID": "slides/02-tools.html#artificial-neural-networks",
+    "href": "slides/02-tools.html#artificial-neural-networks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Artificial neural networks",
+    "text": "Artificial neural networks\n\n\n\n\n\n\n\n\n\nThe base element of a neural network is the neuron, which looks a lot like multiple linear regression: \\[\n\\small\na = b + \\sum_{i=1}^{M} w_ix_i\n\\]\nBut we can solve nonlinear problems if we add a nonlinear transformation \\(\\small{}f\\),\n\\[\n\\small\ny = f(a)\n\\]\nwhich we call an activation function.\n\n\nAgain we usually don’t bother writing this computation out explicitly, but rather interact with Keras layers.\nThis one is called keras.layers.Dense, but we’ll look at several types next week"
+  },
+  {
     "objectID": "slides/02-tools.html#keras",
     "href": "slides/02-tools.html#keras",
     "title": "DAT255: Deep learning engineering",
@@ -1460,7 +1509,7 @@
     "href": "index.html",
     "title": "DAT255 lecture notes",
     "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\nMonday week 3: Welcome and introduction\nTuesday week 3: The tools of deep learning"
+    "text": "Published after each lecture week – see Canvas for additional material.\n\nWeek 3\n1: Monday: Welcome and introduction\n2: Tuesday: The tools of deep learning\n\n\nWeek 4\n3: Monday: Computer vision and the concepts of layers\n4: Tuesday: Training deep neural networks"
   },
   {
     "objectID": "slides/01-welcome.html#what-can-you-do-with-deep-learning",
@@ -1659,8 +1708,8 @@
     "text": "TensorFlowplayground"
   },
   {
-    "objectID": "slides/03-convolutions.html#section",
-    "href": "slides/03-convolutions.html#section",
+    "objectID": "slides/03-convolutions.html#section-1",
+    "href": "slides/03-convolutions.html#section-1",
     "title": "DAT255: Deep learning engineering",
     "section": "",
     "text": "TensorFlowplayground"
@@ -1680,8 +1729,8 @@
     "text": "Deep learning\n\n\n\n\n\n\n%%{ init: {'flowchart': { 'curve': 'bumpX', 'nodeSpacing': 50, 'rankSpacing': 80 } } }%%\nflowchart LR\n    X1(\"x1\") --&gt; L1(\"Layer 1 (_f1_)\")\n    X2(\"x2\") --&gt; L1\n    subgraph ML[Neural network]\n    L1 --&gt; L2(\"Layer 2 (_f2_)\")\n    L2 --&gt; L3(\"Layer 3 (_f3_)\")\n    end\n    subgraph F[Original features]\n    X1\n    X2\n    end\n    L3 --&gt; P(\"Prediction _y_\")\n\nstyle ML fill:#ededed,stroke:#606060\nstyle F fill:#ededed,stroke:#606060\n\n\n\n\n\n\n\n\\[\ny = f_3(f_2(f_1(x_1, x_2 | \\theta_1) | \\theta_2) | \\theta_3)\n\\]"
   },
   {
-    "objectID": "slides/03-convolutions.html#section-1",
-    "href": "slides/03-convolutions.html#section-1",
+    "objectID": "slides/03-convolutions.html#section-2",
+    "href": "slides/03-convolutions.html#section-2",
     "title": "DAT255: Deep learning engineering",
     "section": "",
     "text": "TensorFlowplayground"
@@ -1691,14 +1740,14 @@
     "href": "slides/03-convolutions.html#deep-learning-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Deep learning",
-    "text": "Deep learning\n\n\n\nThe point of deep learning is to sequentially learn better feature representations, and use these to solve a task.\n\n\n\nSince neural networks are universal function approximators, they can model arbitrarily complex relationships. The cost of doing so, is that we need a lot of data."
+    "text": "Deep learning\n\n\n\nThe point of deep learning is to sequentially learn better feature representations, and use these to solve a task.\n\n\n\n\n\ninsufficient:    good:    better:\n\n\n\ndata    data    data\n\n\\(\\rightarrow\\)    \\(\\rightarrow\\)    \\(\\rightarrow\\)\n\nprediction    representation    representation\n\n   \\(\\rightarrow\\)    \\(\\rightarrow\\)\n\n   prediction    representation\n\n        \\(\\rightarrow\\)\n\n        prediction\n\n\n\n\nSince neural networks are universal function approximators, they can model arbitrarily complex relationships. The cost of doing so, is that we need a lot of data."
   },
   {
     "objectID": "slides/03-convolutions.html#the-feed-forward-neural-network",
     "href": "slides/03-convolutions.html#the-feed-forward-neural-network",
     "title": "DAT255: Deep learning engineering",
     "section": "The feed-forward neural network",
-    "text": "The feed-forward neural network\nFor the demo we used the good ol’ fully-connected feed-forward network:\n\n\n\n\nEach node computes an output by\n\\[\n\\small\ny = f\\left( \\sum_{i=1}^{n} w_ix_i + b \\right)\n\\]\nwhere\n\n\\(w_i\\) is the weight of each incoming connection\n\\(b\\) is the bias term\n\\(f\\) is the activation function (more next week)"
+    "text": "The feed-forward neural network\nFor the demo we used the good ol’ fully-connected feed-forward network:\n\n\n\n\nEach node computes an output by\n\\[\n\\small\ny = f\\left(b + \\sum_{i=1}^{n} w_ix_i\\right)\n\\]\nwhere\n\n\\(w_i\\) is the weight of each incoming connection\n\\(b\\) is the bias term\n\\(f\\) is the activation function (more tomorrow)\n\n\n\nNow we want to motivate new types of layers."
   },
   {
     "objectID": "slides/03-convolutions.html#image-classification",
@@ -1726,14 +1775,14 @@
     "href": "slides/03-convolutions.html#enter-the-convolution-operation",
     "title": "DAT255: Deep learning engineering",
     "section": "Enter the convolution operation",
-    "text": "Enter the convolution operation\nThe foundation for modern computer vision (plus lots of other things!) is convolution:\nan operation that takes in two functions and returns a new function\n\n\n\n\n\n\\[\nf \\ast g \\equiv \\int_{-\\infty}^{\\infty} f(\\tau) g(t-\\tau) d\\tau\n\\]"
+    "text": "Enter the convolution operation\nThe foundation for modern computer vision (plus lots of other things!) is convolution:\nan operation that takes in two functions and returns a new function\n\n\n\n\n\n\\[\n\\small\nf \\ast g \\equiv \\int_{-\\infty}^{\\infty} f(\\tau) g(t+\\tau) d\\tau\n\\]"
   },
   {
     "objectID": "slides/03-convolutions.html#enter-the-convolution-operation-1",
     "href": "slides/03-convolutions.html#enter-the-convolution-operation-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Enter the convolution operation",
-    "text": "Enter the convolution operation\nThe foundation for modern computer vision (plus lots of other things!) is convolution:\nan operation that takes in two functions and returns a new function\n\n\n\n\n\n\\[\nf \\ast g \\equiv \\int_{-\\infty}^{\\infty} f(\\tau) g(t-\\tau) d\\tau\n\\]\n\n\n\nIn practice, convolution is a way to recognise and localise patterns in data"
+    "text": "Enter the convolution operation\nThe foundation for modern computer vision (plus lots of other things!) is convolution:\nan operation that takes in two functions and returns a new function\n\n\n\n\n\n\\[\n\\small\nf \\ast g \\equiv \\int_{-\\infty}^{\\infty} f(\\tau) g(t+\\tau) d\\tau\n\\]\n\n\n\nIn practice, convolution is a way to recognise and localise patterns in data\n\n\n\n\nTechnical note:\nIn signal processing we would call \\(\\small\\int_{-\\infty}^{\\infty} f(\\tau) g(t+\\tau) d\\tau\\) cross-correlation and the time-reversed version \\(\\small\\int_{-\\infty}^{\\infty} f(\\tau) g(t-\\tau) d\\tau\\) would be convolution. In ML these got mixed up and we just talk about convolution."
   },
   {
     "objectID": "slides/03-convolutions.html#discrete-convolution",
@@ -1761,7 +1810,7 @@
     "href": "slides/03-convolutions.html#the-convolution-kernel-or-filter",
     "title": "DAT255: Deep learning engineering",
     "section": "The convolution kernel (or filter)",
-    "text": "The convolution kernel (or filter)\nConvolution with predefined kernels is the core to digital image processing (but then we call it filters)\n\n\n\n\n\n\nIdentify vertical lines\n\n\n\n\n\n\n\nIdentify diagonal lines\n\n\n\n\n\n\n\nIdentifiy horizontal lines"
+    "text": "The convolution kernel (or filter)\nConvolution with predefined kernels is the core to digital image processing (but then we call it filters)\n\n\n\n\n\n\n\n\n\nIdentify vertical lines\n\n\n\n\n\n\n\nIdentify diagonal lines\n\n\n\n\n\n\n\nIdentifiy horizontal lines"
   },
   {
     "objectID": "slides/03-convolutions.html#more-filters",
@@ -1792,8 +1841,8 @@
     "text": "Decomposition into simple patters"
   },
   {
-    "objectID": "slides/03-convolutions.html#section-2",
-    "href": "slides/03-convolutions.html#section-2",
+    "objectID": "slides/03-convolutions.html#section-3",
+    "href": "slides/03-convolutions.html#section-3",
     "title": "DAT255: Deep learning engineering",
     "section": "",
     "text": "Talk is cheap.Show me the code"
@@ -1866,7 +1915,7 @@
     "href": "slides/03-convolutions.html#my-first-convolutional-network",
     "title": "DAT255: Deep learning engineering",
     "section": "My first convolutional network ✨",
-    "text": "My first convolutional network ✨\nLet’s piece together a convnet using Keras’ sequential model API:\n\n\n\nconvnet = keras.Sequential(\n    [\n        keras.Input(shape=(28, 28, 1)),\n        keras.layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n        keras.layers.MaxPooling2D(pool_size=(2, 2)),\n        keras.layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n        keras.layers.MaxPooling2D(pool_size=(2, 2)),\n        keras.layers.Flatten(),\n        keras.layers.Dense(10, activation=\"softmax\"),\n    ]\n)\n\n\n\n(More details about activations and training next week)"
+    "text": "My first convolutional network ✨\nLet’s piece together a convnet using Keras’ sequential model API:\n\n\n\nconvnet = keras.Sequential(\n    [\n        keras.Input(shape=(28, 28, 1)),\n        keras.layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n        keras.layers.MaxPooling2D(pool_size=(2, 2)),\n        keras.layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n        keras.layers.MaxPooling2D(pool_size=(2, 2)),\n        keras.layers.Flatten(),\n        keras.layers.Dense(10, activation=\"softmax\"),\n    ]\n)\n\n\n\n(More details about activations and training tomorrow)"
   },
   {
     "objectID": "slides/03-convolutions.html#my-first-convolutional-network-1",
@@ -1880,7 +1929,7 @@
     "href": "slides/03-convolutions.html#my-first-convolutional-network-2",
     "title": "DAT255: Deep learning engineering",
     "section": "My first convolutional network ✨",
-    "text": "My first convolutional network ✨\nConfigure the training objective and strategy:\nconvnet.compile(\n  loss=\"categorical_crossentropy\",\n  optimizer=\"adam\",\n  metrics=[\"accuracy\"]\n)\n(again, more details next week)\nStart training!\nconvnet.fit(\n  X_train,\n  y_train,\n  batch_size=128,\n  epochs=15,\n  validation_split=0.1\n)"
+    "text": "My first convolutional network ✨\n\n\n\nConfigure the training objective and strategy:\nconvnet.compile(\n  loss=\"categorical_crossentropy\",\n  optimizer=\"adam\",\n  metrics=[\"accuracy\"]\n)\n(again, more details later + in the textbook)\n\n\n\nStart training!\nconvnet.fit(\n  X_train,\n  y_train,\n  batch_size=128,\n  epochs=15,\n  validation_split=0.1\n)"
   },
   {
     "objectID": "slides/03-convolutions.html#decomposition-into-simple-patters-theory-vs-practice",
@@ -1894,14 +1943,14 @@
     "href": "slides/03-convolutions.html#decomposition-into-simple-patters-theory-vs-practice-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Decomposition into simple patters: Theory vs practice",
-    "text": "Decomposition into simple patters: Theory vs practice\nOur test image:\n\n\n\n\n\n\nFrom F. Chollet: Deep Learning with Python"
+    "text": "Decomposition into simple patters: Theory vs practice\n\n\n\nOur test image:\n\n\n\n\n\n\nFrom chapter 10, Interpreting what ConvNets learn"
   },
   {
     "objectID": "slides/03-convolutions.html#layer-activations",
     "href": "slides/03-convolutions.html#layer-activations",
     "title": "DAT255: Deep learning engineering",
     "section": "Layer activations",
-    "text": "Layer activations\nWe can visualise what each filter does by looking at its activation on the test image: The output after the convolution and applying the activation function.\nExamples:\n\n\n\n\n\n\nLayer 1, filter 4\n\n\n\n\n\n\n\nLayer 1, filter 7"
+    "text": "Layer activations\nWe can visualise what each filter does by looking at its activation on the test image: The output after the convolution and applying the activation function.\nExamples:\n\n\n\n\nLayer 1, filter 4"
   },
   {
     "objectID": "slides/03-convolutions.html#layer-activations-1",
@@ -1922,7 +1971,14 @@
     "href": "slides/03-convolutions.html#layer-activations-3",
     "title": "DAT255: Deep learning engineering",
     "section": "Layer activations",
-    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 4 (last):"
+    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 4:"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#layer-activations-4",
+    "href": "slides/03-convolutions.html#layer-activations-4",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Layer activations",
+    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 5 (last):"
   },
   {
     "objectID": "slides/05-optimisers.html#loss-functions",
@@ -3211,89 +3267,5 @@
     "title": "DAT255: Deep learning engineering",
     "section": "Generative adversarial networks",
     "text": "Generative adversarial networks\nTraining procedure is a little tricky, see the book for details\nWe can still do vector arithmetic in the latent space:\n\n\n\n\n\n\narXiv:1511.06434\n\n\nNote: GANs are well studied in research but seldom used in practice.\nThey are very sensitive to configuration of the training procedure, and are generally just difficult"
-  },
-  {
-    "objectID": "slides/02-tools.html#tf-playground",
-    "href": "slides/02-tools.html#tf-playground",
-    "title": "DAT255: Deep learning engineering",
-    "section": "TF playground",
-    "text": "TF playground\n(what is ML all about)"
-  },
-  {
-    "objectID": "slides/02-tools.html#machine-learning",
-    "href": "slides/02-tools.html#machine-learning",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Machine learning",
-    "text": "Machine learning\n\n\n\n\n\n\nChollet Fig 1.2"
-  },
-  {
-    "objectID": "slides/02-tools.html#classification",
-    "href": "slides/02-tools.html#classification",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Classification",
-    "text": "Classification\n\n\n\n\n\n\nChollet Fig 1.4\n\n\nClassification threshold:\nx &lt; 0.5  \nx &gt; 0.5"
-  },
-  {
-    "objectID": "slides/02-tools.html#what-do-we-need-from-our-tools",
-    "href": "slides/02-tools.html#what-do-we-need-from-our-tools",
-    "title": "DAT255: Deep learning engineering",
-    "section": "What do we need from our tools",
-    "text": "What do we need from our tools\n\n\n\nA good deep learning framework should provide\n\nA data structure for representing \\(\\small{}N\\)-dimensional arrays (\\(\\small N \\in \\{0, 1, 2, \\dots\\}\\)), aka tensors\nA way to compute derivatives of arbitrary functions\nA way to run computations on hardware accelerators, such as GPUs\n\n\n\n\nThere are many of these; luckily most have converged to a “NumPy-like” API.\nRead about similarities and differences in Ch. 3 (optional)"
-  },
-  {
-    "objectID": "slides/02-tools.html#dense-nn",
-    "href": "slides/02-tools.html#dense-nn",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Dense NN",
-    "text": "Dense NN"
-  },
-  {
-    "objectID": "slides/02-tools.html#solving-linear-regression-with-autodiff",
-    "href": "slides/02-tools.html#solving-linear-regression-with-autodiff",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Solving linear regression with autodiff",
-    "text": "Solving linear regression with autodiff\n\n\nLet’s say we have some data points \\(\\small\\mathbf(X)\\) and want to fit a straight line to them. This linear model would look like\n\\[\n\\small\n\\begin{align}\n\\hat{\\color{DarkBlue}{y}} &= \\color{teal}{\\theta}_0\n+ \\color{teal}{\\theta}_1 \\color{DarkOrange}{x}_1\n+ \\cdots\n+ \\color{teal}{\\theta}_n \\color{DarkOrange}{x}_n \\\\\n&= \\boldsymbol{\\color{teal}{\\theta}}^{\\intercal} \\cdot \\color{DarkOrange}{\\mathbf{x}}\n\\end{align}\n\\]\nfor \\(n\\) features, with \\(\\small\\boldsymbol{\\color{teal}{\\theta}}\\) being the parameters of the model.\n\n\n\n\n\nOr in code: y_pred = theta.T.dot(X)      (or even y_pred = theta.dot(X))\n\n\n\nNow need a loss function (error function) to tell how much we missed by, for instance mean squared error (MSE):\n\\[\n\\small\n\\begin{align}\n\\color{MediumVioletRed}{L}_{\\mathrm{MSE}}\n&= \\frac{1}{N}\\sum_{i=1}^{N} \\left(\\boldsymbol{\\color{teal}{\\theta}}^{\\intercal} \\color{DarkOrange}{\\mathbf{x}}^{(i)} - \\color{DarkBlue}{y}^{(i)}\\right)^2\n\\end{align}\n\\]"
-  },
-  {
-    "objectID": "slides/02-tools.html#continue",
-    "href": "slides/02-tools.html#continue",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Continue",
-    "text": "Continue\nWe need a loss function (error function) to tell how much we missed by, for instance mean squared error (MSE):\n\\[\n\\small\n\\begin{align}\n\\color{MediumVioletRed}{L}_{\\mathrm{MSE}}\n&= \\frac{1}{N}\\sum_{i=1}^{N} \\left(\\hat{\\color{DarkBlue}{y}}^{(i)} - \\color{DarkBlue}{y}^{(i)}\\right)^2 \\\\[1em]\n&= \\frac{1}{N}\\sum_{i=1}^{N} \\left(\\boldsymbol{\\color{teal}{\\theta}}^{\\intercal} \\color{DarkOrange}{\\mathbf{x}}^{(i)} - \\color{DarkBlue}{y}^{(i)}\\right)^2\n\\end{align}\n\\]\ndef mse(y_pred, y_true):\n  return tf.reduce_mean(\n    tf.math.square(y_pred - y_true)\n  )\nNotice this is a differentiable function."
-  },
-  {
-    "objectID": "slides/02-tools.html#peek-at-gradient-descent",
-    "href": "slides/02-tools.html#peek-at-gradient-descent",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Peek at gradient descent",
-    "text": "Peek at gradient descent\nSo we have 1) a differentiable function, and 2) a tool that can differentiate.\nRecalling that minimum loss (error) is where the derivative of the function is zero, let’s find it numerically:\ntheta = tf.Variable([0.21, 1.43, ...]) # random values\n\nfor epoch in range(10):\n\n  with tf.GradientTape() as tape:\n    y_pred = X.dot(theta)\n    loss = mse(y_pred, y_true)\n\n  better_theta = theta - tape.gradient(loss, theta)\n\n  theta.assign(better_theta)"
-  },
-  {
-    "objectID": "slides/02-tools.html#solving-linear-regression-with-autodiff-1",
-    "href": "slides/02-tools.html#solving-linear-regression-with-autodiff-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Solving linear regression with autodiff",
-    "text": "Solving linear regression with autodiff\nLet’s write the loss function in TensorFlow:\n\n\n\n\n\n\\[\n\\small\n\\begin{align}\n\\color{MediumVioletRed}{L}_{\\mathrm{MSE}}\n&= \\frac{1}{N}\\sum_{i=1}^{N} \\left(\\boldsymbol{\\color{teal}{\\theta}}^{\\intercal} \\color{DarkOrange}{\\mathbf{x}}^{(i)} - \\color{DarkBlue}{y}^{(i)}\\right)^2\n\\end{align}\n\\]\n\n\n\n\n\n\n\ndef mse(y_pred, y_true):\n  return tf.reduce_mean(\n    tf.math.square(y_pred - y_true)\n  )\n\n\n\n\n\n\n\n\n\nNotice this is a differentiable function.\n\n\n\n\n\nSo we have\n\nA differentiable function (mean squared error)\nA tool that can compute derivatives (TensorFlow)\n\nwhich means we are all set to do gradient descent."
-  },
-  {
-    "objectID": "slides/02-tools.html#gradient-descent",
-    "href": "slides/02-tools.html#gradient-descent",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Gradient descent",
-    "text": "Gradient descent\nRecalling that minimum loss (error) is where the derivative of the function is zero, let’s find the optimal parameters theta numerically:\n\n\n\ntheta = tf.Variable([0.21, 1.43]) # random values\n\nfor epoch in range(10):\n\n  with tf.GradientTape() as tape:\n    y_pred = X.dot(theta)\n    loss = mse(y_pred, y_true)\n\n  better_theta = theta - learning_rate * tape.gradient(loss, theta)\n\n  theta.assign(better_theta)\n\n\n\n\nThis loop is at the core of all neural network training\n(but with Keras we don’t write it out explicitly)"
-  },
-  {
-    "objectID": "slides/02-tools.html#artificial-neural-networks",
-    "href": "slides/02-tools.html#artificial-neural-networks",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Artificial neural networks",
-    "text": "Artificial neural networks\n\n\n\n\n\n\n\n\n\nThe base element of a neural network is the neuron, which looks a lot like multiple linear regression: \\[\n\\small\na = b + \\sum_{i=1}^{M} w_ix_i\n\\]\nBut we can solve nonlinear problems if we add a nonlinear transformation \\(\\small{}f\\),\n\\[\n\\small\ny = f(a)\n\\]\nwhich we call an activation function.\n\n\nAgain we usually don’t bother writing this computation out explicitly, but rather interact with Keras layers.\nThis one is called keras.layers.Dense, but we’ll look at several types next week"
-  },
-  {
-    "objectID": "slides/02-tools.html#section",
-    "href": "slides/02-tools.html#section",
-    "title": "DAT255: Deep learning engineering",
-    "section": "",
-    "text": "TensorFlow playground"
   }
 ]
