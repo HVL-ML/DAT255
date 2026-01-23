@@ -22,7 +22,7 @@ They will be added as the course progresses.
   </thead>
   <tbody>
     <tr>
-      <td rowspan=3>Intro to Deep Learning</td>
+      <td rowspan=4>Intro to Deep Learning</td>
       <td>
         <h4>Tutorial: <a href="01_digit_classification.ipynb">01 - Digit classification</a></h4>
         Deep learning 101: Classifying handwritten numbers. This notebook serves as a quick intro to the <a href="keras.io">Keras</a> deep learning framework.
@@ -78,6 +78,7 @@ They will be added as the course progresses.
       </td>
     </tr>
     <tr>
+      <td rowspan=3>Convolutional networks</td>
       <td>
       <h4>Exercise: <a href="05_convnet_visualisation.ipynb">04: Activations and initialisers</a></h4>
       Plot activations of the different filters in a convnet, to visualise how patterns are encoded from the first to the last layer.
