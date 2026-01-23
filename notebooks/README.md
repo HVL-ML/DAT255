@@ -63,6 +63,61 @@ They will be added as the course progresses.
           <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
         </a>
       </td>
+    <tr>
+      <td>
+      <h4>Tutorial: <a href="04_activations_and_initialisers.ipynb">04: Activations and initialisers</a></h4>
+      Plot different activation functions and try them out along with different parameter initialisation schemes.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/04_activations_and_initialisers.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/04_activations_and_initialisers.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Exercise: <a href="05_convnet_visualisation.ipynb">04: Activations and initialisers</a></h4>
+      Plot activations of the different filters in a convnet, to visualise how patterns are encoded from the first to the last layer.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/05_convnet_visualisation.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/05_convnet_visualisation.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Tutorial: <a href="06_augmentation.ipynb">06: Augmentation</a></h4>
+      Test different augmentation methods for computer vision.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/06_augmentation.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/06_augmentation.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Exercise: <a href="07_resnets.ipynb">07: ResNets and modern convolutional networks</a></h4>
+      Implement modern, non-sequential network architectures. 
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/07_resnets.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/07_resnets.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
     </tr>
   </tbody>
 </table>
