@@ -80,7 +80,7 @@ They will be added as the course progresses.
     <tr>
       <td rowspan=3>Convolutional networks</td>
       <td>
-      <h4>Exercise: <a href="05_convnet_visualisation.ipynb">04: Activations and initialisers</a></h4>
+      <h4>Exercise: <a href="05_convnet_visualisation.ipynb">05: Visualising ConvNets</a></h4>
       Plot activations of the different filters in a convnet, to visualise how patterns are encoded from the first to the last layer.
       </td>
       <td>
