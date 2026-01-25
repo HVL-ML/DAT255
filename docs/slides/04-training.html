@@ -206,472 +206,39 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="decomposition-into-simple-patters" class="slide level2">
-<h2>Decomposition into simple patters</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture3/chollet-cat.png" class="quarto-figure quarto-figure-center" style="padding-top: 30px;;width:60.0%"></p>
-</figure>
+<section id="the-parameters-of-a-neural-network" class="slide level2">
+<h2>The parameters of a neural network</h2>
+<p>Recall the simple formulation of a machine learning model:</p>
+<div style="margin-top: 50px">
+<p><span class="math display">\[
+\large \hat{\color{DarkBlue}{y}} = \color{Purple}{f}(\color{DarkOrange}{\mathbf{x}}, \boldsymbol{\color{teal}{\theta}})
+\]</span></p>
 </div>
-</section>
-<section id="keras-layers" class="slide level2">
-<h2>Keras layers</h2>
-<p>For our proposed solution we need three layer types:</p>
-<div style="padding-top:30px;">
-
-</div>
+<p>where</p>
 <ul>
-<li><p><span class="color-teal-dark"><strong>Convolution layers</strong></span> to extract image features</p>
-<p><code>keras.layers.Conv2D</code></p></li>
-</ul>
-<div style="padding-top:30px;">
-
-</div>
-<ul>
-<li><p><span class="color-teal-dark"><strong>Pooling layers</strong></span> to downsample and aggregate the features</p>
-<p><code>keras.layers.MaxPooling2D</code></p></li>
-</ul>
-<div style="padding-top:30px;">
-
-</div>
-<ul>
-<li><p><span class="color-teal-dark"><strong>Fully-connected (<em>dense</em>) layers</strong></span> to compute the final prediction</p>
-<p><code>keras.layers.Dense</code></p></li>
+<li><p><span class="math inline">\(\hat{\color{DarkBlue}{y}}\)</span> is the <em>prediction</em></p></li>
+<li><p><span class="math inline">\(\color{Purple}{f}\)</span> is a mathematical function, in our case a neural network</p></li>
+<li><p><span class="math inline">\(\color{DarkOrange}{\mathbf{x}}\)</span>&nbsp;is a data point</p></li>
+<li><p><span class="math inline">\(\boldsymbol{\color{teal}{\theta}}\)</span> are <em>parameters</em> of the model</p></li>
 </ul>
 </section>
-<section id="the-conv2d-layer" class="slide level2">
-<h2>The <code>Conv2D</code> layer</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>keras.layers.Conv2D(</span>
-<span id="cb1-2"><a></a>    filters,</span>
-<span id="cb1-3"><a></a>    kernel_size,</span>
-<span id="cb1-4"><a></a>    strides<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb1-5"><a></a>    padding<span class="op">=</span><span class="st">"valid"</span>,</span>
-<span id="cb1-6"><a></a>    data_format<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-7"><a></a>    dilation_rate<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb1-8"><a></a>    groups<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb1-9"><a></a>    activation<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-10"><a></a>    use_bias<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb1-11"><a></a>    kernel_initializer<span class="op">=</span><span class="st">"glorot_uniform"</span>,</span>
-<span id="cb1-12"><a></a>    bias_initializer<span class="op">=</span><span class="st">"zeros"</span>,</span>
-<span id="cb1-13"><a></a>    kernel_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-14"><a></a>    bias_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-15"><a></a>    activity_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-16"><a></a>    kernel_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-17"><a></a>    bias_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-18"><a></a>    <span class="op">**</span>kwargs</span>
-<span id="cb1-19"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-
-</div></div>
-</section>
-<section id="the-conv2d-layer-1" class="slide level2">
-<h2>The <code>Conv2D</code> layer</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-code-line-numbers="2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>keras.layers.Conv2D(</span>
-<span id="cb2-2"><a></a>    filters,</span>
-<span id="cb2-3"><a></a>    kernel_size,</span>
-<span id="cb2-4"><a></a>    strides<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb2-5"><a></a>    padding<span class="op">=</span><span class="st">"valid"</span>,</span>
-<span id="cb2-6"><a></a>    data_format<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb2-7"><a></a>    dilation_rate<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb2-8"><a></a>    groups<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb2-9"><a></a>    activation<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb2-10"><a></a>    use_bias<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb2-11"><a></a>    kernel_initializer<span class="op">=</span><span class="st">"glorot_uniform"</span>,</span>
-<span id="cb2-12"><a></a>    bias_initializer<span class="op">=</span><span class="st">"zeros"</span>,</span>
-<span id="cb2-13"><a></a>    kernel_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb2-14"><a></a>    bias_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb2-15"><a></a>    activity_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb2-16"><a></a>    kernel_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb2-17"><a></a>    bias_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb2-18"><a></a>    <span class="op">**</span>kwargs</span>
-<span id="cb2-19"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<p><strong>Number of filters</strong> to use<br> <em>(typical: 32 to 512)</em></p>
-</div></div>
-</section>
-<section id="the-conv2d-layer-2" class="slide level2">
-<h2>The <code>Conv2D</code> layer</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-code-line-numbers="3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>keras.layers.Conv2D(</span>
-<span id="cb3-2"><a></a>    filters,</span>
-<span id="cb3-3"><a></a>    kernel_size,</span>
-<span id="cb3-4"><a></a>    strides<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb3-5"><a></a>    padding<span class="op">=</span><span class="st">"valid"</span>,</span>
-<span id="cb3-6"><a></a>    data_format<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb3-7"><a></a>    dilation_rate<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb3-8"><a></a>    groups<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb3-9"><a></a>    activation<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb3-10"><a></a>    use_bias<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb3-11"><a></a>    kernel_initializer<span class="op">=</span><span class="st">"glorot_uniform"</span>,</span>
-<span id="cb3-12"><a></a>    bias_initializer<span class="op">=</span><span class="st">"zeros"</span>,</span>
-<span id="cb3-13"><a></a>    kernel_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb3-14"><a></a>    bias_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb3-15"><a></a>    activity_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb3-16"><a></a>    kernel_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb3-17"><a></a>    bias_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb3-18"><a></a>    <span class="op">**</span>kwargs</span>
-<span id="cb3-19"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<p><strong>Size of the filter</strong>/kernel<br> <em>(typical: 3x3, sometimes bigger in the first layer)</em></p>
-</div></div>
-</section>
-<section id="the-conv2d-layer-3" class="slide level2">
-<h2>The <code>Conv2D</code> layer</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>keras.layers.Conv2D(</span>
-<span id="cb4-2"><a></a>    filters,</span>
-<span id="cb4-3"><a></a>    kernel_size,</span>
-<span id="cb4-4"><a></a>    strides<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb4-5"><a></a>    padding<span class="op">=</span><span class="st">"valid"</span>,</span>
-<span id="cb4-6"><a></a>    data_format<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb4-7"><a></a>    dilation_rate<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb4-8"><a></a>    groups<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb4-9"><a></a>    activation<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb4-10"><a></a>    use_bias<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb4-11"><a></a>    kernel_initializer<span class="op">=</span><span class="st">"glorot_uniform"</span>,</span>
-<span id="cb4-12"><a></a>    bias_initializer<span class="op">=</span><span class="st">"zeros"</span>,</span>
-<span id="cb4-13"><a></a>    kernel_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb4-14"><a></a>    bias_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb4-15"><a></a>    activity_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb4-16"><a></a>    kernel_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb4-17"><a></a>    bias_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb4-18"><a></a>    <span class="op">**</span>kwargs</span>
-<span id="cb4-19"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<p><strong>Stepsize</strong> for the convolution operation<br> <em>(typical: 1 or 2)</em></p>
-<div class="quarto-layout-panel" data-layout-nrow="2" style="text-align: center;">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<section id="the-parameters-of-a-neural-network-1" class="slide level2">
+<h2>The parameters of a neural network</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="https://maucher.home.hdm-stuttgart.de/Pics/gif/no_padding_no_strides.gif" width="170"></p>
-<figcaption><code>stride=(1,1)</code></figcaption>
+<p><img data-src="figures/lecture4/dense-nn.png" class="quarto-figure quarto-figure-center" style="padding-top: 40px;" width="450"></p>
 </figure>
 </div>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="https://maucher.home.hdm-stuttgart.de/Pics/gif/no_padding_strides.gif" width="170"></p>
-<figcaption><code>stride=(2,2)</code></figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-<section id="the-conv2d-layer-4" class="slide level2">
-<h2>The <code>Conv2D</code> layer</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-code-line-numbers="5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>keras.layers.Conv2D(</span>
-<span id="cb5-2"><a></a>    filters,</span>
-<span id="cb5-3"><a></a>    kernel_size,</span>
-<span id="cb5-4"><a></a>    strides<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb5-5"><a></a>    padding<span class="op">=</span><span class="st">"valid"</span>,</span>
-<span id="cb5-6"><a></a>    data_format<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb5-7"><a></a>    dilation_rate<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb5-8"><a></a>    groups<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb5-9"><a></a>    activation<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb5-10"><a></a>    use_bias<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb5-11"><a></a>    kernel_initializer<span class="op">=</span><span class="st">"glorot_uniform"</span>,</span>
-<span id="cb5-12"><a></a>    bias_initializer<span class="op">=</span><span class="st">"zeros"</span>,</span>
-<span id="cb5-13"><a></a>    kernel_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb5-14"><a></a>    bias_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb5-15"><a></a>    activity_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb5-16"><a></a>    kernel_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb5-17"><a></a>    bias_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb5-18"><a></a>    <span class="op">**</span>kwargs</span>
-<span id="cb5-19"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<p><strong>Padding</strong> around the image edges<br> <em>(typical: 1 or 2)</em></p>
-<div class="quarto-layout-panel" data-layout-nrow="2" style="text-align: center;">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="https://maucher.home.hdm-stuttgart.de/Pics/gif/no_padding_no_strides.gif" width="170"></p>
-<figcaption><code>padding="valid"</code></figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="https://maucher.home.hdm-stuttgart.de/Pics/gif/same_padding_no_strides.gif" width="170"></p>
-<figcaption><code>padding="same"</code></figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-<section id="pooling-layers" class="slide level2">
-<h2>Pooling layers</h2>
-<p>Two reasons for downsampling the image features:</p>
+<p>The parameters of the simple fully-connected (<em>dense</em>) network are</p>
 <ul>
-<li>Learn a <strong>spatial hierarchy</strong> by widening the <em>receptive field</em></li>
-<li>Reduce the total parameter count</li>
+<li>one <strong>weight</strong> per connection (line)</li>
+<li>one <strong>bias</strong> term per node (circle)</li>
 </ul>
-<p>Most common approach: Choose the maximum value from a window of pixels</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture3/maxpooling.png" class="quarto-figure quarto-figure-center" width="500"></p>
-</figure>
-</div>
+<p>(for other types of layers, there are other types of parameters)</p>
 </section>
-<section id="the-maxpooling2d-layer" class="slide level2">
-<h2>The <code>MaxPooling2D</code> layer</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-code-line-numbers="|2|3|4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>keras.layers.MaxPooling2D(</span>
-<span id="cb6-2"><a></a>    pool_size<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">2</span>),</span>
-<span id="cb6-3"><a></a>    strides<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb6-4"><a></a>    padding<span class="op">=</span><span class="st">"valid"</span>,</span>
-<span id="cb6-5"><a></a>    data_format<span class="op">=</span><span class="va">None</span>, </span>
-<span id="cb6-6"><a></a>    name<span class="op">=</span><span class="va">None</span>, </span>
-<span id="cb6-7"><a></a>    <span class="op">**</span>kwargs</span>
-<span id="cb6-8"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<p><code>pool_size</code>: Size of pooling window<br> <em>(typical: 2x2 or 3x3)</em></p>
-<p><code>strides</code>: Step size<br> <em>(typical: same as <code>pool_size</code>)</em></p>
-<p><code>padding</code>: Padding around edges, <code>valid</code> or <code>same</code></p>
-</div></div>
-</section>
-<section id="the-dense-layer" class="slide level2">
-<h2>The <code>Dense</code> layer</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-code-line-numbers="|2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>keras.layers.Dense(</span>
-<span id="cb7-2"><a></a>    units,</span>
-<span id="cb7-3"><a></a>    activation<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb7-4"><a></a>    use_bias<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb7-5"><a></a>    kernel_initializer<span class="op">=</span><span class="st">"glorot_uniform"</span>,</span>
-<span id="cb7-6"><a></a>    bias_initializer<span class="op">=</span><span class="st">"zeros"</span>,</span>
-<span id="cb7-7"><a></a>    kernel_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb7-8"><a></a>    bias_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb7-9"><a></a>    activity_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb7-10"><a></a>    kernel_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb7-11"><a></a>    bias_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb7-12"><a></a>    lora_rank<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb7-13"><a></a>    <span class="op">**</span>kwargs</span>
-<span id="cb7-14"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<p><code>units</code>: number of nodes in this layer</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture3/dense-layer.png" class="quarto-figure quarto-figure-center" width="80"></p>
-</figure>
-</div>
-</div></div>
-<p>In the <em>last</em> dense layer, <code>units</code> must be equal to the number of classes (or otherwise number of desired outputs).</p>
-</section>
-<section id="my-first-convolutional-network" class="slide level2">
-<h2>My first convolutional network ✨</h2>
-<p>Let’s piece together a <span class="color-indigo"><strong>convnet</strong></span> using Keras’ <a href="https://keras.io/api/models/sequential/">sequential model API</a>:</p>
-<div style="padding-top:30px;">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-code-line-numbers="|1|3|4,5|6,7|8|9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>convnet <span class="op">=</span> keras.Sequential(</span>
-<span id="cb8-2"><a></a>    [</span>
-<span id="cb8-3"><a></a>        keras.Input(shape<span class="op">=</span>(<span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">1</span>)),</span>
-<span id="cb8-4"><a></a>        keras.layers.Conv2D(<span class="dv">32</span>, kernel_size<span class="op">=</span>(<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">"relu"</span>),</span>
-<span id="cb8-5"><a></a>        keras.layers.MaxPooling2D(pool_size<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">2</span>)),</span>
-<span id="cb8-6"><a></a>        keras.layers.Conv2D(<span class="dv">32</span>, kernel_size<span class="op">=</span>(<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">"relu"</span>),</span>
-<span id="cb8-7"><a></a>        keras.layers.MaxPooling2D(pool_size<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">2</span>)),</span>
-<span id="cb8-8"><a></a>        keras.layers.Flatten(),</span>
-<span id="cb8-9"><a></a>        keras.layers.Dense(<span class="dv">10</span>, activation<span class="op">=</span><span class="st">"softmax"</span>),</span>
-<span id="cb8-10"><a></a>    ]</span>
-<span id="cb8-11"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div style="padding-top:30px;">
-
-</div>
-<p>(More details about <code>activation</code>s in a bit)</p>
-</section>
-<section id="my-first-convolutional-network-1" class="slide level2">
-<h2>My first convolutional network ✨</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a aria-hidden="true" tabindex="-1"></a>convnet.summary()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<pre><code>Model: "sequential_1"
-
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
-┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
-│ conv2d (Conv2D)                      │ (None, 26, 26, 32)          │             320 │
-├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
-│ max_pooling2d (MaxPooling2D)         │ (None, 13, 13, 32)          │               0 │
-├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
-│ conv2d_1 (Conv2D)                    │ (None, 11, 11, 32)          │           9,248 │
-├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
-│ max_pooling2d_1 (MaxPooling2D)       │ (None, 5, 5, 32)            │               0 │
-├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
-│ flatten_1 (Flatten)                  │ (None, 800)                 │               0 │
-├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
-│ dropout (Dropout)                    │ (None, 800)                 │               0 │
-├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
-│ dense_3 (Dense)                      │ (None, 10)                  │           8,010 │
-└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
-
- Total params: 17,578 (68.66 KB)
-
- Trainable params: 17,578 (68.66 KB)
-
- Non-trainable params: 0 (0.00 B)</code></pre>
-</section>
-<section id="my-first-convolutional-network-2" class="slide level2">
-<h2>My first convolutional network ✨</h2>
-<div style="padding-top: 20px;">
-
-</div>
-<p>Configure the training objective and strategy:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a aria-hidden="true" tabindex="-1"></a>convnet.<span class="bu">compile</span>(</span>
-<span id="cb11-2"><a aria-hidden="true" tabindex="-1"></a>  loss<span class="op">=</span><span class="st">"categorical_crossentropy"</span>,</span>
-<span id="cb11-3"><a aria-hidden="true" tabindex="-1"></a>  optimizer<span class="op">=</span><span class="st">"adam"</span>,</span>
-<span id="cb11-4"><a aria-hidden="true" tabindex="-1"></a>  metrics<span class="op">=</span>[<span class="st">"accuracy"</span>]</span>
-<span id="cb11-5"><a aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>(again, more details later + in the textbook)</p>
-<div style="padding-top: 20px;">
-
-</div>
-<p>Start training!</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a>convnet.fit(</span>
-<span id="cb12-2"><a aria-hidden="true" tabindex="-1"></a>  X_train,</span>
-<span id="cb12-3"><a aria-hidden="true" tabindex="-1"></a>  y_train,</span>
-<span id="cb12-4"><a aria-hidden="true" tabindex="-1"></a>  batch_size<span class="op">=</span><span class="dv">128</span>,</span>
-<span id="cb12-5"><a aria-hidden="true" tabindex="-1"></a>  epochs<span class="op">=</span><span class="dv">15</span>,</span>
-<span id="cb12-6"><a aria-hidden="true" tabindex="-1"></a>  validation_split<span class="op">=</span><span class="fl">0.1</span></span>
-<span id="cb12-7"><a aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="decomposition-into-simple-patters-theory-vs-practice" class="slide level2">
-<h2>Decomposition into simple patters: Theory vs practice</h2>
-<p>Remember the cat:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture3/chollet-cat.png" class="quarto-figure quarto-figure-center" width="550"></p>
-</figure>
-</div>
-<p>(We’ll try to classify pictures of cats in exercise 3, but let’s test out a cat detector convnet already now)</p>
-</section>
-<section id="decomposition-into-simple-patters-theory-vs-practice-1" class="slide level2">
-<h2>Decomposition into simple patters: Theory vs practice</h2>
-<div style="padding-top:60px;">
-
-</div>
-<p>Our test image:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture3/cat-picture.png" class="quarto-figure quarto-figure-center" width="310"></p>
-</figure>
-</div>
-<div style="font-size: 0.7em;">
-<p>From chapter 10, <em>Interpreting what ConvNets learn</em></p>
-</div>
-</section>
-<section id="layer-activations" class="slide level2">
-<h2>Layer <em>activations</em></h2>
-<p>We can visualise what each filter does by looking at its <em>activation</em> on the test image: The output after the convolution and applying the activation function.</p>
-<p>Examples:</p>
-<!-- :::{layout-ncol=2} -->
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture3/cat-layer1-channel6.png" width="400"></p>
-<figcaption>Layer 1, filter 4</figcaption>
-</figure>
-</div>
-<!-- ![Layer 1, filter 7](figures/lecture3/cat-layer1-channel7.png){width="400px"} -->
-<!-- ::: -->
-</section>
-<section id="layer-activations-1" class="slide level2">
-<h2>Layer <em>activations</em></h2>
-<p>Repeat for all filters in all layers:</p>
-<p><strong>Layer 1 and 2:</strong></p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture3/all_activations_layer_1_2.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
-</figure>
-</div>
-</section>
-<section id="layer-activations-2" class="slide level2">
-<h2>Layer <em>activations</em></h2>
-<p>Repeat for all filters in all layers:</p>
-<p><strong>Layer 3:</strong></p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture3/all_activations_layer_3.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
-</figure>
-</div>
-</section>
-<section id="layer-activations-3" class="slide level2">
-<h2>Layer <em>activations</em></h2>
-<p>Repeat for all filters in all layers:</p>
-<p><strong>Layer 4:</strong></p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture3/all_activations_layer_4.png" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
-</figure>
-</div>
-</section>
-<section id="layer-activations-4" class="slide level2">
-<h2>Layer <em>activations</em></h2>
-<p>Repeat for all filters in all layers:</p>
-<p><strong>Layer 5 (last):</strong></p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture3/all_activations_layer_5.png" class="quarto-figure quarto-figure-center" style="width:60.0%"></p>
-</figure>
-</div>
-</section>
-<section id="section" class="slide level2" data-menu-title="CNN explainer" data-background-iframe="https://poloclub.github.io/cnn-explainer/" data-background-interactive="true">
-<h2></h2>
-<!--
-## The parameters of a neural network
-
-Recall the simple formulation of a machine learning model:
-
-:::{style="margin-top: 50px"}
-$$
-\large \hat{\color{DarkBlue}{y}} = \color{Purple}{f}(\color{DarkOrange}{\mathbf{x}}, \boldsymbol{\color{teal}{\theta}}) 
-$$
-:::
-
-where
-
- - $\hat{\color{DarkBlue}{y}}$ is the _prediction_
-
- - $\color{Purple}{f}$ is a mathematical function, in our case a neural network
-    
- - $\color{DarkOrange}{\mathbf{x}}$ is a data point
-    
- - $\boldsymbol{\color{teal}{\theta}}$ are _parameters_ of the model
-
-
-## The parameters of a neural network
-
-![](figures/lecture4/dense-nn.png){fig-align="center" width="450px" style="padding-top: 40px;"}
-
-The parameters of the simple fully-connected (_dense_) network are
-
-- one **weight** per connection (line)
-- one **bias** term per node (circle)
-
-(for other types of layers, there are other types of parameters)
-
-
-## The parameters of a neural network
-
-![](figures/lecture4/layer-weights.png)
--->
+<section id="the-parameters-of-a-neural-network-2" class="slide level2">
+<h2>The parameters of a neural network</h2>
+<p><img data-src="figures/lecture4/layer-weights.png"></p>
 </section>
 <section id="the-activation-function" class="slide level2">
 <h2>The activation function</h2>
@@ -1076,20 +643,20 @@ The parameters of the simple fully-connected (_dense_) network are
 </table>
 </div>
 </div><div class="column" style="width:40%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-code-line-numbers="1,3,5,6,14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>keras.layers.Dense(</span>
-<span id="cb13-2"><a></a>    units,</span>
-<span id="cb13-3"><a></a>    activation<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb13-4"><a></a>    use_bias<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb13-5"><a></a>    kernel_initializer<span class="op">=</span><span class="st">"glorot_uniform"</span>,</span>
-<span id="cb13-6"><a></a>    bias_initializer<span class="op">=</span><span class="st">"zeros"</span>,</span>
-<span id="cb13-7"><a></a>    kernel_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb13-8"><a></a>    bias_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb13-9"><a></a>    activity_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb13-10"><a></a>    kernel_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb13-11"><a></a>    bias_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb13-12"><a></a>    lora_rank<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb13-13"><a></a>    <span class="op">**</span>kwargs</span>
-<span id="cb13-14"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="1,3,5,6,14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>keras.layers.Dense(</span>
+<span id="cb1-2"><a></a>    units,</span>
+<span id="cb1-3"><a></a>    activation<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-4"><a></a>    use_bias<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-5"><a></a>    kernel_initializer<span class="op">=</span><span class="st">"glorot_uniform"</span>,</span>
+<span id="cb1-6"><a></a>    bias_initializer<span class="op">=</span><span class="st">"zeros"</span>,</span>
+<span id="cb1-7"><a></a>    kernel_regularizer<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-8"><a></a>    bias_regularizer<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-9"><a></a>    activity_regularizer<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-10"><a></a>    kernel_constraint<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-11"><a></a>    bias_constraint<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-12"><a></a>    lora_rank<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-13"><a></a>    <span class="op">**</span>kwargs</span>
+<span id="cb1-14"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 </section>
 <section id="some-tricks-2" class="slide level2">
@@ -1136,23 +703,23 @@ The parameters of the simple fully-connected (_dense_) network are
 <div style="padding-top: 50px;">
 
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>keras.layers.BatchNormalization(</span>
-<span id="cb14-2"><a></a>    axis<span class="op">=-</span><span class="dv">1</span>,</span>
-<span id="cb14-3"><a></a>    momentum<span class="op">=</span><span class="fl">0.99</span>,</span>
-<span id="cb14-4"><a></a>    epsilon<span class="op">=</span><span class="fl">0.001</span>,</span>
-<span id="cb14-5"><a></a>    center<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb14-6"><a></a>    scale<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb14-7"><a></a>    beta_initializer<span class="op">=</span><span class="st">"zeros"</span>,</span>
-<span id="cb14-8"><a></a>    gamma_initializer<span class="op">=</span><span class="st">"ones"</span>,</span>
-<span id="cb14-9"><a></a>    moving_mean_initializer<span class="op">=</span><span class="st">"zeros"</span>,</span>
-<span id="cb14-10"><a></a>    moving_variance_initializer<span class="op">=</span><span class="st">"ones"</span>,</span>
-<span id="cb14-11"><a></a>    beta_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb14-12"><a></a>    gamma_regularizer<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb14-13"><a></a>    beta_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb14-14"><a></a>    gamma_constraint<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb14-15"><a></a>    synchronized<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb14-16"><a></a>    <span class="op">**</span>kwargs</span>
-<span id="cb14-17"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>keras.layers.BatchNormalization(</span>
+<span id="cb2-2"><a></a>    axis<span class="op">=-</span><span class="dv">1</span>,</span>
+<span id="cb2-3"><a></a>    momentum<span class="op">=</span><span class="fl">0.99</span>,</span>
+<span id="cb2-4"><a></a>    epsilon<span class="op">=</span><span class="fl">0.001</span>,</span>
+<span id="cb2-5"><a></a>    center<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb2-6"><a></a>    scale<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb2-7"><a></a>    beta_initializer<span class="op">=</span><span class="st">"zeros"</span>,</span>
+<span id="cb2-8"><a></a>    gamma_initializer<span class="op">=</span><span class="st">"ones"</span>,</span>
+<span id="cb2-9"><a></a>    moving_mean_initializer<span class="op">=</span><span class="st">"zeros"</span>,</span>
+<span id="cb2-10"><a></a>    moving_variance_initializer<span class="op">=</span><span class="st">"ones"</span>,</span>
+<span id="cb2-11"><a></a>    beta_regularizer<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb2-12"><a></a>    gamma_regularizer<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb2-13"><a></a>    beta_constraint<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb2-14"><a></a>    gamma_constraint<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb2-15"><a></a>    synchronized<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb2-16"><a></a>    <span class="op">**</span>kwargs</span>
+<span id="cb2-17"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment" style="text-align: center;">
 <p><i class="bi bi-arrow-up"></i><br> Comes with sensible defaults</p>
 </div>
@@ -1162,12 +729,12 @@ The parameters of the simple fully-connected (_dense_) network are
 <h2>Regularisation</h2>
 <p>The usual L1 and L2 regularisation can be applied to neural network nodes</p>
 <p>Technically three different options for where to add it (see <a href="https://keras.io/api/layers/regularizers/">docs</a>):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-code-line-numbers="|3|4|5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>layer <span class="op">=</span> keras.layers.Dense(</span>
-<span id="cb15-2"><a></a>    units<span class="op">=</span><span class="dv">64</span>, </span>
-<span id="cb15-3"><a></a>    kernel_regularizer<span class="op">=</span>keras.regularizers.L1L2(l1<span class="op">=</span><span class="fl">1e-5</span>, l2<span class="op">=</span><span class="fl">1e-4</span>),</span>
-<span id="cb15-4"><a></a>    bias_regularizer<span class="op">=</span>keras.regularizers.L2(<span class="fl">1e-4</span>),</span>
-<span id="cb15-5"><a></a>    activity_regularizer<span class="op">=</span>keras.regularizers.L1(<span class="fl">1e-5</span>)</span>
-<span id="cb15-6"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-code-line-numbers="|3|4|5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>layer <span class="op">=</span> keras.layers.Dense(</span>
+<span id="cb3-2"><a></a>    units<span class="op">=</span><span class="dv">64</span>, </span>
+<span id="cb3-3"><a></a>    kernel_regularizer<span class="op">=</span>keras.regularizers.L1L2(l1<span class="op">=</span><span class="fl">1e-5</span>, l2<span class="op">=</span><span class="fl">1e-4</span>),</span>
+<span id="cb3-4"><a></a>    bias_regularizer<span class="op">=</span>keras.regularizers.L2(<span class="fl">1e-4</span>),</span>
+<span id="cb3-5"><a></a>    activity_regularizer<span class="op">=</span>keras.regularizers.L1(<span class="fl">1e-5</span>)</span>
+<span id="cb3-6"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-layout-panel" data-layout-ncol="3">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
@@ -1200,7 +767,7 @@ The parameters of the simple fully-connected (_dense_) network are
 <div style="padding-top: 50px;">
 
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>keras.layers.Dropout(rate, noise_shape<span class="op">=</span><span class="va">None</span>, seed<span class="op">=</span><span class="va">None</span>, <span class="op">**</span>kwargs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>keras.layers.Dropout(rate, noise_shape<span class="op">=</span><span class="va">None</span>, seed<span class="op">=</span><span class="va">None</span>, <span class="op">**</span>kwargs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="padding-top: 50px;">
 
 </div>
@@ -1208,35 +775,35 @@ The parameters of the simple fully-connected (_dense_) network are
 <div style="padding-top: 50px;">
 
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>keras.layers.SpatialDropout2D(</span>
-<span id="cb17-2"><a></a>    rate, data_format<span class="op">=</span><span class="va">None</span>, seed<span class="op">=</span><span class="va">None</span>, name<span class="op">=</span><span class="va">None</span>, dtype<span class="op">=</span><span class="va">None</span></span>
-<span id="cb17-3"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>keras.layers.SpatialDropout2D(</span>
+<span id="cb5-2"><a></a>    rate, data_format<span class="op">=</span><span class="va">None</span>, seed<span class="op">=</span><span class="va">None</span>, name<span class="op">=</span><span class="va">None</span>, dtype<span class="op">=</span><span class="va">None</span></span>
+<span id="cb5-3"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="putting-together-an-improved-network" class="slide level2">
 <h2>Putting together an improved network</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-code-line-numbers="|9,11|,9,10,11|20,21,22|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a><span class="im">from</span> keras.layers <span class="im">import</span> (</span>
-<span id="cb18-2"><a></a>  Input, Rescaling, Conv2D, BatchNormalization,</span>
-<span id="cb18-3"><a></a>  MaxPooling2D, Activation, Dropout, Dense</span>
-<span id="cb18-4"><a></a>)</span>
-<span id="cb18-5"><a></a></span>
-<span id="cb18-6"><a></a>model <span class="op">=</span> keras.Sequential([</span>
-<span id="cb18-7"><a></a>  keras.Input(shape<span class="op">=</span>(<span class="dv">128</span>, <span class="dv">128</span>, <span class="dv">3</span>)),</span>
-<span id="cb18-8"><a></a>  Rescaling(<span class="fl">1.0</span> <span class="op">/</span> <span class="dv">255</span>),</span>
-<span id="cb18-9"><a></a>  Conv2D(<span class="dv">128</span>, kernel_size<span class="op">=</span><span class="dv">3</span>, kernel_initializer<span class="op">=</span><span class="st">"he_uniform"</span>, padding<span class="op">=</span><span class="st">"same"</span>),</span>
-<span id="cb18-10"><a></a>  BatchNormalization(),</span>
-<span id="cb18-11"><a></a>  Activation(<span class="st">"relu"</span>),</span>
-<span id="cb18-12"><a></a>  MaxPooling2D(<span class="dv">3</span>, padding<span class="op">=</span><span class="st">"same"</span>),</span>
-<span id="cb18-13"><a></a>  <span class="co"># ...</span></span>
-<span id="cb18-14"><a></a>  <span class="co"># (more layers)</span></span>
-<span id="cb18-15"><a></a>  <span class="co"># ...</span></span>
-<span id="cb18-16"><a></a>  Conv2D(<span class="dv">128</span>, kernel_size<span class="op">=</span><span class="dv">3</span>, kernel_initializer<span class="op">=</span><span class="st">"he_uniform"</span>, padding<span class="op">=</span><span class="st">"same"</span>),</span>
-<span id="cb18-17"><a></a>  BatchNormalization(),</span>
-<span id="cb18-18"><a></a>  layers.Activation(<span class="st">"relu"</span>),</span>
-<span id="cb18-19"><a></a>  MaxPooling2D(<span class="dv">3</span>, padding<span class="op">=</span><span class="st">"same"</span>),</span>
-<span id="cb18-20"><a></a>  Flatten(),</span>
-<span id="cb18-21"><a></a>  Dropout(<span class="fl">0.3</span>),</span>
-<span id="cb18-22"><a></a>  Dense(num_classes, activation<span class="op">=</span><span class="st">"softmax"</span>),</span>
-<span id="cb18-23"><a></a>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-code-line-numbers="|9,11|,9,10,11|20,21,22|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> keras.layers <span class="im">import</span> (</span>
+<span id="cb6-2"><a></a>  Input, Rescaling, Conv2D, BatchNormalization,</span>
+<span id="cb6-3"><a></a>  MaxPooling2D, Activation, Dropout, Dense</span>
+<span id="cb6-4"><a></a>)</span>
+<span id="cb6-5"><a></a></span>
+<span id="cb6-6"><a></a>model <span class="op">=</span> keras.Sequential([</span>
+<span id="cb6-7"><a></a>  keras.Input(shape<span class="op">=</span>(<span class="dv">128</span>, <span class="dv">128</span>, <span class="dv">3</span>)),</span>
+<span id="cb6-8"><a></a>  Rescaling(<span class="fl">1.0</span> <span class="op">/</span> <span class="dv">255</span>),</span>
+<span id="cb6-9"><a></a>  Conv2D(<span class="dv">128</span>, kernel_size<span class="op">=</span><span class="dv">3</span>, kernel_initializer<span class="op">=</span><span class="st">"he_uniform"</span>, padding<span class="op">=</span><span class="st">"same"</span>),</span>
+<span id="cb6-10"><a></a>  BatchNormalization(),</span>
+<span id="cb6-11"><a></a>  Activation(<span class="st">"relu"</span>),</span>
+<span id="cb6-12"><a></a>  MaxPooling2D(<span class="dv">3</span>, padding<span class="op">=</span><span class="st">"same"</span>),</span>
+<span id="cb6-13"><a></a>  <span class="co"># ...</span></span>
+<span id="cb6-14"><a></a>  <span class="co"># (more layers)</span></span>
+<span id="cb6-15"><a></a>  <span class="co"># ...</span></span>
+<span id="cb6-16"><a></a>  Conv2D(<span class="dv">128</span>, kernel_size<span class="op">=</span><span class="dv">3</span>, kernel_initializer<span class="op">=</span><span class="st">"he_uniform"</span>, padding<span class="op">=</span><span class="st">"same"</span>),</span>
+<span id="cb6-17"><a></a>  BatchNormalization(),</span>
+<span id="cb6-18"><a></a>  layers.Activation(<span class="st">"relu"</span>),</span>
+<span id="cb6-19"><a></a>  MaxPooling2D(<span class="dv">3</span>, padding<span class="op">=</span><span class="st">"same"</span>),</span>
+<span id="cb6-20"><a></a>  Flatten(),</span>
+<span id="cb6-21"><a></a>  Dropout(<span class="fl">0.3</span>),</span>
+<span id="cb6-22"><a></a>  Dense(num_classes, activation<span class="op">=</span><span class="st">"softmax"</span>),</span>
+<span id="cb6-23"><a></a>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="best-practices" class="slide level2">
 <h2>Best practices</h2>
@@ -1253,7 +820,7 @@ The parameters of the simple fully-connected (_dense_) network are
 <p>Guidelines from this and next week are meant to save time, but are not absolute.</p>
 <p><span class="color-text-muted"><em>(Better guidelines will come along the next few years anyway)</em></span></p>
 </section>
-<section id="section-1" class="slide level2" data-menu-title="Fin">
+<section id="section" class="slide level2" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>

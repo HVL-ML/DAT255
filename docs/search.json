@@ -980,333 +980,158 @@
     "text": "Quiz"
   },
   {
-    "objectID": "slides/06-augmentation.html#this-week",
-    "href": "slides/06-augmentation.html#this-week",
-    "title": "DAT255: Deep learning engineering",
-    "section": "This week",
-    "text": "This week\n\n\n\n\nTechnicalities about loading data\nData transformations (augmentation)\nModern convnets for computer vision\nOther computer vision tasks"
-  },
-  {
-    "objectID": "slides/06-augmentation.html#data-pipelines",
-    "href": "slides/06-augmentation.html#data-pipelines",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Data pipelines",
-    "text": "Data pipelines\n\n\n\nIn a deep learning setting, we typically need to consider that\n\nData are a too big to fit in memory (problem)\nWe have two separate compute units, the CPU and the GPU (opportunity)\n\nImplications:\n\nData must be divided into batches\nWhile the GPU is working on one batch, the CPU can prepare the next one."
-  },
-  {
-    "objectID": "slides/06-augmentation.html#sequential-processing",
-    "href": "slides/06-augmentation.html#sequential-processing",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Sequential processing",
-    "text": "Sequential processing\n\n\n\n\n\nOpen\n\n\nRead\n\n\nTrain\n\n\nEpoch"
-  },
-  {
-    "objectID": "slides/06-augmentation.html#prefetching",
-    "href": "slides/06-augmentation.html#prefetching",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Prefetching",
-    "text": "Prefetching\n\n\n\n\n\nOpen\n\n\nRead\n\n\nTrain\n\n\nEpoch"
-  },
-  {
-    "objectID": "slides/06-augmentation.html#prefetching-interleaving-file-reads",
-    "href": "slides/06-augmentation.html#prefetching-interleaving-file-reads",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Prefetching + interleaving file reads",
-    "text": "Prefetching + interleaving file reads\n\n\n\n\n\nOpen\n\n\nRead\n\n\nTrain\n\n\nEpoch"
-  },
-  {
-    "objectID": "slides/06-augmentation.html#prefetching-interleaving-parallel-preprocessing",
-    "href": "slides/06-augmentation.html#prefetching-interleaving-parallel-preprocessing",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Prefetching + interleaving + parallel preprocessing",
-    "text": "Prefetching + interleaving + parallel preprocessing\n\n\n\n\n\nOpen\n\n\nRead\n\n\nMap\n\n\nTrain\n\n\nEpoch"
-  },
-  {
-    "objectID": "slides/06-augmentation.html#tensorflow-dataset",
-    "href": "slides/06-augmentation.html#tensorflow-dataset",
-    "title": "DAT255: Deep learning engineering",
-    "section": "TensorFlow Dataset",
-    "text": "TensorFlow Dataset\n\n\n\nGet all these features with minimal effort though tf.data.Dataset\n\n\n\n\nEffort: Getting the data into a Dataset.\nReduced effort: Keras convenience functions for “standard” data."
-  },
-  {
-    "objectID": "slides/06-augmentation.html#tensorflow-dataset-1",
-    "href": "slides/06-augmentation.html#tensorflow-dataset-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "TensorFlow Dataset",
-    "text": "TensorFlow Dataset\nAs an example, create a Dataset from a list: (although we never do this in practice)\n&gt;&gt;&gt; dataset = tf.data.Dataset.from_tensor_slices([1, 2, 3])\n&gt;&gt;&gt; dataset\n&lt;_TensorSliceDataset element_spec=TensorSpec(shape=(), dtype=tf.int32, name=None)&gt;\n&gt;&gt;&gt; for element in dataset: \n&gt;&gt;&gt;   print(element)\ntf.Tensor(1, shape=(), dtype=int32)\ntf.Tensor(2, shape=(), dtype=int32)\ntf.Tensor(3, shape=(), dtype=int32)\nApply some transformation:\n&gt;&gt;&gt; def square(x):\n&gt;&gt;&gt;    return x * x\n\n&gt;&gt;&gt; new_dataset = dataset.map(square)\n\n&gt;&gt;&gt; for element in new_dataset:\n&gt;&gt;&gt;    print(element)\ntf.Tensor(1, shape=(), dtype=int32)\ntf.Tensor(4, shape=(), dtype=int32)\ntf.Tensor(9, shape=(), dtype=int32)\nImportant: The Dataset methods do not modify data in-place, but always returns a new Dataset."
-  },
-  {
-    "objectID": "slides/06-augmentation.html#tensorflow-dataset-2",
-    "href": "slides/06-augmentation.html#tensorflow-dataset-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "TensorFlow Dataset",
-    "text": "TensorFlow Dataset\nAssuming we already have a Dataset, set up the parallel processing chain:\n\n\n\nshuffled_ds = dataset.shuffle()  # optional\npreprocessed_ds = shuffled_ds.map(preprocessing_fn, num_parallel_calls=10)\nbatched_ds = preprocessed_ds.batch(batch_size)\nprefeched_ds = batched_ds.prefetch(buffer_size)\nor as a one-liner:\n\n\n\nds = dataset.shuffle().map(...).batch(...).prefetch(...)\n\nIn most cases we can set buffer_size, num_parallel_calls, etc to tf.data.AUTOTUNE and have TensorFlow figure out the best setting for us.\n\n\n\ndataset.prefetch(tf.data.AUTOTUNE)"
-  },
-  {
-    "objectID": "slides/06-augmentation.html#getting-data-into-a-dataset",
-    "href": "slides/06-augmentation.html#getting-data-into-a-dataset",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Getting data into a Dataset",
-    "text": "Getting data into a Dataset\nCan be tricky since Datasets are maximally generic, but Keras to the rescue for the most common data types:\nI have\n\nImages: keras.utils.image_dataset_from_directory\nTime series: keras.utils.timeseries_dataset_from_array\nText: keras.utils.text_dataset_from_directory\nAudio: keras.utils.audio_dataset_from_directory\n\nWhile if I have\n\nCSV files: Read the TensorFlow tutorial\nSomething else: Code it yourself"
-  },
-  {
-    "objectID": "slides/06-augmentation.html#train-a-model",
-    "href": "slides/06-augmentation.html#train-a-model",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Train a model",
-    "text": "Train a model\n\n\n\nDatasets are input to .fit() just as usual:\n\n\n\nmodel.fit(\n    train_dataset,\n    validation_data=val_dataset,\n    ...\n)\nand Keras figures out the rest.\nSee this week’s notebook and consult the documentation for more info on Datasets."
-  },
-  {
-    "objectID": "slides/06-augmentation.html#improving-generalisation",
-    "href": "slides/06-augmentation.html#improving-generalisation",
+    "objectID": "slides/06-advanced-computer-vision.html#improving-generalisation",
+    "href": "slides/06-advanced-computer-vision.html#improving-generalisation",
     "title": "DAT255: Deep learning engineering",
     "section": "Improving generalisation",
     "text": "Improving generalisation\nRealisation:\n\nWe don’t have infinite training data\nTraining data don’t cover the space of all realistic examples\n\n\nMitigation:\n\nAdd artificially modified duplicates of the training data (while preserving information)\n\n\n\n\n\n\n\n\nCat\n\n\n\n\n\n\n\nRotated cat is still cat\n\n\n\n\n\n\n\nFlipped cat is also cat???"
   },
   {
-    "objectID": "slides/06-augmentation.html#augmentation",
-    "href": "slides/06-augmentation.html#augmentation",
+    "objectID": "slides/06-advanced-computer-vision.html#augmentation",
+    "href": "slides/06-advanced-computer-vision.html#augmentation",
     "title": "DAT255: Deep learning engineering",
     "section": "Augmentation",
     "text": "Augmentation\nThe benefit of augmentation greatly exceeds the effort involved\n Always recommended to use for computer vision.\n\n\n\n\n\nNo augmentation\n\n\n\n\n\n\n\nkeras.layers.RandomFlip\n\n\n\n\n\n\n\nkeras.layers.RandomRotation\n\n\n\n\n\n\n\nkeras.layers.RandomCrop\n\n\n\n\n\n\n\nkeras.layers.RandomBrightness\n\n\n\n\n\n\n\nkeras.layers.RandomHue\n\n\n\n\n\n\n\nkeras.layers.RandomTranslation\n\n\n\n\n\n\n\nkeras.layers.RandomShear\n\n\n\n\n\n\n\nkeras.layers.Equalization\n\n\n\n\n\n\n\nkeras.layers.RandAugment (“do it all”)"
   },
   {
-    "objectID": "slides/06-augmentation.html#more-advanced-network-configurations",
-    "href": "slides/06-augmentation.html#more-advanced-network-configurations",
+    "objectID": "slides/06-advanced-computer-vision.html#more-advanced-network-configurations",
+    "href": "slides/06-advanced-computer-vision.html#more-advanced-network-configurations",
     "title": "DAT255: Deep learning engineering",
     "section": "More advanced network configurations",
     "text": "More advanced network configurations\nGoing beyond the Sequential model"
   },
   {
-    "objectID": "slides/06-augmentation.html#the-keras-functional-api",
-    "href": "slides/06-augmentation.html#the-keras-functional-api",
+    "objectID": "slides/06-advanced-computer-vision.html#the-keras-functional-api",
+    "href": "slides/06-advanced-computer-vision.html#the-keras-functional-api",
     "title": "DAT255: Deep learning engineering",
     "section": "The Keras functional API",
-    "text": "The Keras functional API\nConsider the equivalent ways of defining a network:\n\n\nfrom keras import layers\nmodel = keras.Sequential([\n  layers.Input(shape=input_shape),\n  layers.Conv2D(64, 3, activation=\"relu\"),\n  layers.Conv2D(64, 3, activation=\"relu\"),\n  layers.MaxPooling2D(pool_size=(2, 2)),\n  layers.Conv2D(128, 3, activation=\"relu\"),\n  layers.Conv2D(128, 3, activation=\"relu\"),\n  layers.Flatten(),\n  layers.Dropout(0.5),\n  layers.Dense(\n    num_classes, activation=\"softmax\"\n  ),\n])\n\n\ninputs = layers.Input(shape=input_shape)\nx = layers.Conv2D(64, 3, activation=\"relu\")(inputs)\nx = layers.Conv2D(64, 3, activation=\"relu\")(x)\nx = layers.MaxPooling2D(pool_size=(2, 2))(x)\nx = layers.Conv2D(128, 3, activation=\"relu\")(x)\nx = layers.Conv2D(128, 3, activation=\"relu\")(x)\nx = layers.Flatten()(x)\nx = layers.Dropout(0.5)(x)\noutputs = layers.Dense(\n  num_classes, activation=\"softmax\"\n)(x)\n\nmodel = keras.Model(\n  inputs=inputs,\n  outputs=outputs\n)"
+    "text": "The Keras functional API\nConsider the equivalent ways of defining a network:\n\n\nThe Sequential API:\nfrom keras import layers\nmodel = keras.Sequential([\n  layers.Input(shape=input_shape),\n  layers.Conv2D(64, 3, activation=\"relu\"),\n  layers.MaxPooling2D(),\n  layers.Conv2D(128, 3, activation=\"relu\"),\n  layers.Flatten(),\n  layers.Dropout(0.5),\n  layers.Dense(\n    num_classes, activation=\"softmax\"\n  ),\n])\nLayers are stacked in a list\n\nThe Functional API\n\ninputs = layers.Input(shape=input_shape)\nx = layers.Conv2D(64, 3, activation=\"relu\")(inputs)\nx = layers.MaxPooling2D()(x)\nx = layers.Conv2D(128, 3, activation=\"relu\")(x)\nx = layers.Flatten()(x)\nx = layers.Dropout(0.5)(x)\noutputs = layers.Dense(\n  num_classes, activation=\"softmax\"\n)(x)\n\nmodel = keras.Model(\n  inputs=inputs,\n  outputs=outputs\n)\nLayers are used as functions taking the previous layer as input\nLastly we need to specify the input and output in a Model"
   },
   {
-    "objectID": "slides/06-augmentation.html#bird-classifier",
-    "href": "slides/06-augmentation.html#bird-classifier",
+    "objectID": "slides/06-advanced-computer-vision.html#example-bird-classifier",
+    "href": "slides/06-advanced-computer-vision.html#example-bird-classifier",
     "title": "DAT255: Deep learning engineering",
-    "section": "Bird classifier",
-    "text": "Bird classifier\n\n\nSay that you for obvious reasons want to classify observations of birds.\nEach data point contains:\n\nPicture of bird\nSize of bird\n(other numerical values related to observation of bird) \n\n\n\n\n\n\n\n\nBird 1. Size: 50 cm\n\n\n\n\n\n\n\nBird 2. Size: 14 cm\n\n\n\n\n\n\n\nBird 3. Size: 63 cm\n\n\n\n\n\n\n\n\nHow to combine this information?"
+    "section": "Example: Bird classifier",
+    "text": "Example: Bird classifier\n\n\nSay that you for obvious reasons want to classify observations of birds.\nEach data point contains:\n\nPicture of bird\nSize of bird\n(other numerical values related to observation of bird) \n\n\n\n\n\n\n\n\nBird 1. Size: 50 cm\n\n\n\n\n\n\n\nBird 2. Size: 14 cm\n\n\n\n\n\n\n\nBird 3. Size: 63 cm\n\n\n\n\n\n\n\n\nHow to combine this information?"
   },
   {
-    "objectID": "slides/06-augmentation.html#bird-classifier-1",
-    "href": "slides/06-augmentation.html#bird-classifier-1",
+    "objectID": "slides/06-advanced-computer-vision.html#example-bird-classifier-1",
+    "href": "slides/06-advanced-computer-vision.html#example-bird-classifier-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Bird classifier",
-    "text": "Bird classifier\n\n\nIn the functional API we can easily have two input sources:\ninput1 = keras.layers.Input(shape=(128,128,3))\n\nx1 = keras.layers.Conv2D(64, 3, activation='relu')(input1)\nx1 = keras.layers.MaxPooling2D(2)(x1)\nx1 = keras.layers.Conv2D(64, 3, activation='relu')(x1)\nx1 = keras.layers.MaxPooling2D(2)(x1)\nx1 = keras.layers.Flatten()(x1)\n\ninput2 = keras.layers.Input(shape=(10,))\n\nx2 = keras.layers.Dense(32, activation='relu')(input2)\nx2 = keras.layers.Dense(32, activation='relu')(x2)\n\nconcat = keras.layers.Concatenate()([x1, x2])\n\nx = keras.layers.Dense(64, activation='relu')(concat)\nout = keras.layers.Dense(3, activation='softmax')(x)\n\nmodel = keras.Model(\n  inputs=[input1, input2],\n  outputs=out\n)"
+    "section": "Example: Bird classifier",
+    "text": "Example: Bird classifier\n\n\nIn the functional API we can easily have two input sources:\ninput1 = keras.layers.Input(shape=(128,128,3))\n\nx1 = keras.layers.Conv2D(64, 3, activation='relu')(input1)\nx1 = keras.layers.MaxPooling2D(2)(x1)\nx1 = keras.layers.Conv2D(64, 3, activation='relu')(x1)\nx1 = keras.layers.MaxPooling2D(2)(x1)\nx1 = keras.layers.Flatten()(x1)\n\ninput2 = keras.layers.Input(shape=(10,))\n\nx2 = keras.layers.Dense(32, activation='relu')(input2)\nx2 = keras.layers.Dense(32, activation='relu')(x2)\n\nconcat = keras.layers.Concatenate()([x1, x2])\n\nx = keras.layers.Dense(64, activation='relu')(concat)\nout = keras.layers.Dense(3, activation='softmax')(x)\n\nmodel = keras.Model(\n  inputs=[input1, input2],\n  outputs=out\n)"
   },
   {
-    "objectID": "slides/06-augmentation.html#non-sequential-networks",
-    "href": "slides/06-augmentation.html#non-sequential-networks",
+    "objectID": "slides/06-advanced-computer-vision.html#non-sequential-networks",
+    "href": "slides/06-advanced-computer-vision.html#non-sequential-networks",
     "title": "DAT255: Deep learning engineering",
     "section": "Non-sequential networks",
-    "text": "Non-sequential networks\n\n\n\n\n\nCan have networks with\n\nMultiple inputs\nMultiple outputs\nArbitrary layer connections\nNetworks-inside-the-network\nLoops (will come to this later)\n\n\n\n\n\n\nLet’s look at some noteworthy architectures."
+    "text": "Non-sequential networks\n\n\n\n\n\nCan have networks with\n\nMultiple inputs\nMultiple outputs\nArbitrary layer connections\nNetworks-inside-the-network\nLoops (will come to this later)\n\n\n\n\n\n\nLet’s look at some noteworthy architectures for computer vision."
   },
   {
-    "objectID": "slides/06-augmentation.html#inception-networks",
-    "href": "slides/06-augmentation.html#inception-networks",
+    "objectID": "slides/06-advanced-computer-vision.html#residual-connections",
+    "href": "slides/06-advanced-computer-vision.html#residual-connections",
     "title": "DAT255: Deep learning engineering",
-    "section": "Inception networks",
-    "text": "Inception networks\n\n\nThe inception module features parallel convolutional layers with different kernel size:\n\n\n\n\n\nOutput is concatenated and passed on to the next module\n\n\n\n\nGoogLeNet, 2014"
+    "section": "Residual connections",
+    "text": "Residual connections\nIn deep learning we are computing composite functions: \\[\ny = f_3(f_2(f_1(x_1, x_2, \\dots, x_n | \\theta_1) | \\theta_2) | \\theta_3)\n\\]\nThese are prone to training problems like exploding or vanishing gradients.\n\nWe can stabilise training with good parameter initialisation, but going beyond ~16 Conv layers (the VGG models *) makes the model worse :/\nWith too many layers, the model gets dominated by noise.\n\n* Simonyan, K., & Zisserman, A. (2014). Very deep convolutional networks for large-scale image recognition. arXiv:1409.1556.\n\n\n\nA method for solving this is residual connections:"
   },
   {
-    "objectID": "slides/06-augmentation.html#residual-networks",
-    "href": "slides/06-augmentation.html#residual-networks",
+    "objectID": "slides/06-advanced-computer-vision.html#residual-connections-1",
+    "href": "slides/06-advanced-computer-vision.html#residual-connections-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Residual networks",
-    "text": "Residual networks\n\n\n\n\n\nThis architecture features skip connections, where data is passed (unmodified) around some layers, and then added back in"
+    "section": "Residual connections",
+    "text": "Residual connections\nImplementing this branching and recombination can be done with Keras’ functional API:\n\n\n\n\n\n\n\ninputs = keras.Input(shape=(32, 32, 3))\nx = layers.Conv2D(32, 3, activation=\"relu\")(inputs)\n# Set aside the residual\nresidual = x\n# Conv block\nx = layers.Conv2D(64, 3, activation=\"relu\", padding=\"same\")(x)\nx = layers.MaxPooling2D(2, padding=\"same\")(x)\n# Conv layer with strides=2, so that the shapes match\nresidual = layers.Conv2D(64, 1, strides=2)(residual)\n# Add the block output with the residual \nx = layers.add([x, residual])\n\n\nIf we need to this multiple times, we can write it in a\n\nfor loop\na function\nor as a subclass of keras.layers.Layer"
   },
   {
-    "objectID": "slides/06-augmentation.html#residual-networks-1",
-    "href": "slides/06-augmentation.html#residual-networks-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Residual networks",
-    "text": "Residual networks\n\n\n\n\n\nThis architecture features skip connections, where data is passed (unmodified) around some layers, and then added back in\n\n\n\nIdea: Avoid vanishing gradients or “dead” layers"
-  },
-  {
-    "objectID": "slides/06-augmentation.html#residual-networks-2",
-    "href": "slides/06-augmentation.html#residual-networks-2",
+    "objectID": "slides/06-advanced-computer-vision.html#residual-networks",
+    "href": "slides/06-advanced-computer-vision.html#residual-networks",
     "title": "DAT255: Deep learning engineering",
     "section": "Residual networks",
-    "text": "Residual networks"
+    "text": "Residual networks\nWith residual connections in place, we can continue learning even if the gradients in a layer vanishes:\n\n\n\n\n\n\nA. Geron: Hands-on Machine Learning with Scikit-Learn, Keras and TensorFlow"
   },
   {
-    "objectID": "slides/06-augmentation.html#densely-connected-convolutional-networks",
-    "href": "slides/06-augmentation.html#densely-connected-convolutional-networks",
+    "objectID": "slides/06-advanced-computer-vision.html#residual-networks-1",
+    "href": "slides/06-advanced-computer-vision.html#residual-networks-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Residual networks",
+    "text": "Residual networks\n\n\n…which enables us to train networks with 100+ layers\n\n\n\n\n\n\n\n\n\nHe, K., Zhang, X., Ren, S., & Sun, J. (2016). Deep residual learning for image recognition. Proceedings of the IEEE conference on computer vision and pattern recognition."
+  },
+  {
+    "objectID": "slides/06-advanced-computer-vision.html#densely-connected-convolutional-networks",
+    "href": "slides/06-advanced-computer-vision.html#densely-connected-convolutional-networks",
     "title": "DAT255: Deep learning engineering",
     "section": "Densely connected convolutional networks",
-    "text": "Densely connected convolutional networks\nHow about adding skip connections (almost) everywhere?\nEnter the DenseNet:"
+    "text": "Densely connected convolutional networks\nHow about adding skip connections (almost) everywhere?\nEnter the DenseNet:\n\n\n\n\n\n\nHuang, G., Liu, Z., Van Der Maaten, L., & Weinberger, K. Q. (2017). Densely connected convolutional networks. Proceedings of the IEEE conference on computer vision and pattern recognition."
   },
   {
-    "objectID": "slides/06-augmentation.html#xception-networks",
-    "href": "slides/06-augmentation.html#xception-networks",
+    "objectID": "slides/06-advanced-computer-vision.html#inception-networks",
+    "href": "slides/06-advanced-computer-vision.html#inception-networks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Inception networks",
+    "text": "Inception networks\n\n\nWe can also add width in addition to depth:\nThe inception module features parallel convolutional layers with different kernel size\n\n\n\n\n\nOutput is concatenated and passed on to the next module\n\n\n\n\nGoogLeNet, 2014"
+  },
+  {
+    "objectID": "slides/06-advanced-computer-vision.html#xception-networks",
+    "href": "slides/06-advanced-computer-vision.html#xception-networks",
     "title": "DAT255: Deep learning engineering",
     "section": "Xception networks",
     "text": "Xception networks\nThe Xception (“extreme inception”) architecture relies on depthwise separable convolution layers\n\n\n\n\n\nThese layers are available as keras.layers.SeparableConv2D and can be used just like the regular Conv2D, often with increased performance"
   },
   {
-    "objectID": "slides/06-augmentation.html#keras.applications",
-    "href": "slides/06-augmentation.html#keras.applications",
+    "objectID": "slides/06-advanced-computer-vision.html#beyond-cnns-vision-transformers",
+    "href": "slides/06-advanced-computer-vision.html#beyond-cnns-vision-transformers",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Beyond CNNs: Vision transformers",
+    "text": "Beyond CNNs: Vision transformers\nCan also use methods from LLMs on image input * (get back to this in Ch. 15):\n\n\n\n\n\nHowever, pure ConvNets are still hard to beat **\n\n* Dosovitskiy, A. (2020). An image is worth 16x16 words: Transformers for image recognition at scale. arXiv:2010.11929 ** Liu, Z., et al. (2022). A convnet for the 2020s. arxiv:2201.03545"
+  },
+  {
+    "objectID": "slides/06-advanced-computer-vision.html#keras.applications",
+    "href": "slides/06-advanced-computer-vision.html#keras.applications",
     "title": "DAT255: Deep learning engineering",
     "section": "keras.applications",
-    "text": "keras.applications\nThe most popular computer vision architectures are available as pre-trained models in keras.applications.\nThese are excellent starting points for\n\nfeature extraction\nfine-tuning\ntransfer learning\n\nNote: The different models typically require specific preprocessing:\nIf you want to use\nkeras.applications.Xception()\nyou should process the input images with\nkeras.applications.xception.preprocess_input()"
+    "text": "keras.applications\nThe most popular computer vision architectures are available as pre-trained models in keras.applications.\nThese are excellent starting points for\n\nfeature extraction\nfine-tuning\ntransfer learning\n\n\nNote: The different models typically require specific preprocessing:\nIf you want to use\nkeras.applications.Xception()\nyou should process the input images with\nkeras.applications.xception.preprocess_input()"
   },
   {
-    "objectID": "slides/06-augmentation.html#other-computer-vision-tasks",
-    "href": "slides/06-augmentation.html#other-computer-vision-tasks",
+    "objectID": "slides/06-advanced-computer-vision.html#feature-extraction-and-fine-tuning",
+    "href": "slides/06-advanced-computer-vision.html#feature-extraction-and-fine-tuning",
     "title": "DAT255: Deep learning engineering",
-    "section": "Other computer vision tasks",
-    "text": "Other computer vision tasks\nConvolutional nets are great for other things than just classification:\n\n\n\n\nObject detection: Localise (several) objects in an image\n\n\n\n\nOriented bounding boxes: Localise and estimate orientation of objects\n\n\n\n\nSemantic segmentation: Classify each pixel onto an object\n\n\n\n\nInstance segmentation: Draw a detailed outline around abjects\n\n\n\n\nPose estimation: Localise distinctive features or parts of an object"
+    "section": "Feature extraction and fine-tuning",
+    "text": "Feature extraction and fine-tuning"
   },
   {
-    "objectID": "slides/06-augmentation.html#segmentation",
-    "href": "slides/06-augmentation.html#segmentation",
+    "objectID": "slides/06-advanced-computer-vision.html#ablation-studies",
+    "href": "slides/06-advanced-computer-vision.html#ablation-studies",
     "title": "DAT255: Deep learning engineering",
-    "section": "Segmentation",
-    "text": "Segmentation\nFor segmentation we need to classify each pixel\n Output must have same dimension as the input.\nCan still downsample the input in the usual Conv2D + MaxPooling2D cycle to find large-scale patterns, as long as we upsample again to the correct dimensions.\n\nOften talk about an encoder-decoder structure:\n\n\n\n\n\n\nU-Net (2015)"
+    "section": "Ablation studies",
+    "text": "Ablation studies"
   },
   {
-    "objectID": "slides/04-training.html#decomposition-into-simple-patters",
-    "href": "slides/04-training.html#decomposition-into-simple-patters",
+    "objectID": "slides/06-advanced-computer-vision.html#other-computer-vision-tasks-next-week",
+    "href": "slides/06-advanced-computer-vision.html#other-computer-vision-tasks-next-week",
     "title": "DAT255: Deep learning engineering",
-    "section": "Decomposition into simple patters",
-    "text": "Decomposition into simple patters"
+    "section": "Other computer vision tasks (next week)",
+    "text": "Other computer vision tasks (next week)\nConvolutional nets are great for other things than just classification:\n\n\n\n\nObject detection: Localise (several) objects in an image\n\n\n\n\nOriented bounding boxes: Localise and estimate orientation of objects\n\n\n\n\nSemantic segmentation: Classify each pixel onto an object\n\n\n\n\nInstance segmentation: Draw a detailed outline around abjects\n\n\n\n\nPose estimation: Localise distinctive features or parts of an object"
   },
   {
-    "objectID": "slides/04-training.html#keras-layers",
-    "href": "slides/04-training.html#keras-layers",
+    "objectID": "slides/04-training.html#the-parameters-of-a-neural-network",
+    "href": "slides/04-training.html#the-parameters-of-a-neural-network",
     "title": "DAT255: Deep learning engineering",
-    "section": "Keras layers",
-    "text": "Keras layers\nFor our proposed solution we need three layer types:\n\n\n\n\nConvolution layers to extract image features\nkeras.layers.Conv2D\n\n\n\n\n\nPooling layers to downsample and aggregate the features\nkeras.layers.MaxPooling2D\n\n\n\n\n\nFully-connected (dense) layers to compute the final prediction\nkeras.layers.Dense"
+    "section": "The parameters of a neural network",
+    "text": "The parameters of a neural network\nRecall the simple formulation of a machine learning model:\n\n\\[\n\\large \\hat{\\color{DarkBlue}{y}} = \\color{Purple}{f}(\\color{DarkOrange}{\\mathbf{x}}, \\boldsymbol{\\color{teal}{\\theta}})\n\\]\n\nwhere\n\n\\(\\hat{\\color{DarkBlue}{y}}\\) is the prediction\n\\(\\color{Purple}{f}\\) is a mathematical function, in our case a neural network\n\\(\\color{DarkOrange}{\\mathbf{x}}\\) is a data point\n\\(\\boldsymbol{\\color{teal}{\\theta}}\\) are parameters of the model"
   },
   {
-    "objectID": "slides/04-training.html#the-conv2d-layer",
-    "href": "slides/04-training.html#the-conv2d-layer",
+    "objectID": "slides/04-training.html#the-parameters-of-a-neural-network-1",
+    "href": "slides/04-training.html#the-parameters-of-a-neural-network-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "The Conv2D layer",
-    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)"
+    "section": "The parameters of a neural network",
+    "text": "The parameters of a neural network\n\n\n\n\n\nThe parameters of the simple fully-connected (dense) network are\n\none weight per connection (line)\none bias term per node (circle)\n\n(for other types of layers, there are other types of parameters)"
   },
   {
-    "objectID": "slides/04-training.html#the-conv2d-layer-1",
-    "href": "slides/04-training.html#the-conv2d-layer-1",
+    "objectID": "slides/04-training.html#the-parameters-of-a-neural-network-2",
+    "href": "slides/04-training.html#the-parameters-of-a-neural-network-2",
     "title": "DAT255: Deep learning engineering",
-    "section": "The Conv2D layer",
-    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)\n\nNumber of filters to use (typical: 32 to 512)"
-  },
-  {
-    "objectID": "slides/04-training.html#the-conv2d-layer-2",
-    "href": "slides/04-training.html#the-conv2d-layer-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "The Conv2D layer",
-    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)\n\nSize of the filter/kernel (typical: 3x3, sometimes bigger in the first layer)"
-  },
-  {
-    "objectID": "slides/04-training.html#the-conv2d-layer-3",
-    "href": "slides/04-training.html#the-conv2d-layer-3",
-    "title": "DAT255: Deep learning engineering",
-    "section": "The Conv2D layer",
-    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)\n\nStepsize for the convolution operation (typical: 1 or 2)\n\n\n\n\n\n\nstride=(1,1)\n\n\n\n\n\n\n\n\n\nstride=(2,2)"
-  },
-  {
-    "objectID": "slides/04-training.html#the-conv2d-layer-4",
-    "href": "slides/04-training.html#the-conv2d-layer-4",
-    "title": "DAT255: Deep learning engineering",
-    "section": "The Conv2D layer",
-    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)\n\nPadding around the image edges (typical: 1 or 2)\n\n\n\n\n\n\npadding=\"valid\"\n\n\n\n\n\n\n\n\n\npadding=\"same\""
-  },
-  {
-    "objectID": "slides/04-training.html#pooling-layers",
-    "href": "slides/04-training.html#pooling-layers",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Pooling layers",
-    "text": "Pooling layers\nTwo reasons for downsampling the image features:\n\nLearn a spatial hierarchy by widening the receptive field\nReduce the total parameter count\n\nMost common approach: Choose the maximum value from a window of pixels"
-  },
-  {
-    "objectID": "slides/04-training.html#the-maxpooling2d-layer",
-    "href": "slides/04-training.html#the-maxpooling2d-layer",
-    "title": "DAT255: Deep learning engineering",
-    "section": "The MaxPooling2D layer",
-    "text": "The MaxPooling2D layer\n\n\nkeras.layers.MaxPooling2D(\n    pool_size=(2, 2),\n    strides=None,\n    padding=\"valid\",\n    data_format=None, \n    name=None, \n    **kwargs\n)\n\npool_size: Size of pooling window (typical: 2x2 or 3x3)\nstrides: Step size (typical: same as pool_size)\npadding: Padding around edges, valid or same"
-  },
-  {
-    "objectID": "slides/04-training.html#the-dense-layer",
-    "href": "slides/04-training.html#the-dense-layer",
-    "title": "DAT255: Deep learning engineering",
-    "section": "The Dense layer",
-    "text": "The Dense layer\n\n\nkeras.layers.Dense(\n    units,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    lora_rank=None,\n    **kwargs\n)\n\nunits: number of nodes in this layer\n\n\n\n\n\n\nIn the last dense layer, units must be equal to the number of classes (or otherwise number of desired outputs)."
-  },
-  {
-    "objectID": "slides/04-training.html#my-first-convolutional-network",
-    "href": "slides/04-training.html#my-first-convolutional-network",
-    "title": "DAT255: Deep learning engineering",
-    "section": "My first convolutional network ✨",
-    "text": "My first convolutional network ✨\nLet’s piece together a convnet using Keras’ sequential model API:\n\n\n\nconvnet = keras.Sequential(\n    [\n        keras.Input(shape=(28, 28, 1)),\n        keras.layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n        keras.layers.MaxPooling2D(pool_size=(2, 2)),\n        keras.layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n        keras.layers.MaxPooling2D(pool_size=(2, 2)),\n        keras.layers.Flatten(),\n        keras.layers.Dense(10, activation=\"softmax\"),\n    ]\n)\n\n\n\n(More details about activations in a bit)"
-  },
-  {
-    "objectID": "slides/04-training.html#my-first-convolutional-network-1",
-    "href": "slides/04-training.html#my-first-convolutional-network-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "My first convolutional network ✨",
-    "text": "My first convolutional network ✨\nconvnet.summary()\nModel: \"sequential_1\"\n\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓\n┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃\n┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩\n│ conv2d (Conv2D)                      │ (None, 26, 26, 32)          │             320 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ max_pooling2d (MaxPooling2D)         │ (None, 13, 13, 32)          │               0 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ conv2d_1 (Conv2D)                    │ (None, 11, 11, 32)          │           9,248 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ max_pooling2d_1 (MaxPooling2D)       │ (None, 5, 5, 32)            │               0 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ flatten_1 (Flatten)                  │ (None, 800)                 │               0 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ dropout (Dropout)                    │ (None, 800)                 │               0 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ dense_3 (Dense)                      │ (None, 10)                  │           8,010 │\n└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘\n\n Total params: 17,578 (68.66 KB)\n\n Trainable params: 17,578 (68.66 KB)\n\n Non-trainable params: 0 (0.00 B)"
-  },
-  {
-    "objectID": "slides/04-training.html#my-first-convolutional-network-2",
-    "href": "slides/04-training.html#my-first-convolutional-network-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "My first convolutional network ✨",
-    "text": "My first convolutional network ✨\n\n\n\nConfigure the training objective and strategy:\nconvnet.compile(\n  loss=\"categorical_crossentropy\",\n  optimizer=\"adam\",\n  metrics=[\"accuracy\"]\n)\n(again, more details later + in the textbook)\n\n\n\nStart training!\nconvnet.fit(\n  X_train,\n  y_train,\n  batch_size=128,\n  epochs=15,\n  validation_split=0.1\n)"
-  },
-  {
-    "objectID": "slides/04-training.html#decomposition-into-simple-patters-theory-vs-practice",
-    "href": "slides/04-training.html#decomposition-into-simple-patters-theory-vs-practice",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Decomposition into simple patters: Theory vs practice",
-    "text": "Decomposition into simple patters: Theory vs practice\nRemember the cat:\n\n\n\n\n\n(We’ll try to classify pictures of cats in exercise 3, but let’s test out a cat detector convnet already now)"
-  },
-  {
-    "objectID": "slides/04-training.html#decomposition-into-simple-patters-theory-vs-practice-1",
-    "href": "slides/04-training.html#decomposition-into-simple-patters-theory-vs-practice-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Decomposition into simple patters: Theory vs practice",
-    "text": "Decomposition into simple patters: Theory vs practice\n\n\n\nOur test image:\n\n\n\n\n\n\nFrom chapter 10, Interpreting what ConvNets learn"
-  },
-  {
-    "objectID": "slides/04-training.html#layer-activations",
-    "href": "slides/04-training.html#layer-activations",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Layer activations",
-    "text": "Layer activations\nWe can visualise what each filter does by looking at its activation on the test image: The output after the convolution and applying the activation function.\nExamples:\n\n\n\n\nLayer 1, filter 4"
-  },
-  {
-    "objectID": "slides/04-training.html#layer-activations-1",
-    "href": "slides/04-training.html#layer-activations-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Layer activations",
-    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 1 and 2:"
-  },
-  {
-    "objectID": "slides/04-training.html#layer-activations-2",
-    "href": "slides/04-training.html#layer-activations-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Layer activations",
-    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 3:"
-  },
-  {
-    "objectID": "slides/04-training.html#layer-activations-3",
-    "href": "slides/04-training.html#layer-activations-3",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Layer activations",
-    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 4:"
-  },
-  {
-    "objectID": "slides/04-training.html#layer-activations-4",
-    "href": "slides/04-training.html#layer-activations-4",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Layer activations",
-    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 5 (last):"
+    "section": "The parameters of a neural network",
+    "text": "The parameters of a neural network"
   },
   {
     "objectID": "slides/04-training.html#the-activation-function",
@@ -1628,7 +1453,7 @@
     "href": "index.html",
     "title": "DAT255 lecture notes",
     "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\n\nWeek 3\n1: Monday: Welcome and introduction\n2: Tuesday: The tools of deep learning\n\n\nWeek 4\n3: Monday: Computer vision and the concepts of layers\n4: Tuesday: Training deep neural networks"
+    "text": "Published after each lecture week – see Canvas for additional material.\n\nWeek 3\n1: Monday: Welcome and introduction\n2: Tuesday: The tools of deep learning\n\n\nWeek 4\n3: Monday: Computer vision and the concepts of layers\n4: Tuesday: Training deep neural networks\n\n\nWeek 5\n5: Monday: Optimisation algorithms and learning rates\n6: Tuesday: Augmentation and advanced computer vision"
   },
   {
     "objectID": "slides/01-welcome.html#what-can-you-do-with-deep-learning",
@@ -1960,18 +1785,165 @@
     "text": "Decomposition into simple patters"
   },
   {
+    "objectID": "slides/03-convolutions.html#section-3",
+    "href": "slides/03-convolutions.html#section-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "",
+    "text": "Talk is cheap.Show me the code"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#keras-layers",
+    "href": "slides/03-convolutions.html#keras-layers",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Keras layers",
+    "text": "Keras layers\nFor our proposed solution we need three layer types:\n\n\n\n\nConvolution layers to extract image features\nkeras.layers.Conv2D\n\n\n\n\n\nPooling layers to downsample and aggregate the features\nkeras.layers.MaxPooling2D\n\n\n\n\n\nFully-connected (dense) layers to compute the final prediction\nkeras.layers.Dense"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#the-conv2d-layer",
+    "href": "slides/03-convolutions.html#the-conv2d-layer",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Conv2D layer",
+    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#the-conv2d-layer-1",
+    "href": "slides/03-convolutions.html#the-conv2d-layer-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Conv2D layer",
+    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)\n\nNumber of filters to use (typical: 32 to 512)"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#the-conv2d-layer-2",
+    "href": "slides/03-convolutions.html#the-conv2d-layer-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Conv2D layer",
+    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)\n\nSize of the filter/kernel (typical: 3x3, sometimes bigger in the first layer)"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#the-conv2d-layer-3",
+    "href": "slides/03-convolutions.html#the-conv2d-layer-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Conv2D layer",
+    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)\n\nStepsize for the convolution operation (typical: 1 or 2)\n\n\n\n\n\n\nstride=(1,1)\n\n\n\n\n\n\n\n\n\nstride=(2,2)"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#the-conv2d-layer-4",
+    "href": "slides/03-convolutions.html#the-conv2d-layer-4",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Conv2D layer",
+    "text": "The Conv2D layer\n\n\nkeras.layers.Conv2D(\n    filters,\n    kernel_size,\n    strides=(1, 1),\n    padding=\"valid\",\n    data_format=None,\n    dilation_rate=(1, 1),\n    groups=1,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    **kwargs\n)\n\nPadding around the image edges (typical: 1 or 2)\n\n\n\n\n\n\npadding=\"valid\"\n\n\n\n\n\n\n\n\n\npadding=\"same\""
+  },
+  {
+    "objectID": "slides/03-convolutions.html#pooling-layers",
+    "href": "slides/03-convolutions.html#pooling-layers",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Pooling layers",
+    "text": "Pooling layers\nTwo reasons for downsampling the image features:\n\nLearn a spatial hierarchy by widening the receptive field\nReduce the total parameter count\n\nMost common approach: Choose the maximum value from a window of pixels"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#the-maxpooling2d-layer",
+    "href": "slides/03-convolutions.html#the-maxpooling2d-layer",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The MaxPooling2D layer",
+    "text": "The MaxPooling2D layer\n\n\nkeras.layers.MaxPooling2D(\n    pool_size=(2, 2),\n    strides=None,\n    padding=\"valid\",\n    data_format=None, \n    name=None, \n    **kwargs\n)\n\npool_size: Size of pooling window (typical: 2x2 or 3x3)\nstrides: Step size (typical: same as pool_size)\npadding: Padding around edges, valid or same"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#the-dense-layer",
+    "href": "slides/03-convolutions.html#the-dense-layer",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The Dense layer",
+    "text": "The Dense layer\n\n\nkeras.layers.Dense(\n    units,\n    activation=None,\n    use_bias=True,\n    kernel_initializer=\"glorot_uniform\",\n    bias_initializer=\"zeros\",\n    kernel_regularizer=None,\n    bias_regularizer=None,\n    activity_regularizer=None,\n    kernel_constraint=None,\n    bias_constraint=None,\n    lora_rank=None,\n    **kwargs\n)\n\nunits: number of nodes in this layer\n\n\n\n\n\n\nIn the last dense layer, units must be equal to the number of classes (or otherwise number of desired outputs)."
+  },
+  {
+    "objectID": "slides/03-convolutions.html#my-first-convolutional-network",
+    "href": "slides/03-convolutions.html#my-first-convolutional-network",
+    "title": "DAT255: Deep learning engineering",
+    "section": "My first convolutional network ✨",
+    "text": "My first convolutional network ✨\nLet’s piece together a convnet using Keras’ sequential model API:\n\n\n\nconvnet = keras.Sequential(\n    [\n        keras.Input(shape=(28, 28, 1)),\n        keras.layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n        keras.layers.MaxPooling2D(pool_size=(2, 2)),\n        keras.layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n        keras.layers.MaxPooling2D(pool_size=(2, 2)),\n        keras.layers.Flatten(),\n        keras.layers.Dense(10, activation=\"softmax\"),\n    ]\n)\n\n\n\n(More details about activations and training tomorrow)"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#my-first-convolutional-network-1",
+    "href": "slides/03-convolutions.html#my-first-convolutional-network-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "My first convolutional network ✨",
+    "text": "My first convolutional network ✨\nconvnet.summary()\nModel: \"sequential_1\"\n\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓\n┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃\n┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩\n│ conv2d (Conv2D)                      │ (None, 26, 26, 32)          │             320 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ max_pooling2d (MaxPooling2D)         │ (None, 13, 13, 32)          │               0 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ conv2d_1 (Conv2D)                    │ (None, 11, 11, 32)          │           9,248 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ max_pooling2d_1 (MaxPooling2D)       │ (None, 5, 5, 32)            │               0 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ flatten_1 (Flatten)                  │ (None, 800)                 │               0 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ dropout (Dropout)                    │ (None, 800)                 │               0 │\n├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤\n│ dense_3 (Dense)                      │ (None, 10)                  │           8,010 │\n└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘\n\n Total params: 17,578 (68.66 KB)\n\n Trainable params: 17,578 (68.66 KB)\n\n Non-trainable params: 0 (0.00 B)"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#my-first-convolutional-network-2",
+    "href": "slides/03-convolutions.html#my-first-convolutional-network-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "My first convolutional network ✨",
+    "text": "My first convolutional network ✨\n\n\n\nConfigure the training objective and strategy:\nconvnet.compile(\n  loss=\"categorical_crossentropy\",\n  optimizer=\"adam\",\n  metrics=[\"accuracy\"]\n)\n(again, more details later + in the textbook)\n\n\n\nStart training!\nconvnet.fit(\n  X_train,\n  y_train,\n  batch_size=128,\n  epochs=15,\n  validation_split=0.1\n)"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#decomposition-into-simple-patters-theory-vs-practice",
+    "href": "slides/03-convolutions.html#decomposition-into-simple-patters-theory-vs-practice",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Decomposition into simple patters: Theory vs practice",
+    "text": "Decomposition into simple patters: Theory vs practice\nRemember the cat:\n\n\n\n\n\n(We’ll try to classify pictures of cats in exercise 3, but let’s test out a cat detector convnet already now)"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#decomposition-into-simple-patters-theory-vs-practice-1",
+    "href": "slides/03-convolutions.html#decomposition-into-simple-patters-theory-vs-practice-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Decomposition into simple patters: Theory vs practice",
+    "text": "Decomposition into simple patters: Theory vs practice\n\n\n\nOur test image:\n\n\n\n\n\n\nFrom chapter 10, Interpreting what ConvNets learn"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#layer-activations",
+    "href": "slides/03-convolutions.html#layer-activations",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Layer activations",
+    "text": "Layer activations\nWe can visualise what each filter does by looking at its activation on the test image: The output after the convolution and applying the activation function.\nExamples:\n\n\n\n\nLayer 1, filter 4"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#layer-activations-1",
+    "href": "slides/03-convolutions.html#layer-activations-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Layer activations",
+    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 1 and 2:"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#layer-activations-2",
+    "href": "slides/03-convolutions.html#layer-activations-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Layer activations",
+    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 3:"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#layer-activations-3",
+    "href": "slides/03-convolutions.html#layer-activations-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Layer activations",
+    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 4:"
+  },
+  {
+    "objectID": "slides/03-convolutions.html#layer-activations-4",
+    "href": "slides/03-convolutions.html#layer-activations-4",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Layer activations",
+    "text": "Layer activations\nRepeat for all filters in all layers:\nLayer 5 (last):"
+  },
+  {
+    "objectID": "slides/05-optimisers.html#this-week",
+    "href": "slides/05-optimisers.html#this-week",
+    "title": "DAT255: Deep learning engineering",
+    "section": "This week",
+    "text": "This week\n\n\n\nToday:\n\nA little more on gradient descent\n\nImproved optimisation methods\n\nLoss curves and learning rates\n\nTomorrow:\n\nData augmentation\nNon-sequential layer connections\nTraining very deep convolutional networks\nModern ConvNet architectures"
+  },
+  {
     "objectID": "slides/05-optimisers.html#loss-functions",
     "href": "slides/05-optimisers.html#loss-functions",
     "title": "DAT255: Deep learning engineering",
     "section": "Loss functions",
-    "text": "Loss functions\n\n\nReminder: For all statistical modelling we need a measure of prediction quality\nThe loss function \\(L\\) must satisfy two conditions:\n\nDifferentiable*\nBounded below (\\(L \\geq 0\\))\n\n\nIn this course we stick mostly to\n\nMean squared error (MSE) loss, for regression tasks\n\n\n\n\n\n\\[\n\\small\nL_{\\mathrm{MSE}}(\\boldsymbol{\\hat{y}, y}) = \\frac{1}{N} \\sum_{i}^{N} (\\hat{y}_i - y_i)^2\n\\] where \\(N\\) is the number of data points\n\n\n\n\n\n\n\n\n\n*Again, at least piecewise differentiable"
+    "text": "Loss functions\n\n\nReminder: For all statistical modelling we need a measure of prediction quality\nThe loss function \\(\\small{}L\\) must satisfy two conditions:\n\nDifferentiable*\nBounded below (\\(\\small L \\geq 0\\))\n\n\nIn this course we stick mostly to\n\nMean squared error (MSE) loss, for regression tasks\n\n\n\n\n\n\\[\n\\small\nL_{\\mathrm{MSE}}(\\boldsymbol{\\hat{y}, y}) = \\frac{1}{N} \\sum_{i}^{N} (\\hat{y}_i - y_i)^2\n\\] where \\(\\small{}N\\) is the number of data points\n\n\n\n\n\n\n\n\n\n*Again, at least piecewise differentiable"
   },
   {
     "objectID": "slides/05-optimisers.html#loss-functions-1",
     "href": "slides/05-optimisers.html#loss-functions-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Loss functions",
-    "text": "Loss functions\n\n\nReminder: For all statistical modelling we need a measure of prediction quality\nThe loss function \\(L\\) must satisfy two conditions:\n\nDifferentiable*\nBounded below (\\(L \\geq 0\\))\n\nIn this course we stick mostly to\n\nMean squared error (MSE) loss, for regression tasks\nCross-entropy loss (or log loss), for classification tasks\n\n\n\n\\[\n\\scriptsize\nL_{\\mathrm{log}}(\\boldsymbol{\\hat{y}, y}) = -\\frac{1}{N} \\sum_i^N \\sum_k^K y_{i,k} \\log\\hat{y}_{i,k}\n\\] where \\(K\\) is the number of classes\n\n\n\n\n\n\n\n\n*Again, at least piecewise differentiable"
+    "text": "Loss functions\n\n\nReminder: For all statistical modelling we need a measure of prediction quality\nThe loss function \\(\\small{}L\\) must satisfy two conditions:\n\nDifferentiable*\nBounded below (\\(\\small{}L \\geq 0\\))\n\nIn this course we stick mostly to\n\nMean squared error (MSE) loss, for regression tasks\nCross-entropy loss (or log loss), for classification tasks\n\n\n\n\\[\n\\scriptsize\nL_{\\mathrm{log}}(\\boldsymbol{\\hat{y}, y}) = -\\frac{1}{N} \\sum_i^N \\sum_k^K y_{i,k} \\log\\hat{y}_{i,k}\n\\] where \\(K\\) is the number of classes\n\n\n\n\n\n\n\n\n*Again, at least piecewise differentiable"
   },
   {
     "objectID": "slides/05-optimisers.html#gradient-descent",
@@ -1992,14 +1964,14 @@
     "href": "slides/05-optimisers.html#momentum-optimisation",
     "title": "DAT255: Deep learning engineering",
     "section": "Momentum optimisation",
-    "text": "Momentum optimisation\n\n\nImprove on regular gradient descent by keeping track of past gradients in a new term \\(\\boldsymbol{m}\\):\n\\[\n\\small\n\\begin{align}\n    \\boldsymbol{m}_n &= \\beta \\boldsymbol{m}_{n-1} - \\eta \\nabla \\color{Purple}{L}(\\color{teal}{\\theta}_n) \\\\\n    \\boldsymbol{\\color{teal}{\\theta}}_{n+1} &= \\boldsymbol{\\color{teal}{\\theta}}_n + \\boldsymbol{m}_n\n\\end{align}\n\\]\n(behaves like a heavy ball rolling down a hill, where \\(\\boldsymbol{m}\\) is the velocity)\n\nIntroduces a new hyperparameter \\(\\small\\beta \\in [0,1]\\), which is called the momentum\n\n\\(\\small\\beta = 0\\): “max friction”\n\\(\\small\\beta = 1\\): “no friction”"
+    "text": "Momentum optimisation\n\n\nImprove on regular gradient descent by keeping track of past gradients in a new term \\(\\small\\boldsymbol{m}\\):\n\\[\n\\small\n\\begin{align}\n    \\boldsymbol{m}_n &= \\beta \\boldsymbol{m}_{n-1} - \\eta \\nabla \\color{Purple}{L}(\\color{teal}{\\theta}_n) \\\\\n    \\boldsymbol{\\color{teal}{\\theta}}_{n+1} &= \\boldsymbol{\\color{teal}{\\theta}}_n + \\boldsymbol{m}_n\n\\end{align}\n\\]\n(behaves like a heavy ball rolling down a hill, where \\(\\small\\boldsymbol{m}\\) is the velocity)\n\nIntroduces a new hyperparameter \\(\\small\\beta \\in [0,1]\\), which is called the momentum\n\n\\(\\small\\beta = 0\\): “max friction”\n\\(\\small\\beta = 1\\): “no friction”"
   },
   {
     "objectID": "slides/05-optimisers.html#momentum-optimisation-1",
     "href": "slides/05-optimisers.html#momentum-optimisation-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Momentum optimisation",
-    "text": "Momentum optimisation\n\n\nImprove on regular gradient descent by keeping track of past gradients in a new term \\(\\boldsymbol{m}\\):\n\\[\n\\small\n\\begin{align}\n    \\boldsymbol{m}_n &= \\beta \\boldsymbol{m}_{n-1} - \\eta \\nabla \\color{Purple}{L}(\\color{teal}{\\theta}_n) \\\\\n    \\boldsymbol{\\color{teal}{\\theta}}_{n+1} &= \\boldsymbol{\\color{teal}{\\theta}}_n + \\boldsymbol{m}_n\n\\end{align}\n\\]\n(behaves like a heavy ball rolling down a hill, where \\(\\boldsymbol{m}\\) is the velocity)\nIntroduces a new hyperparameter \\(\\small\\beta \\in [0,1]\\), which is called the momentum\n\n\n\n\n\n\nkeras.optimizers.SGD(learning_rate=0.01, momentum=0.9)"
+    "text": "Momentum optimisation\n\n\nImprove on regular gradient descent by keeping track of past gradients in a new term \\(\\small\\boldsymbol{m}\\):\n\\[\n\\small\n\\begin{align}\n    \\boldsymbol{m}_n &= \\beta \\boldsymbol{m}_{n-1} - \\eta \\nabla \\color{Purple}{L}(\\color{teal}{\\theta}_n) \\\\\n    \\boldsymbol{\\color{teal}{\\theta}}_{n+1} &= \\boldsymbol{\\color{teal}{\\theta}}_n + \\boldsymbol{m}_n\n\\end{align}\n\\]\n(behaves like a heavy ball rolling down a hill, where \\(\\small\\boldsymbol{m}\\) is the velocity)\nIntroduces a new hyperparameter \\(\\small\\beta \\in [0,1]\\), which is called the momentum\n\n\n\n\n\n\nkeras.optimizers.SGD(learning_rate=0.01, momentum=0.9)"
   },
   {
     "objectID": "slides/05-optimisers.html#nesterov-accelerated-gradient",
@@ -2013,28 +1985,21 @@
     "href": "slides/05-optimisers.html#adagrad-adaptive-gradient",
     "title": "DAT255: Deep learning engineering",
     "section": "AdaGrad (Adaptive Gradient)",
-    "text": "AdaGrad (Adaptive Gradient)\nAdaGrad introduces an adaptive learning rate, which is adjusted independently for the different parameters\nAdjustment is done by dividing by the sum of all past gradients\n\nFor parameters with steep gradient, learning rate is reduced quickly\nFor parameters with shallow gradient, learning rate is reduced slowly"
-  },
-  {
-    "objectID": "slides/05-optimisers.html#rmsprop-root-mean-square-propagation",
-    "href": "slides/05-optimisers.html#rmsprop-root-mean-square-propagation",
-    "title": "DAT255: Deep learning engineering",
-    "section": "RMSProp (Root Mean Square Propagation)",
-    "text": "RMSProp (Root Mean Square Propagation)\nAdaGrad in practice:\n\nGood: Less sensitive to choice of learning rate (since it’s adaptive)\nGood: Fast convergence for simple problems\nBad: Slow (or no) convergence for difficult problems\n\n\nRMSProp improves on AdaGrad by exponentially scaling down old gradients, before summing them\n Good convergence for the difficult problems too\nThis scaling gives a new hyperparameter \\(\\rho\\):\n\n\n\nkeras.optimizers.RMSprop(learning_rate=0.001, rho=0.9)"
+    "text": "AdaGrad (Adaptive Gradient)\nAdaGrad introduces an adaptive learning rate, which is adjusted independently for the different parameters\n\n\n\nFor parameters with steep gradient, learning rate is reduced quickly\nFor parameters with shallow gradient, learning rate is reduced slowly\n\n\n\n\n\n\n\n\n\n\n\nAdaGrad in practice:\n\nLess sensitive to choice of learning rate (since it’s adaptive) (good)\nFast convergence for simple problems (good)\nSlow (or no) convergence for difficult problems (bad)\n\n Add intelligent scaling to get RMSProp"
   },
   {
     "objectID": "slides/05-optimisers.html#adam-and-friends",
     "href": "slides/05-optimisers.html#adam-and-friends",
     "title": "DAT255: Deep learning engineering",
     "section": "Adam (and friends)",
-    "text": "Adam (and friends)\n\n\n\nMomentum\n + RMSProp\n + some technical details\n = adaptive moment estimation (Adam)\nkeras.optimizers.Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999)\n(For max confusion, the hyperparameters now changed names to \\(\\beta_1,\\,\\beta_2\\))\n\n\nMore tricks:\n\nAdaMax: Scale the past gradients differently\nNadam: Add Nesterov momentum\nAdamW Add L2 regularisation (aka weight decay)"
+    "text": "Adam (and friends)\n\n\n\nMomentum\n + RMSProp\n + some technical details\n = adaptive moment estimation (Adam)\nkeras.optimizers.Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999)\n\n\n\nMore tricks:\n\nAdaMax: Scale the past gradients differently\nNadam: Add Nesterov momentum\nAdamW Add L2 regularisation (aka weight decay)"
   },
   {
     "objectID": "slides/05-optimisers.html#comparison-and-guidelines",
     "href": "slides/05-optimisers.html#comparison-and-guidelines",
     "title": "DAT255: Deep learning engineering",
     "section": "Comparison and guidelines",
-    "text": "Comparison and guidelines\n\n\n\n\n\n\n\n\n\n\n\nMethod\nConvergence\n\n\n\nSpeed\nQuality\n\n\n\n\n\nSGD\n⚡️\n⭐️⭐️⭐️\n\n\nSGD w/ momentum\n⚡️⚡️\n⭐️⭐️⭐️\n\n\n\nSGD w/ Nesterov\n⚡️⚡️\n⭐️⭐️⭐️\n\n\n\nAdaGrad\n⚡️⚡️⚡️\n⭐️\n\n\nRMSProp\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\nAdam\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\nAdaMax\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\nNadam\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\nAdamW\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\n\n\n\n\n\n\n\n\n\n\nG\n\n\n\nStart\n\nStart\n\n\n\nAdam\n\nAdam\n\n\n\nStart-&gt;Adam\n\n\n\n\n\nwork\n\nDid it\nwork?\n\n\n\nwhy\n\nWhy\nnot?\n\n\n\nwork-&gt;why\n\n\nNo\n\n\n\nDone\n\nDone!\n\n\n\nwork-&gt;Done\n\n\nYes\n\n\n\nAdaMax\n\nAdaMax\n\n\n\nwhy-&gt;AdaMax\n\n\nNumerically\nunstable\n\n\n\nAdamW\n\nAdamW\n\n\n\nwhy-&gt;AdamW\n\n\nNeeds\nregularisation\n\n\n\nNadam\n\nNadam\n\n\n\nwhy-&gt;Nadam\n\n\nSlow\n\n\n\nsgdn\n\nSGD w/\nNesterov\n\n\n\nwhy-&gt;sgdn\n\n\nUnderfitting\n\n\n\nAdam-&gt;work\n\n\n\n\n\nAdaMax-&gt;work\n\n\n\n\n\nAdamW-&gt;work\n\n\n\n\n\nNadam-&gt;work\n\n\n\n\n\nsgdn-&gt;work"
+    "text": "Comparison and guidelines\n\n\n\n\n\n\n\n\n\n\nMethod\nConvergence\n\n\nSpeed\nQuality\n\n\n\n\nSGD\n⚡️\n⭐️⭐️⭐️\n\n\nSGD w/ momentum\n⚡️⚡️\n⭐️⭐️⭐️\n\n\nSGD w/ Nesterov\n⚡️⚡️\n⭐️⭐️⭐️\n\n\nAdaGrad\n⚡️⚡️⚡️\n⭐️\n\n\nRMSProp\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\nAdam\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\nAdaMax\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\nNadam\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\nAdamW\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\n\n\n\n\n\n\n\n\n\nG\n\n\n\nStart\n\nStart\n\n\n\nAdam\n\nAdam\n\n\n\nStart-&gt;Adam\n\n\n\n\n\nwork\n\nDid it\nwork?\n\n\n\nwhy\n\nWhy\nnot?\n\n\n\nwork-&gt;why\n\n\nNo\n\n\n\nDone\n\nDone!\n\n\n\nwork-&gt;Done\n\n\nYes\n\n\n\nAdaMax\n\nAdaMax\n\n\n\nwhy-&gt;AdaMax\n\n\nNumerically\nunstable\n\n\n\nAdamW\n\nAdamW\n\n\n\nwhy-&gt;AdamW\n\n\nNeeds\nregularisation\n\n\n\nNadam\n\nNadam\n\n\n\nwhy-&gt;Nadam\n\n\nSlow\n\n\n\nsgdn\n\nSGD w/\nNesterov\n\n\n\nwhy-&gt;sgdn\n\n\nUnderfitting\n\n\n\nAdam-&gt;work\n\n\n\n\n\nAdaMax-&gt;work\n\n\n\n\n\nAdamW-&gt;work\n\n\n\n\n\nNadam-&gt;work\n\n\n\n\n\nsgdn-&gt;work"
   },
   {
     "objectID": "slides/05-optimisers.html#learning-rate-and-loss-curves",
@@ -2051,11 +2016,11 @@
     "text": "Learning rate scheduling\nSome options for the most efficient learning: (see notebooks)\n\nReduce \\(\\eta\\) when learning stops:\nkeras.callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=0.001)\nGradually reduce \\(\\eta\\) for each step:\nkeras.optimizers.schedules.ExponentialDecay(initial_learning_rate, decay_steps, decay_rate)\nkeras.optimizers.schedules.PolynomialDecay(initial_learning_rate, ...)\nChange \\(\\eta\\) by some other rule:\nclass MyLRSchedule(keras.optimizers.schedules.LearningRateSchedule):\n\n    def __init__(self, initial_learning_rate):\n        self.initial_learning_rate = initial_learning_rate\n\n    def __call__(self, step):\n        return self.initial_learning_rate / (step + 1)\n\noptimizer = keras.optimizers.SGD(learning_rate=MyLRSchedule(0.1))"
   },
   {
-    "objectID": "slides/05-optimisers.html#referansegruppe",
-    "href": "slides/05-optimisers.html#referansegruppe",
+    "objectID": "slides/05-optimisers.html#learning-rate-schedulers",
+    "href": "slides/05-optimisers.html#learning-rate-schedulers",
     "title": "DAT255: Deep learning engineering",
-    "section": "Referansegruppe",
-    "text": "Referansegruppe"
+    "section": "Learning rate schedulers",
+    "text": "Learning rate schedulers"
   },
   {
     "objectID": "slides/07-timeseries.html#sequences",

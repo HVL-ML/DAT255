@@ -195,7 +195,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 5</u> – Optimisers and learning rates</p>
+  <p class="subtitle"><u>Lecture 5</u> – Optimisers and loss curves</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -206,15 +206,36 @@ sma@hvl.no
 </div>
 
 </section>
+<section id="this-week" class="slide level2" data-background-color="#E0F7FA">
+<h2>This week</h2>
+<div style="padding-top: 40px;">
+
+</div>
+<p><strong>Today:</strong></p>
+<ul>
+<li>A little more on gradient descent
+<ul>
+<li>Improved optimisation methods</li>
+</ul></li>
+<li>Loss curves and learning rates</li>
+</ul>
+<p><strong>Tomorrow:</strong></p>
+<ul>
+<li>Data augmentation</li>
+<li>Non-sequential layer connections</li>
+<li>Training <em>very</em> deep convolutional networks</li>
+<li>Modern ConvNet architectures</li>
+</ul>
+</section>
 <section id="loss-functions" class="slide level2">
 <h2>Loss functions</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
 <p><em>Reminder:</em> For all statistical modelling we need a measure of prediction quality</p>
-<p>The <strong>loss function</strong> <span class="math inline">\(L\)</span> must satisfy two conditions:</p>
+<p>The <strong>loss function</strong> <span class="math inline">\(\small{}L\)</span> must satisfy two conditions:</p>
 <ul>
 <li>Differentiable*</li>
-<li>Bounded below (<span class="math inline">\(L \geq 0\)</span>)</li>
+<li>Bounded below (<span class="math inline">\(\small L \geq 0\)</span>)</li>
 </ul>
 <div class="fragment" data-fragment-index="1">
 <p>In this course we stick mostly to</p>
@@ -228,7 +249,7 @@ sma@hvl.no
 <p><span class="math display">\[
 \small
 L_{\mathrm{MSE}}(\boldsymbol{\hat{y}, y}) = \frac{1}{N} \sum_{i}^{N} (\hat{y}_i - y_i)^2
-\]</span> where <span class="math inline">\(N\)</span> is the number of data points</p>
+\]</span> where <span class="math inline">\(\small{}N\)</span> is the number of data points</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figures/lecture5/mse-loss.png" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
@@ -246,10 +267,10 @@ L_{\mathrm{MSE}}(\boldsymbol{\hat{y}, y}) = \frac{1}{N} \sum_{i}^{N} (\hat{y}_i 
 <div class="columns">
 <div class="column" style="width:60%;">
 <p><em>Reminder:</em> For all statistical modelling we need a measure of prediction quality</p>
-<p>The <strong>loss function</strong> <span class="math inline">\(L\)</span> must satisfy two conditions:</p>
+<p>The <strong>loss function</strong> <span class="math inline">\(\small{}L\)</span> must satisfy two conditions:</p>
 <ul>
 <li>Differentiable*</li>
-<li>Bounded below (<span class="math inline">\(L \geq 0\)</span>)</li>
+<li>Bounded below (<span class="math inline">\(\small{}L \geq 0\)</span>)</li>
 </ul>
 <p>In this course we stick mostly to</p>
 <ul>
@@ -300,11 +321,14 @@ L_{\mathrm{log}}(\boldsymbol{\hat{y}, y}) = -\frac{1}{N} \sum_i^N \sum_k^K y_{i,
 <p>Local<br>minimum<br> <code>-&gt;</code> <span class="color-red"><em>bad predictions</em></span></p>
 </div>
 </section>
+<section id="section" class="slide level2" data-background-iframe="https://keras.io/api/optimizers/" data-background-interactive="true" data-menu-title="Keras optimisers">
+<h2></h2>
+</section>
 <section id="momentum-optimisation" class="slide level2">
 <h2>Momentum optimisation</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Improve on regular gradient descent by keeping track of <em>past gradients</em> in a new term <span class="math inline">\(\boldsymbol{m}\)</span>:</p>
+<p>Improve on regular gradient descent by keeping track of <em>past gradients</em> in a new term <span class="math inline">\(\small\boldsymbol{m}\)</span>:</p>
 <p><span class="math display">\[
 \small
 \begin{align}
@@ -312,7 +336,7 @@ L_{\mathrm{log}}(\boldsymbol{\hat{y}, y}) = -\frac{1}{N} \sum_i^N \sum_k^K y_{i,
     \boldsymbol{\color{teal}{\theta}}_{n+1} &amp;= \boldsymbol{\color{teal}{\theta}}_n + \boldsymbol{m}_n
 \end{align}
 \]</span></p>
-<p>(behaves like a heavy ball rolling down a hill, where <span class="math inline">\(\boldsymbol{m}\)</span> is the velocity)</p>
+<p>(behaves like a heavy ball rolling down a hill, where <span class="math inline">\(\small\boldsymbol{m}\)</span> is the velocity)</p>
 <div class="fragment">
 <p>Introduces a new hyperparameter <span class="math inline">\(\small\beta \in [0,1]\)</span>, which is called the momentum</p>
 <ul>
@@ -328,7 +352,7 @@ L_{\mathrm{log}}(\boldsymbol{\hat{y}, y}) = -\frac{1}{N} \sum_i^N \sum_k^K y_{i,
 <h2>Momentum optimisation</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Improve on regular gradient descent by keeping track of <em>past gradients</em> in a new term <span class="math inline">\(\boldsymbol{m}\)</span>:</p>
+<p>Improve on regular gradient descent by keeping track of <em>past gradients</em> in a new term <span class="math inline">\(\small\boldsymbol{m}\)</span>:</p>
 <p><span class="math display">\[
 \small
 \begin{align}
@@ -336,7 +360,7 @@ L_{\mathrm{log}}(\boldsymbol{\hat{y}, y}) = -\frac{1}{N} \sum_i^N \sum_k^K y_{i,
     \boldsymbol{\color{teal}{\theta}}_{n+1} &amp;= \boldsymbol{\color{teal}{\theta}}_n + \boldsymbol{m}_n
 \end{align}
 \]</span></p>
-<p>(behaves like a heavy ball rolling down a hill, where <span class="math inline">\(\boldsymbol{m}\)</span> is the velocity)</p>
+<p>(behaves like a heavy ball rolling down a hill, where <span class="math inline">\(\small\boldsymbol{m}\)</span> is the velocity)</p>
 <p>Introduces a new hyperparameter <span class="math inline">\(\small\beta \in [0,1]\)</span>, which is called the momentum</p>
 </div><div class="column" style="width:50%;">
 <p><img data-src="figures/lecture5/gradient-momentum.png" style="padding-top: 60px;"></p>
@@ -359,10 +383,13 @@ L_{\mathrm{log}}(\boldsymbol{\hat{y}, y}) = -\frac{1}{N} \sum_i^N \sum_k^K y_{i,
 \end{align}
 \]</span></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>keras.optimizers.SGD(learning_rate<span class="op">=</span><span class="fl">0.01</span>, momentum<span class="op">=</span><span class="fl">0.9</span>, nesterov<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="padding-top: 20px;">
+
+</div>
 <div class="fragment">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture5/nesterov.png" class="quarto-figure quarto-figure-center" width="700"></p>
+<p><img data-src="figures/lecture5/nesterov.png" class="quarto-figure quarto-figure-center" width="600"></p>
 </figure>
 </div>
 </div>
@@ -370,35 +397,29 @@ L_{\mathrm{log}}(\boldsymbol{\hat{y}, y}) = -\frac{1}{N} \sum_i^N \sum_k^K y_{i,
 <section id="adagrad-adaptive-gradient" class="slide level2">
 <h2>AdaGrad (<em>Ada</em>ptive <em>Grad</em>ient)</h2>
 <p>AdaGrad introduces an <strong>adaptive learning rate</strong>, which is adjusted <em>independently</em> for the different parameters</p>
-<p>Adjustment is done by dividing by the sum of all past gradients</p>
+<div class="columns">
+<div class="column" style="width:43%;">
 <ul>
 <li>For parameters with steep gradient, learning rate is reduced quickly</li>
 <li>For parameters with shallow gradient, learning rate is reduced slowly</li>
 </ul>
+</div><div class="column" style="width:57%;">
 <div class="fragment">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture5/adagrad.png" class="quarto-figure quarto-figure-center" width="800"></p>
+<p><img data-src="figures/lecture5/adagrad.png" class="quarto-figure quarto-figure-center" width="500"></p>
 </figure>
 </div>
 </div>
-</section>
-<section id="rmsprop-root-mean-square-propagation" class="slide level2">
-<h2>RMSProp (<em>Root Mean Square Propagation</em>)</h2>
+</div></div>
+<div class="fragment">
 <p>AdaGrad in practice:</p>
 <ul>
-<li><span class="color-green"><em>Good</em></span>: Less sensitive to choice of learning rate (since it’s adaptive)</li>
-<li><span class="color-green"><em>Good</em></span>: Fast convergence for simple problems</li>
-<li><span class="color-red"><em>Bad</em></span>: Slow (or <span class="color-red">no</span>) convergence for difficult problems</li>
+<li>Less sensitive to choice of learning rate (since it’s adaptive) (<span class="color-green"><em>good</em></span>)</li>
+<li>Fast convergence for simple problems (<span class="color-green"><em>good</em></span>)</li>
+<li>Slow (or <span class="color-red">no</span>) convergence for difficult problems (<span class="color-red"><em>bad</em></span>)</li>
 </ul>
-<div class="fragment">
-<p><strong>RMSProp</strong> improves on AdaGrad by exponentially scaling down old gradients, before summing them</p>
-<p><i class="bi bi-arrow-right"></i> Good convergence for the difficult problems too</p>
-<p>This scaling gives a new hyperparameter <span class="math inline">\(\rho\)</span>:</p>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a>keras.optimizers.RMSprop(learning_rate<span class="op">=</span><span class="fl">0.001</span>, rho<span class="op">=</span><span class="fl">0.9</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><i class="bi bi-arrow-right"></i> Add intelligent scaling to get <strong>RMSProp</strong></p>
 </div>
 </section>
 <section id="adam-and-friends" class="slide level2">
@@ -410,8 +431,8 @@ L_{\mathrm{log}}(\boldsymbol{\hat{y}, y}) = -\frac{1}{N} \sum_i^N \sum_k^K y_{i,
 <p>&nbsp;+ RMSProp<br></p>
 <p>&nbsp;+ some technical details<br></p>
 <p>&nbsp;= <strong>adaptive moment estimation (Adam</strong>)</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a aria-hidden="true" tabindex="-1"></a>keras.optimizers.Adam(learning_rate<span class="op">=</span><span class="fl">0.001</span>, beta_1<span class="op">=</span><span class="fl">0.9</span>, beta_2<span class="op">=</span><span class="fl">0.999</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><span style="font-size: 0.6em;"><em>(For max confusion, the hyperparameters now changed names to <span class="math inline">\(\beta_1,\,\beta_2\)</span>)</em></span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a>keras.optimizers.Adam(learning_rate<span class="op">=</span><span class="fl">0.001</span>, beta_1<span class="op">=</span><span class="fl">0.9</span>, beta_2<span class="op">=</span><span class="fl">0.999</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<!-- [_(For max confusion, the hyperparameters now changed names to $\beta_1,\,\beta_2$)_]{style="font-size: 0.6em;"} -->
 </div>
 <div class="fragment" data-fragment-index="2">
 <p>More tricks:</p>
@@ -425,87 +446,79 @@ L_{\mathrm{log}}(\boldsymbol{\hat{y}, y}) = -\frac{1}{N} \sum_i^N \sum_k^K y_{i,
 <div class="absolute" style="top: 0%; right: -5%; width: 200px; ">
 <p><img data-src="figures/lecture5/keras-optimisers.png"></p>
 </div>
-<div class="fragment" data-fragment-index="2">
-<div class="absolute" style="bottom: 0%; right: 10%; width: 150px; ">
-<p><img data-src="figures/lecture5/allthethings.png"></p>
-</div>
-</div>
+<!--
+:::{.fragment fragment-index=2}
+:::{.absolute bottom="0%" right="10%" width="150px"}
+![](figures/lecture5/allthethings.png)
+:::
+:::
+-->
 </section>
 <section id="comparison-and-guidelines" class="slide level2">
 <h2>Comparison and guidelines</h2>
 <div class="columns">
 <div class="column" style="width:55%;">
-<table class="caption-top" style="width:76%;">
+<table class="caption-top" style="width:75%;">
 <colgroup>
 <col style="width: 16%">
 <col style="width: 26%">
 <col style="width: 31%">
-<col style="width: 1%">
 </colgroup>
 <thead>
 <tr class="header">
 <th rowspan="2">Method</th>
 <th colspan="2" style="text-align: center;">Convergence</th>
-<th></th>
 </tr>
 <tr class="even">
 <th style="text-align: center;">Speed</th>
 <th>Quality</th>
-<th></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>SGD</td>
 <td style="text-align: center;">⚡️</td>
-<td colspan="2">⭐️⭐️⭐️</td>
+<td>⭐️⭐️⭐️</td>
 </tr>
 <tr class="even">
 <td>SGD w/ momentum</td>
 <td style="text-align: center;">⚡️⚡️</td>
 <td>⭐️⭐️⭐️</td>
-<td></td>
 </tr>
 <tr class="odd">
 <td>SGD w/ Nesterov</td>
 <td style="text-align: center;">⚡️⚡️</td>
 <td>⭐️⭐️⭐️</td>
-<td></td>
 </tr>
 <tr class="even">
 <td>AdaGrad</td>
 <td style="text-align: center;">⚡️⚡️⚡️</td>
-<td colspan="2">⭐️</td>
+<td>⭐️</td>
 </tr>
 <tr class="odd">
 <td>RMSProp</td>
 <td style="text-align: center;">⚡️⚡️⚡️</td>
 <td>⭐️⭐️ to ⭐️⭐️⭐️</td>
-<td></td>
 </tr>
 <tr class="even">
 <td>Adam</td>
 <td style="text-align: center;">⚡️⚡️⚡️</td>
 <td>⭐️⭐️ to ⭐️⭐️⭐️</td>
-<td></td>
 </tr>
 <tr class="odd">
 <td>AdaMax</td>
 <td style="text-align: center;">⚡️⚡️⚡️</td>
 <td>⭐️⭐️ to ⭐️⭐️⭐️</td>
-<td></td>
 </tr>
 <tr class="even">
 <td>Nadam</td>
 <td style="text-align: center;">⚡️⚡️⚡️</td>
 <td>⭐️⭐️ to ⭐️⭐️⭐️</td>
-<td></td>
 </tr>
 <tr class="odd">
 <td>AdamW</td>
 <td style="text-align: center;">⚡️⚡️⚡️</td>
 <td>⭐️⭐️ to ⭐️⭐️⭐️</td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -684,32 +697,45 @@ L_{\mathrm{log}}(\boldsymbol{\hat{y}, y}) = -\frac{1}{N} \sum_i^N \sum_k^K y_{i,
 <p>Some options for the most efficient learning: (<em>see notebooks</em>)</p>
 <ul>
 <li class="fragment"><p>Reduce <span class="math inline">\(\eta\)</span> when learning stops:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a>keras.callbacks.ReduceLROnPlateau(monitor<span class="op">=</span><span class="st">'val_loss'</span>, factor<span class="op">=</span><span class="fl">0.2</span>, patience<span class="op">=</span><span class="dv">5</span>, min_lr<span class="op">=</span><span class="fl">0.001</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a aria-hidden="true" tabindex="-1"></a>keras.callbacks.ReduceLROnPlateau(monitor<span class="op">=</span><span class="st">'val_loss'</span>, factor<span class="op">=</span><span class="fl">0.2</span>, patience<span class="op">=</span><span class="dv">5</span>, min_lr<span class="op">=</span><span class="fl">0.001</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li class="fragment"><p>Gradually reduce <span class="math inline">\(\eta\)</span> for each step:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a>keras.optimizers.schedules.ExponentialDecay(initial_learning_rate, decay_steps, decay_rate)</span>
-<span id="cb6-2"><a aria-hidden="true" tabindex="-1"></a>keras.optimizers.schedules.PolynomialDecay(initial_learning_rate, ...)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a>keras.optimizers.schedules.ExponentialDecay(initial_learning_rate, decay_steps, decay_rate)</span>
+<span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>keras.optimizers.schedules.PolynomialDecay(initial_learning_rate, ...)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li class="fragment"><p>Change <span class="math inline">\(\eta\)</span> by some other rule:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyLRSchedule(keras.optimizers.schedules.LearningRateSchedule):</span>
-<span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, initial_learning_rate):</span>
-<span id="cb7-4"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.initial_learning_rate <span class="op">=</span> initial_learning_rate</span>
-<span id="cb7-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__call__</span>(<span class="va">self</span>, step):</span>
-<span id="cb7-7"><a aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.initial_learning_rate <span class="op">/</span> (step <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb7-8"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> keras.optimizers.SGD(learning_rate<span class="op">=</span>MyLRSchedule(<span class="fl">0.1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyLRSchedule(keras.optimizers.schedules.LearningRateSchedule):</span>
+<span id="cb6-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, initial_learning_rate):</span>
+<span id="cb6-4"><a aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.initial_learning_rate <span class="op">=</span> initial_learning_rate</span>
+<span id="cb6-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__call__</span>(<span class="va">self</span>, step):</span>
+<span id="cb6-7"><a aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.initial_learning_rate <span class="op">/</span> (step <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb6-8"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> keras.optimizers.SGD(learning_rate<span class="op">=</span>MyLRSchedule(<span class="fl">0.1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ul>
+<!--
+## Referansegruppe 
+
+:::{.absolute top="10%" left="-7%" width="120%"}
+![](figures/lecture2/referansegruppe.png)
+:::
+
+:::{.absolute top="70%" left="80%"}
+![](figures/lecture2/uncle-sam.jpg)
+:::
+-->
 </section>
-<section id="referansegruppe" class="slide level2">
-<h2>Referansegruppe</h2>
-<div class="absolute" style="top: 10%; left: -7%; width: 120%; ">
-<p><img data-src="figures/lecture2/referansegruppe.png"></p>
+<section id="learning-rate-schedulers" class="slide level2">
+<h2>Learning rate schedulers</h2>
+<div style="padding-top: 50px;">
+
 </div>
-<div class="absolute" style="top: 70%; left: 80%; ">
-<p><img data-src="figures/lecture2/uncle-sam.jpg"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://i0.wp.com/neptune.ai/wp-content/uploads/2022/07/Learning-rate-schedulers.png?w=981&amp;ssl=1" class="quarto-figure quarto-figure-center" width="700"></p>
+</figure>
 </div>
 </section>
-<section id="section" class="slide level2" data-menu-title="Fin">
+<section id="section-1" class="slide level2" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>
