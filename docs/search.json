@@ -1960,6 +1960,13 @@
     "text": "Local minima\n\n\nLocalminimum -&gt; bad predictions"
   },
   {
+    "objectID": "slides/05-optimisers.html#comparing-gradient-descent-algorithms",
+    "href": "slides/05-optimisers.html#comparing-gradient-descent-algorithms",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Comparing gradient descent algorithms",
+    "text": "Comparing gradient descent algorithms"
+  },
+  {
     "objectID": "slides/05-optimisers.html#momentum-optimisation",
     "href": "slides/05-optimisers.html#momentum-optimisation",
     "title": "DAT255: Deep learning engineering",
@@ -1999,7 +2006,7 @@
     "href": "slides/05-optimisers.html#comparison-and-guidelines",
     "title": "DAT255: Deep learning engineering",
     "section": "Comparison and guidelines",
-    "text": "Comparison and guidelines\n\n\n\n\n\n\n\n\n\n\nMethod\nConvergence\n\n\nSpeed\nQuality\n\n\n\n\nSGD\n⚡️\n⭐️⭐️⭐️\n\n\nSGD w/ momentum\n⚡️⚡️\n⭐️⭐️⭐️\n\n\nSGD w/ Nesterov\n⚡️⚡️\n⭐️⭐️⭐️\n\n\nAdaGrad\n⚡️⚡️⚡️\n⭐️\n\n\nRMSProp\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\nAdam\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\nAdaMax\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\nNadam\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\nAdamW\n⚡️⚡️⚡️\n⭐️⭐️ to ⭐️⭐️⭐️\n\n\n\n\n\n\n\n\n\n\n\n\nG\n\n\n\nStart\n\nStart\n\n\n\nAdam\n\nAdam\n\n\n\nStart-&gt;Adam\n\n\n\n\n\nwork\n\nDid it\nwork?\n\n\n\nwhy\n\nWhy\nnot?\n\n\n\nwork-&gt;why\n\n\nNo\n\n\n\nDone\n\nDone!\n\n\n\nwork-&gt;Done\n\n\nYes\n\n\n\nAdaMax\n\nAdaMax\n\n\n\nwhy-&gt;AdaMax\n\n\nNumerically\nunstable\n\n\n\nAdamW\n\nAdamW\n\n\n\nwhy-&gt;AdamW\n\n\nNeeds\nregularisation\n\n\n\nNadam\n\nNadam\n\n\n\nwhy-&gt;Nadam\n\n\nSlow\n\n\n\nsgdn\n\nSGD w/\nNesterov\n\n\n\nwhy-&gt;sgdn\n\n\nUnderfitting\n\n\n\nAdam-&gt;work\n\n\n\n\n\nAdaMax-&gt;work\n\n\n\n\n\nAdamW-&gt;work\n\n\n\n\n\nNadam-&gt;work\n\n\n\n\n\nsgdn-&gt;work"
+    "text": "Comparison and guidelines\n\n\n\n\n\n\n\n\n\n\nMethod\nConvergence\n\n\nSpeed\nQuality\n\n\n\n\nSGD\n⚡️\n⭐️⭐️⭐️\n\n\nSGD w/ momentum\n⚡️⚡️\n⭐️⭐️⭐️\n\n\nSGD w/ Nesterov\n⚡️⚡️\n⭐️⭐️⭐️\n\n\nAdaGrad\n⚡️⚡️⚡️\n⭐️\n\n\nRMSProp\n⚡️⚡️⚡️\n⭐️⭐️(⭐️)\n\n\nAdam\n⚡️⚡️⚡️\n⭐️⭐️(⭐️)\n\n\nAdaMax\n⚡️⚡️⚡️\n⭐️⭐️(⭐️)\n\n\nNadam\n⚡️⚡️⚡️\n⭐️⭐️(⭐️)\n\n\nAdamW\n⚡️⚡️⚡️\n⭐️⭐️(⭐️)\n\n\n\n\n\n\n\n\n\n\n\n\nG\n\n\n\nStart\n\nStart\n\n\n\nAdam\n\nAdam\n\n\n\nStart-&gt;Adam\n\n\n\n\n\nwork\n\nDid it\nwork?\n\n\n\nwhy\n\nWhy\nnot?\n\n\n\nwork-&gt;why\n\n\nNo\n\n\n\nDone\n\nDone!\n\n\n\nwork-&gt;Done\n\n\nYes\n\n\n\nAdaMax\n\nAdaMax\n\n\n\nwhy-&gt;AdaMax\n\n\nNumerically\nunstable\n\n\n\nAdamW\n\nAdamW\n\n\n\nwhy-&gt;AdamW\n\n\nNeeds\nregularisation\n\n\n\nNadam\n\nNadam\n\n\n\nwhy-&gt;Nadam\n\n\nSlow\n\n\n\nsgdn\n\nSGD w/\nNesterov\n\n\n\nwhy-&gt;sgdn\n\n\nUnderfitting\n\n\n\nAdam-&gt;work\n\n\n\n\n\nAdaMax-&gt;work\n\n\n\n\n\nAdamW-&gt;work\n\n\n\n\n\nNadam-&gt;work\n\n\n\n\n\nsgdn-&gt;work\n\n\n\n\n\n\n\n\n\n\n\n\n\nA. Geron: Hands-on Machine Learning with Scikit-Learn, Keras and TensorFlow"
   },
   {
     "objectID": "slides/05-optimisers.html#learning-rate-and-loss-curves",
