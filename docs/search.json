@@ -1092,18 +1092,18 @@
     "text": "keras.applications\nThe most popular computer vision architectures are available as pre-trained models in keras.applications.\nThese are excellent starting points for\n\nfeature extraction\nfine-tuning\ntransfer learning\n\n\nNote: The different models typically require specific preprocessing:\nIf you want to use\nkeras.applications.Xception()\nyou should process the input images with\nkeras.applications.xception.preprocess_input()"
   },
   {
-    "objectID": "slides/06-advanced-computer-vision.html#feature-extraction-and-fine-tuning",
-    "href": "slides/06-advanced-computer-vision.html#feature-extraction-and-fine-tuning",
+    "objectID": "slides/06-advanced-computer-vision.html#feature-extraction",
+    "href": "slides/06-advanced-computer-vision.html#feature-extraction",
     "title": "DAT255: Deep learning engineering",
-    "section": "Feature extraction and fine-tuning",
-    "text": "Feature extraction and fine-tuning"
+    "section": "Feature extraction",
+    "text": "Feature extraction"
   },
   {
-    "objectID": "slides/06-advanced-computer-vision.html#ablation-studies",
-    "href": "slides/06-advanced-computer-vision.html#ablation-studies",
+    "objectID": "slides/06-advanced-computer-vision.html#fine-tuning",
+    "href": "slides/06-advanced-computer-vision.html#fine-tuning",
     "title": "DAT255: Deep learning engineering",
-    "section": "Ablation studies",
-    "text": "Ablation studies"
+    "section": "Fine-tuning",
+    "text": "Fine-tuning\n\n\n\nKeep general patterns learned, but make them more specific to a new task:\n\n\n\n\n\n\nAdd custom network on top of a trained base network\nFreeze the base network\nTrain the custom part\nUnfreeze the base network\nJointly train the entire model"
   },
   {
     "objectID": "slides/06-advanced-computer-vision.html#other-computer-vision-tasks-next-week",

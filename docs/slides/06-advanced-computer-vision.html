@@ -645,11 +645,49 @@ y = f_3(f_2(f_1(x_1, x_2, \dots, x_n | \theta_1) | \theta_2) | \theta_3)
 <section id="section" class="slide level2" data-menu-title="Keras applications" data-background-iframe="https://keras.io/api/applications/" data-background-interactive="true">
 <h2></h2>
 </section>
-<section id="feature-extraction-and-fine-tuning" class="slide level2">
-<h2>Feature extraction and fine-tuning</h2>
+<section id="feature-extraction" class="slide level2">
+<h2>Feature extraction</h2>
+<div style="padding-top: 50px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch08/swapping_fc_classifier.6e525b7a.png" class="quarto-figure quarto-figure-center" width="700"></p>
+</figure>
+</div>
+<div class="absolute rectangle fragment fade-out" style="background-color: #FFF; border: 0px;top: 18%; left: 38%; width: 500px; height: 500px; ">
+
+</div>
+<div class="absolute rectangle fragment fade-out" style="background-color: #FFF; border: 0px;top: 18%; left: 62%; width: 250px; height: 500px; ">
+
+</div>
 </section>
-<section id="ablation-studies" class="slide level2">
-<h2>Ablation studies</h2>
+<section id="fine-tuning" class="slide level2">
+<h2>Fine-tuning</h2>
+<div style="padding-top: 30px;">
+
+</div>
+<p>Keep general patterns learned, but make them more specific to a new task:</p>
+<div style="padding-top: 50px;">
+
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Add custom network on top of a trained base network</li>
+<li><em>Freeze</em> the base network</li>
+<li>Train the custom part</li>
+<li><em>Unfreeze</em> the base network</li>
+<li>Jointly train the entire model</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch08/swapping_fc_classifier.6e525b7a.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div></div>
+<!-- ## Ablation studies -->
 </section>
 <section id="other-computer-vision-tasks-next-week" class="slide level2">
 <h2>Other computer vision tasks (next week)</h2>
