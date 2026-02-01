@@ -1635,7 +1635,7 @@
     "href": "index.html",
     "title": "DAT255 lecture notes",
     "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\n\nWeek 3\n1: Monday: Welcome and introduction\n2: Tuesday: The tools of deep learning\n\n\nWeek 4\n3: Monday: Computer vision and the concepts of layers\n4: Tuesday: Training deep neural networks\n\n\nWeek 5\n5: Monday: Optimisation algorithms and learning rates\n6: Tuesday: Augmentation and advanced computer vision\n\n\nWeek 6\n7: Monday: Image segmentation\n8: Tuesday: Object detection"
+    "text": "Published after each lecture week – see Canvas for additional material.\n\nWeek 3\n1: Monday: Welcome and introduction\n2: Tuesday: The tools of deep learning\n\n\nWeek 4\n3: Monday: Computer vision and the concepts of layers\n4: Tuesday: Training deep neural networks\n\n\nWeek 5\n5: Monday: Optimisation algorithms and learning rates\n6: Tuesday: Augmentation and advanced computer vision\n\n\nWeek 6\n7: Monday: Image segmentation"
   },
   {
     "objectID": "slides/01-welcome.html#what-can-you-do-with-deep-learning",
