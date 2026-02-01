@@ -980,6 +980,188 @@
     "text": "Quiz"
   },
   {
+    "objectID": "slides/07-timeseries.html#sequences",
+    "href": "slides/07-timeseries.html#sequences",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Sequences",
+    "text": "Sequences\nSequences are ordered series. For instance\n\n\n\nNatural language\nI only drink coffee (\\(\\neq\\) only I drink coffee)\n\n\n\nTime series\n\n\n\nTime\n11:00\n12:00\n13:00\n14:00\n15:00\n\n\nTemp\n7°C\n8°C\n10°C\n12 °C\n12 °C\n\n\n\n\n\n\n\nAudio\n\n\n\n\n\n\nVideo\nVideo\n\n\n\n\nDNA"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#sequence-prediction-tasks",
+    "href": "slides/07-timeseries.html#sequence-prediction-tasks",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Sequence prediction tasks",
+    "text": "Sequence prediction tasks\n\n\n\n\nClassification:\n\nSpeech recognition\nFraud detection, network intrusion detection\nFault detection and predictive maintenance\nMedical diagnostics\nSentiment analysis\nTopic classification\n\n\n We already know (most of) the tools needed\n\n\n\n\nForecasting (regression of future values)\n\nPredicting weather, energy prices, stock prices\nText generation\n\n\n Need a model that can remember the past\n\n\n\nSequence-to-sequence learning\n\nLanguage translation\nImage captioning\nText summarisation\n\n\n Need a model that can remember the context"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#sequence-classification",
+    "href": "slides/07-timeseries.html#sequence-classification",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Sequence classification",
+    "text": "Sequence classification\n\nFor images we looked for patterns between neighbouring pixels, in 2D\nFor sequences we equivalently look for patterns between neighbouring elements (e.g. points in time), in 1D\n\nWhile 1D, we can still have multiple channels\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2D (images)\n\n1D (sequences)\n\n\n\n\nkeras.layers.Conv2D\n-&gt;\nkeras.layers.Conv1D\n\n\nkeras.layers.Conv2DTranspose\n-&gt;\nkeras.layers.Conv1DTranspose\n\n\nkeras.layers.MaxPooling2D\n-&gt;\nkeras.layers.MaxPooling1D"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#convolutions-recap",
+    "href": "slides/07-timeseries.html#convolutions-recap",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Convolutions recap",
+    "text": "Convolutions recap"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#convolutions-recap-1",
+    "href": "slides/07-timeseries.html#convolutions-recap-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Convolutions recap",
+    "text": "Convolutions recap"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#convolutions-recap-2",
+    "href": "slides/07-timeseries.html#convolutions-recap-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Convolutions recap",
+    "text": "Convolutions recap"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#convolutions-recap-3",
+    "href": "slides/07-timeseries.html#convolutions-recap-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Convolutions recap",
+    "text": "Convolutions recap"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#convolutions-recap-4",
+    "href": "slides/07-timeseries.html#convolutions-recap-4",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Convolutions recap",
+    "text": "Convolutions recap"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#convolutions-recap-5",
+    "href": "slides/07-timeseries.html#convolutions-recap-5",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Convolutions recap",
+    "text": "Convolutions recap"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#convolutions-detour",
+    "href": "slides/07-timeseries.html#convolutions-detour",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Convolutions detour",
+    "text": "Convolutions detour\nIf the take the convolution operation\n\\[\n\\small\n(f \\ast g)(t) \\equiv \\int_{-\\infty}^{\\infty} f(\\tau) g(t-\\tau) d\\tau\n\\]\nbut reverse one of the functions (\\(\\small f(t) \\to f(-t)\\)), we get the similar operation called cross-correlation:\n\n\\[\n\\small\nf \\star g \\equiv f(-t) \\ast g(t)\n\\]"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#convolutions-detour-1",
+    "href": "slides/07-timeseries.html#convolutions-detour-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Convolutions detour",
+    "text": "Convolutions detour\nIf the take the convolution operation\n\\[\n\\small\nf \\ast g \\equiv \\int_{-\\infty}^{\\infty} f(\\tau) g(t-\\tau) d\\tau\n\\]\nbut reverse one of the functions (\\(\\small f(t) \\to f(-t)\\)), we get the similar operation called cross-correlation:\n\n\\[\n\\small\nf \\star g \\equiv f(-t) \\ast g(t)\n\\]"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#sequencing-forecasting-predicting-the-future",
+    "href": "slides/07-timeseries.html#sequencing-forecasting-predicting-the-future",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Sequencing forecasting: Predicting the future",
+    "text": "Sequencing forecasting: Predicting the future\nCNNs are great for classification because of translation invariance\nFor forecasting, we typically don’t want this.\n\nNew assumption:\n\nRecent data is more informative than old data"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#recurrent-neural-networks-rnns",
+    "href": "slides/07-timeseries.html#recurrent-neural-networks-rnns",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Recurrent neural networks (RNNs)",
+    "text": "Recurrent neural networks (RNNs)\nOur neural networks up until now have no state (can’t remember anything)\nIntroduce a state in the simplest way:\nLet each node store its previous output"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#recurrent-neural-networks-rnns-1",
+    "href": "slides/07-timeseries.html#recurrent-neural-networks-rnns-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Recurrent neural networks (RNNs)",
+    "text": "Recurrent neural networks (RNNs)\nOur neural networks up until now have no state (can’t remember anything)\nIntroduce a state in the simplest way:\nLet each node store its previous output"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#recurrent-neural-networks-rnns-2",
+    "href": "slides/07-timeseries.html#recurrent-neural-networks-rnns-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Recurrent neural networks (RNNs)",
+    "text": "Recurrent neural networks (RNNs)\nRecall that a regular Dense layer computes its output by\noutputs = activation(tf.dot(W, inputs) + b)\n(where W is the weight matrix, inputs is the vector of features and b is the bias vector)\n\nThe recurrent node has two sets of weights:\n\nThe usual ones, call them W_x\nThose to be applied to the previous output, call them W_y\n\n\n\nThe outputs then become\nstate_t = tf.zeros(shape=(num_output_features))\noutputs = []\nfor input_t in input_sequence:  # loop over inputs at time t\n  output_t = activation(tf.dot(W_y, inputs) + tf.dot(W_y, state_t) + b)\n  outputs.append(output_t)\n  state_t = output_t\noutput_sequence = tf.stack(outputs, axis=0)\nImplemented in Keras as keras.layers.SimpleRNN"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#input-and-output-sequences",
+    "href": "slides/07-timeseries.html#input-and-output-sequences",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Input and output sequences",
+    "text": "Input and output sequences"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#intermezzo-autoregressive-models",
+    "href": "slides/07-timeseries.html#intermezzo-autoregressive-models",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Intermezzo: Autoregressive models",
+    "text": "Intermezzo: Autoregressive models\nSimplest possible forecast:\nThe value tomorrow is the same as the value today. \\[\n\\small\ny_i = y_{t-1}\n\\]\n\n\n\n\n\nNumber of rail and bus passengers in Chicago 2019\n\n\n\n\n\n\n\nPartial autocorrelation"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#intermezzo-autoregressive-models-1",
+    "href": "slides/07-timeseries.html#intermezzo-autoregressive-models-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Intermezzo: Autoregressive models",
+    "text": "Intermezzo: Autoregressive models\n\n\nMore advanced forecast:\nThe value tomorrow is given by a weighted sum of the \\(p\\) previous time steps, plus a noise term\n\\[\n\\small\ny_i = \\sum^p \\varphi_i y_{t-i} + \\epsilon_t\n\\]\n(\\(\\varphi_i\\) are the parameters of the model)\n\n\n\n\nCan add moving average to get an ARMA model, look at differences to get ARIMA, add seasonality to get SARIMA, …\nLots of work on (traditional) statistical time series modelling - usually worth trying out before going to deep learning."
+  },
+  {
+    "objectID": "slides/07-timeseries.html#improved-memory-cells",
+    "href": "slides/07-timeseries.html#improved-memory-cells",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Improved memory cells",
+    "text": "Improved memory cells\nIn practice, RNNs suffer from vanishing/exploding gradients during training\n Difficult to make them learn long-term dependencies\n\nCan introduce hidden states which are not the same as the output.\n\n\n\n\n\nTwo most used approaces: LSTMs and GRUs."
+  },
+  {
+    "objectID": "slides/07-timeseries.html#the-long-short-term-memory-lstm-cell",
+    "href": "slides/07-timeseries.html#the-long-short-term-memory-lstm-cell",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The long short-term memory (LSTM) cell",
+    "text": "The long short-term memory (LSTM) cell\nAdd long-term memory by having two states in each cell:\nA short-term state \\(\\small\\boldsymbol{h}_t\\) and a long-term state \\(\\small\\boldsymbol{c}_t\\)\n\n\n\n\n\nGates determine data flow – add small networks inside the cell to act as gate operators\n\nkeras.layers.LSTM"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#the-gated-recurrent-unit-gru",
+    "href": "slides/07-timeseries.html#the-gated-recurrent-unit-gru",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The gated recurrent unit (GRU)",
+    "text": "The gated recurrent unit (GRU)\nSimplified and somewhat more effective variant:\n\n\n\n\n\nkeras.layers.GRU"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#stacking-recurrent-layers",
+    "href": "slides/07-timeseries.html#stacking-recurrent-layers",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Stacking recurrent layers",
+    "text": "Stacking recurrent layers\nAs usual, we can increase the capacity by stacking layers.\nNote when building a deep RNN: Intermediate layers should return the entire sequence\ninputs = keras.Input(shape=(sequence_length, raw_data.shape[-1]))\nx = layers.GRU(32, return_sequences=True)(inputs)\nx = layers.GRU(32, return_sequences=True)(x)\nx = layers.GRU(32)(x)\noutputs = layers.Dense(1)(x)\nmodel = keras.Model(inputs, outputs)"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#training-rnns",
+    "href": "slides/07-timeseries.html#training-rnns",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Training RNNs",
+    "text": "Training RNNs\nSome tricks to efficiently training recurrent networks:\n\n\nUse saturating activation functions (tanh, sigmoid)\nlayers.LSTM(units, activation=\"tanh\", recurrent_activation=\"sigmoid\")\nUse layer normalisation (keras.layers.LayerNormalization) instead of batch normalisation\nAdd recurrent dropout (potentially in addition to regular dropout)\nx = layers.LSTM(32, recurrent_dropout=0.25)(inputs)\n\n\n\n\nTest if training runs faster on CPU than on GPU\n\nNVIDIA backend only available if using default arguments for LSTM/GRU layers\nfor loops in recurrent nodes reduces parallelisability\n\nCan optionally unroll for loops (memory intensive):\nx = layers.LSTM(32, unroll=True)(inputs)"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#bonus-trick-1-cnn-processing",
+    "href": "slides/07-timeseries.html#bonus-trick-1-cnn-processing",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Bonus trick #1: CNN processing",
+    "text": "Bonus trick #1: CNN processing\nEven with the previous tricks up our sleeve, getting RNNs to learn patterns over &gt;100 time steps is difficult.\nCan extract small-scale patterns with convolutional layers first, then apply recurrent layers:\nmodel = keras.Sequential([\n  keras.layers.Conv1D(filters=32, kernel_size=4, strides=2, activation=\"relu\"),\n  keras.layers.GRU(32, return_sequences=True)\n  keras.layers.Dense(14)\n])\n(add stride &gt; 1 to downsample)"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#bonus-trick-1-cnn-processing-1",
+    "href": "slides/07-timeseries.html#bonus-trick-1-cnn-processing-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Bonus trick #1: CNN processing",
+    "text": "Bonus trick #1: CNN processing\nEven with the previous tricks up out sleeve, getting RNNs to learn patterns over &gt;100 time steps is difficult.\nCan extract small-scale patterns with convolutional layers first, then apply recurrent layers\nOr maybe skip the recurrence altogether? WaveNet architecture:\n\n\n\n\n\nkeras.layers.Conv1D(..., padding=\"casual\")  # Look only backwards"
+  },
+  {
+    "objectID": "slides/07-timeseries.html#bonus-trick-2-bidirectional-rnns",
+    "href": "slides/07-timeseries.html#bonus-trick-2-bidirectional-rnns",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Bonus trick #2: bidirectional RNNs",
+    "text": "Bonus trick #2: bidirectional RNNs\nFor time series we expect the most recent data points to be most important\n Chronological ordering makes sense\n\nSometimes this is not the case - for instance for text\n\n\n\nI arrived by bike.\n\n\n\nIch bin mit Fahrrad angekommen.\n\n\n\n\n\n\nCan process sequences both forwards and in reverse by using a bidirectional recurrent layer:\n\n\n\ninputs = keras.Input(shape=(...))\nx = layers.Bidirectional(layers.LSTM(16))(inputs)\noutputs = layers.Dense(1)(x)\nmodel = keras.Model(inputs, outputs)"
+  },
+  {
     "objectID": "slides/06-advanced-computer-vision.html#improving-generalisation",
     "href": "slides/06-advanced-computer-vision.html#improving-generalisation",
     "title": "DAT255: Deep learning engineering",
@@ -1453,7 +1635,7 @@
     "href": "index.html",
     "title": "DAT255 lecture notes",
     "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\n\nWeek 3\n1: Monday: Welcome and introduction\n2: Tuesday: The tools of deep learning\n\n\nWeek 4\n3: Monday: Computer vision and the concepts of layers\n4: Tuesday: Training deep neural networks\n\n\nWeek 5\n5: Monday: Optimisation algorithms and learning rates\n6: Tuesday: Augmentation and advanced computer vision"
+    "text": "Published after each lecture week – see Canvas for additional material.\n\nWeek 3\n1: Monday: Welcome and introduction\n2: Tuesday: The tools of deep learning\n\n\nWeek 4\n3: Monday: Computer vision and the concepts of layers\n4: Tuesday: Training deep neural networks\n\n\nWeek 5\n5: Monday: Optimisation algorithms and learning rates\n6: Tuesday: Augmentation and advanced computer vision\n\n\nWeek 6\n7: Monday: Image segmentation\n8: Tuesday: Object detection"
   },
   {
     "objectID": "slides/01-welcome.html#what-can-you-do-with-deep-learning",
@@ -2030,186 +2212,207 @@
     "text": "Learning rate schedulers"
   },
   {
-    "objectID": "slides/07-timeseries.html#sequences",
-    "href": "slides/07-timeseries.html#sequences",
+    "objectID": "slides/07-image-segmentation.html#computer-vision-tasks",
+    "href": "slides/07-image-segmentation.html#computer-vision-tasks",
     "title": "DAT255: Deep learning engineering",
-    "section": "Sequences",
-    "text": "Sequences\nSequences are ordered series. For instance\n\n\n\nNatural language\nI only drink coffee (\\(\\neq\\) only I drink coffee)\n\n\n\nTime series\n\n\n\nTime\n11:00\n12:00\n13:00\n14:00\n15:00\n\n\nTemp\n7°C\n8°C\n10°C\n12 °C\n12 °C\n\n\n\n\n\n\n\nAudio\n\n\n\n\n\n\nVideo\nVideo\n\n\n\n\nDNA"
+    "section": "Computer vision tasks",
+    "text": "Computer vision tasks"
   },
   {
-    "objectID": "slides/07-timeseries.html#sequence-prediction-tasks",
-    "href": "slides/07-timeseries.html#sequence-prediction-tasks",
+    "objectID": "slides/07-image-segmentation.html#computer-vision-tasks-1",
+    "href": "slides/07-image-segmentation.html#computer-vision-tasks-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Sequence prediction tasks",
-    "text": "Sequence prediction tasks\n\n\n\n\nClassification:\n\nSpeech recognition\nFraud detection, network intrusion detection\nFault detection and predictive maintenance\nMedical diagnostics\nSentiment analysis\nTopic classification\n\n\n We already know (most of) the tools needed\n\n\n\n\nForecasting (regression of future values)\n\nPredicting weather, energy prices, stock prices\nText generation\n\n\n Need a model that can remember the past\n\n\n\nSequence-to-sequence learning\n\nLanguage translation\nImage captioning\nText summarisation\n\n\n Need a model that can remember the context"
+    "section": "Computer vision tasks",
+    "text": "Computer vision tasks"
   },
   {
-    "objectID": "slides/07-timeseries.html#sequence-classification",
-    "href": "slides/07-timeseries.html#sequence-classification",
+    "objectID": "slides/07-image-segmentation.html#image-segmentation",
+    "href": "slides/07-image-segmentation.html#image-segmentation",
     "title": "DAT255: Deep learning engineering",
-    "section": "Sequence classification",
-    "text": "Sequence classification\n\nFor images we looked for patterns between neighbouring pixels, in 2D\nFor sequences we equivalently look for patterns between neighbouring elements (e.g. points in time), in 1D\n\nWhile 1D, we can still have multiple channels\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2D (images)\n\n1D (sequences)\n\n\n\n\nkeras.layers.Conv2D\n-&gt;\nkeras.layers.Conv1D\n\n\nkeras.layers.Conv2DTranspose\n-&gt;\nkeras.layers.Conv1DTranspose\n\n\nkeras.layers.MaxPooling2D\n-&gt;\nkeras.layers.MaxPooling1D"
+    "section": "Image segmentation",
+    "text": "Image segmentation\n\nSemantic segmentation: Classify each pixel onto a category\nInstance segmentation: Classify onto individial instances (possibly of same category)\nPanoptic segmentation: Classify both category and instance"
   },
   {
-    "objectID": "slides/07-timeseries.html#convolutions-recap",
-    "href": "slides/07-timeseries.html#convolutions-recap",
+    "objectID": "slides/07-image-segmentation.html#building-a-semantic-segmentation-model",
+    "href": "slides/07-image-segmentation.html#building-a-semantic-segmentation-model",
     "title": "DAT255: Deep learning engineering",
-    "section": "Convolutions recap",
-    "text": "Convolutions recap"
+    "section": "Building a semantic segmentation model",
+    "text": "Building a semantic segmentation model\nStep 1: Training data\nNeed per-pixel annotations of each category (“masks”), such as\n\n1: foreground, 2: background, 3: contour"
   },
   {
-    "objectID": "slides/07-timeseries.html#convolutions-recap-1",
-    "href": "slides/07-timeseries.html#convolutions-recap-1",
+    "objectID": "slides/07-image-segmentation.html#building-a-semantic-segmentation-model-1",
+    "href": "slides/07-image-segmentation.html#building-a-semantic-segmentation-model-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Convolutions recap",
-    "text": "Convolutions recap"
+    "section": "Building a semantic segmentation model",
+    "text": "Building a semantic segmentation model\nStep 2: Constructing the model\nOur targets have same width and height dimensions as the input image, so the model output should have that too.\n\nNeed an architecture that can do\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(H, W, C)\nImage\n\n\n\n\n\n\n\n(?, ?, ?)\nInternal representation\n\n\n\n\n\n\n\n(H, W, 1)\nTargets\n\n\n\n\n\n\n\nEncoding\n\n\nDecoding"
   },
   {
-    "objectID": "slides/07-timeseries.html#convolutions-recap-2",
-    "href": "slides/07-timeseries.html#convolutions-recap-2",
+    "objectID": "slides/07-image-segmentation.html#defining-the-model",
+    "href": "slides/07-image-segmentation.html#defining-the-model",
     "title": "DAT255: Deep learning engineering",
-    "section": "Convolutions recap",
-    "text": "Convolutions recap"
+    "section": "Defining the model",
+    "text": "Defining the model\ninputs = keras.Input(shape=img_size + (3,))\nx = Rescaling(1.0 / 255)(inputs)\n\nx = Conv2D(64, 3, strides=2, activation=\"relu\", padding=\"same\")(x)\nx = Conv2D(64, 3, activation=\"relu\", padding=\"same\")(x)\nx = Conv2D(128, 3, strides=2, activation=\"relu\", padding=\"same\")(x)\nx = Conv2D(128, 3, activation=\"relu\", padding=\"same\")(x)\nx = Conv2D(256, 3, strides=2, padding=\"same\", activation=\"relu\")(x)\nx = Conv2D(256, 3, activation=\"relu\", padding=\"same\")(x)\n\nx = Conv2DTranspose(256, 3, activation=\"relu\", padding=\"same\")(x)\nx = Conv2DTranspose(256, 3, strides=2, activation=\"relu\", padding=\"same\")(x)\nx = Conv2DTranspose(128, 3, activation=\"relu\", padding=\"same\")(x)\nx = Conv2DTranspose(128, 3, strides=2, activation=\"relu\", padding=\"same\")(x)\nx = Conv2DTranspose(64, 3, activation=\"relu\", padding=\"same\")(x)\nx = Conv2DTranspose(64, 3, strides=2, activation=\"relu\", padding=\"same\")(x)\n\noutputs = Conv2D(num_classes, 3, activation=\"softmax\", padding=\"same\")(x)\n\nmodel = keras.Model(inputs, outputs)\n( #TODO add model.summary here to show dimensions )\nAvoid max pooling layers since we want to keep location information."
   },
   {
-    "objectID": "slides/07-timeseries.html#convolutions-recap-3",
-    "href": "slides/07-timeseries.html#convolutions-recap-3",
+    "objectID": "slides/07-image-segmentation.html#transposed-convolution",
+    "href": "slides/07-image-segmentation.html#transposed-convolution",
     "title": "DAT255: Deep learning engineering",
-    "section": "Convolutions recap",
-    "text": "Convolutions recap"
+    "section": "Transposed convolution",
+    "text": "Transposed convolution\nUse transposed convolution layers to upsample dimensions:"
   },
   {
-    "objectID": "slides/07-timeseries.html#convolutions-recap-4",
-    "href": "slides/07-timeseries.html#convolutions-recap-4",
+    "objectID": "slides/07-image-segmentation.html#improved-segmentation-models-the-u-net",
+    "href": "slides/07-image-segmentation.html#improved-segmentation-models-the-u-net",
     "title": "DAT255: Deep learning engineering",
-    "section": "Convolutions recap",
-    "text": "Convolutions recap"
+    "section": "Improved segmentation models: the U-Net",
+    "text": "Improved segmentation models: the U-Net\nWe learned last time that deep networks can be improved by adding residual connections.\n\nHow about we add them to the encoder-decoder segmentation model?Enter the U-Net:"
   },
   {
-    "objectID": "slides/07-timeseries.html#convolutions-recap-5",
-    "href": "slides/07-timeseries.html#convolutions-recap-5",
+    "objectID": "slides/07-image-segmentation.html#u-net-use-cases",
+    "href": "slides/07-image-segmentation.html#u-net-use-cases",
     "title": "DAT255: Deep learning engineering",
-    "section": "Convolutions recap",
-    "text": "Convolutions recap"
+    "section": "U-Net use cases",
+    "text": "U-Net use cases\n\n\n\n\n\nCell tracking\n\n\n\n\n\n\n\nCT scans\n\n\n\n\n\n\n\nHematoma detection\n\n\n\n\n\n\n\nCrop segmentation\n\n\n\n\n\n\n\nAutonomous driving"
   },
   {
-    "objectID": "slides/07-timeseries.html#convolutions-detour",
-    "href": "slides/07-timeseries.html#convolutions-detour",
+    "objectID": "slides/07-image-segmentation.html#state-of-the-art-image-segmentation",
+    "href": "slides/07-image-segmentation.html#state-of-the-art-image-segmentation",
     "title": "DAT255: Deep learning engineering",
-    "section": "Convolutions detour",
-    "text": "Convolutions detour\nIf the take the convolution operation\n\\[\n\\small\n(f \\ast g)(t) \\equiv \\int_{-\\infty}^{\\infty} f(\\tau) g(t-\\tau) d\\tau\n\\]\nbut reverse one of the functions (\\(\\small f(t) \\to f(-t)\\)), we get the similar operation called cross-correlation:\n\n\\[\n\\small\nf \\star g \\equiv f(-t) \\ast g(t)\n\\]"
+    "section": "State-of-the-art image segmentation",
+    "text": "State-of-the-art image segmentation\nSegment Anything*: Using images with up to 500 masks\n\n\n\n\n\n\n* https://github.com/facebookresearch/segment-anything\n\nAdds user-selected objects (by prompts), consistent tracking in videos, ++\n\nDemo"
   },
   {
-    "objectID": "slides/07-timeseries.html#convolutions-detour-1",
-    "href": "slides/07-timeseries.html#convolutions-detour-1",
+    "objectID": "slides/08-object-detection.html#improving-generalisation",
+    "href": "slides/08-object-detection.html#improving-generalisation",
     "title": "DAT255: Deep learning engineering",
-    "section": "Convolutions detour",
-    "text": "Convolutions detour\nIf the take the convolution operation\n\\[\n\\small\nf \\ast g \\equiv \\int_{-\\infty}^{\\infty} f(\\tau) g(t-\\tau) d\\tau\n\\]\nbut reverse one of the functions (\\(\\small f(t) \\to f(-t)\\)), we get the similar operation called cross-correlation:\n\n\\[\n\\small\nf \\star g \\equiv f(-t) \\ast g(t)\n\\]"
+    "section": "Improving generalisation",
+    "text": "Improving generalisation\nRealisation:\n\nWe don’t have infinite training data\nTraining data don’t cover the space of all realistic examples\n\n\nMitigation:\n\nAdd artificially modified duplicates of the training data (while preserving information)\n\n\n\n\n\n\n\n\nCat\n\n\n\n\n\n\n\nRotated cat is still cat\n\n\n\n\n\n\n\nFlipped cat is also cat???"
   },
   {
-    "objectID": "slides/07-timeseries.html#sequencing-forecasting-predicting-the-future",
-    "href": "slides/07-timeseries.html#sequencing-forecasting-predicting-the-future",
+    "objectID": "slides/08-object-detection.html#augmentation",
+    "href": "slides/08-object-detection.html#augmentation",
     "title": "DAT255: Deep learning engineering",
-    "section": "Sequencing forecasting: Predicting the future",
-    "text": "Sequencing forecasting: Predicting the future\nCNNs are great for classification because of translation invariance\nFor forecasting, we typically don’t want this.\n\nNew assumption:\n\nRecent data is more informative than old data"
+    "section": "Augmentation",
+    "text": "Augmentation\nThe benefit of augmentation greatly exceeds the effort involved\n Always recommended to use for computer vision.\n\n\n\n\n\nNo augmentation\n\n\n\n\n\n\n\nkeras.layers.RandomFlip\n\n\n\n\n\n\n\nkeras.layers.RandomRotation\n\n\n\n\n\n\n\nkeras.layers.RandomCrop\n\n\n\n\n\n\n\nkeras.layers.RandomBrightness\n\n\n\n\n\n\n\nkeras.layers.RandomHue\n\n\n\n\n\n\n\nkeras.layers.RandomTranslation\n\n\n\n\n\n\n\nkeras.layers.RandomShear\n\n\n\n\n\n\n\nkeras.layers.Equalization\n\n\n\n\n\n\n\nkeras.layers.RandAugment (“do it all”)"
   },
   {
-    "objectID": "slides/07-timeseries.html#recurrent-neural-networks-rnns",
-    "href": "slides/07-timeseries.html#recurrent-neural-networks-rnns",
+    "objectID": "slides/08-object-detection.html#more-advanced-network-configurations",
+    "href": "slides/08-object-detection.html#more-advanced-network-configurations",
     "title": "DAT255: Deep learning engineering",
-    "section": "Recurrent neural networks (RNNs)",
-    "text": "Recurrent neural networks (RNNs)\nOur neural networks up until now have no state (can’t remember anything)\nIntroduce a state in the simplest way:\nLet each node store its previous output"
+    "section": "More advanced network configurations",
+    "text": "More advanced network configurations\nGoing beyond the Sequential model"
   },
   {
-    "objectID": "slides/07-timeseries.html#recurrent-neural-networks-rnns-1",
-    "href": "slides/07-timeseries.html#recurrent-neural-networks-rnns-1",
+    "objectID": "slides/08-object-detection.html#the-keras-functional-api",
+    "href": "slides/08-object-detection.html#the-keras-functional-api",
     "title": "DAT255: Deep learning engineering",
-    "section": "Recurrent neural networks (RNNs)",
-    "text": "Recurrent neural networks (RNNs)\nOur neural networks up until now have no state (can’t remember anything)\nIntroduce a state in the simplest way:\nLet each node store its previous output"
+    "section": "The Keras functional API",
+    "text": "The Keras functional API\nConsider the equivalent ways of defining a network:\n\n\nThe Sequential API:\nfrom keras import layers\nmodel = keras.Sequential([\n  layers.Input(shape=input_shape),\n  layers.Conv2D(64, 3, activation=\"relu\"),\n  layers.MaxPooling2D(),\n  layers.Conv2D(128, 3, activation=\"relu\"),\n  layers.Flatten(),\n  layers.Dropout(0.5),\n  layers.Dense(\n    num_classes, activation=\"softmax\"\n  ),\n])\nLayers are stacked in a list\n\nThe Functional API\n\ninputs = layers.Input(shape=input_shape)\nx = layers.Conv2D(64, 3, activation=\"relu\")(inputs)\nx = layers.MaxPooling2D()(x)\nx = layers.Conv2D(128, 3, activation=\"relu\")(x)\nx = layers.Flatten()(x)\nx = layers.Dropout(0.5)(x)\noutputs = layers.Dense(\n  num_classes, activation=\"softmax\"\n)(x)\n\nmodel = keras.Model(\n  inputs=inputs,\n  outputs=outputs\n)\nLayers are used as functions taking the previous layer as input\nLastly we need to specify the input and output in a Model"
   },
   {
-    "objectID": "slides/07-timeseries.html#recurrent-neural-networks-rnns-2",
-    "href": "slides/07-timeseries.html#recurrent-neural-networks-rnns-2",
+    "objectID": "slides/08-object-detection.html#example-bird-classifier",
+    "href": "slides/08-object-detection.html#example-bird-classifier",
     "title": "DAT255: Deep learning engineering",
-    "section": "Recurrent neural networks (RNNs)",
-    "text": "Recurrent neural networks (RNNs)\nRecall that a regular Dense layer computes its output by\noutputs = activation(tf.dot(W, inputs) + b)\n(where W is the weight matrix, inputs is the vector of features and b is the bias vector)\n\nThe recurrent node has two sets of weights:\n\nThe usual ones, call them W_x\nThose to be applied to the previous output, call them W_y\n\n\n\nThe outputs then become\nstate_t = tf.zeros(shape=(num_output_features))\noutputs = []\nfor input_t in input_sequence:  # loop over inputs at time t\n  output_t = activation(tf.dot(W_y, inputs) + tf.dot(W_y, state_t) + b)\n  outputs.append(output_t)\n  state_t = output_t\noutput_sequence = tf.stack(outputs, axis=0)\nImplemented in Keras as keras.layers.SimpleRNN"
+    "section": "Example: Bird classifier",
+    "text": "Example: Bird classifier\n\n\nSay that you for obvious reasons want to classify observations of birds.\nEach data point contains:\n\nPicture of bird\nSize of bird\n(other numerical values related to observation of bird) \n\n\n\n\n\n\n\n\nBird 1. Size: 50 cm\n\n\n\n\n\n\n\nBird 2. Size: 14 cm\n\n\n\n\n\n\n\nBird 3. Size: 63 cm\n\n\n\n\n\n\n\n\nHow to combine this information?"
   },
   {
-    "objectID": "slides/07-timeseries.html#input-and-output-sequences",
-    "href": "slides/07-timeseries.html#input-and-output-sequences",
+    "objectID": "slides/08-object-detection.html#example-bird-classifier-1",
+    "href": "slides/08-object-detection.html#example-bird-classifier-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Input and output sequences",
-    "text": "Input and output sequences"
+    "section": "Example: Bird classifier",
+    "text": "Example: Bird classifier\n\n\nIn the functional API we can easily have two input sources:\ninput1 = keras.layers.Input(shape=(128,128,3))\n\nx1 = keras.layers.Conv2D(64, 3, activation='relu')(input1)\nx1 = keras.layers.MaxPooling2D(2)(x1)\nx1 = keras.layers.Conv2D(64, 3, activation='relu')(x1)\nx1 = keras.layers.MaxPooling2D(2)(x1)\nx1 = keras.layers.Flatten()(x1)\n\ninput2 = keras.layers.Input(shape=(10,))\n\nx2 = keras.layers.Dense(32, activation='relu')(input2)\nx2 = keras.layers.Dense(32, activation='relu')(x2)\n\nconcat = keras.layers.Concatenate()([x1, x2])\n\nx = keras.layers.Dense(64, activation='relu')(concat)\nout = keras.layers.Dense(3, activation='softmax')(x)\n\nmodel = keras.Model(\n  inputs=[input1, input2],\n  outputs=out\n)"
   },
   {
-    "objectID": "slides/07-timeseries.html#intermezzo-autoregressive-models",
-    "href": "slides/07-timeseries.html#intermezzo-autoregressive-models",
+    "objectID": "slides/08-object-detection.html#non-sequential-networks",
+    "href": "slides/08-object-detection.html#non-sequential-networks",
     "title": "DAT255: Deep learning engineering",
-    "section": "Intermezzo: Autoregressive models",
-    "text": "Intermezzo: Autoregressive models\nSimplest possible forecast:\nThe value tomorrow is the same as the value today. \\[\n\\small\ny_i = y_{t-1}\n\\]\n\n\n\n\n\nNumber of rail and bus passengers in Chicago 2019\n\n\n\n\n\n\n\nPartial autocorrelation"
+    "section": "Non-sequential networks",
+    "text": "Non-sequential networks\n\n\n\n\n\nCan have networks with\n\nMultiple inputs\nMultiple outputs\nArbitrary layer connections\nNetworks-inside-the-network\nLoops (will come to this later)\n\n\n\n\n\n\nLet’s look at some noteworthy architectures for computer vision."
   },
   {
-    "objectID": "slides/07-timeseries.html#intermezzo-autoregressive-models-1",
-    "href": "slides/07-timeseries.html#intermezzo-autoregressive-models-1",
+    "objectID": "slides/08-object-detection.html#residual-connections",
+    "href": "slides/08-object-detection.html#residual-connections",
     "title": "DAT255: Deep learning engineering",
-    "section": "Intermezzo: Autoregressive models",
-    "text": "Intermezzo: Autoregressive models\n\n\nMore advanced forecast:\nThe value tomorrow is given by a weighted sum of the \\(p\\) previous time steps, plus a noise term\n\\[\n\\small\ny_i = \\sum^p \\varphi_i y_{t-i} + \\epsilon_t\n\\]\n(\\(\\varphi_i\\) are the parameters of the model)\n\n\n\n\nCan add moving average to get an ARMA model, look at differences to get ARIMA, add seasonality to get SARIMA, …\nLots of work on (traditional) statistical time series modelling - usually worth trying out before going to deep learning."
+    "section": "Residual connections",
+    "text": "Residual connections\nIn deep learning we are computing composite functions: \\[\ny = f_3(f_2(f_1(x_1, x_2, \\dots, x_n | \\theta_1) | \\theta_2) | \\theta_3)\n\\]\nThese are prone to training problems like exploding or vanishing gradients.\n\nWe can stabilise training with good parameter initialisation, but going beyond ~16 Conv layers (the VGG models *) makes the model worse :/\nWith too many layers, the model gets dominated by noise.\n\n* Simonyan, K., & Zisserman, A. (2014). Very deep convolutional networks for large-scale image recognition. arXiv:1409.1556.\n\n\n\nA method for solving this is residual connections:"
   },
   {
-    "objectID": "slides/07-timeseries.html#improved-memory-cells",
-    "href": "slides/07-timeseries.html#improved-memory-cells",
+    "objectID": "slides/08-object-detection.html#residual-connections-1",
+    "href": "slides/08-object-detection.html#residual-connections-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Improved memory cells",
-    "text": "Improved memory cells\nIn practice, RNNs suffer from vanishing/exploding gradients during training\n Difficult to make them learn long-term dependencies\n\nCan introduce hidden states which are not the same as the output.\n\n\n\n\n\nTwo most used approaces: LSTMs and GRUs."
+    "section": "Residual connections",
+    "text": "Residual connections\nImplementing this branching and recombination can be done with Keras’ functional API:\n\n\n\n\n\n\n\ninputs = keras.Input(shape=(32, 32, 3))\nx = layers.Conv2D(32, 3, activation=\"relu\")(inputs)\n# Set aside the residual\nresidual = x\n# Conv block\nx = layers.Conv2D(64, 3, activation=\"relu\", padding=\"same\")(x)\nx = layers.MaxPooling2D(2, padding=\"same\")(x)\n# Conv layer with strides=2, so that the shapes match\nresidual = layers.Conv2D(64, 1, strides=2)(residual)\n# Add the block output with the residual \nx = layers.add([x, residual])\n\n\nIf we need to this multiple times, we can write it in a\n\nfor loop\na function\nor as a subclass of keras.layers.Layer"
   },
   {
-    "objectID": "slides/07-timeseries.html#the-long-short-term-memory-lstm-cell",
-    "href": "slides/07-timeseries.html#the-long-short-term-memory-lstm-cell",
+    "objectID": "slides/08-object-detection.html#residual-networks",
+    "href": "slides/08-object-detection.html#residual-networks",
     "title": "DAT255: Deep learning engineering",
-    "section": "The long short-term memory (LSTM) cell",
-    "text": "The long short-term memory (LSTM) cell\nAdd long-term memory by having two states in each cell:\nA short-term state \\(\\small\\boldsymbol{h}_t\\) and a long-term state \\(\\small\\boldsymbol{c}_t\\)\n\n\n\n\n\nGates determine data flow – add small networks inside the cell to act as gate operators\n\nkeras.layers.LSTM"
+    "section": "Residual networks",
+    "text": "Residual networks\nWith residual connections in place, we can continue learning even if the gradients in a layer vanishes:\n\n\n\n\n\n\nA. Geron: Hands-on Machine Learning with Scikit-Learn, Keras and TensorFlow"
   },
   {
-    "objectID": "slides/07-timeseries.html#the-gated-recurrent-unit-gru",
-    "href": "slides/07-timeseries.html#the-gated-recurrent-unit-gru",
+    "objectID": "slides/08-object-detection.html#residual-networks-1",
+    "href": "slides/08-object-detection.html#residual-networks-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "The gated recurrent unit (GRU)",
-    "text": "The gated recurrent unit (GRU)\nSimplified and somewhat more effective variant:\n\n\n\n\n\nkeras.layers.GRU"
+    "section": "Residual networks",
+    "text": "Residual networks\n\n\n…which enables us to train networks with 100+ layers\n\n\n\n\n\n\n\n\n\nHe, K., Zhang, X., Ren, S., & Sun, J. (2016). Deep residual learning for image recognition. Proceedings of the IEEE conference on computer vision and pattern recognition."
   },
   {
-    "objectID": "slides/07-timeseries.html#stacking-recurrent-layers",
-    "href": "slides/07-timeseries.html#stacking-recurrent-layers",
+    "objectID": "slides/08-object-detection.html#densely-connected-convolutional-networks",
+    "href": "slides/08-object-detection.html#densely-connected-convolutional-networks",
     "title": "DAT255: Deep learning engineering",
-    "section": "Stacking recurrent layers",
-    "text": "Stacking recurrent layers\nAs usual, we can increase the capacity by stacking layers.\nNote when building a deep RNN: Intermediate layers should return the entire sequence\ninputs = keras.Input(shape=(sequence_length, raw_data.shape[-1]))\nx = layers.GRU(32, return_sequences=True)(inputs)\nx = layers.GRU(32, return_sequences=True)(x)\nx = layers.GRU(32)(x)\noutputs = layers.Dense(1)(x)\nmodel = keras.Model(inputs, outputs)"
+    "section": "Densely connected convolutional networks",
+    "text": "Densely connected convolutional networks\nHow about adding skip connections (almost) everywhere?\nEnter the DenseNet:\n\n\n\n\n\n\nHuang, G., Liu, Z., Van Der Maaten, L., & Weinberger, K. Q. (2017). Densely connected convolutional networks. Proceedings of the IEEE conference on computer vision and pattern recognition."
   },
   {
-    "objectID": "slides/07-timeseries.html#training-rnns",
-    "href": "slides/07-timeseries.html#training-rnns",
+    "objectID": "slides/08-object-detection.html#inception-networks",
+    "href": "slides/08-object-detection.html#inception-networks",
     "title": "DAT255: Deep learning engineering",
-    "section": "Training RNNs",
-    "text": "Training RNNs\nSome tricks to efficiently training recurrent networks:\n\n\nUse saturating activation functions (tanh, sigmoid)\nlayers.LSTM(units, activation=\"tanh\", recurrent_activation=\"sigmoid\")\nUse layer normalisation (keras.layers.LayerNormalization) instead of batch normalisation\nAdd recurrent dropout (potentially in addition to regular dropout)\nx = layers.LSTM(32, recurrent_dropout=0.25)(inputs)\n\n\n\n\nTest if training runs faster on CPU than on GPU\n\nNVIDIA backend only available if using default arguments for LSTM/GRU layers\nfor loops in recurrent nodes reduces parallelisability\n\nCan optionally unroll for loops (memory intensive):\nx = layers.LSTM(32, unroll=True)(inputs)"
+    "section": "Inception networks",
+    "text": "Inception networks\n\n\nWe can also add width in addition to depth:\nThe inception module features parallel convolutional layers with different kernel size\n\n\n\n\n\nOutput is concatenated and passed on to the next module\n\n\n\n\nGoogLeNet, 2014"
   },
   {
-    "objectID": "slides/07-timeseries.html#bonus-trick-1-cnn-processing",
-    "href": "slides/07-timeseries.html#bonus-trick-1-cnn-processing",
+    "objectID": "slides/08-object-detection.html#xception-networks",
+    "href": "slides/08-object-detection.html#xception-networks",
     "title": "DAT255: Deep learning engineering",
-    "section": "Bonus trick #1: CNN processing",
-    "text": "Bonus trick #1: CNN processing\nEven with the previous tricks up our sleeve, getting RNNs to learn patterns over &gt;100 time steps is difficult.\nCan extract small-scale patterns with convolutional layers first, then apply recurrent layers:\nmodel = keras.Sequential([\n  keras.layers.Conv1D(filters=32, kernel_size=4, strides=2, activation=\"relu\"),\n  keras.layers.GRU(32, return_sequences=True)\n  keras.layers.Dense(14)\n])\n(add stride &gt; 1 to downsample)"
+    "section": "Xception networks",
+    "text": "Xception networks\nThe Xception (“extreme inception”) architecture relies on depthwise separable convolution layers\n\n\n\n\n\nThese layers are available as keras.layers.SeparableConv2D and can be used just like the regular Conv2D, often with increased performance"
   },
   {
-    "objectID": "slides/07-timeseries.html#bonus-trick-1-cnn-processing-1",
-    "href": "slides/07-timeseries.html#bonus-trick-1-cnn-processing-1",
+    "objectID": "slides/08-object-detection.html#beyond-cnns-vision-transformers",
+    "href": "slides/08-object-detection.html#beyond-cnns-vision-transformers",
     "title": "DAT255: Deep learning engineering",
-    "section": "Bonus trick #1: CNN processing",
-    "text": "Bonus trick #1: CNN processing\nEven with the previous tricks up out sleeve, getting RNNs to learn patterns over &gt;100 time steps is difficult.\nCan extract small-scale patterns with convolutional layers first, then apply recurrent layers\nOr maybe skip the recurrence altogether? WaveNet architecture:\n\n\n\n\n\nkeras.layers.Conv1D(..., padding=\"casual\")  # Look only backwards"
+    "section": "Beyond CNNs: Vision transformers",
+    "text": "Beyond CNNs: Vision transformers\nCan also use methods from LLMs on image input * (get back to this in Ch. 15):\n\n\n\n\n\nHowever, pure ConvNets are still hard to beat **\n\n* Dosovitskiy, A. (2020). An image is worth 16x16 words: Transformers for image recognition at scale. arXiv:2010.11929 ** Liu, Z., et al. (2022). A convnet for the 2020s. arxiv:2201.03545"
   },
   {
-    "objectID": "slides/07-timeseries.html#bonus-trick-2-bidirectional-rnns",
-    "href": "slides/07-timeseries.html#bonus-trick-2-bidirectional-rnns",
+    "objectID": "slides/08-object-detection.html#keras.applications",
+    "href": "slides/08-object-detection.html#keras.applications",
     "title": "DAT255: Deep learning engineering",
-    "section": "Bonus trick #2: bidirectional RNNs",
-    "text": "Bonus trick #2: bidirectional RNNs\nFor time series we expect the most recent data points to be most important\n Chronological ordering makes sense\n\nSometimes this is not the case - for instance for text\n\n\n\nI arrived by bike.\n\n\n\nIch bin mit Fahrrad angekommen.\n\n\n\n\n\n\nCan process sequences both forwards and in reverse by using a bidirectional recurrent layer:\n\n\n\ninputs = keras.Input(shape=(...))\nx = layers.Bidirectional(layers.LSTM(16))(inputs)\noutputs = layers.Dense(1)(x)\nmodel = keras.Model(inputs, outputs)"
+    "section": "keras.applications",
+    "text": "keras.applications\nThe most popular computer vision architectures are available as pre-trained models in keras.applications.\nThese are excellent starting points for\n\nfeature extraction\nfine-tuning\ntransfer learning\n\n\nNote: The different models typically require specific preprocessing:\nIf you want to use\nkeras.applications.Xception()\nyou should process the input images with\nkeras.applications.xception.preprocess_input()"
+  },
+  {
+    "objectID": "slides/08-object-detection.html#feature-extraction",
+    "href": "slides/08-object-detection.html#feature-extraction",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Feature extraction",
+    "text": "Feature extraction"
+  },
+  {
+    "objectID": "slides/08-object-detection.html#fine-tuning",
+    "href": "slides/08-object-detection.html#fine-tuning",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Fine-tuning",
+    "text": "Fine-tuning\n\n\n\nKeep general patterns learned, but make them more specific to a new task:\n\n\n\n\n\n\nAdd custom network on top of a trained base network\nFreeze the base network\nTrain the custom part\nUnfreeze the base network\nJointly train the entire model"
+  },
+  {
+    "objectID": "slides/08-object-detection.html#other-computer-vision-tasks-next-week",
+    "href": "slides/08-object-detection.html#other-computer-vision-tasks-next-week",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Other computer vision tasks (next week)",
+    "text": "Other computer vision tasks (next week)\nConvolutional nets are great for other things than just classification:\n\n\n\n\nObject detection: Localise (several) objects in an image\n\n\n\n\nOriented bounding boxes: Localise and estimate orientation of objects\n\n\n\n\nSemantic segmentation: Classify each pixel onto an object\n\n\n\n\nInstance segmentation: Draw a detailed outline around abjects\n\n\n\n\nPose estimation: Localise distinctive features or parts of an object"
   },
   {
     "objectID": "slides/09-gradients.html#topics-for-today",

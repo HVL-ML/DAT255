@@ -6,7 +6,10 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ac1a48248070c8bfbae4244efd7728e4.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ac1a48248070c8bfbae4244efd7728e4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="sma@hvl.no">
@@ -28,6 +31,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e5387708f32441f66e167fb7200d552e.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -129,7 +198,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 18</u> – Multimodal transformers</p>
+  <p class="subtitle"><u>Lecture 6</u> – Augmentation and advanced computer vision</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -140,280 +209,222 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="general-transformers" class="slide level2">
-<h2>General transformers</h2>
-<p>Motivation behind transformers was to process sequential language data</p>
-<p>Turns out they are great general-purpose models</p>
-<ul>
-<li>Make very few assumptions about the input data</li>
-</ul>
-<div class="fragment">
-<p>Transformers are now among state-of-the-art for large-scale models on</p>
-<div class="colorbox" style="background-color: #E1F5FE; text-indent: 20px;">
-<ul>
-<li>Text</li>
-<li>Images</li>
-<li>Video</li>
-<li>Audio</li>
-<li>Point clouds</li>
-</ul>
-</div>
-<div class="absolute" style="top: 60%; left: 50%; ">
-<p>In context of LLMs we call this<br> different <span class="color-cyan-dark"><em>modalities</em></span></p>
-</div>
-</div>
-</section>
-<section id="visual-attention" class="slide level2">
-<h2>Visual attention</h2>
-<p>Before the transformer architecture was established, there were still experiments with <span class="color-pink-dark"><em>visual attention</em></span> (using a combination of CNNs and RNNs with attention)</p>
-<p>Caption generation model, with attention matrix overlaid:</p>
+<section id="computer-vision-tasks" class="slide level2">
+<h2>Computer vision tasks</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture18/frisbee.png" class="quarto-figure quarto-figure-center" style="padding-top: 30px;" width="650"></p>
+<p><img data-src="https://deeplearningwithpython.io/images/ch11/computer_vision_tasks.da2bf0ea.png" class="quarto-figure quarto-figure-center" width="600"></p>
 </figure>
 </div>
 </section>
-<section id="visual-attention-1" class="slide level2">
-<h2>Visual attention</h2>
-<p>Use the attention matrix as an explanation tool:</p>
+<section id="computer-vision-tasks-1" class="slide level2" data-background-color="#212121">
+<h2>Computer vision tasks</h2>
+<iframe data-external="1" src="https://www.youtube.com/embed/fKXztwtXaGo?si=EBBKvQus57XIOi8T" width="1280px" height="720px" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</section>
+<section id="image-segmentation" class="slide level2">
+<h2>Image segmentation</h2>
+<ul>
+<li><span class="color-blue"><em>Semantic</em></span> segmentation: Classify each pixel onto a category</li>
+<li><span class="color-indigo"><em>Instance</em></span> segmentation: Classify onto individial instances <span class="color-text-muted">(possibly of same category)</span></li>
+<li><span class="color-deep-purple"><em>Panoptic</em></span> segmentation: Classify both category and instance</li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture18/giraffe.png" class="quarto-figure quarto-figure-center" width="800"></p>
+<p><img data-src="https://deeplearningwithpython.io/images/ch11/instance_segmentation.818c62ba.png" class="quarto-figure quarto-figure-center" width="900"></p>
 </figure>
 </div>
 </section>
-<section id="visual-attention-2" class="slide level2">
-<h2>Visual attention</h2>
-<p>Use the attention matrix as an explanation tool:</p>
-<div class="quarto-layout-panel" data-layout-ncol="2" style="padding-top: 60px;">
+<section id="building-a-semantic-segmentation-model" class="slide level2">
+<h2>Building a semantic segmentation model</h2>
+<p><strong>Step 1: Training data</strong></p>
+<p>Need per-pixel annotations of each category (“masks”), such as</p>
+<div style="text-align: center;">
+<p>1: <span class="color-deep-purple">foreground</span>, 2: <span class="color-teal-dark">background</span>, 3: <span class="color-yellow-dark">contour</span></p>
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2" width="100%">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img data-src="figures/lecture18/skateboard.png" width="500"></p>
+<p><a href="https://deeplearningwithpython.io/images/ch11/segmentation_input.d246cf5a.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img data-src="https://deeplearningwithpython.io/images/ch11/segmentation_input.d246cf5a.png"></a></p>
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img data-src="figures/lecture18/cellphone.png" width="500"></p>
+<p><a href="https://deeplearningwithpython.io/images/ch11/segmentation_mask.cc320651.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img data-src="https://deeplearningwithpython.io/images/ch11/segmentation_mask.cc320651.png" class="fragment"></a></p>
 </div>
-</div>
-</div>
-<div class="absolute" style="text-align: center;left: 40%; bottom: 3%; ">
-<p><i class="bi bi-arrow-up-left"></i> &nbsp; <i class="bi bi-arrow-up-right"></i><br> Mistakes :/</p>
-</div>
-</section>
-<section id="transformers-for-computer-vision" class="slide level2">
-<h2>Transformers for computer vision</h2>
-<p>Challenge for processing non-textual inputs:</p>
-<div style="text-align: center;">
-<p>How to define a <span class="color-deep-orange">token</span>?</p>
-</div>
-<div class="fragment">
-<p><em>Simplest approach:</em> <span class="color-teal-dark">Each pixel</span> is a token.</p>
-</div>
-<div class="fragment">
-<p>Problem: Attention matrix is quadratic in number of tokens</p>
-<p><i class="bi bi-arrow-right"></i> for big images, the matrix becomes <span class="color-red-dark">huge</span></p>
-<div style="padding-top: 40px;">
-<p>Two common approches:</p>
-<ul>
-<li>Cut the image into patches</li>
-<li>First apply convolutional layers</li>
-</ul>
 </div>
 </div>
 </section>
-<section id="vision-transformer-vit-for-classification" class="slide level2">
-<h2>Vision transformer (ViT) for classification</h2>
+<section id="building-a-semantic-segmentation-model-1" class="slide level2">
+<h2>Building a semantic segmentation model</h2>
+<p><strong>Step 2: Constructing the model</strong></p>
+<p>Our targets have same width and height dimensions as the input image, so the model output should have that too.</p>
+<div class="fragment">
+<p>Need an architecture that can do</p>
 <div class="columns">
-<div class="column" style="width:55%;">
-<p>Split the image in <span class="math inline">\(\small N\)</span> patches: Instead of</p>
-<div style="text-align: center;">
-<p>height <span class="math inline">\(\small\times\)</span> width <span class="math inline">\(\small\times\)</span> colour channels</p>
-</div>
-<p>number of tokens, we get</p>
-<div style="text-align: center;">
-<p><span class="math inline">\(\small N \times\)</span> (patch size)<span class="math inline">\(^2\)</span> <span class="math inline">\(\small\times\)</span>&nbsp;colour channels</p>
-</div>
-<p>tokens</p>
-<div class="fragment" data-fragment-index="2">
-<p>For each patch:</p>
-<ul>
-<li>Flatten it to an 1D vector</li>
-<li>Make embeddings</li>
-<li>Add positional embeddings</li>
-</ul>
-<p><i class="bi bi-arrow-right"></i> Treat it as any generic sequence and input to a transformer encoder</p>
-</div>
-</div><div class="column" style="width:45%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/cat.png" class="quarto-figure quarto-figure-center" width="250"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/cat-patches.png" class="fragment quarto-figure quarto-figure-center" data-fragment-index="1" width="300"></p>
-</figure>
-</div>
+<div class="column" style="width:5%;">
+
+</div><div class="column" style="width:30%;">
+<p><img data-src="https://deeplearningwithpython.io/images/ch11/segmentation_input.d246cf5a.png"></p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:20%;">
+
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:30%;">
+<p><img data-src="https://deeplearningwithpython.io/images/ch11/segmentation_mask.cc320651.png"></p>
+</div><div class="column" style="width:5%;">
+
 </div></div>
+<div class="columns">
+<div class="column" style="width:5%;">
+
+</div><div class="column" style="width:30%;">
+<div style="text-align: center;">
+<p><code>(H, W, C)</code></p>
+<p>Image</p>
+</div>
+</div><div class="column" style="width:5%;">
+<div style="text-align: center;">
+<p><i class="bi bi-arrow-right"></i></p>
+</div>
+</div><div class="column" style="width:20%;">
+<div style="text-align: center;">
+<p><code>(?, ?, ?)</code></p>
+<p>Internal representation</p>
+</div>
+</div><div class="column" style="width:5%;">
+<div style="text-align: center;">
+<p><i class="bi bi-arrow-right"></i></p>
+</div>
+</div><div class="column" style="width:30%;">
+<div style="text-align: center;">
+<p><code>(H, W, 1)</code></p>
+<p>Targets</p>
+</div>
+</div><div class="column" style="width:5%;">
+
+</div></div>
+</div>
+<div class="fragment">
+<div class="absolute color-green-dark" style="transform: rotate(-45deg);left: 34%; bottom: 25%; ">
+<p>Encoding</p>
+</div>
+<div class="absolute color-red-dark" style="transform: rotate(-45deg);left: 60%; bottom: 25%; ">
+<p>Decoding</p>
+</div>
+</div>
 </section>
-<section id="vision-transformer-vit-for-classifiction" class="slide level2">
-<h2>Vision transformer (ViT) for classifiction</h2>
+<section id="defining-the-model" class="slide level2">
+<h2>Defining the model</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|1-2|4-9|11-16|18-20|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>inputs <span class="op">=</span> keras.Input(shape<span class="op">=</span>img_size <span class="op">+</span> (<span class="dv">3</span>,))</span>
+<span id="cb1-2"><a></a>x <span class="op">=</span> Rescaling(<span class="fl">1.0</span> <span class="op">/</span> <span class="dv">255</span>)(inputs)</span>
+<span id="cb1-3"><a></a></span>
+<span id="cb1-4"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">64</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb1-5"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">64</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb1-6"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">128</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb1-7"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">128</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb1-8"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">256</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="st">"same"</span>, activation<span class="op">=</span><span class="st">"relu"</span>)(x)</span>
+<span id="cb1-9"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">256</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb1-10"><a></a></span>
+<span id="cb1-11"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">256</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb1-12"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">256</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb1-13"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">128</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb1-14"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">128</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb1-15"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">64</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb1-16"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">64</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb1-17"><a></a></span>
+<span id="cb1-18"><a></a>outputs <span class="op">=</span> Conv2D(num_classes, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"softmax"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb1-19"><a></a></span>
+<span id="cb1-20"><a></a>model <span class="op">=</span> keras.Model(inputs, outputs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>( #TODO add model.summary here to show dimensions )</p>
+<p>Avoid max pooling layers since we want to keep location information.</p>
+</section>
+<section id="transposed-convolution" class="slide level2">
+<h2>Transposed convolution</h2>
+<p>Use <span class="color-light-blue-dark"><em>transposed convolution</em></span> layers to upsample dimensions:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture18/vision-transformer.png" class="quarto-figure quarto-figure-center" width="800"></p>
+<p><img data-src="https://d2l.ai/_images/trans_conv.svg" class="quarto-figure quarto-figure-center" width="900"></p>
+</figure>
+</div>
+</section>
+<section id="improved-segmentation-models-the-u-net" class="slide level2">
+<h2>Improved segmentation models: the <em>U-Net</em></h2>
+<p>We learned last time that deep networks can be improved by adding <span class="color-pink-dark">residual connections</span>.</p>
+<div class="fragment">
+<p>How about we add them to the encoder-decoder segmentation model?<br>Enter the <span class="color-blue-dark">U-Net</span>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/u-net-architecture.png" class="quarto-figure quarto-figure-center" width="740"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="u-net-use-cases" class="slide level2">
+<h2>U-Net use cases</h2>
+<div class="r-stack">
+<div class="absolute fragment" style="background-color: #FFF;top: 10%; left: 5%; width: 600px; ">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://neurohive.io/wp-content/uploads/2018/11/Capture-6.jpg"></p>
+<figcaption>Cell tracking</figcaption>
+</figure>
+</div>
+</div>
+<div class="absolute fragment" style="background-color: #FFF;top: 25%; left: 35%; width: 600px; ">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://ars.els-cdn.com/content/image/1-s2.0-S0010482522010927-gr7_lrg.jpg"></p>
+<figcaption>CT scans</figcaption>
+</figure>
+</div>
+</div>
+<div class="absolute fragment" style="background-color: #FFF;top: 30%; left: 10%; width: 450px; ">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://ars.els-cdn.com/content/image/1-s2.0-S0895611121000574-gr7_lrg.jpg"></p>
+<figcaption>Hematoma detection</figcaption>
+</figure>
+</div>
+</div>
+<div class="absolute fragment" style="background-color: #FFF;top: 0%; left: 35%; width: 600px; ">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://ars.els-cdn.com/content/image/1-s2.0-S0168169923003447-gr3.jpg"></p>
+<figcaption>Crop segmentation</figcaption>
+</figure>
+</div>
+</div>
+<div class="absolute fragment" style="background-color: #FFF;top: 20%; left: 5%; width: 800px; ">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://www.researchgate.net/profile/Sridevi-Muthukumarasamy/publication/361444540/figure/fig1/AS:11431281148692469@1681735718955/Semantic-Segmentation-with-VGG16-U-Net-architecture.ppm"></p>
+<figcaption>Autonomous driving</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="state-of-the-art-image-segmentation" class="slide level2">
+<h2>State-of-the-art image segmentation</h2>
+<p><em>Segment Anything</em><span class="color-blue">*</span>: Using images with up to 500 masks</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture7/segment-anything.png" class="quarto-figure quarto-figure-center" width="700"></p>
 </figure>
 </div>
 <div class="absolute" style="font-size: 0.6em;left: 0%; bottom: 0%; ">
-<p>https://arxiv.org/pdf/2010.11929</p>
+<p><span class="color-blue">*</span> https://github.com/facebookresearch/segment-anything</p>
+</div>
+<p>Adds user-selected objects (by <em>prompts</em>), consistent tracking in videos, ++</p>
+<div style="text-align: center;">
+<p><a href="https://sam2.metademolab.com/">Demo</a></p>
 </div>
 </section>
-<section id="positional-embeddings" class="slide level2">
-<h2>Positional embeddings</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p>Still need to introduce the position of each patch</p>
-<ul>
-<li><p><em>Option 1:</em> <span class="color-indigo"><strong>Handcrafted encodings</strong></span>, like the sinusoidal encoding of the original encoder</p>
-<ul>
-<li>Gets a little complicated and generally does not perform very well</li>
-</ul></li>
-</ul>
-<div style="padding-top: 15px;">
-
-</div>
-<ul>
-<li><p><em>Option 2:</em> <span class="color-cyan-dark"><strong>Learned embeddings</strong></span></p>
-<ul>
-<li><p>Instead of embedding word 1, 2, … <span class="math inline">\(\small N\)</span>, we trivially extend the procedure to embed patch (1,1), (2,1), … (<span class="math inline">\(\small N, M\)</span>)</p>
-<p><code>keras.layers.Embedding</code> can be used for any input dimensionality</p></li>
-</ul></li>
-</ul>
-</div><div class="column" style="width:40%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/cat.png" class="quarto-figure quarto-figure-center" width="200"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/cat-patches.png" class="quarto-figure quarto-figure-center" width="250"></p>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="combined-architecture" class="slide level2">
-<h2>Combined architecture</h2>
-<div style="padding-top: 100px">
-
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/object-det.png" class="quarto-figure quarto-figure-center" width="1000"></p>
-</figure>
-</div>
-<div class="absolute" style="font-size: 0.6em;left: 0%; bottom: 0%; ">
-<p>https://arxiv.org/pdf/2005.12872</p>
-</div>
-</section>
-<section id="inductive-biases" class="slide level2">
-<h2>Inductive biases</h2>
-<p><strong><em>Inductive bias:</em></strong> assumption built into the model architecture</p>
-<ul>
-<li><p><span class="color-deep-purple">Linear models (<span class="math inline">\(\small y = ax+b\)</span>)</span>: Assume data is linear</p></li>
-<li><p><span class="color-deep-purple">CNNs</span>: Assume translational equivariance, hierarchical structure</p></li>
-<li><p><span class="color-deep-purple">RNNs</span>: Assume meaningful ordering</p></li>
-</ul>
-<div style="padding-top: 30px;">
-
-</div>
-<hr>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="fragment">
-<p><strong>Transformers</strong>: Assume <em>some</em> relation between input tokens, but that’s about it</p>
-<p><span class="color-green-dark"><em>Good</em></span>: General-purpose architecture</p>
-<p><span class="color-red-dark"><em>Bad</em></span>: Requires <span class="color-text-muted">(a lot)</span> more training data than problem-specific models</p>
-</div>
-</section>
-<section id="combining-vision-and-text" class="slide level2">
-<h2>Combining vision and text</h2>
-<p><img data-src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/vlm/visual.jpg"></p>
-</section>
-<section id="audio-transformers" class="slide level2">
-<h2>Audio transformers</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>Typical tasks:</p>
-<ul>
-<li>Speech-to-text</li>
-<li>Text-to-speech</li>
-<li>Speech-to-speech</li>
-<li>Text-to-music</li>
-</ul>
-<p>Two common ways to process audio data:</p>
-<ul>
-<li><p>Work on raw waveform data</p>
-<p>(Amplitude as function of time)</p></li>
-</ul>
-<div style="padding-top: 15px;">
-<ul>
-<li><p>Convert waveforms to spectrograms</p>
-<p>(Frequency content as function of time)</p></li>
-</ul>
-</div>
-</div><div class="column" style="width:45%;">
-<p><img data-src="https://c2s2.engineering.cornell.edu/blogposts/FA23/imgs/UnravelingBirdSoundsWithSpectrograms/image2.png" style="padding-top: 120px;" width="400"></p>
-</div></div>
-</section>
-<section id="audio-transformers-1" class="slide level2">
-<h2>Audio transformers</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="https://images.ctfassets.net/kftzwdyauwt9/d9c13138-366f-49d3-a1a563abddc1/8acfb590df46923b021026207ff1a438/asr-summary-of-model-architecture-desktop.svg?w=1920&amp;q=90" class="quarto-figure quarto-figure-center" width="750"></p>
-</figure>
-</div>
-<!-- https://huggingface.co/spaces/KingNish/Realtime-whisper-large-v3-turbo -->
-</section>
-<section id="audio-transformers-2" class="slide level2">
-<h2>Audio transformers</h2>
-<p>Speech synthesis: Use an example (<span class="color-deep-orange-dark"><em>acoustic prompt</em></span>) to determine generated style and tone</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/speech-synthesis.png" class="quarto-figure quarto-figure-center" width="700"></p>
-</figure>
-</div>
-<div class="absolute" style="font-size: 0.6em;left: 0%; bottom: 0%; ">
-<p>https://arxiv.org/abs/2407.08551</p>
-</div>
-</section>
-<section id="transformers-for-other-uses" class="slide level2">
-<h2>Transformers for other uses</h2>
-<p><img data-src="figures/lecture18/alphastar1.png" width="1200"></p>
-<p><img data-src="figures/lecture18/alphastar2.png" width="1200"></p>
-<p><img data-src="figures/lecture18/alphastar3.png" width="1200"></p>
-<!-- https://deepmind.google/discover/blog/alphastar-mastering-the-real-time-strategy-game-starcraft-ii/ -->
-</section>
-<section id="multimodal-transformers" class="slide level2">
-<h2>Multimodal transformers</h2>
-<p>Transformer encoder-decoder structure allows for a single model to operate on selveral different types of data</p>
-<p>If it can be encoded into an embedding space, it can be used as a context for a decoder.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture16/encoder-decoder.png" class="quarto-figure quarto-figure-center" width="600"></p>
-</figure>
-</div>
-</section>
-<section id="section" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<section id="section" class="slide level2" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>
 </div>
-<!--
-SHOW:
-- whisper
-- alphastar
-- visual question answering gemini
--->
 
 
 </section>
@@ -802,6 +813,38 @@ SHOW:
         }
       });
       </script>
+    <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+    (function() {
+      let previousOnload = window.onload;
+      window.onload = () => {
+        if (previousOnload) {
+          previousOnload();
+        }
+        lightboxQuarto.on('slide_before_load', (data) => {
+          const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+          const href = trigger.getAttribute('href');
+          if (href !== null) {
+            const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+            if (imgEl !== null) {
+              const srcAttr = imgEl.getAttribute("src");
+              if (srcAttr && srcAttr.startsWith("data:")) {
+                slideConfig.href = srcAttr;
+              }
+            }
+          } 
+        });
+      
+        lightboxQuarto.on('slide_after_load', (data) => {
+          const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(slideNode);
+          }
+        });
+      
+      };
+      
+    })();
+              </script>
     
 
 </body></html>
