@@ -120,9 +120,65 @@ They will be added as the course progresses.
         </a>
       </td>
     </tr>
+    <tr>
+      <td rowspan=4>Image segmentation and object detection</td>
+      <td>
+      <h4>Tutorial: <a href="08_image_segmentation.ipynb">08: Image segmentation</a></h4>
+      Train a model for semantic image segmentation, using <code>Conv2D</code> and <code>Conv2DTranspose</code> layers.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/08_image_segmentation.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/08_image_segmentation.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Tutorial: <a href="09_pretrained_image_segmentation.ipynb">09: Using a pretrained segmentation model</a></h4>
+      Short example of how to use the pretrained <i>Segment Anything</i> model.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/09_pretrained_image_segmentation.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/09_pretrained_image_segmentation.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Exercise: <a href="10_unet_segmentation.ipynb">10: Image segmentation with a U-Net architecture</a></h4>
+      Build an improved segmentation model by implementing the (now famous) <i>U-Net</i> model.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/10_unet_segmentation.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/10_unet_segmentation.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Tutorial: <a href="11_object_detection.ipynb">11: Object detection</a></h4>
+      Train a <i>YOLO</i>-type model to put bounding boxes around objects detected in an image.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/11_object_detection.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/11_object_detection.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
   </tbody>
 </table>
-
 
 <!--
 | Week | Notebook | Colab link |
