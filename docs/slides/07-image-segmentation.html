@@ -241,7 +241,7 @@ sma@hvl.no
 <div style="text-align: center;">
 <p>1: <span class="color-deep-purple">foreground</span>, 2: <span class="color-teal-dark">background</span>, 3: <span class="color-yellow-dark">contour</span></p>
 </div>
-<div class="quarto-layout-panel" data-layout-ncol="2" width="100%">
+<div class="quarto-layout-panel" width="100%" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><a href="https://deeplearningwithpython.io/images/ch11/segmentation_input.d246cf5a.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img data-src="https://deeplearningwithpython.io/images/ch11/segmentation_input.d246cf5a.png"></a></p>
@@ -312,10 +312,78 @@ sma@hvl.no
 <p>Decoding</p>
 </div>
 </div>
+<!--
+## Defining the model 
+
+```{.python code-line-numbers="|1-2|4-9|11-16|18-20|"}
+inputs = keras.Input(shape=img_size + (3,))
+x = Rescaling(1.0 / 255)(inputs)
+
+x = Conv2D(64, 3, strides=2, activation="relu", padding="same")(x)
+x = Conv2D(64, 3, activation="relu", padding="same")(x)
+x = Conv2D(128, 3, strides=2, activation="relu", padding="same")(x)
+x = Conv2D(128, 3, activation="relu", padding="same")(x)
+x = Conv2D(256, 3, strides=2, padding="same", activation="relu")(x)
+x = Conv2D(256, 3, activation="relu", padding="same")(x)
+
+x = Conv2DTranspose(256, 3, activation="relu", padding="same")(x)
+x = Conv2DTranspose(256, 3, strides=2, activation="relu", padding="same")(x)
+x = Conv2DTranspose(128, 3, activation="relu", padding="same")(x)
+x = Conv2DTranspose(128, 3, strides=2, activation="relu", padding="same")(x)
+x = Conv2DTranspose(64, 3, activation="relu", padding="same")(x)
+x = Conv2DTranspose(64, 3, strides=2, activation="relu", padding="same")(x)
+
+outputs = Conv2D(num_classes, 3, activation="softmax", padding="same")(x)
+
+model = keras.Model(inputs, outputs)
+```
+
+Avoid max pooling layers since we want to keep location information.
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Layer (type)                    ┃ Output Shape           ┃       Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ input_layer (InputLayer)        │ (None, 200, 200, 3)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ rescaling (Rescaling)           │ (None, 200, 200, 3)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d (Conv2D)                 │ (None, 100, 100, 64)   │         1,792 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_1 (Conv2D)               │ (None, 100, 100, 64)   │        36,928 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_2 (Conv2D)               │ (None, 50, 50, 128)    │        73,856 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_3 (Conv2D)               │ (None, 50, 50, 128)    │       147,584 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_4 (Conv2D)               │ (None, 25, 25, 256)    │       295,168 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_5 (Conv2D)               │ (None, 25, 25, 256)    │       590,080 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_transpose                │ (None, 25, 25, 256)    │       590,080 │
+│ (Conv2DTranspose)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_transpose_1              │ (None, 50, 50, 256)    │       590,080 │
+│ (Conv2DTranspose)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_transpose_2              │ (None, 50, 50, 128)    │       295,040 │
+│ (Conv2DTranspose)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_transpose_3              │ (None, 100, 100, 128)  │       147,584 │
+│ (Conv2DTranspose)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_transpose_4              │ (None, 100, 100, 64)   │        73,792 │
+│ (Conv2DTranspose)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_transpose_5              │ (None, 200, 200, 64)   │        36,928 │
+│ (Conv2DTranspose)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_6 (Conv2D)               │ (None, 200, 200, 3)    │         1,731 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+-->
 </section>
 <section id="defining-the-model" class="slide level2">
 <h2>Defining the model</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|1-2|4-9|11-16|18-20|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>inputs <span class="op">=</span> keras.Input(shape<span class="op">=</span>img_size <span class="op">+</span> (<span class="dv">3</span>,))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|1-2|4-9|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>inputs <span class="op">=</span> keras.Input(shape<span class="op">=</span>img_size <span class="op">+</span> (<span class="dv">3</span>,))</span>
 <span id="cb1-2"><a></a>x <span class="op">=</span> Rescaling(<span class="fl">1.0</span> <span class="op">/</span> <span class="dv">255</span>)(inputs)</span>
 <span id="cb1-3"><a></a></span>
 <span id="cb1-4"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">64</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
@@ -325,18 +393,32 @@ sma@hvl.no
 <span id="cb1-8"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">256</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="st">"same"</span>, activation<span class="op">=</span><span class="st">"relu"</span>)(x)</span>
 <span id="cb1-9"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">256</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
 <span id="cb1-10"><a></a></span>
-<span id="cb1-11"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">256</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
-<span id="cb1-12"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">256</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
-<span id="cb1-13"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">128</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
-<span id="cb1-14"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">128</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
-<span id="cb1-15"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">64</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
-<span id="cb1-16"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">64</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
-<span id="cb1-17"><a></a></span>
-<span id="cb1-18"><a></a>outputs <span class="op">=</span> Conv2D(num_classes, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"softmax"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
-<span id="cb1-19"><a></a></span>
-<span id="cb1-20"><a></a>model <span class="op">=</span> keras.Model(inputs, outputs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>( #TODO add model.summary here to show dimensions )</p>
-<p>Avoid max pooling layers since we want to keep location information.</p>
+<span id="cb1-11"><a></a>outputs <span class="op">=</span> ...</span>
+<span id="cb1-12"><a></a>model <span class="op">=</span> keras.Model(inputs, outputs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<div style="text-align: center;">
+<pre><code>┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Layer (type)                    ┃ Output Shape           ┃       Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ input_layer (InputLayer)        │ (None, 200, 200, 3)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ rescaling (Rescaling)           │ (None, 200, 200, 3)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d (Conv2D)                 │ (None, 100, 100, 64)   │         1,792 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_1 (Conv2D)               │ (None, 100, 100, 64)   │        36,928 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_2 (Conv2D)               │ (None, 50, 50, 128)    │        73,856 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_3 (Conv2D)               │ (None, 50, 50, 128)    │       147,584 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_4 (Conv2D)               │ (None, 25, 25, 256)    │       295,168 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_5 (Conv2D)               │ (None, 25, 25, 256)    │       590,080 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+</code></pre>
+</div>
+</div>
 </section>
 <section id="transposed-convolution" class="slide level2">
 <h2>Transposed convolution</h2>
@@ -346,6 +428,66 @@ sma@hvl.no
 <p><img data-src="https://d2l.ai/_images/trans_conv.svg" class="quarto-figure quarto-figure-center" width="900"></p>
 </figure>
 </div>
+</section>
+<section id="defining-the-model-1" class="slide level2">
+<h2>Defining the model</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-code-line-numbers="|4-9|11-16|18-20|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>inputs <span class="op">=</span> keras.Input(shape<span class="op">=</span>img_size <span class="op">+</span> (<span class="dv">3</span>,))</span>
+<span id="cb3-2"><a></a>x <span class="op">=</span> Rescaling(<span class="fl">1.0</span> <span class="op">/</span> <span class="dv">255</span>)(inputs)</span>
+<span id="cb3-3"><a></a></span>
+<span id="cb3-4"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">64</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb3-5"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">64</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb3-6"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">128</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb3-7"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">128</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb3-8"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">256</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, padding<span class="op">=</span><span class="st">"same"</span>, activation<span class="op">=</span><span class="st">"relu"</span>)(x)</span>
+<span id="cb3-9"><a></a>x <span class="op">=</span> Conv2D(<span class="dv">256</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb3-10"><a></a></span>
+<span id="cb3-11"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">256</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb3-12"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">256</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb3-13"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">128</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb3-14"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">128</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb3-15"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">64</span>, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb3-16"><a></a>x <span class="op">=</span> Conv2DTranspose(<span class="dv">64</span>, <span class="dv">3</span>, strides<span class="op">=</span><span class="dv">2</span>, activation<span class="op">=</span><span class="st">"relu"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb3-17"><a></a></span>
+<span id="cb3-18"><a></a>outputs <span class="op">=</span> Conv2D(num_classes, <span class="dv">3</span>, activation<span class="op">=</span><span class="st">"softmax"</span>, padding<span class="op">=</span><span class="st">"same"</span>)(x)</span>
+<span id="cb3-19"><a></a></span>
+<span id="cb3-20"><a></a>model <span class="op">=</span> keras.Model(inputs, outputs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="defining-the-model-2" class="slide level2">
+<h2>Defining the model</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a aria-hidden="true" tabindex="-1"></a>model.summary()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Layer (type)                    ┃ Output Shape           ┃       Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ input_layer (InputLayer)        │ (None, 200, 200, 3)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ rescaling (Rescaling)           │ (None, 200, 200, 3)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d (Conv2D)                 │ (None, 100, 100, 64)   │         1,792 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+ ...
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_5 (Conv2D)               │ (None, 25, 25, 256)    │       590,080 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_transpose                │ (None, 25, 25, 256)    │       590,080 │
+│ (Conv2DTranspose)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_transpose_1              │ (None, 50, 50, 256)    │       590,080 │
+│ (Conv2DTranspose)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_transpose_2              │ (None, 50, 50, 128)    │       295,040 │
+│ (Conv2DTranspose)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_transpose_3              │ (None, 100, 100, 128)  │       147,584 │
+│ (Conv2DTranspose)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_transpose_4              │ (None, 100, 100, 64)   │        73,792 │
+│ (Conv2DTranspose)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_transpose_5              │ (None, 200, 200, 64)   │        36,928 │
+│ (Conv2DTranspose)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ conv2d_6 (Conv2D)               │ (None, 200, 200, 3)    │         1,731 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘</code></pre>
 </section>
 <section id="improved-segmentation-models-the-u-net" class="slide level2">
 <h2>Improved segmentation models: the <em>U-Net</em></h2>
