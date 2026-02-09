@@ -178,7 +178,7 @@ They will be added as the course progresses.
       </td>
     </tr>
     <tr>
-      <td rowspan=2>Time series</td>
+      <td rowspan=3>Time series</td>
       <td>
       <h4>Tutorial: <a href="12_timeseries_forecasting.ipynb">12: Time series forecasting</a></h4>
       Following the example in Chapter 13, we try to predict the weather based on historical data.
@@ -194,7 +194,7 @@ They will be added as the course progresses.
     </tr>
     <tr>
       <td>
-      <h4>Tutorial: <a href="13_passenger_prediction.ipynb">13: Public transport passenger prediction</a></h4>
+      <h4>Exercise: <a href="13_passenger_prediction.ipynb">13: Public transport passenger prediction</a></h4>
       Test different methods for forecasting passenger numbers on public transport.
       </td>
       <td>
@@ -202,6 +202,20 @@ They will be added as the course progresses.
           <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
         </a><br>
         <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/13_passenger_prediction.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+<tr>
+      <td>
+      <h4>Exercise: <a href="14_timeseries_anomaly_detection.ipynb">14: Anomaly detection</a></h4>
+       Train an <i>autoencoder</i> to detect anomalous data in time series. 
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/14_timeseries_anomaly_detection.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/14_timeseries_anomaly_detection.ipynb" download>
           <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
         </a>
       </td>
