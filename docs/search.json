@@ -466,7 +466,7 @@
     "href": "slides/old-10-kickoff.html#project-kickoff",
     "title": "DAT255: Deep learning engineering",
     "section": "Project kickoff",
-    "text": "Project kickoff"
+    "text": "Project kickoff\n\n\n\nToday:\n\nA second look at project topics\nSome cool examples by Vegard and Jobjørn\nDetails about:\n\nProject scope\nRequirements and recommendations\nReport and material"
   },
   {
     "objectID": "slides/old-10-kickoff.html#project-topic",
@@ -515,7 +515,7 @@
     "href": "slides/old-10-kickoff.html#faq",
     "title": "DAT255: Deep learning engineering",
     "section": "FAQ 💬",
-    "text": "FAQ 💬\n\n\nCan I copy code from StackOverflow? Yes, but you must always cite your sources\n\n\n\n\nCan I use ChatGPT / Cursor / &lt;some AI tool&gt; for coding and report writing? Yes, but you must always cite your sources\n\n\n\n\nCan I use pretrained models? Yes, a long as you modify and train at least one model from scratch\n\n\n\n\nCan I use API calls to OpenAI / DeepSeek / &lt;some service&gt; instead of training my own model? No, but you can use it in addition to your own model"
+    "text": "FAQ 💬\n\n\nCan I copy code from StackOverflow? Yes, but you must always cite your sources\n\n\n\n\nCan I use ChatGPT / Cursor / &lt;some AI tool&gt; for coding and report writing? Yes, but you must always cite your sources\n\n\n\n\nCan I use pretrained models? Yes, a long as you modify and retrain at least one model\n\n\n\n\nCan I use API calls to OpenAI / DeepSeek / &lt;some service&gt; instead of training my own model? No, but you can use it in addition to your own model"
   },
   {
     "objectID": "slides/old-10-kickoff.html#next-week-project-week",
@@ -2819,62 +2819,6 @@
     "title": "DAT255: Deep learning engineering",
     "section": "The best model for tabular data",
     "text": "The best model for tabular data\n\nhttps://arxiv.org/pdf/2207.08815"
-  },
-  {
-    "objectID": "slides/11-tabular-data.html#the-ml-project-lifecycle",
-    "href": "slides/11-tabular-data.html#the-ml-project-lifecycle",
-    "title": "DAT255: Deep learning engineering",
-    "section": "The ML project lifecycle",
-    "text": "The ML project lifecycle"
-  },
-  {
-    "objectID": "slides/11-tabular-data.html#customising-keras",
-    "href": "slides/11-tabular-data.html#customising-keras",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Customising Keras",
-    "text": "Customising Keras\nKeras typically have most of what we need, but occasionally we have to add functionality ourselves\nThings we might need to customise:\n\nCallbacks\nMetrics\nLoss functions\nLayers\nModel behaviour undertraining vs inference\n\n\n\n\n See chapter 7"
-  },
-  {
-    "objectID": "slides/11-tabular-data.html#custom-callbacks",
-    "href": "slides/11-tabular-data.html#custom-callbacks",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Custom callbacks",
-    "text": "Custom callbacks\nA callback is run before/after certain events during training\nUse cases:\n\nSave model checkpoint efter each epoch\nChange learning rate\nWrite results to log file or monitoring tool\n\n\n\n\nclass CustomCallback(keras.callbacks.Callback):\n\n    def on_train_begin(self, logs=None):\n        keys = list(logs.keys())\n        print(\"Starting training; got log keys: {}\".format(keys))\n\n    def on_train_end(self, logs=None):\n        keys = list(logs.keys())\n        print(\"Stop training; got log keys: {}\".format(keys))\n\n    def on_epoch_begin(self, epoch, logs=None):\n      ...\n\n    # and more!"
-  },
-  {
-    "objectID": "slides/11-tabular-data.html#custom-metrics",
-    "href": "slides/11-tabular-data.html#custom-metrics",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Custom metrics",
-    "text": "Custom metrics\nNeed some exotic metric you invented yourself, or that is only available in scikit-learn?\nSubclass the abstract keras.metrics.Metrics class and implement the following methods:\nclass MyMetric(keras.metrics.Metric):\n\n  def __init__(self, ..., **kwargs):\n    super().__init__(**kwargs)\n\n    # class variables\n    self.result = self.add_variable(shape=(), initializer='zeros')\n\n  def update_state(self, y_true, y_pred, sample_weight=None):\n\n    # this is where the result is calculated\n    # doesn't return anything\n    result = ...\n    self.result.add_assign(result)\n\n  def result(self):\n    return self.result"
-  },
-  {
-    "objectID": "slides/11-tabular-data.html#custom-loss-functions",
-    "href": "slides/11-tabular-data.html#custom-loss-functions",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Custom loss functions",
-    "text": "Custom loss functions\nCustom loss functions can either subclassing keras.losses.Loss, or they can simply be regular functions, with two inputs (y_true, y_pred) and one output.\n\nImportant:\nThe loss function must be differentiable.\n\n\n\ndef mean_squared_error(y_true, y_pred):\n    return tf.reduce_mean(tf.square(y_true - y_pred), axis=-1)\n    \nmodel.compile(loss=mean_squared_error)\n\n\n\n\n\nAlso important:\nFor performance reasons, avoid loops, conditionals, and most python built-ins.\nWrite vectorisable code, ideally in the backend framework (i.e. TensorFlow) or using keras.ops."
-  },
-  {
-    "objectID": "slides/11-tabular-data.html#custom-layers",
-    "href": "slides/11-tabular-data.html#custom-layers",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Custom layers",
-    "text": "Custom layers\nThe simplest custom layer: keras.layers.Lambda\n(has no weights)\n\n\n\nexponential_layer = tf.keras.layers.Lambda(lambda x: tf.exp(x))\n\nmodel = keras.Sequential([\n  keras.layers.Input(shape=input_shape),\n  exponential_layer(),\n  keras.layers.Dense(10)\n])"
-  },
-  {
-    "objectID": "slides/11-tabular-data.html#custom-layers-1",
-    "href": "slides/11-tabular-data.html#custom-layers-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Custom layers",
-    "text": "Custom layers\nFor stateful layers, subclass the abstract keras.layers.Layer class.\nNeed three methods: __init__, call, and build.\n\n\n\nclass Linear(keras.layers.Layer):\n\n    def __init__(self, units=32):\n        super().__init__()\n        self.units = units\n\n    def build(self, input_shape):\n        self.w = self.add_weight(\n            shape=(input_shape[-1], self.units), initializer=\"random_normal\", trainable=True,\n        )\n        self.b = self.add_weight(\n            shape=(self.units,), initializer=\"random_normal\", trainable=True\n        )\n\n    def call(self, inputs):\n        return tf.linalg.matmul(inputs, self.w) + self.b"
-  },
-  {
-    "objectID": "slides/11-tabular-data.html#custom-models",
-    "href": "slides/11-tabular-data.html#custom-models",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Custom models",
-    "text": "Custom models\nTypically we compose complicated models by writing reuseable blocks of layers, as a function\nOccasionally, however, we might want to rewrite it as a class.\n\n\n\n\n\ndef conv_block(inputs):\n  x = layers.Rescaling(1.0 / 255)(inputs)\n  x = layers.Conv2D(128, 3, strides=2)(x)\n  x = layers.BatchNormalization()(x)\n  x = layers.Activation(\"relu\")(x)\n\n  return x\n\n\nclass ConvBlock(keras.layers.Layer):\n\n  def __init__(self, **kwargs):\n    super().__init__(**kwargs)\n\n    self.conv2d = layers.Conv2D(128, 3, strides=2)\n    self.batchnorm = layers.BatchNormalization()\n\n  def call(self, inputs):\n    x = layers.Rescaling(1.0 / 255)(inputs)\n    x = self.conv2d(x)\n    x = self.bathnorm(x) \n    out = layers.Activation(\"relu\")(x)\n\n    return out"
   },
   {
     "objectID": "slides/17-llms.html#training-decoder-models",
