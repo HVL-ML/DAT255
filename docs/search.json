@@ -2664,7 +2664,7 @@
     "href": "slides/11-tabular-data.html#this-week",
     "title": "DAT255: Deep learning engineering",
     "section": "This week",
-    "text": "This week\n\n\n\nToday:\n\nDeep learning on tabular data\nData preprocessing with Keras\n\nFeature scaling\nConverting text and categorical values\nQuick look at embeddings\n\n\nThursday:\n\nCustom Keras objects\nSome ML experiment monitoring tools\nProject kickoff\n\nIdeas\nRules\nGeneral info"
+    "text": "This week\n\n\n\n\n\nToday:\n\nDeep learning on tabular data\nData preprocessing with Keras\n\nFeature scaling\nConverting text and categorical values\nQuick look at embeddings\n\n\n\nThursday:\n\nCustom Keras objects\nSome ML experiment monitoring tools\nProject kickoff\n\nIdeas\nRules\nGeneral info"
   },
   {
     "objectID": "slides/11-tabular-data.html#some-types-of-data",
