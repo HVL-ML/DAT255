@@ -77,6 +77,7 @@ They will be added as the course progresses.
         </a>
       </td>
     </tr>
+    <!-- --> 
     <tr>
       <td rowspan=3>Convolutional networks</td>
       <td>
@@ -120,6 +121,7 @@ They will be added as the course progresses.
         </a>
       </td>
     </tr>
+    <!-- --> 
     <tr>
       <td rowspan=4>Image segmentation and object detection</td>
       <td>
@@ -177,6 +179,7 @@ They will be added as the course progresses.
         </a>
       </td>
     </tr>
+    <!-- --> 
     <tr>
       <td rowspan=3>Time series</td>
       <td>
@@ -235,6 +238,7 @@ They will be added as the course progresses.
         </a>
       </td>
     </tr>
+    <!-- --> 
     <tr>
       <td rowspan=3>Tabular data</td>
       <td>
@@ -273,6 +277,74 @@ They will be added as the course progresses.
           <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
         </a><br>
         <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/18_embeddings_and_modern_tabular_networks.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <!-- --> 
+    <tr>
+      <td rowspan=5>Natural language processing</td>
+      <td>
+      <h4>Tutorial: <a href="19_text_classification.ipynb">19: Text classification</a></h4>
+      Build an NLP model for sentiment analysis, in this case, classifying film reviews.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/19_text_classification.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/19_text_classification.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Tutorial: <a href="20_word_embeddings.ipynb">20: Word embeddings </a></h4>
+      Train word embeddings and investigate the high-dimensional embedding space.
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/20_word_embeddings.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/20_word_embeddings.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Exercise: <a href="21_pretrained_embeddings.ipynb">21: Fine-tune a model on pretrained embeddings</a></h4>
+      Benefit from the work others have done, by downloading pretrained word embeddings.
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/21_pretrained_embeddings.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/21_pretrained_embeddings.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Exercise: <a href="22_code_classification.ipynb">22: Code classification</a></h4>
+      Can you tell the difference between Java, JavaScript, C# and Python? 
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/22_code_classification.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/22_code_classification.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>(Optional) Exercise: <a href="23_tokenisers.ipynb">23: Tokenisers</a></h4>
+      Modern language models rely on different tokenisation algorithms to split up the text into useful tokens. Here we try out a few of them.
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/23_tokenisers.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/23_tokenisers.ipynb" download>
           <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
         </a>
       </td>
