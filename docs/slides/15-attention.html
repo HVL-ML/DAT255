@@ -195,7 +195,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 16</u> – Transformers for natural language processing</p>
+  <p class="subtitle"><u>Lecture 15</u> – Attention and Transformers</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -205,6 +205,26 @@ sma@hvl.no
 </div>
 </div>
 
+</section>
+<section id="section" class="slide level2" data-menu-title="ML trends">
+<h2></h2>
+<p><a href="https://epoch.ai/data/notable-ai-models"><img data-src="figures/lecture15/ml-trends.png"></a></p>
+</section>
+<section id="section-1" class="slide level2" data-menu-title="Attention is all you need" data-background-image="figures/lecture9/attention-arxiv.png" data-background-size="contain">
+<h2></h2>
+<div class="absolute" style="top: 0%; left: 40%; width: 450px; ">
+<p><img data-src="figures/lecture1/attention.png" class="img-shadow"></p>
+</div>
+</section>
+<section id="vector-embeddings" class="slide level2">
+<h2>Vector embeddings</h2>
+<p>Tokenise and embed the words:</p>
+<div class="absolute" style="top: 50%; left: 10%; ">
+<p>“you are <strong>right</strong>”</p>
+</div>
+<div class="absolute" style="top: 30%; left: 45%; width: 500px; ">
+<p><img data-src="figures/lecture15/vectorspace-1.png"></p>
+</div>
 </section>
 <section id="transformers-basic-idea" class="slide level2">
 <h2>Transformers: Basic idea</h2>
@@ -260,6 +280,23 @@ sma@hvl.no
 </section>
 <section id="self-attention" class="slide level2">
 <h2>Self-attention</h2>
+<div style="padding-top: 30px;">
+
+</div>
+<p>What service does a “station” provide?</p>
+<div style="padding-top: 30px;">
+
+</div>
+<ul>
+<li><span class="color-blue-dark">He stopped at the <strong>station</strong> to fill petrol.</span></li>
+<li><span class="color-indigo">The meteorological <strong>station</strong> is unmanned.</span></li>
+<li><span class="color-cyan-dark">The train left the <strong>station</strong> on time.</span></li>
+<li><span class="color-teal-dark">I prefer BBC Radio 4 over other <strong>station</strong>s.</span></li>
+</ul>
+<p>Of course dependent on context.</p>
+</section>
+<section id="self-attention-1" class="slide level2">
+<h2>Self-attention</h2>
 <p>Example sentence: <em>“The train left the station on time”</em></p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -271,7 +308,71 @@ sma@hvl.no
 </div>
 <p><span class="absolute" style="font-size: 0.5em;top: 40%; right: 0%; "><em>Deep Learning with Python</em>, F. Chollet</span></p>
 </section>
-<section id="self-attention-1" class="slide level2">
+<section id="self-attention-the-steps-involved" class="slide level2">
+<h2>Self-attention: The steps involved</h2>
+<div class="absolute" style="left: 0%; bottom: 0%; width: 750px; ">
+<p><img data-src="figures/lecture15/attention.png"></p>
+</div>
+<div class="absolute colorbox" style="background-color: #FFFFFF; opacity: 0.75;left: 0%; bottom: 0%; width: 100%; height: 51%; ">
+
+</div>
+<div class="absolute" style="top: 15%; left: 60%; width: 40%; ">
+<p><strong>1: Text vectorisation</strong></p>
+<p>Compute embedding vectors.</p>
+</div>
+</section>
+<section id="self-attention-the-steps-involved-1" class="slide level2">
+<h2>Self-attention: The steps involved</h2>
+<div class="absolute" style="left: 0%; bottom: 0%; width: 750px; ">
+<p><img data-src="figures/lecture15/attention.png"></p>
+</div>
+<div class="absolute colorbox" style="background-color: #FFFFFF; opacity: 0.75;left: 0%; bottom: 46%; width: 100%; height: 30%; ">
+
+</div>
+<div class="absolute colorbox" style="background-color: #FFFFFF; opacity: 0.75;left: 37%; bottom: 0%; width: 50%; height: 50%; ">
+
+</div>
+<div class="absolute" style="top: 15%; left: 60%; width: 40%; ">
+<p><strong>2: Compute attention scores</strong></p>
+<p>Dot-product self-attention</p>
+</div>
+</section>
+<section id="self-attention-the-steps-involved-2" class="slide level2">
+<h2>Self-attention: The steps involved</h2>
+<div class="absolute" style="left: 0%; bottom: 0%; width: 750px; ">
+<p><img data-src="figures/lecture15/attention.png"></p>
+</div>
+<div class="absolute colorbox" style="background-color: #FFFFFF; opacity: 0.75;left: 0%; bottom: 46%; width: 100%; height: 30%; ">
+
+</div>
+<div class="absolute colorbox" style="background-color: #FFFFFF; opacity: 0.75;left: 0%; bottom: 0%; width: 37%; height: 46%; ">
+
+</div>
+<div class="absolute colorbox" style="background-color: #FFFFFF; opacity: 0.75;left: 55%; bottom: 0%; width: 15%; height: 46%; ">
+
+</div>
+<div class="absolute" style="top: 15%; left: 60%; width: 40%; ">
+<p><strong>3: Compute weighted token vectors</strong></p>
+<p>Scale, multiply, and normalise</p>
+</div>
+</section>
+<section id="self-attention-the-steps-involved-3" class="slide level2">
+<h2>Self-attention: The steps involved</h2>
+<div class="absolute" style="left: 0%; bottom: 0%; width: 750px; ">
+<p><img data-src="figures/lecture15/attention.png"></p>
+</div>
+<div class="absolute colorbox" style="background-color: #FFFFFF; opacity: 0.75;left: 0%; bottom: 46%; width: 100%; height: 30%; ">
+
+</div>
+<div class="absolute colorbox" style="background-color: #FFFFFF; opacity: 0.75;left: 0%; bottom: 0%; width: 46%; height: 46%; ">
+
+</div>
+<div class="absolute" style="top: 15%; left: 60%; width: 40%; ">
+<p><strong>4: Create the new, context-aware vector</strong></p>
+<p>Sum up attention-weighted token vectors</p>
+</div>
+</section>
+<section id="self-attention-2" class="slide level2">
 <h2>Self-attention</h2>
 <div class="columns">
 <div class="column" style="width:74%;">
@@ -302,7 +403,7 @@ sma@hvl.no
 
 </div></div>
 </section>
-<section id="self-attention-2" class="slide level2">
+<section id="self-attention-3" class="slide level2">
 <h2>Self-attention</h2>
 <div class="columns">
 <div class="column" style="width:72%;">
@@ -341,7 +442,7 @@ sma@hvl.no
 </div>
 </div></div>
 </section>
-<section id="self-attention-3" class="slide level2">
+<section id="self-attention-4" class="slide level2">
 <h2>Self-attention</h2>
 <div class="columns">
 <div class="column" style="width:74%;">
@@ -375,7 +476,7 @@ sma@hvl.no
 </div>
 </div></div>
 </section>
-<section id="self-attention-4" class="slide level2">
+<section id="self-attention-5" class="slide level2">
 <h2>Self-attention</h2>
 <div class="columns">
 <div class="column" style="width:74%;">
@@ -408,7 +509,7 @@ sma@hvl.no
 </div>
 </div></div>
 </section>
-<section id="self-attention-5" class="slide level2">
+<section id="self-attention-6" class="slide level2">
 <h2>Self-attention</h2>
 <div class="columns">
 <div class="column" style="width:74%;">
@@ -475,6 +576,29 @@ sma@hvl.no
 </section>
 <section id="multi-head-attention" class="slide level2">
 <h2>Multi-head attention</h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>Now we want to increase the complexity by computing attention several times in parallel.</p>
+<p><span class="color-red-dark"><em>But:</em></span> Our transformation so far has no learnable parameters</p>
+<p><i class="bi bi-arrow-right"></i> it’s just a stateless operation, we get the same result each time.</p>
+<div class="fragment">
+<p>Key idea from the <span class="color-deep-purple"><em>“Attention is all you need”</em></span> paper:</p>
+<ul>
+<li>Pass each input (query, key and value) though a separate <code>Dense</code> layer
+<ul>
+<li>Each with their own parameters</li>
+</ul></li>
+</ul>
+<p>This we can do in parallel, and get different features for each attention “head”</p>
+<p><i class="bi bi-arrow-right"></i> Call it <strong>multi-head attention</strong>.</p>
+</div>
+</div></div>
+<div class="absolute" style="top: -5%; left: 82%; width: 1800px; ">
+<p><img data-src="figures/lecture9/attention-arxiv.png"></p>
+</div>
+</section>
+<section id="multi-head-attention-1" class="slide level2">
+<h2>Multi-head attention</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figures/lecture15/multi-head-attention.png" class="quarto-figure quarto-figure-center" width="950"></p>
@@ -490,7 +614,7 @@ sma@hvl.no
 </div>
 <p><span class="absolute" style="font-size: 0.5em;top: 0%; right: 0%; "><em>Deep Learning with Python</em>, F. Chollet</span></p>
 </section>
-<section id="multi-head-attention-1" class="slide level2">
+<section id="multi-head-attention-2" class="slide level2">
 <h2>Multi-head attention</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -515,7 +639,7 @@ V &amp;= X W^{(v)} \\
 </div>
 </div></div>
 </section>
-<section id="multi-head-attention-2" class="slide level2">
+<section id="multi-head-attention-3" class="slide level2">
 <h2>Multi-head attention</h2>
 <div style="padding-top: 40px;">
 
@@ -534,6 +658,49 @@ V &amp;= X W^{(v)} \\
 </div>
 <p><span class="absolute" style="font-size: 0.5em;bottom: 0%; right: 0%; "><em>Deep Learning: Foundations and Concepts</em>, C. Bishop</span></p>
 </section>
+<section id="multi-head-attention-4" class="slide level2">
+<h2>Multi-head attention</h2>
+<div style="padding-top: 40px;">
+
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>In the end, we can write the scaled dot-product self-attention for a single head as</p>
+<p><span class="math display">\[
+\small
+\mathrm{attention}(Q, K, V) = \mathrm{softmax}\left[\frac{QK^T}{\sqrt{D}} \right] V
+\]</span></p>
+<p>And to get the final output from <em>all</em> the attention heads, we simply concatenate the individial outputs.</p>
+</div></div>
+<div class="absolute" style="top: 20%; right: 0%; ">
+<iframe width="370px" height="600px" src="figures/lecture15/bertviz_head_view.html" style="frame-scale: 0.75;">
+</iframe>
+</div>
+</section>
+<section id="bonus-feature" class="slide level2">
+<h2>Bonus feature</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Before we started involving <code>Dense</code> layers and the Q, K, V matrices, we had this:</p>
+<p><img data-src="figures/lecture15/attention-zoom.png" width="400"></p>
+</div><div class="column" style="width:50%;">
+<div style="padding-top: 150px;">
+
+</div>
+<div class="fragment">
+<div class="colorbox" style="background-color: #E0F2F1;">
+<p>Notice it’s symmetric.</p>
+<p>The output from</p>
+<p><span class="math display">\[\small\mathrm{attention}(Q, K, V)\]</span></p>
+<p>on the other hand, need <strong>not</strong> be symmetric.</p>
+<div class="fragment">
+<p>Can then encode asymmetric relations:</p>
+<p>A <strong>hammer</strong> is a <strong>tool</strong>, but not all <strong>tools</strong> are <strong>hammers</strong>.</p>
+</div>
+</div>
+</div>
+</div></div>
+</section>
 <section id="the-transformer-architecture" class="slide level2">
 <h2>The Transformer architecture</h2>
 <div style="padding-top: 30px;">
@@ -543,9 +710,9 @@ V &amp;= X W^{(v)} \\
 <div class="column" style="width:60%;">
 <p>With the multi-head attention in place, we add a few extra layers to form a block:</p>
 <ul>
-<li>A <span class="color-deep-orange-dark">residual connection</span> (<em>Add &amp; Norm</em>) going around the attention layer</li>
-<li>A stack of <code>Dense</code> (<em>Feed Forward</em>) layers</li>
-<li>A <span class="color-deep-orange-dark">residual connection</span> going around the feed forward layers</li>
+<li class="fragment">A <span class="color-deep-orange-dark">residual connection</span> (<em>Add &amp; Norm</em>) going around the attention layer</li>
+<li class="fragment">A stack of <code>Dense</code> (<em>Feed Forward</em>) layers</li>
+<li class="fragment">A <span class="color-deep-orange-dark">residual connection</span> going around the feed forward layers</li>
 </ul>
 </div></div>
 <div class="fragment">
@@ -647,309 +814,7 @@ V &amp;= X W^{(v)} \\
 </div>
 </div>
 </section>
-<section id="computational-complexity" class="slide level2">
-<h2>Computational complexity</h2>
-<ul>
-<li><p>For each attention head, we introduce <span class="math inline">\(\small 3 \cdot (D^2 + D)\)</span> new parameters<br>(The <span class="math inline">\(W^{(q)}), W^{(k)}, W^{(v)}\)</span> matrices)</p></li>
-<li><p>Then we add dense layers on top, adding another <span class="math inline">\(\small D^2 + D\)</span>&nbsp;parameters per layer</p></li>
-<li><p>Layer normalisation adds yet another <span class="math inline">\(\small 2\cdot D\)</span> parameters</p></li>
-</ul>
-<p><span class="color-red-dark"><i class="bi bi-arrow-right"></i></span> Quickly adds up to a lot.</p>
-<div class="absolute fragment fade-in-then-out" style="bottom: -3%; right: 0%; width: 350px; ">
-<p><img data-src="figures/lecture16/llama-params.png" class="img-shadow"></p>
-</div>
-<div class="fragment">
-<p><span class="color-green-dark"><strong>Still:</strong></span> Computational cost of a forward pass of a transformer model is</p>
-<ul>
-<li><span class="math inline">\(\small \mathcal{O}(N^2 D)\)</span> for the attention layers</li>
-<li><span class="math inline">\(\small \mathcal{O}(N D^2)\)</span> for the dense layers</li>
-</ul>
-<p>Compare to <span class="math inline">\(\small \mathcal{O}(N^2 D^2)\)</span> for a fully-connected dense network</p>
-<p><span class="color-green-dark"><i class="bi bi-arrow-right"></i></span> Transformers are a lot more <span class="color-green-dark">efficient</span> for large models</p>
-</div>
-</section>
-<section id="transformer-model-structures" class="slide level2">
-<h2>Transformer model structures</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p>Typically divide by which parts of the original transformer architecture is being used:</p>
-<ul>
-<li><p><span class="color-teal-dark"><strong>Encoder</strong></span> models:</p>
-<p>Useful for sentiment analysis and similar tasks</p></li>
-<li><p><span class="color-teal-dark"><strong>Decoder</strong></span> models:</p>
-<p>Most modern language models are this type</p></li>
-<li><p><span class="color-teal-dark"><strong>Encoder-decoder</strong></span> models:</p>
-<p>Sequence-to-sequence models, useful for translation and for multimodal tasks</p></li>
-</ul>
-</div></div>
-<div class="absolute" style="top: 5%; right: 0%; width: 400px; ">
-<p><img data-src="figures/lecture9/transformer.png"></p>
-</div>
-</section>
-<section id="encoder-transformers" class="slide level2">
-<h2>Encoder transformers</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><strong><em>Input:</em></strong> Class token and randomly masked sequence</p>
-<p><strong><em>Output:</em></strong> Class prediction and completed sequence</p>
-<p><span class="color-indigo">Example:</span> <em>Bidirectional Encoder Representations from Transformers</em> (BERT), 2019</p>
-<p>Can be fine-tuned for various tasks, but:</p>
-<ul>
-<li>Not suited for text generation</li>
-<li>Training is inefficient</li>
-</ul>
-</div><div class="column" style="width:55%;">
-<div style="padding-top: 30px;">
-
-</div>
-<div class="quarto-figure quarto-figure-right">
-<figure>
-<p><img data-src="figures/lecture16/encoder.png" class="quarto-figure quarto-figure-right"></p>
-</figure>
-</div>
-</div></div>
-<div class="absolute" style="font-size: 0.8em;top: 70%; left: 56%; ">
-<p>(<code>positive</code>) The <code>&lt;masked&gt;</code> was great (…)</p>
-</div>
-<div class="absolute" style="font-size: 0.8em;top: 5%; left: 56%; ">
-<p>(<code>93%</code> positive) The <code>film</code> was great (…)</p>
-</div>
-<div class="absolute" style="font-size: 0.5em;bottom: 0%; right: 0%; ">
-<p>https://arxiv.org/abs/1810.04805<br> https://huggingface.co/docs/transformers/en/model_doc/bert</p>
-</div>
-</section>
-<section id="decoder-transformers" class="slide level2">
-<h2>Decoder transformers</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Decoder-only transformers can be used as <span class="color-deep-orange"><em>generative</em></span> models</p>
-<div style="font-size: 0.8em;">
-<p>(like GPT: <em>Generative Pre-trained Transformer</em>, 2018)</p>
-</div>
-<p><strong><em>Input:</em></strong> A sequence</p>
-<p><strong><em>Output:</em></strong> Approximate probabilites for the next token in the sequence</p>
-<p><span class="color-indigo">Examples:</span></p>
-<ul>
-<li>GPT (2018), GPT-2 (2019), GPT-3 (2020), …</li>
-<li>LlaMa versions (2023-2024)</li>
-<li>DeepSeek versions (2023-2025)</li>
-<li>And most other LLMs – although they differ in implementation and training</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div style="padding-top: 30px;">
-
-</div>
-<div class="quarto-figure quarto-figure-right">
-<figure>
-<p><img data-src="figures/lecture16/decoder.png" class="quarto-figure quarto-figure-right"></p>
-</figure>
-</div>
-</div></div>
-<div class="absolute" style="font-size: 0.5em;bottom: 0%; right: 0%; ">
-<p>https://openai.com/index/language-unsupervised/<br> https://huggingface.co/docs/transformers/en/model_doc/openai-gpt</p>
-</div>
-</section>
-<section id="encoder-decoder-models" class="slide level2">
-<h2>Encoder-decoder models</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<div style="padding-top: 70px;">
-
-</div>
-<p>Original transformer model was a <em>sequence-to-sequence</em> model</p>
-<p>Combining the encoder and decoder parts relies on <span class="color-pink-dark">cross-attention</span></p>
-<p>The cross-attention mechanism is often used in <span class="color-purple-dark"><em>multi-modal</em></span> models such as speech-to-text or image-to-text</p>
-</div><div class="absolute" style="top: 5%; right: -5%; ">
-<p><img data-src="figures/lecture9/transformer.png" width="350"></p>
-</div>
-</div>
-<div class="absolute" style="top: 20%; right: 28%; width: 200px; ">
-<p><img data-src="figures/lecture16/cross-attention.png" class="img-shadow"></p>
-</div>
-</section>
-<section id="section" class="slide level2" data-menu-title="Evolution of transformer models for NLP">
-<h2></h2>
-<div class="absolute" style="top: -5%; left: 5%; width: 900px; ">
-<p><img data-src="figures/lecture16/evolutionary-tree.png"></p>
-</div>
-<div class="absolute" style="font-size: 0.5em;left: 0%; bottom: -3%; ">
-<p>Yang, Jingfeng, et al.&nbsp;“Harnessing the power of LLMs in practice: A survey on ChatGPT and beyond.” <em>ACM Transactions on Knowledge Discovery from Data</em> 18.6 (2024): 1-32.</p>
-</div>
-</section>
-<section id="training-decoder-models" class="slide level2">
-<h2>Training decoder models</h2>
-<p>Decoder-type language models are <span class="color-pink-dark">next word predictors</span>.</p>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p>So we train them to do exactly this:</p>
-<ul>
-<li>Mask the end of sentences</li>
-<li>Use the next token as the prediction target</li>
-<li>Reveal token and move to next one</li>
-<li>Continue until end of text</li>
-</ul>
-<p>Usually call the procedure <em>masked attention</em> or <em>causal attention</em>, when model is only allowed to look “backwards”.</p>
-<p>Can train on large, unlabelled data in a <span class="color-deep-purple">self-supervised</span> approach</p>
-</div><div class="column" style="width:40%;">
-<div class="quarto-figure quarto-figure-right">
-<figure>
-<p><img data-src="figures/lecture16/mask-matrix.png" class="quarto-figure quarto-figure-right"></p>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="generating-text-from-a-decoder-model" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<p>As for other classification models, last layer looks like</p>
-<div style="text-align: center">
-<p><code>Dense(units=vocabulary_size, activation="softmax")</code></p>
-</div>
-<p><code>-&gt;</code> output is a vector of softmax scores for all possible tokens.</p>
-<div style="padding-top: 20px;">
-
-</div>
-<p>Run the model in an <span class="color-teal-dark"><strong>autoregressive</strong></span> loop:</p>
-<ul>
-<li>Process sequence and predict next token</li>
-<li>Append predicted token to the sequence</li>
-<li>Process extended sequence and again append predicted token</li>
-<li>Repeat</li>
-<li>(Stop if predicting end-of-sequence token)</li>
-</ul>
-</section>
-<section id="generating-text-from-a-decoder-model-1" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<ul>
-<li>Process sequence and predict next token</li>
-<li>Append predicted token to the sequence</li>
-<li>Process extended sequence and again append predicted token</li>
-<li>Repeat</li>
-</ul>
-<div class="absolute" style="top: 50%; left: 10%; ">
-<p>The cat sat on the _____</p>
-</div>
-<div class="absolute" style="top: 50%; left: 52%; width: 300px; ">
-<p><code>floor       7.72%</code><br> <code>bed         6.82%</code><br> <code>couch       5.70%</code><br> <code>ground      4.71%</code><br> <code>edge        4.66%</code><br></p>
-</div>
-</section>
-<section id="generating-text-from-a-decoder-model-2" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<ul>
-<li>Process sequence and predict next token</li>
-<li>Append predicted token to the sequence</li>
-<li>Process extended sequence and again append predicted token</li>
-<li>Repeat</li>
-</ul>
-<div class="absolute" style="top: 50%; left: 10%; ">
-<p>The cat sat on the <span class="color-pink-dark">floor</span> _____</p>
-</div>
-<div class="absolute" style="top: 50%; left: 52%; width: 300px; ">
-<p><code>,           25.08%</code><br> <code>and         13.56%</code><br> <code>.            7.38%</code><br> <code>of           7.07%</code><br> <code>with         6.58%</code><br></p>
-</div>
-</section>
-<section id="generating-text-from-a-decoder-model-3" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<ul>
-<li>Process sequence and predict next token</li>
-<li>Append predicted token to the sequence</li>
-<li>Process extended sequence and again append predicted token</li>
-<li>Repeat</li>
-</ul>
-<div class="absolute" style="top: 50%; left: 10%; ">
-<p>The cat sat on the <span class="color-pink-dark">floor,</span> _____</p>
-</div>
-<div class="absolute" style="top: 50%; left: 52%; width: 300px; ">
-<p><code>and         9.41%</code><br> <code>looking     3.23%</code><br> <code>the         1.78%</code><br> <code>he          1.63%</code><br> <code>his         1.48%</code><br></p>
-</div>
-</section>
-<section id="generating-text-from-a-decoder-model-4" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<ul>
-<li>Process sequence and predict next token</li>
-<li>Append predicted token to the sequence</li>
-<li>Process extended sequence and again append predicted token</li>
-<li>Repeat</li>
-</ul>
-<div class="absolute" style="top: 50%; left: 10%; ">
-<p>The cat sat on the <span class="color-pink-dark">floor, and</span> _____</p>
-</div>
-<div class="absolute" style="top: 50%; left: 52%; width: 300px; ">
-<p><code>the         8.40%</code><br> <code>he          5.72%</code><br> <code>I           4.55%</code><br> <code>she         3.65%</code><br> <code>his         3.56%</code><br></p>
-</div>
-</section>
-<section id="generating-text-from-a-decoder-model-5" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<p>Sampling strategies for next token:</p>
-<ul>
-<li><strong>Greedy search:</strong> Always select token with highest score
-<ul>
-<li>Makes model deterministic, always outputs same output for a given input</li>
-<li>Often get stuck in sequence loops</li>
-</ul></li>
-</ul>
-</section>
-<section id="generating-text-from-a-decoder-model-6" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<p>Sampling strategies for next token:</p>
-<ul>
-<li><p><strong>Greedy search:</strong> Always select token with highest score</p></li>
-<li><p><strong>Beam search:</strong> Keep track of several possible branches of output sequences, and select the sentence with highest probability</p>
-<ul>
-<li>Computationally expensive</li>
-<li>Also gets stuck in loops</li>
-</ul></li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture16/beamsearch.png" class="quarto-figure quarto-figure-center" width="700"></p>
-</figure>
-</div>
-<div class="absolute" style="font-size: 0.5em;bottom: 0%; right: 0%; ">
-<p>arXiv:1904.09751</p>
-</div>
-</section>
-<section id="generating-text-from-a-decoder-model-7" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<p>Sampling strategies for next token:</p>
-<ul>
-<li><p><strong>Greedy search:</strong> Always select token with highest score</p></li>
-<li><p><strong>Beam search:</strong> Keep track of several possible branches of output sequences, and select the sentence with highest probability</p></li>
-<li><p><strong>Sampling</strong>: Use scores as probabilities and sample randomly</p>
-<ul>
-<li>With large vocabularies the results can be nonsensical</li>
-</ul></li>
-</ul>
-</section>
-<section id="generating-text-from-a-decoder-model-8" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<p>Sampling strategies for next token:</p>
-<ul>
-<li><p><strong>Greedy search:</strong> Always select token with highest score</p></li>
-<li><p><strong>Beam search:</strong> Keep track of several possible branches of output sequences, and select the sentence with highest probability</p></li>
-<li><p><strong>Sampling</strong>: Use scores as probabilities and sample randomly</p></li>
-<li><p><strong>Top-<em>K</em> sampling</strong>: Sample among the <em>K</em> tokens with highest score</p></li>
-</ul>
-</section>
-<section id="generating-text-from-a-decoder-model-9" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<p>Sampling strategies for next token:</p>
-<ul>
-<li><p><strong>Greedy search:</strong> Always select token with highest score</p></li>
-<li><p><strong>Beam search:</strong> Keep track of several possible branches of output sequences, and select the sentence with highest probability</p></li>
-<li><p><strong>Sampling</strong>: Use scores as probabilities and sample randomly</p></li>
-<li><p><strong>Top-<em>K</em> sampling</strong>: Sample among the <em>K</em> tokens with highest score</p></li>
-<li><p><strong>Adjusted softmax sampling</strong>: Add a parameter <em>T</em> called <span class="color-pink-dark">temperature</span> in the softmax function applied to the output:</p>
-<p><span class="math display">\[
-  \small
-  y_i = \frac{\exp(a_i/T)}{\sum_j \exp(a_j/T)}
-  \]</span></p>
-<ul>
-<li>Low <em>T</em>: sample among best tokens</li>
-<li>High <em>T</em>: sample among all tokens (output is more random)</li>
-</ul></li>
-</ul>
-</section>
-<section id="section-1" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<section id="section-2" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>

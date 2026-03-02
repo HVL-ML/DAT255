@@ -28,72 +28,6 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-      }
-    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-    div.sourceCode
-      { color: #383a42;  }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #383a42; } /* Normal */
-    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
-    code span.an { color: #50a14f; } /* Annotation */
-    code span.at { color: #a626a4; } /* Attribute */
-    code span.bn { color: #986801; } /* BaseN */
-    code span.bu { color: #a626a4; } /* BuiltIn */
-    code span.cf { color: #a626a4; } /* ControlFlow */
-    code span.ch { color: #50a14f; } /* Char */
-    code span.cn { color: #986801; } /* Constant */
-    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
-    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
-    code span.do { color: #e45649; } /* Documentation */
-    code span.dt { color: #a626a4; } /* DataType */
-    code span.dv { color: #986801; } /* DecVal */
-    code span.er { color: #f44747; text-decoration: underline; } /* Error */
-    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
-    code span.fl { color: #986801; } /* Float */
-    code span.fu { color: #4078f2; } /* Function */
-    code span.im { color: #50a14f; } /* Import */
-    code span.in { color: #c45b00; } /* Information */
-    code span.kw { color: #a626a4; } /* Keyword */
-    code span.op { color: #a626a4; } /* Operator */
-    code span.ot { color: #27ae60; } /* Other */
-    code span.pp { color: #a626a4; } /* Preprocessor */
-    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
-    code span.sc { color: #0184bc; } /* SpecialChar */
-    code span.ss { color: #da4453; } /* SpecialString */
-    code span.st { color: #50a14f; } /* String */
-    code span.va { color: #e45649; } /* Variable */
-    code span.vs { color: #da4453; } /* VerbatimString */
-    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e5387708f32441f66e167fb7200d552e.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -195,7 +129,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 13</u> <br> Natural language processing 1: Text vectorisation</p>
+  <p class="subtitle"><u>Lecture 20</u> – ML operations</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -206,331 +140,184 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="natural-language-processing-nlp" class="slide level2">
-<h2>Natural language processing (NLP)</h2>
-<p><span class="color-teal-dark">(as opposed to <em>machine language</em>)</span></p>
-<p>Since most human knowledge is stored as text, <strong>NLP</strong> is an important field of study</p>
-<div class="fragment">
-<blockquote>
-<p>Knowing grammar, syntax and language structure (i.e.&nbsp;<em>linguistics</em>), can we write down the set of rules required to do a language task like translation?</p>
-</blockquote>
-</div>
-<div class="fragment color-red-dark" style="text-indent: 25px;">
-<p>Not really, no.</p>
-</div>
-<div class="fragment">
-<blockquote>
-<p>Knowing basically nothing, but having a library of example text, can we statistically infer the rules required to do a language task?</p>
-</blockquote>
-</div>
-<div class="fragment color-green-dark" style="text-indent: 25px;">
-<p>Yes!</p>
-</div>
-<div class="fragment">
-<p><span class="color-indigo"><em>Disclaimer:</em></span><br> There’s loads of interesting NLP stuff that we will skip, because it has been obsoleted by transformer models. Look at the supplemental reading on Canvas.</p>
-</div>
-</section>
-<section id="nlp-tasks" class="slide level2" data-background-color="#F5F5F5">
-<h2>NLP tasks</h2>
-<ul>
-<li><p><span class="color-indigo">Text classification:</span></p>
-<p><em>What is the topic of this text?</em></p></li>
-<li><p><span class="color-indigo">Content filtering:</span></p>
-<p><em>Is this email spam? Does this post contain swearing?</em></p></li>
-<li><p><span class="color-pink-dark">Sentiment analysis:</span></p>
-<p><em>Is this review positive or negative?</em></p></li>
-<li><p><span class="color-pink-dark">Translation:</span></p>
-<p><em>What is this text in French?</em></p></li>
-<li><p><span class="color-pink-dark">Summarisation:</span></p>
-<p><em>Give a short summary of this article.</em></p></li>
-<li><p><span class="color-purple-dark">Question answering:</span></p>
-<p><em>How do I fix the Wifi on my Thinkpad?</em></p></li>
-</ul>
-<div class="fragment absolute img-shadow" style="padding-left: 15px; background-color: #E0F2F1;top: 60%; right: 0%; width: 400px; ">
-<p>We start off with classification, before moving to text output next week.</p>
-</div>
-</section>
-<section id="our-toolbox-so-far" class="slide level2">
-<h2>Our toolbox so far:</h2>
-<p>We know how to do</p>
-<ul>
-<li><p><strong>Sequence processing:</strong> <br> Know how to construct RNNs, CNNs</p></li>
-<li><p><strong>Input encoding:</strong> <br> Looked at <em>embeddings</em> last time</p></li>
-</ul>
-<p>With this, we can build an <strong>NLP model at <span class="color-purple">2017 level</span></strong><br> (will do so this week)</p>
-<div class="fragment">
-<p>Next week we will learn about</p>
-<ul>
-<li><strong>Transformers</strong> <span class="color-text-muted" style="font-size: 0.75em;">(not the electrical kind)</span></li>
-</ul>
-<p>With this, we can build an <strong>NLP model at <span class="color-deep-orange">2022 level</span></strong></p>
-</div>
-<div class="absolute" style="top: 15%; right: 0%; width: 450px; ">
-<!-- ![[MMLU](https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu) benchmark](figures/lecture13/mmlu.png) -->
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture1/ai-index-fig_2.1.33.png" class="img-shadow"></p>
-<figcaption><span class="color-text-muted">Stanford AI Index 2025</span></figcaption>
-</figure>
-</div>
-</div>
-</section>
-<section id="getting-text-into-our-model" class="slide level2">
-<h2>Getting text into our model</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p><strong>Text vectorisation</strong>: Converting text to numeric data.</p>
-<p>Typical approach consists of several steps</p>
-<ol type="1">
-<li class="fragment"><strong><em>Standardisation:</em></strong><br>Remove diacritics, punctuation, convert to lowercase</li>
-<li class="fragment"><strong><em>Tokenisation:</em></strong><br>Split text into <span class="color-purple-dark"><strong><em>tokens</em></strong></span> which can be words, subwords, or groups of words</li>
-<li class="fragment"><strong><em>Indexing:</em></strong><br>Convert tokens to integer values</li>
-<li class="fragment"><strong><em>Encoding:</em></strong><br>Convert indices into embeddings or one-hot encoding</li>
-</ol>
-</div></div>
-<div class="absolute" style="top: 5%; right: 0%; width: 350px; ">
-<p><img data-src="figures/lecture13/text-vectorisation.png"></p>
-</div>
-<!-- [_Deep Learning with Python_, F. Chollet]{.absolute bottom="-2%" right="5%" style="font-size: 0.5em;"} -->
-</section>
-<section id="text-vectorisation" class="slide level2">
-<h2>Text vectorisation</h2>
-<p>Can do all the processing steps with the <code>keras.layers.TextVectorization</code> layer</p>
-<blockquote>
-<p>A preprocessing layer which maps text features to integer sequences.</p>
-</blockquote>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|2|3|4|5|6|7|8|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>keras.layers.TextVectorization(</span>
-<span id="cb1-2"><a></a>  max_tokens<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-3"><a></a>  standardize<span class="op">=</span><span class="st">"lower_and_strip_punctuation"</span>,</span>
-<span id="cb1-4"><a></a>  split<span class="op">=</span><span class="st">"whitespace"</span>,</span>
-<span id="cb1-5"><a></a>  ngrams<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-6"><a></a>  output_mode<span class="op">=</span><span class="st">"int"</span>,</span>
-<span id="cb1-7"><a></a>  output_sequence_length<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-8"><a></a>  vocabulary<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-9"><a></a>  ...</span>
-<span id="cb1-10"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>standardize</code> and <code>split</code> can be custom functions.</p>
-</section>
-<section id="text-vectorisation-1" class="slide level2">
-<h2>Text vectorisation</h2>
-<p>Can do all the processing steps with the <code>keras.layers.TextVectorization</code> layer</p>
-<div style="padding-top: 30px;">
-
-</div>
-<p>The vocabulary is built automatically from data by calling <code>adapt()</code>:</p>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer <span class="op">=</span> keras.layers.TextVectorization(</span>
-<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>  max_tokens<span class="op">=</span><span class="dv">1000</span>,</span>
-<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>  standardize<span class="op">=</span><span class="st">"lower_and_strip_punctuation"</span>,</span>
-<span id="cb2-4"><a aria-hidden="true" tabindex="-1"></a>  output_sequence_length<span class="op">=</span><span class="dv">250</span></span>
-<span id="cb2-5"><a aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-6"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer.adapt(dataset)</span>
-<span id="cb2-8"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer.get_vocabulary()[:<span class="dv">10</span>]</span>
-<span id="cb2-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># ['', '[UNK]', 'the', 'and', 'a', 'of', 'to', 'is', 'in', 'it']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div style="padding-top: 30px;">
-
-</div>
-<ul>
-<li>We reserve index 1 (<code>'[UNK]'</code>) for unknown, out-of-vocabulary (OOV) tokens</li>
-<li>We reserve index 0 (<code>''</code>) for the <em>mask token</em>, which used to pad sequences</li>
-</ul>
-</section>
-<section id="text-vectorisation-2" class="slide level2">
-<h2>Text vectorisation</h2>
-<p>Test sentence from the <a href="https://ai.stanford.edu/~amaas/data/sentiment/">IMDb movie review</a> dataset:</p>
-<div style="padding-top: 20px">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Text:</span>     I   am  shocked.  Shocked  and  dismayed  that  the   428   of   you   IMDB  users</span>
-<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Encoded:</span> 10  238     2355      2355    3         1    12    2     1    5    23    933   5911</span>
-<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Decoded:</span>  i   am  shocked   shocked  and     <span class="pp">[</span><span class="ss">UNK</span><span class="pp">]</span>  that  the  <span class="pp">[</span><span class="ss">UNK</span><span class="pp">]</span>  of   you   imdb  users</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<p>Can remove HTML tags (or other uninteresting stuff) by using regexes:</p>
-<div style="padding-top: 20px">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="|2|3|4|7-9|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> custom_standardization(input_data):</span>
-<span id="cb4-2"><a></a>  lowercase <span class="op">=</span> tf.strings.lower(input_data)</span>
-<span id="cb4-3"><a></a>  without_html <span class="op">=</span> tf.strings.regex_replace(lowercase, <span class="st">'&lt;[^&gt;]*&gt;'</span>, <span class="st">' '</span>)</span>
-<span id="cb4-4"><a></a>  without_punctuation <span class="op">=</span> tf.strings.regex_replace(without_html, <span class="st">'[</span><span class="sc">{}</span><span class="st">]'</span>.<span class="bu">format</span>(string.punctuation), <span class="st">''</span>)</span>
-<span id="cb4-5"><a></a>  <span class="cf">return</span> without_punctuation</span>
-<span id="cb4-6"><a></a></span>
-<span id="cb4-7"><a></a>vectorize_layer <span class="op">=</span> keras.layers.TextVectorization(</span>
-<span id="cb4-8"><a></a>  standardize<span class="op">=</span>custom_standardization</span>
-<span id="cb4-9"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><em>Note:</em> <code>TextVectorization</code> is based on TensorFlow operations, so using it with other backend frameworks is complicated.</p>
-</div>
-</section>
-<section id="fancier-text-vectorisation" class="slide level2">
-<h2>Fancier text vectorisation</h2>
-<div style="padding-top: 30px;">
-
-</div>
-<p>Word vectorisation is fast, but</p>
-<ul>
-<li><p>Could be more efficient (consider <span class="color-pink-dark"><em>small</em> - <em>small<strong>er</strong></em> - <em>small<strong>est</strong></em></span>, <span class="color-purple-dark"><em>loud</em> - <em>loud<strong>er</strong></em> - <em>loud<strong>est</strong></em></span>)</p></li>
-<li><p>Struggles with out-of-vocabulary words</p></li>
-</ul>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="fragment">
-<p>Modern LLMs use <strong>subword tokenisation</strong> algorithms:</p>
-<ul>
-<li>Start out with individual characters</li>
-<li>Then merge them into subwords based on frequency of character combinations</li>
-</ul>
-</div>
-</section>
-<section id="section" class="slide level2" data-menu-title="Tiktokenizer" data-background-interactive="true" data-background-iframe="https://tiktokenizer.vercel.app/?model=google%2Fgemma-7b">
+<section id="section" class="slide level2" data-menu-title="Master" data-background-image="figures/lecture20/dpu-master.png">
 <h2></h2>
-<div class="absolute" style="font-size: 0.75em;bottom: 0%; right: 0%; ">
-<p><a href="https://tiktokenizer.vercel.app">https://tiktokenizer.vercel.app</a></p>
+<div class="absolute img-shadow" style="text-align: center; background-color: #FFF;top: 50%; right: 10%; width: 300px; ">
+<p>Application deadline<br> <span class="color-red-dark">April 15</span></p>
 </div>
 </section>
-<section id="detour-bag-of-words" class="slide level2">
-<h2>Detour: Bag-of-words</h2>
-<p>So far all words receive a separate index; we assume <span class="color-red-dark">no relation</span> between them.</p>
-<p>Since text is not strictly ordered, how about training a <code>Dense</code> model on the <em>presence</em> of words, and just ignore the ordering?</p>
-<div class="fragment">
-<p>Consider the IMDb review dataset again:</p>
-<div style="padding-top: 20px">
-
-</div>
-<table class="caption-top">
-<colgroup>
-<col style="width: 85%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Review</th>
-<th>Sentiment</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Probably my all-time favorite movie, a story of selflessness, sacrifice and dedication to …</td>
-<td><span class="color-green-dark">positive</span></td>
-</tr>
-<tr class="even">
-<td>If you like original gut wrenching laughter you will like this movie. If you are young …</td>
-<td><span class="color-green-dark">positive</span></td>
-</tr>
-<tr class="odd">
-<td>This movie made it into one of my top 10 most awful movies. Horrible. There wasn’t …</td>
-<td><span class="color-red-dark">negative</span></td>
-</tr>
-</tbody>
-</table>
-<div style="padding-top: 20px">
-
-</div>
-<p>Can classify decently well by learning correlations between single words and sentiment.</p>
-<p>In this case we treat the text as a <span class="color-teal-dark"><strong><em>set</em></strong></span> and not a <span class="color-teal-dark"><strong><em>sequence</em></strong></span>.</p>
+<section id="section-1" class="slide level2" data-menu-title="KI kafé" data-background-image="figures/lecture20/ki-kafe.png">
+<h2></h2>
+<div class="absolute img-shadow" style="text-align: center; color: #D81B60;top: 40%; right: 0%; width: 280px; ">
+<p>Next Wednesday<br>at 14.00</p>
 </div>
 </section>
-<section id="detour-n-grams" class="slide level2">
-<h2>Detour: N-grams</h2>
-<p>There are still some word combinations that throw us off:</p>
-<div style="text-align: center;">
-<p><code>"good"</code> is very different from <code>"not good"</code>.</p>
-</div>
-<div style="padding-top: 30px">
-
-</div>
-<div class="fragment">
-<p>Such modifiers are placed close, so we can extend our vocabulary with <span class="color-deep-orange-dark"><em>pairs</em></span>:</p>
-<div style="text-align: center;">
-<p><span class="color-blue-dark">“… not really expecting much,”</span></p>
-<p><i class="bi bi-arrow-right"></i> &nbsp; {<span class="color-blue-dark">“not”</span>, <span class="color-purple-dark">“not really”</span>, <span class="color-blue-dark">“really”</span>, <span class="color-purple-dark">“really expecting”</span>, <span class="color-blue-dark">“expecting”</span>, <span class="color-purple-dark">“expecting much”</span>]}</p>
-</div>
-<div style="padding-top: 30px">
-
-</div>
-<p>This approach of keeping <em>some</em> ordering, popular around 2010, is called</p>
+<section id="section-2" class="slide level2" data-menu-title="AI student assistant" data-background-image="figures/lecture20/ai-assistant.png">
+<h2></h2>
+</section>
+<section id="the-ml-project-lifecycle" class="slide level2">
+<h2>The ML project lifecycle</h2>
+<p><img data-src="figures/lecture12/MLlifecycle.png"></p>
+</section>
+<section id="performance-measures" class="slide level2">
+<h2>Performance measures</h2>
+<p>Metrics to evaluate:</p>
 <ul>
-<li>bigrams (for pairs for words)</li>
-<li>trigrams (for triplets of words)</li>
-<li>N-grams (for N words)</li>
+<li>Quality <span class="color-text-muted">(obviously)</span></li>
+<li>Latency and throughput</li>
+<li>Development and maintenance time</li>
+<li>Usage cost</li>
+<li>Compliance</li>
 </ul>
-</div>
-</section>
-<section id="detour-n-grams-1" class="slide level2">
-<h2>Detour: N-grams</h2>
-<!-- ## Text as _sequences_ vs _sets_ -->
-<p>N-grams apply to other data as well, for instance</p>
-<div style="padding-top: 20px">
-
-</div>
-<table class="caption-top">
-<colgroup>
-<col style="width: 15%">
-<col style="width: 20%">
-<col style="width: 15%">
-<col style="width: 20%">
-<col style="width: 30%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>Sequence</th>
-<th>1-gram</th>
-<th>2-gram</th>
-<th>3-gram</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Protein sequencing</td>
-<td>Cys-Gly-Leu-Ser-Trp</td>
-<td>Cys, Gly, Leu, Ser, Trp,</td>
-<td>Cys-Gly, Gly-Leu, Leu-Ser, Ser-Trp</td>
-<td>Cys-Gly-Leu, Gly-Leu-Ser, Leu-Ser-Trp</td>
-</tr>
-<tr class="even">
-<td>DNA sequencing</td>
-<td>AGCTTCGA</td>
-<td>A, G, C, T, T, C, G, A</td>
-<td>AG, GC, CT, TT, TC, CG, GA</td>
-<td>AGC, GCT, CTT, TTC, TCG, CGA,</td>
-</tr>
-</tbody>
-</table>
-<div style="padding-top: 20px">
-
-</div>
-<p>For language research purpuses N-grams are still useful; have a look at<br>the Google <a href="https://books.google.com/ngrams/">N-gram Viewer</a></p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture13/ngram-viewer.png" class="quarto-figure quarto-figure-center" width="450"></p>
+<p><img data-src="https://grafana.com/media/integrations/tensorflow/screenshots/tensorflow_overview_2.png" width="700"></p>
+<figcaption>TensorFlow Serving + Grafana dashboard</figcaption>
 </figure>
 </div>
 </section>
-<section id="sequence-models" class="slide level2">
-<h2>Sequence models</h2>
-<p>Let’s put the ordering back in, and look at <span class="color-teal-dark"><em>sequence</em></span> models instead.</p>
-<p>Now need a model type that assumes a relation between neighbouring words</p>
-<p>We know of two:</p>
+<section id="monitoring-performance" class="slide level2">
+<h2>Monitoring performance</h2>
+<p>A typical problem:</p>
+<p><span class="color-pink-dark"><em>Concept drift</em></span> (and other types of drift) – when evolutions in data cause your model to perform worse over time</p>
+<div style="font-size: 0.8em;">
 <ul>
-<li>Convolutional neural networks (CNNs)</li>
-<li>Recurrent neural networks (RNNs)</li>
+<li>New email spam strategies gets around ML-based spam filter</li>
+<li>New trends break shopping recommender system</li>
 </ul>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://ars.els-cdn.com/content/image/1-s2.0-S0957417422019522-gr1.jpg" class="quarto-figure quarto-figure-center" width="450"></p>
+</figure>
+</div>
+<p>Drift detection can be difficult since it relies on testing with new data</p>
+<div class="absolute" style="font-size: 0.6em;bottom: 20%; right: -5%; ">
+<p>DOI: 10.1016/j.eswa.2022.118934</p>
+</div>
+</section>
+<section id="static-vs-dynamic-training" class="slide level2">
+<h2>Static vs dynamic training</h2>
+<p>Two approaches to model training:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment fade-in-then-semi-out">
+<p><strong>Static (<em>offline</em>) training:</strong></p>
+<p>Train a single model once, deploy it, and keep using it for a while</p>
+<p><span class="color-green-dark" style="font-weight: 400;">Pros</span>:</p>
+<ul>
+<li>Model can be thoroughly tested</li>
+<li>Deployment needs only be done once</li>
+</ul>
+<p><span class="color-red-dark" style="font-weight: 400;">Cons</span>:</p>
+<ul>
+<li>Data must be unchanging over time</li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<p><strong>Dynamic (<em>online</em>) training</strong>:</p>
+<p>(Re)-train models continuously when new data comes in, and serve the most recent</p>
+<p><span class="color-green-dark" style="font-weight: 400;">Pros</span>:</p>
+<ul>
+<li>Model always up-to-date with shift/fluctuations in data</li>
+</ul>
+<p><span class="color-red-dark" style="font-weight: 400;">Cons</span>:</p>
+<ul>
+<li>Potentially high cost of training and deployment cycle</li>
+<li>Each model may not be thoroughly tested</li>
+</ul>
+</div>
+</div></div>
+</section>
+<section id="ml-irl" class="slide level2">
+<h2>ML IRL</h2>
+<div style="padding-top: 60px;">
+
+</div>
+<p><img data-src="figures/lecture20/sculley2015.png"></p>
+<div class="absolute" style="font-size: 0.6em;bottom: 0%; right: 0%; ">
+<p><a href="https://proceedings.neurips.cc/paper_files/paper/2015/file/86df7dcfd896fcaf2674f757a2463eba-Paper.pdf">Sculley (2015)</a></p>
+</div>
+</section>
+<section id="mlops-machine-learning-operations" class="slide level2">
+<h2>MLOps: <em>Machine Learning Operations</em></h2>
+<p>Take</p>
+<ul>
+<li><span class="color-orange-dark">Continuous integration</span> (CI) and</li>
+<li><span class="color-pink-dark">Continuous delivery</span> (CD)</li>
+</ul>
+<p>from DevOps, but adapt it to include data processing and add</p>
+<ul>
+<li><span class="color-indigo">Continuous training</span> (CT)</li>
+</ul>
+<p>No hard rules on how to organise<br>your ML workflow, but worth thinking<br> about.</p>
+<p>The MLOps philosophy is <em>one</em> <br><span class="color-text-muted">(popular)</span> option.</p>
+<div class="absolute" style="bottom: 10%; right: 0%; width: 450px; ">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://ubuntucommunity.s3.us-east-2.amazonaws.com/original/3X/5/5/559eebb1b680098adc83ef22cbba1078d3b43033.png"></p>
+<figcaption><span style="font-size: 0.6em;"><em>Cool but nonsensical diagram</em></span></figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="mlops-levels" class="slide level2">
+<h2>MLOps levels</h2>
 <div style="padding-top: 40px;">
 
 </div>
-<div class="fragment">
-<p>For NLP uses, both are superseeded by <span class="color-purple"><em>transformers</em></span>, which is the topic for next week.</p>
-<p>But let’s go through a trick tomorrow that improves performance for all model types: word <span class="color-pink-dark"><em>embeddings</em></span>.</p>
+<p><span class="color-pink-dark"><em><strong>Level 0:</strong></em></span> All processes are done manually</p>
+<p>The obvious starting point for any ML project.</p>
+<ul>
+<li>Data preparation, model training, validation etc. performed by hand</li>
+<li>Most code is experimental</li>
+<li>Model development and deployment are completely separate</li>
+<li>Infrequent release iterations</li>
+</ul>
+</section>
+<section id="mlops-levels-1" class="slide level2">
+<h2>MLOps levels</h2>
+<div style="padding-top: 40px;">
+
+</div>
+<p><span class="color-purple-dark"><em><strong>Level 1:</strong></em></span> Pipeline automation</p>
+<p>Set up automated processes for data preparation and model training</p>
+<p>Automatically…</p>
+<ul>
+<li>Retrain models when new data is available (<em>CT</em>)</li>
+<li>Run standarised performance tests</li>
+<li>Deploy new model versions</li>
+</ul>
+<p>At <span class="color-pink-dark">level 0</span> we deployed a final model, while at <span class="color-purple-dark">level 1</span> we deploy an entire <strong>training pipeline</strong>.</p>
+</section>
+<section id="mlops-levels-2" class="slide level2">
+<h2>MLOps levels</h2>
+<div style="padding-top: 40px;">
+
+</div>
+<p><span class="color-deep-purple"><em><strong>Level 2:</strong></em></span> Add CI/CD pipeline automation</p>
+<p>Allows new model development to be integrated quickly</p>
+<p><em>Requires more support structure:</em></p>
+<ul>
+<li>Integration testing</li>
+<li>Additional model metrics (latency, throughput, …)</li>
+<li>Model metadata store</li>
+<li>Advanced pipeline orchestration</li>
+</ul>
+</section>
+<section id="project-work" class="slide level2">
+<h2>Project work</h2>
+<p>Next week is project week</p>
+<p><span class="color-red-dark">No lectures</span> – work on the project</p>
+<div class="absolute" style="left: 0%; bottom: 0%; width: 1100px; ">
+<p><img data-src="figures/lecture20/canvas.png"></p>
+</div>
+<div class="absolute img-shadow" style="background-color: #FFF; text-align: center;top: 39%; right: 5%; width: 300px; ">
+<p>Hand-in will open on WiseFlow next week</p>
 </div>
 </section>
-<section id="section-1" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<section id="section-3" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>

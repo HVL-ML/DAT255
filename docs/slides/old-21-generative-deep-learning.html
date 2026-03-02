@@ -28,74 +28,8 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-      }
-    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-    div.sourceCode
-      { color: #383a42;  }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #383a42; } /* Normal */
-    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
-    code span.an { color: #50a14f; } /* Annotation */
-    code span.at { color: #a626a4; } /* Attribute */
-    code span.bn { color: #986801; } /* BaseN */
-    code span.bu { color: #a626a4; } /* BuiltIn */
-    code span.cf { color: #a626a4; } /* ControlFlow */
-    code span.ch { color: #50a14f; } /* Char */
-    code span.cn { color: #986801; } /* Constant */
-    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
-    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
-    code span.do { color: #e45649; } /* Documentation */
-    code span.dt { color: #a626a4; } /* DataType */
-    code span.dv { color: #986801; } /* DecVal */
-    code span.er { color: #f44747; text-decoration: underline; } /* Error */
-    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
-    code span.fl { color: #986801; } /* Float */
-    code span.fu { color: #4078f2; } /* Function */
-    code span.im { color: #50a14f; } /* Import */
-    code span.in { color: #c45b00; } /* Information */
-    code span.kw { color: #a626a4; } /* Keyword */
-    code span.op { color: #a626a4; } /* Operator */
-    code span.ot { color: #27ae60; } /* Other */
-    code span.pp { color: #a626a4; } /* Preprocessor */
-    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
-    code span.sc { color: #0184bc; } /* SpecialChar */
-    code span.ss { color: #da4453; } /* SpecialString */
-    code span.st { color: #50a14f; } /* String */
-    code span.va { color: #e45649; } /* Variable */
-    code span.vs { color: #da4453; } /* VerbatimString */
-    code span.wa { color: #da4453; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e5387708f32441f66e167fb7200d552e.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-41d670d08b33858e423018f51d98f717.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,7 +129,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 13</u> <br> Natural language processing 1: Text vectorisation</p>
+  <p class="subtitle"><u>Lecture 21</u> – Generative deep learning</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -206,328 +140,260 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="natural-language-processing-nlp" class="slide level2">
-<h2>Natural language processing (NLP)</h2>
-<p><span class="color-teal-dark">(as opposed to <em>machine language</em>)</span></p>
-<p>Since most human knowledge is stored as text, <strong>NLP</strong> is an important field of study</p>
-<div class="fragment">
-<blockquote>
-<p>Knowing grammar, syntax and language structure (i.e.&nbsp;<em>linguistics</em>), can we write down the set of rules required to do a language task like translation?</p>
-</blockquote>
-</div>
-<div class="fragment color-red-dark" style="text-indent: 25px;">
-<p>Not really, no.</p>
-</div>
-<div class="fragment">
-<blockquote>
-<p>Knowing basically nothing, but having a library of example text, can we statistically infer the rules required to do a language task?</p>
-</blockquote>
-</div>
-<div class="fragment color-green-dark" style="text-indent: 25px;">
-<p>Yes!</p>
-</div>
-<div class="fragment">
-<p><span class="color-indigo"><em>Disclaimer:</em></span><br> There’s loads of interesting NLP stuff that we will skip, because it has been obsoleted by transformer models. Look at the supplemental reading on Canvas.</p>
-</div>
-</section>
-<section id="nlp-tasks" class="slide level2" data-background-color="#F5F5F5">
-<h2>NLP tasks</h2>
-<ul>
-<li><p><span class="color-indigo">Text classification:</span></p>
-<p><em>What is the topic of this text?</em></p></li>
-<li><p><span class="color-indigo">Content filtering:</span></p>
-<p><em>Is this email spam? Does this post contain swearing?</em></p></li>
-<li><p><span class="color-pink-dark">Sentiment analysis:</span></p>
-<p><em>Is this review positive or negative?</em></p></li>
-<li><p><span class="color-pink-dark">Translation:</span></p>
-<p><em>What is this text in French?</em></p></li>
-<li><p><span class="color-pink-dark">Summarisation:</span></p>
-<p><em>Give a short summary of this article.</em></p></li>
-<li><p><span class="color-purple-dark">Question answering:</span></p>
-<p><em>How do I fix the Wifi on my Thinkpad?</em></p></li>
-</ul>
-<div class="fragment absolute img-shadow" style="padding-left: 15px; background-color: #E0F2F1;top: 60%; right: 0%; width: 400px; ">
-<p>We start off with classification, before moving to text output next week.</p>
-</div>
-</section>
-<section id="our-toolbox-so-far" class="slide level2">
-<h2>Our toolbox so far:</h2>
-<p>We know how to do</p>
-<ul>
-<li><p><strong>Sequence processing:</strong> <br> Know how to construct RNNs, CNNs</p></li>
-<li><p><strong>Input encoding:</strong> <br> Looked at <em>embeddings</em> last time</p></li>
-</ul>
-<p>With this, we can build an <strong>NLP model at <span class="color-purple">2017 level</span></strong><br> (will do so this week)</p>
-<div class="fragment">
-<p>Next week we will learn about</p>
-<ul>
-<li><strong>Transformers</strong> <span class="color-text-muted" style="font-size: 0.75em;">(not the electrical kind)</span></li>
-</ul>
-<p>With this, we can build an <strong>NLP model at <span class="color-deep-orange">2022 level</span></strong></p>
-</div>
-<div class="absolute" style="top: 15%; right: 0%; width: 450px; ">
-<!-- ![[MMLU](https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu) benchmark](figures/lecture13/mmlu.png) -->
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture1/ai-index-fig_2.1.33.png" class="img-shadow"></p>
-<figcaption><span class="color-text-muted">Stanford AI Index 2025</span></figcaption>
-</figure>
-</div>
-</div>
-</section>
-<section id="getting-text-into-our-model" class="slide level2">
-<h2>Getting text into our model</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p><strong>Text vectorisation</strong>: Converting text to numeric data.</p>
-<p>Typical approach consists of several steps</p>
-<ol type="1">
-<li class="fragment"><strong><em>Standardisation:</em></strong><br>Remove diacritics, punctuation, convert to lowercase</li>
-<li class="fragment"><strong><em>Tokenisation:</em></strong><br>Split text into <span class="color-purple-dark"><strong><em>tokens</em></strong></span> which can be words, subwords, or groups of words</li>
-<li class="fragment"><strong><em>Indexing:</em></strong><br>Convert tokens to integer values</li>
-<li class="fragment"><strong><em>Encoding:</em></strong><br>Convert indices into embeddings or one-hot encoding</li>
-</ol>
-</div></div>
-<div class="absolute" style="top: 5%; right: 0%; width: 350px; ">
-<p><img data-src="figures/lecture13/text-vectorisation.png"></p>
-</div>
-<!-- [_Deep Learning with Python_, F. Chollet]{.absolute bottom="-2%" right="5%" style="font-size: 0.5em;"} -->
-</section>
-<section id="text-vectorisation" class="slide level2">
-<h2>Text vectorisation</h2>
-<p>Can do all the processing steps with the <code>keras.layers.TextVectorization</code> layer</p>
-<blockquote>
-<p>A preprocessing layer which maps text features to integer sequences.</p>
-</blockquote>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|2|3|4|5|6|7|8|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>keras.layers.TextVectorization(</span>
-<span id="cb1-2"><a></a>  max_tokens<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-3"><a></a>  standardize<span class="op">=</span><span class="st">"lower_and_strip_punctuation"</span>,</span>
-<span id="cb1-4"><a></a>  split<span class="op">=</span><span class="st">"whitespace"</span>,</span>
-<span id="cb1-5"><a></a>  ngrams<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-6"><a></a>  output_mode<span class="op">=</span><span class="st">"int"</span>,</span>
-<span id="cb1-7"><a></a>  output_sequence_length<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-8"><a></a>  vocabulary<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-9"><a></a>  ...</span>
-<span id="cb1-10"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>standardize</code> and <code>split</code> can be custom functions.</p>
-</section>
-<section id="text-vectorisation-1" class="slide level2">
-<h2>Text vectorisation</h2>
-<p>Can do all the processing steps with the <code>keras.layers.TextVectorization</code> layer</p>
-<div style="padding-top: 30px;">
-
-</div>
-<p>The vocabulary is built automatically from data by calling <code>adapt()</code>:</p>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer <span class="op">=</span> keras.layers.TextVectorization(</span>
-<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>  max_tokens<span class="op">=</span><span class="dv">1000</span>,</span>
-<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>  standardize<span class="op">=</span><span class="st">"lower_and_strip_punctuation"</span>,</span>
-<span id="cb2-4"><a aria-hidden="true" tabindex="-1"></a>  output_sequence_length<span class="op">=</span><span class="dv">250</span></span>
-<span id="cb2-5"><a aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-6"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer.adapt(dataset)</span>
-<span id="cb2-8"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer.get_vocabulary()[:<span class="dv">10</span>]</span>
-<span id="cb2-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># ['', '[UNK]', 'the', 'and', 'a', 'of', 'to', 'is', 'in', 'it']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div style="padding-top: 30px;">
-
-</div>
-<ul>
-<li>We reserve index 1 (<code>'[UNK]'</code>) for unknown, out-of-vocabulary (OOV) tokens</li>
-<li>We reserve index 0 (<code>''</code>) for the <em>mask token</em>, which used to pad sequences</li>
-</ul>
-</section>
-<section id="text-vectorisation-2" class="slide level2">
-<h2>Text vectorisation</h2>
-<p>Test sentence from the <a href="https://ai.stanford.edu/~amaas/data/sentiment/">IMDb movie review</a> dataset:</p>
-<div style="padding-top: 20px">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Text:</span>     I   am  shocked.  Shocked  and  dismayed  that  the   428   of   you   IMDB  users</span>
-<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Encoded:</span> 10  238     2355      2355    3         1    12    2     1    5    23    933   5911</span>
-<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Decoded:</span>  i   am  shocked   shocked  and     <span class="pp">[</span><span class="ss">UNK</span><span class="pp">]</span>  that  the  <span class="pp">[</span><span class="ss">UNK</span><span class="pp">]</span>  of   you   imdb  users</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<p>Can remove HTML tags (or other uninteresting stuff) by using regexes:</p>
-<div style="padding-top: 20px">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="|2|3|4|7-9|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> custom_standardization(input_data):</span>
-<span id="cb4-2"><a></a>  lowercase <span class="op">=</span> tf.strings.lower(input_data)</span>
-<span id="cb4-3"><a></a>  without_html <span class="op">=</span> tf.strings.regex_replace(lowercase, <span class="st">'&lt;[^&gt;]*&gt;'</span>, <span class="st">' '</span>)</span>
-<span id="cb4-4"><a></a>  without_punctuation <span class="op">=</span> tf.strings.regex_replace(without_html, <span class="st">'[</span><span class="sc">{}</span><span class="st">]'</span>.<span class="bu">format</span>(string.punctuation), <span class="st">''</span>)</span>
-<span id="cb4-5"><a></a>  <span class="cf">return</span> without_punctuation</span>
-<span id="cb4-6"><a></a></span>
-<span id="cb4-7"><a></a>vectorize_layer <span class="op">=</span> keras.layers.TextVectorization(</span>
-<span id="cb4-8"><a></a>  standardize<span class="op">=</span>custom_standardization</span>
-<span id="cb4-9"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><em>Note:</em> <code>TextVectorization</code> is based on TensorFlow operations, so using it with other backend frameworks is complicated.</p>
-</div>
-</section>
-<section id="fancier-text-vectorisation" class="slide level2">
-<h2>Fancier text vectorisation</h2>
-<div style="padding-top: 30px;">
-
-</div>
-<p>Word vectorisation is fast, but</p>
-<ul>
-<li><p>Could be more efficient (consider <span class="color-pink-dark"><em>small</em> - <em>small<strong>er</strong></em> - <em>small<strong>est</strong></em></span>, <span class="color-purple-dark"><em>loud</em> - <em>loud<strong>er</strong></em> - <em>loud<strong>est</strong></em></span>)</p></li>
-<li><p>Struggles with out-of-vocabulary words</p></li>
-</ul>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="fragment">
-<p>Modern LLMs use <strong>subword tokenisation</strong> algorithms:</p>
-<ul>
-<li>Start out with individual characters</li>
-<li>Then merge them into subwords based on frequency of character combinations</li>
-</ul>
-</div>
-</section>
-<section id="section" class="slide level2" data-menu-title="Tiktokenizer" data-background-interactive="true" data-background-iframe="https://tiktokenizer.vercel.app/?model=google%2Fgemma-7b">
+<section id="section" class="slide level2 center" data-menu-title="Topics" data-background-color="#E1F5FE">
 <h2></h2>
-<div class="absolute" style="font-size: 0.75em;bottom: 0%; right: 0%; ">
-<p><a href="https://tiktokenizer.vercel.app">https://tiktokenizer.vercel.app</a></p>
-</div>
-</section>
-<section id="detour-bag-of-words" class="slide level2">
-<h2>Detour: Bag-of-words</h2>
-<p>So far all words receive a separate index; we assume <span class="color-red-dark">no relation</span> between them.</p>
-<p>Since text is not strictly ordered, how about training a <code>Dense</code> model on the <em>presence</em> of words, and just ignore the ordering?</p>
-<div class="fragment">
-<p>Consider the IMDb review dataset again:</p>
-<div style="padding-top: 20px">
-
-</div>
-<table class="caption-top">
-<colgroup>
-<col style="width: 85%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Review</th>
-<th>Sentiment</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Probably my all-time favorite movie, a story of selflessness, sacrifice and dedication to …</td>
-<td><span class="color-green-dark">positive</span></td>
-</tr>
-<tr class="even">
-<td>If you like original gut wrenching laughter you will like this movie. If you are young …</td>
-<td><span class="color-green-dark">positive</span></td>
-</tr>
-<tr class="odd">
-<td>This movie made it into one of my top 10 most awful movies. Horrible. There wasn’t …</td>
-<td><span class="color-red-dark">negative</span></td>
-</tr>
-</tbody>
-</table>
-<div style="padding-top: 20px">
-
-</div>
-<p>Can classify decently well by learning correlations between single words and sentiment.</p>
-<p>In this case we treat the text as a <span class="color-teal-dark"><strong><em>set</em></strong></span> and not a <span class="color-teal-dark"><strong><em>sequence</em></strong></span>.</p>
-</div>
-</section>
-<section id="detour-n-grams" class="slide level2">
-<h2>Detour: N-grams</h2>
-<p>There are still some word combinations that throw us off:</p>
-<div style="text-align: center;">
-<p><code>"good"</code> is very different from <code>"not good"</code>.</p>
-</div>
-<div style="padding-top: 30px">
-
-</div>
-<div class="fragment">
-<p>Such modifiers are placed close, so we can extend our vocabulary with <span class="color-deep-orange-dark"><em>pairs</em></span>:</p>
-<div style="text-align: center;">
-<p><span class="color-blue-dark">“… not really expecting much,”</span></p>
-<p><i class="bi bi-arrow-right"></i> &nbsp; {<span class="color-blue-dark">“not”</span>, <span class="color-purple-dark">“not really”</span>, <span class="color-blue-dark">“really”</span>, <span class="color-purple-dark">“really expecting”</span>, <span class="color-blue-dark">“expecting”</span>, <span class="color-purple-dark">“expecting much”</span>]}</p>
-</div>
-<div style="padding-top: 30px">
-
-</div>
-<p>This approach of keeping <em>some</em> ordering, popular around 2010, is called</p>
+<p>We already did <span class="color-orange-dark"><em>generative</em></span> deep learning for text generation - key was to <strong>sample</strong> instead of deterministically picking top prediction.</p>
+<p>Will look at some deep learning methods for converting sampled values into realistic data:</p>
 <ul>
-<li>bigrams (for pairs for words)</li>
-<li>trigrams (for triplets of words)</li>
-<li>N-grams (for N words)</li>
+<li><span class="color-purple-dark">Variational autoencoders</span> (<em>today</em>)</li>
+<li><span class="color-purple-dark">Generative adversarial networks</span> (<em>today</em>)</li>
+<li><span class="color-purple-dark">Diffusion models</span> (<em>Monday</em>)</li>
 </ul>
-</div>
 </section>
-<section id="detour-n-grams-1" class="slide level2">
-<h2>Detour: N-grams</h2>
-<!-- ## Text as _sequences_ vs _sets_ -->
-<p>N-grams apply to other data as well, for instance</p>
-<div style="padding-top: 20px">
-
-</div>
-<table class="caption-top">
-<colgroup>
-<col style="width: 15%">
-<col style="width: 20%">
-<col style="width: 15%">
-<col style="width: 20%">
-<col style="width: 30%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>Sequence</th>
-<th>1-gram</th>
-<th>2-gram</th>
-<th>3-gram</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Protein sequencing</td>
-<td>Cys-Gly-Leu-Ser-Trp</td>
-<td>Cys, Gly, Leu, Ser, Trp,</td>
-<td>Cys-Gly, Gly-Leu, Leu-Ser, Ser-Trp</td>
-<td>Cys-Gly-Leu, Gly-Leu-Ser, Leu-Ser-Trp</td>
-</tr>
-<tr class="even">
-<td>DNA sequencing</td>
-<td>AGCTTCGA</td>
-<td>A, G, C, T, T, C, G, A</td>
-<td>AG, GC, CT, TT, TC, CG, GA</td>
-<td>AGC, GCT, CTT, TTC, TCG, CGA,</td>
-</tr>
-</tbody>
-</table>
-<div style="padding-top: 20px">
-
-</div>
-<p>For language research purpuses N-grams are still useful; have a look at<br>the Google <a href="https://books.google.com/ngrams/">N-gram Viewer</a></p>
+<section id="autoencoders-revisited" class="slide level2">
+<h2>Autoencoders revisited</h2>
+<p>Train a model to reconstruct its input, by</p>
+<ul>
+<li>encoding (compressing) data to smaller dimensionality:<br>the <span class="color-indigo"><em>latent space</em></span> (explore in TensorBoard <a href="https://projector.tensorflow.org/">projector</a>)</li>
+<li>decoding from latent space to original dimensions</li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture13/ngram-viewer.png" class="quarto-figure quarto-figure-center" width="450"></p>
+<p><img data-src="https://blog.keras.io/img/ae/autoencoder_schema.jpg" class="quarto-figure quarto-figure-center" width="600"></p>
 </figure>
 </div>
+<div class="fragment">
+<p>Can <span class="color-pink-dark">randomly sample</span> values in the latent space to generate new outputs</p>
+<p>(<em>although not all sampled value are meaningful</em>)</p>
+</div>
 </section>
-<section id="sequence-models" class="slide level2">
-<h2>Sequence models</h2>
-<p>Let’s put the ordering back in, and look at <span class="color-teal-dark"><em>sequence</em></span> models instead.</p>
-<p>Now need a model type that assumes a relation between neighbouring words</p>
-<p>We know of two:</p>
-<ul>
-<li>Convolutional neural networks (CNNs)</li>
-<li>Recurrent neural networks (RNNs)</li>
-</ul>
-<div style="padding-top: 40px;">
+<section id="vectors-in-latent-space" class="slide level2">
+<h2>Vectors in latent space</h2>
+<p>For language models we saw that <span class="color-pink-dark">direction</span> was related to <span class="color-pink-dark">concepts</span> / word meaning</p>
+<div class="fragment">
+<p>Can recognise the same for images:</p>
+<div style="padding-top: 90px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture21/smiles.png" width="600"></p>
+<figcaption>Generated faces (<a href="https://arxiv.org/abs/1609.04468">arXiv:1609.04468</a>)</figcaption>
+</figure>
+</div>
+<div class="absolute" style="top: 30%; left: 22%; ">
+<p><i class="bi bi-arrow-left"></i> <em>Less</em> smile</p>
+</div>
+<div class="absolute" style="top: 30%; left: 62%; ">
+<p><em>More</em> smile <i class="bi bi-arrow-right"></i></p>
+</div>
+<div class="absolute" style="top: 40%; left: 80%; ">
+<p><i class="bi bi-arrow-up"></i><br><em>Open</em> mouth</p>
+</div>
+<div class="absolute" style="top: 78%; left: 80%; ">
+<p><em>Closed</em> mouth<br><i class="bi bi-arrow-down"></i></p>
+</div>
+</div>
+</section>
+<section id="latent-space-sampling" class="slide level2">
+<h2>Latent space sampling</h2>
+<p>Can generalise to different model types</p>
+<div style="padding-top: 20px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture21/latent-sampling.png" class="quarto-figure quarto-figure-center" width="570"></p>
+</figure>
+</div>
+<!-- [Sampling strategies]{.color-teal-dark} are still important to the quality of the results -->
+<p>In this and next lecture we look at decoders to go from random points in latent space to realistic data</p>
+<p><i class="bi bi-arrow-right"></i> Our <em>sampling strategy</em> is simply to draw from a normal distribution</p>
+<p><span class="absolute" style="font-size: 0.5em;top: 10%; right: 0%; "><em>Deep Learning with Python</em>, F. Chollet</span></p>
+</section>
+<section id="improving-the-autoencoder" class="slide level2" data-background-color="#faebed">
+<h2>Improving the autoencoder</h2>
+<div style="padding-top: 90px;">
+
+</div>
+<p>In practice, autoencoder latent spaces are not great for generating realistic output.</p>
+<div style="padding-top: 10px;">
+
+</div>
+<p>Can do a better by imposing some requirements on the structure of the latent space:</p>
+<p><i class="bi bi-arrow-right"></i> Try to learn a <span class="color-indigo"><em>distribution</em></span> rather than a fixed encoding</p>
+<div style="padding-top: 10px;">
+
+</div>
+<p>This will lead us to the <span class="color-pink-dark"><strong>variational autoencoder</strong></span> <span class="color-text-muted">(<em>in a bit</em>)</span></p>
+</section>
+<section id="learning-distributions" class="slide level2">
+<h2>Learning distributions</h2>
+<p>For ML in general, we usually only to predict a single best value.</p>
+<p>Requires there to be a <span class="color-indigo"><strong>functional relationship</strong></span> (<em>one-to-one</em> or <em>many-to-one</em>) between the the input features and the target</p>
+<div style="padding-top: 30px;">
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture21/mdn-1.png" width="300"></p>
+<figcaption>Nice relationship between <em>x</em> and <em>y</em></figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture21/mdn-2.png" width="300"></p>
+<figcaption>Many possible <em>y</em> values for each <em>x</em></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute" style="font-size: 0.8em;top: 45%; left: 43%; ">
+<p><span class="color-blue-dark">● data points</span></p>
+<p><span class="color-red">‒ prediction</span></p>
+</div>
+</section>
+<section id="learning-distributions-1" class="slide level2">
+<h2>Learning distributions</h2>
+<p>Can free ourselves from the functional assumption by rather modelling the <span class="color-indigo"><em>distribution</em></span> that data came from</p>
+<p>Example: <em>Mixture density network</em> predicting parameters of normal distributions</p>
+<div style="padding-top: 30px;">
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture21/mdn-3.png" class="quarto-figure quarto-figure-center" width="300"></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture21/mdn-4.png" class="quarto-figure quarto-figure-center" width="300"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>From this we can sample realistic new data points</p>
+</section>
+<section id="variational-autoencoder" class="slide level2">
+<h2>Variational autoencoder</h2>
+<p><span class="color-red-dark">Twist</span>: Let’s model distributions <strong><em>in latent space</em></strong></p>
+<p>This is the aim of the variational autoencoder (VAE).</p>
+<div style="padding-top: 10px;">
 
 </div>
 <div class="fragment">
-<p>For NLP uses, both are superseeded by <span class="color-purple"><em>transformers</em></span>, which is the topic for next week.</p>
-<p>But let’s go through a trick tomorrow that improves performance for all model types: word <span class="color-pink-dark"><em>embeddings</em></span>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture21/variational-1.png" class="quarto-figure quarto-figure-center" width="650"></p>
+</figure>
+</div>
+<ol type="1">
+<li><span class="color-pink-dark">Encode</span> input data into parameters of a probability distribution (for a normal distribution: mean and variance)</li>
+<li><span class="color-pink-dark">Sample</span> a point from this distribution</li>
+<li><span class="color-pink-dark">Decode</span> this point back to the input format</li>
+</ol>
+</div>
+</section>
+<section id="variational-autoencoder-1" class="slide level2">
+<h2>Variational autoencoder</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p>Since encoder and decoder layers are <span class="color-purple">nonlinear transformations</span>, we can go from complicated input distributions to a normal (Gaussian) looking latent space and back</p>
+<p>To <span class="color-red-dark">force</span> this latent space distribution, we modify the loss function:</p>
+<p>Combine</p>
+<ul>
+<li>reconstruction error (e.g.&nbsp;MSE), and</li>
+<li>difference between the latent distribution and a normal distribution (measured by <em>KL divergence</em>)</li>
+</ul>
+</div></div>
+<div class="absolute" style="top: 10%; right: 0%; width: 500px; ">
+<p><img data-src="figures/lecture21/variational-2.png"></p>
+</div>
+</section>
+<section id="variational-autoencoder-2" class="slide level2">
+<h2>Variational autoencoder</h2>
+<div style="padding-top: 120px;">
+
+</div>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p>The latent space becomes continuous</p>
+<p><i class="bi bi-arrow-right"></i> We can sample along the different latent space dimensions to combine (or remove) <span class="color-pink-dark"><em>concepts</em></span></p>
+</div></div>
+<div class="absolute" style="top: 10%; right: 0%; width: 600px; ">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture21/variational-mnist.png"></p>
+<figcaption>MNIST digits with 2 latent dimensions</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="generative-adversarial-networks" class="slide level2">
+<h2>Generative adversarial networks</h2>
+<div style="padding-top: 90px;">
+
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="padding-top: 50px;">
+
+</div>
+<p><strong>GANs</strong>: The coolest thing in 2014 <br>(<em>now superseded by diffusion models</em>)</p>
+<p>Popularised by <a href="https://thispersondoesnotexist.com/"><code>thispersondoesnotexist.com</code></a></p>
+</div><div class="column" style="width:50%;">
+<iframe src="https://thispersondoesnotexist.com" width="350px" height="350px">
+</iframe>
+</div></div>
+<div class="absolute" style="font-size: 0.6em;bottom: 13%; right: 22%; ">
+<p>Based <em>StyleGAN</em>, <a href="https://arxiv.org/abs/1812.04948">arXiv:182.04948</a></p>
+</div>
+</section>
+<section id="generative-adversarial-networks-1" class="slide level2">
+<h2>Generative adversarial networks</h2>
+<p>Have two models work in tandem:</p>
+<ul>
+<li>A <span class="color-pink-dark"><em>generator</em></span> that decodes random values into an image</li>
+<li>A <span class="color-pink-dark"><em>discriminator</em></span> that takes in images and predicts whether it is real or made by the generator</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture21/gan-1.png" class="quarto-figure quarto-figure-center" width="500"></p>
+</figure>
+</div>
+<p>Train so that</p>
+<ul>
+<li>Generator gets better at producing realistic output</li>
+<li>Discriminator gets better at distinguishing <em>fake</em> from <em>real</em></li>
+</ul>
+</section>
+<section id="generative-adversarial-networks-2" class="slide level2">
+<h2>Generative adversarial networks</h2>
+<p>Training procedure is a little tricky, see the book for details</p>
+<p>We can still do vector arithmetic in the latent space:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture21/dcgan.png" class="quarto-figure quarto-figure-center" width="600"></p>
+</figure>
+</div>
+<div class="absolute" style="font-size: 0.6em;top: 34%; right: 24%; ">
+<p><a href="https://arxiv.org/pdf/1511.06434">arXiv:1511.06434</a></p>
+</div>
+<div class="fragment">
+<p>Note: GANs are well studied in research but seldom used in practice.</p>
+<p>They are <em>very</em> sensitive to configuration of the training procedure, and are generally just difficult</p>
 </div>
 </section>
 <section id="section-1" class="slide level2" data-background-color="#fff" data-menu-title="Fin">

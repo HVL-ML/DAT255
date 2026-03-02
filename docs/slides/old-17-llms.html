@@ -195,7 +195,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 13</u> <br> Natural language processing 1: Text vectorisation</p>
+  <p class="subtitle"><u>Lecture 17</u> – Large language models</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -206,331 +206,486 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="natural-language-processing-nlp" class="slide level2">
-<h2>Natural language processing (NLP)</h2>
-<p><span class="color-teal-dark">(as opposed to <em>machine language</em>)</span></p>
-<p>Since most human knowledge is stored as text, <strong>NLP</strong> is an important field of study</p>
-<div class="fragment">
-<blockquote>
-<p>Knowing grammar, syntax and language structure (i.e.&nbsp;<em>linguistics</em>), can we write down the set of rules required to do a language task like translation?</p>
-</blockquote>
-</div>
-<div class="fragment color-red-dark" style="text-indent: 25px;">
-<p>Not really, no.</p>
-</div>
-<div class="fragment">
-<blockquote>
-<p>Knowing basically nothing, but having a library of example text, can we statistically infer the rules required to do a language task?</p>
-</blockquote>
-</div>
-<div class="fragment color-green-dark" style="text-indent: 25px;">
-<p>Yes!</p>
-</div>
-<div class="fragment">
-<p><span class="color-indigo"><em>Disclaimer:</em></span><br> There’s loads of interesting NLP stuff that we will skip, because it has been obsoleted by transformer models. Look at the supplemental reading on Canvas.</p>
-</div>
-</section>
-<section id="nlp-tasks" class="slide level2" data-background-color="#F5F5F5">
-<h2>NLP tasks</h2>
-<ul>
-<li><p><span class="color-indigo">Text classification:</span></p>
-<p><em>What is the topic of this text?</em></p></li>
-<li><p><span class="color-indigo">Content filtering:</span></p>
-<p><em>Is this email spam? Does this post contain swearing?</em></p></li>
-<li><p><span class="color-pink-dark">Sentiment analysis:</span></p>
-<p><em>Is this review positive or negative?</em></p></li>
-<li><p><span class="color-pink-dark">Translation:</span></p>
-<p><em>What is this text in French?</em></p></li>
-<li><p><span class="color-pink-dark">Summarisation:</span></p>
-<p><em>Give a short summary of this article.</em></p></li>
-<li><p><span class="color-purple-dark">Question answering:</span></p>
-<p><em>How do I fix the Wifi on my Thinkpad?</em></p></li>
-</ul>
-<div class="fragment absolute img-shadow" style="padding-left: 15px; background-color: #E0F2F1;top: 60%; right: 0%; width: 400px; ">
-<p>We start off with classification, before moving to text output next week.</p>
-</div>
-</section>
-<section id="our-toolbox-so-far" class="slide level2">
-<h2>Our toolbox so far:</h2>
-<p>We know how to do</p>
-<ul>
-<li><p><strong>Sequence processing:</strong> <br> Know how to construct RNNs, CNNs</p></li>
-<li><p><strong>Input encoding:</strong> <br> Looked at <em>embeddings</em> last time</p></li>
-</ul>
-<p>With this, we can build an <strong>NLP model at <span class="color-purple">2017 level</span></strong><br> (will do so this week)</p>
-<div class="fragment">
-<p>Next week we will learn about</p>
-<ul>
-<li><strong>Transformers</strong> <span class="color-text-muted" style="font-size: 0.75em;">(not the electrical kind)</span></li>
-</ul>
-<p>With this, we can build an <strong>NLP model at <span class="color-deep-orange">2022 level</span></strong></p>
-</div>
-<div class="absolute" style="top: 15%; right: 0%; width: 450px; ">
-<!-- ![[MMLU](https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu) benchmark](figures/lecture13/mmlu.png) -->
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture1/ai-index-fig_2.1.33.png" class="img-shadow"></p>
-<figcaption><span class="color-text-muted">Stanford AI Index 2025</span></figcaption>
-</figure>
-</div>
-</div>
-</section>
-<section id="getting-text-into-our-model" class="slide level2">
-<h2>Getting text into our model</h2>
+<section id="training-decoder-models" class="slide level2">
+<h2>Training decoder models</h2>
+<p>Decoder-type language models are <span class="color-pink-dark">next word predictors</span>.</p>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><strong>Text vectorisation</strong>: Converting text to numeric data.</p>
-<p>Typical approach consists of several steps</p>
-<ol type="1">
-<li class="fragment"><strong><em>Standardisation:</em></strong><br>Remove diacritics, punctuation, convert to lowercase</li>
-<li class="fragment"><strong><em>Tokenisation:</em></strong><br>Split text into <span class="color-purple-dark"><strong><em>tokens</em></strong></span> which can be words, subwords, or groups of words</li>
-<li class="fragment"><strong><em>Indexing:</em></strong><br>Convert tokens to integer values</li>
-<li class="fragment"><strong><em>Encoding:</em></strong><br>Convert indices into embeddings or one-hot encoding</li>
-</ol>
-</div></div>
-<div class="absolute" style="top: 5%; right: 0%; width: 350px; ">
-<p><img data-src="figures/lecture13/text-vectorisation.png"></p>
-</div>
-<!-- [_Deep Learning with Python_, F. Chollet]{.absolute bottom="-2%" right="5%" style="font-size: 0.5em;"} -->
-</section>
-<section id="text-vectorisation" class="slide level2">
-<h2>Text vectorisation</h2>
-<p>Can do all the processing steps with the <code>keras.layers.TextVectorization</code> layer</p>
-<blockquote>
-<p>A preprocessing layer which maps text features to integer sequences.</p>
-</blockquote>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|2|3|4|5|6|7|8|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>keras.layers.TextVectorization(</span>
-<span id="cb1-2"><a></a>  max_tokens<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-3"><a></a>  standardize<span class="op">=</span><span class="st">"lower_and_strip_punctuation"</span>,</span>
-<span id="cb1-4"><a></a>  split<span class="op">=</span><span class="st">"whitespace"</span>,</span>
-<span id="cb1-5"><a></a>  ngrams<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-6"><a></a>  output_mode<span class="op">=</span><span class="st">"int"</span>,</span>
-<span id="cb1-7"><a></a>  output_sequence_length<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-8"><a></a>  vocabulary<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-9"><a></a>  ...</span>
-<span id="cb1-10"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>standardize</code> and <code>split</code> can be custom functions.</p>
-</section>
-<section id="text-vectorisation-1" class="slide level2">
-<h2>Text vectorisation</h2>
-<p>Can do all the processing steps with the <code>keras.layers.TextVectorization</code> layer</p>
-<div style="padding-top: 30px;">
-
-</div>
-<p>The vocabulary is built automatically from data by calling <code>adapt()</code>:</p>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer <span class="op">=</span> keras.layers.TextVectorization(</span>
-<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>  max_tokens<span class="op">=</span><span class="dv">1000</span>,</span>
-<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>  standardize<span class="op">=</span><span class="st">"lower_and_strip_punctuation"</span>,</span>
-<span id="cb2-4"><a aria-hidden="true" tabindex="-1"></a>  output_sequence_length<span class="op">=</span><span class="dv">250</span></span>
-<span id="cb2-5"><a aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-6"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer.adapt(dataset)</span>
-<span id="cb2-8"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer.get_vocabulary()[:<span class="dv">10</span>]</span>
-<span id="cb2-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># ['', '[UNK]', 'the', 'and', 'a', 'of', 'to', 'is', 'in', 'it']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div style="padding-top: 30px;">
-
-</div>
+<p>So we train them to do exactly this:</p>
 <ul>
-<li>We reserve index 1 (<code>'[UNK]'</code>) for unknown, out-of-vocabulary (OOV) tokens</li>
-<li>We reserve index 0 (<code>''</code>) for the <em>mask token</em>, which used to pad sequences</li>
+<li>Mask the end of sentences</li>
+<li>Use the next token as the prediction target</li>
+<li>Reveal token and move to next one</li>
+<li>Continue until end of text</li>
 </ul>
-</section>
-<section id="text-vectorisation-2" class="slide level2">
-<h2>Text vectorisation</h2>
-<p>Test sentence from the <a href="https://ai.stanford.edu/~amaas/data/sentiment/">IMDb movie review</a> dataset:</p>
-<div style="padding-top: 20px">
-
+<div class="fragment" data-fragment-index="1">
+<p>Usually call the procedure <em>masked attention</em> or <em>causal attention</em>, when model is only allowed to look “backwards”.</p>
+<p>Can train on large, unlabelled data in a <span class="color-deep-purple">self-supervised</span> approach</p>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Text:</span>     I   am  shocked.  Shocked  and  dismayed  that  the   428   of   you   IMDB  users</span>
-<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Encoded:</span> 10  238     2355      2355    3         1    12    2     1    5    23    933   5911</span>
-<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Decoded:</span>  i   am  shocked   shocked  and     <span class="pp">[</span><span class="ss">UNK</span><span class="pp">]</span>  that  the  <span class="pp">[</span><span class="ss">UNK</span><span class="pp">]</span>  of   you   imdb  users</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<p>Can remove HTML tags (or other uninteresting stuff) by using regexes:</p>
-<div style="padding-top: 20px">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="|2|3|4|7-9|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> custom_standardization(input_data):</span>
-<span id="cb4-2"><a></a>  lowercase <span class="op">=</span> tf.strings.lower(input_data)</span>
-<span id="cb4-3"><a></a>  without_html <span class="op">=</span> tf.strings.regex_replace(lowercase, <span class="st">'&lt;[^&gt;]*&gt;'</span>, <span class="st">' '</span>)</span>
-<span id="cb4-4"><a></a>  without_punctuation <span class="op">=</span> tf.strings.regex_replace(without_html, <span class="st">'[</span><span class="sc">{}</span><span class="st">]'</span>.<span class="bu">format</span>(string.punctuation), <span class="st">''</span>)</span>
-<span id="cb4-5"><a></a>  <span class="cf">return</span> without_punctuation</span>
-<span id="cb4-6"><a></a></span>
-<span id="cb4-7"><a></a>vectorize_layer <span class="op">=</span> keras.layers.TextVectorization(</span>
-<span id="cb4-8"><a></a>  standardize<span class="op">=</span>custom_standardization</span>
-<span id="cb4-9"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><em>Note:</em> <code>TextVectorization</code> is based on TensorFlow operations, so using it with other backend frameworks is complicated.</p>
-</div>
-</section>
-<section id="fancier-text-vectorisation" class="slide level2">
-<h2>Fancier text vectorisation</h2>
-<div style="padding-top: 30px;">
-
-</div>
-<p>Word vectorisation is fast, but</p>
-<ul>
-<li><p>Could be more efficient (consider <span class="color-pink-dark"><em>small</em> - <em>small<strong>er</strong></em> - <em>small<strong>est</strong></em></span>, <span class="color-purple-dark"><em>loud</em> - <em>loud<strong>er</strong></em> - <em>loud<strong>est</strong></em></span>)</p></li>
-<li><p>Struggles with out-of-vocabulary words</p></li>
-</ul>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="fragment">
-<p>Modern LLMs use <strong>subword tokenisation</strong> algorithms:</p>
-<ul>
-<li>Start out with individual characters</li>
-<li>Then merge them into subwords based on frequency of character combinations</li>
-</ul>
-</div>
-</section>
-<section id="section" class="slide level2" data-menu-title="Tiktokenizer" data-background-interactive="true" data-background-iframe="https://tiktokenizer.vercel.app/?model=google%2Fgemma-7b">
-<h2></h2>
-<div class="absolute" style="font-size: 0.75em;bottom: 0%; right: 0%; ">
-<p><a href="https://tiktokenizer.vercel.app">https://tiktokenizer.vercel.app</a></p>
-</div>
-</section>
-<section id="detour-bag-of-words" class="slide level2">
-<h2>Detour: Bag-of-words</h2>
-<p>So far all words receive a separate index; we assume <span class="color-red-dark">no relation</span> between them.</p>
-<p>Since text is not strictly ordered, how about training a <code>Dense</code> model on the <em>presence</em> of words, and just ignore the ordering?</p>
-<div class="fragment">
-<p>Consider the IMDb review dataset again:</p>
-<div style="padding-top: 20px">
-
-</div>
-<table class="caption-top">
-<colgroup>
-<col style="width: 85%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Review</th>
-<th>Sentiment</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Probably my all-time favorite movie, a story of selflessness, sacrifice and dedication to …</td>
-<td><span class="color-green-dark">positive</span></td>
-</tr>
-<tr class="even">
-<td>If you like original gut wrenching laughter you will like this movie. If you are young …</td>
-<td><span class="color-green-dark">positive</span></td>
-</tr>
-<tr class="odd">
-<td>This movie made it into one of my top 10 most awful movies. Horrible. There wasn’t …</td>
-<td><span class="color-red-dark">negative</span></td>
-</tr>
-</tbody>
-</table>
-<div style="padding-top: 20px">
-
-</div>
-<p>Can classify decently well by learning correlations between single words and sentiment.</p>
-<p>In this case we treat the text as a <span class="color-teal-dark"><strong><em>set</em></strong></span> and not a <span class="color-teal-dark"><strong><em>sequence</em></strong></span>.</p>
-</div>
-</section>
-<section id="detour-n-grams" class="slide level2">
-<h2>Detour: N-grams</h2>
-<p>There are still some word combinations that throw us off:</p>
-<div style="text-align: center;">
-<p><code>"good"</code> is very different from <code>"not good"</code>.</p>
-</div>
-<div style="padding-top: 30px">
-
-</div>
-<div class="fragment">
-<p>Such modifiers are placed close, so we can extend our vocabulary with <span class="color-deep-orange-dark"><em>pairs</em></span>:</p>
-<div style="text-align: center;">
-<p><span class="color-blue-dark">“… not really expecting much,”</span></p>
-<p><i class="bi bi-arrow-right"></i> &nbsp; {<span class="color-blue-dark">“not”</span>, <span class="color-purple-dark">“not really”</span>, <span class="color-blue-dark">“really”</span>, <span class="color-purple-dark">“really expecting”</span>, <span class="color-blue-dark">“expecting”</span>, <span class="color-purple-dark">“expecting much”</span>]}</p>
-</div>
-<div style="padding-top: 30px">
-
-</div>
-<p>This approach of keeping <em>some</em> ordering, popular around 2010, is called</p>
-<ul>
-<li>bigrams (for pairs for words)</li>
-<li>trigrams (for triplets of words)</li>
-<li>N-grams (for N words)</li>
-</ul>
-</div>
-</section>
-<section id="detour-n-grams-1" class="slide level2">
-<h2>Detour: N-grams</h2>
-<!-- ## Text as _sequences_ vs _sets_ -->
-<p>N-grams apply to other data as well, for instance</p>
-<div style="padding-top: 20px">
-
-</div>
-<table class="caption-top">
-<colgroup>
-<col style="width: 15%">
-<col style="width: 20%">
-<col style="width: 15%">
-<col style="width: 20%">
-<col style="width: 30%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>Sequence</th>
-<th>1-gram</th>
-<th>2-gram</th>
-<th>3-gram</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Protein sequencing</td>
-<td>Cys-Gly-Leu-Ser-Trp</td>
-<td>Cys, Gly, Leu, Ser, Trp,</td>
-<td>Cys-Gly, Gly-Leu, Leu-Ser, Ser-Trp</td>
-<td>Cys-Gly-Leu, Gly-Leu-Ser, Leu-Ser-Trp</td>
-</tr>
-<tr class="even">
-<td>DNA sequencing</td>
-<td>AGCTTCGA</td>
-<td>A, G, C, T, T, C, G, A</td>
-<td>AG, GC, CT, TT, TC, CG, GA</td>
-<td>AGC, GCT, CTT, TTC, TCG, CGA,</td>
-</tr>
-</tbody>
-</table>
-<div style="padding-top: 20px">
-
-</div>
-<p>For language research purpuses N-grams are still useful; have a look at<br>the Google <a href="https://books.google.com/ngrams/">N-gram Viewer</a></p>
-<div class="quarto-figure quarto-figure-center">
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-right">
 <figure>
-<p><img data-src="figures/lecture13/ngram-viewer.png" class="quarto-figure quarto-figure-center" width="450"></p>
+<p><img data-src="figures/lecture16/mask-matrix.png" class="fragment quarto-figure quarto-figure-right" style="padding-top: 40px;" data-fragment-index="1"></p>
 </figure>
 </div>
+</div></div>
 </section>
-<section id="sequence-models" class="slide level2">
-<h2>Sequence models</h2>
-<p>Let’s put the ordering back in, and look at <span class="color-teal-dark"><em>sequence</em></span> models instead.</p>
-<p>Now need a model type that assumes a relation between neighbouring words</p>
-<p>We know of two:</p>
+<section id="generating-text-from-a-decoder-model" class="slide level2">
+<h2>Generating text from a decoder model</h2>
+<p>As for other classification models, last layer looks like</p>
+<div style="text-align: center">
+<p><code>Dense(units=vocabulary_size, activation="softmax")</code></p>
+</div>
+<p><code>-&gt;</code> output is a vector of softmax scores for all possible tokens.</p>
+<div style="padding-top: 20px;">
+
+</div>
+<p>Run the model in an <span class="color-teal-dark"><strong>autoregressive</strong></span> loop:</p>
 <ul>
-<li>Convolutional neural networks (CNNs)</li>
-<li>Recurrent neural networks (RNNs)</li>
+<li>Process sequence and predict next token</li>
+<li>Append predicted token to the sequence</li>
+<li>Process extended sequence and again append predicted token</li>
+<li>Repeat</li>
+<li>(Stop if predicting end-of-sequence token)</li>
 </ul>
+</section>
+<section id="generating-text-from-a-decoder-model-1" class="slide level2">
+<h2>Generating text from a decoder model</h2>
+<p>As for other classification models, last layer looks like</p>
+<div style="text-align: center">
+<p><code>Dense(units=vocabulary_size, activation="softmax")</code></p>
+</div>
+<p><code>-&gt;</code> output is a vector of softmax scores for all possible tokens.</p>
 <div style="padding-top: 40px;">
 
 </div>
-<div class="fragment">
-<p>For NLP uses, both are superseeded by <span class="color-purple"><em>transformers</em></span>, which is the topic for next week.</p>
-<p>But let’s go through a trick tomorrow that improves performance for all model types: word <span class="color-pink-dark"><em>embeddings</em></span>.</p>
+<p><img data-src="figures/lecture17/textgen.png" style="width:90.0%" data-fig-aling="center"></p>
+<p><span class="absolute" style="font-size: 0.5em;left: 0%; bottom: 0%; "><em>Deep Learning with Python</em>, F. Chollet</span></p>
+</section>
+<section id="generating-text-from-a-decoder-model-2" class="slide level2">
+<h2>Generating text from a decoder model</h2>
+<ul>
+<li>Process sequence and predict next token</li>
+<li>Append predicted token to the sequence</li>
+<li>Process extended sequence and again append predicted token</li>
+<li>Repeat</li>
+</ul>
+<div class="absolute" style="top: 50%; left: 10%; ">
+<p>The cat sat on the _____</p>
+</div>
+<div class="absolute" style="top: 50%; left: 52%; width: 300px; ">
+<p><code>floor       7.72%</code><br> <code>bed         6.82%</code><br> <code>couch       5.70%</code><br> <code>ground      4.71%</code><br> <code>edge        4.66%</code><br></p>
 </div>
 </section>
-<section id="section-1" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<section id="generating-text-from-a-decoder-model-3" class="slide level2">
+<h2>Generating text from a decoder model</h2>
+<ul>
+<li>Process sequence and predict next token</li>
+<li>Append predicted token to the sequence</li>
+<li>Process extended sequence and again append predicted token</li>
+<li>Repeat</li>
+</ul>
+<div class="absolute" style="top: 50%; left: 10%; ">
+<p>The cat sat on the <span class="color-pink-dark">floor</span> _____</p>
+</div>
+<div class="absolute" style="top: 50%; left: 52%; width: 300px; ">
+<p><code>,           25.08%</code><br> <code>and         13.56%</code><br> <code>.            7.38%</code><br> <code>of           7.07%</code><br> <code>with         6.58%</code><br></p>
+</div>
+</section>
+<section id="generating-text-from-a-decoder-model-4" class="slide level2">
+<h2>Generating text from a decoder model</h2>
+<ul>
+<li>Process sequence and predict next token</li>
+<li>Append predicted token to the sequence</li>
+<li>Process extended sequence and again append predicted token</li>
+<li>Repeat</li>
+</ul>
+<div class="absolute" style="top: 50%; left: 10%; ">
+<p>The cat sat on the <span class="color-pink-dark">floor,</span> _____</p>
+</div>
+<div class="absolute" style="top: 50%; left: 52%; width: 300px; ">
+<p><code>and         9.41%</code><br> <code>looking     3.23%</code><br> <code>the         1.78%</code><br> <code>he          1.63%</code><br> <code>his         1.48%</code><br></p>
+</div>
+</section>
+<section id="generating-text-from-a-decoder-model-5" class="slide level2">
+<h2>Generating text from a decoder model</h2>
+<ul>
+<li>Process sequence and predict next token</li>
+<li>Append predicted token to the sequence</li>
+<li>Process extended sequence and again append predicted token</li>
+<li>Repeat</li>
+</ul>
+<div class="absolute" style="top: 50%; left: 10%; ">
+<p>The cat sat on the <span class="color-pink-dark">floor, and</span> _____</p>
+</div>
+<div class="absolute" style="top: 50%; left: 52%; width: 300px; ">
+<p><code>the         8.40%</code><br> <code>he          5.72%</code><br> <code>I           4.55%</code><br> <code>she         3.65%</code><br> <code>his         3.56%</code><br></p>
+</div>
+</section>
+<section id="generating-text-from-a-decoder-model-6" class="slide level2">
+<h2>Generating text from a decoder model</h2>
+<p>Sampling strategies for next token:</p>
+<ul>
+<li><span class="color-purple-dark"><strong>Greedy search:</strong></span> Always select token with highest score
+<ul>
+<li>Makes model deterministic, always outputs same output for a given input</li>
+<li>Often get stuck in sequence loops</li>
+</ul></li>
+</ul>
+</section>
+<section id="generating-text-from-a-decoder-model-7" class="slide level2">
+<h2>Generating text from a decoder model</h2>
+<p>Sampling strategies for next token:</p>
+<ul>
+<li><p><span class="color-purple-dark"><strong>Greedy search:</strong></span> Always select token with highest score</p></li>
+<li><p><span class="color-deep-purple"><strong>Beam search:</strong></span> Keep track of several possible branches of output sequences, and select the sentence with highest probability</p>
+<ul>
+<li>Computationally expensive</li>
+<li>Can also get stuck in loops</li>
+</ul></li>
+</ul>
+<div class="r-stack">
+<p><img data-src="https://d2l.ai/_images/beam-search.svg" class="fragment fade-out" data-fragment-index="1"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture16/beamsearch.png" class="fragment quarto-figure quarto-figure-center" style="padding-top: 30px;" data-fragment-index="1" width="600"></p>
+</figure>
+</div>
+</div>
+<div class="absolute fragment" style="font-size: 0.5em;bottom: 0%; right: 0%; " data-fragment-index="1">
+<p>arXiv:1904.09751</p>
+</div>
+</section>
+<section id="generating-text-from-a-decoder-model-8" class="slide level2">
+<h2>Generating text from a decoder model</h2>
+<p>Sampling strategies for next token:</p>
+<ul>
+<li><p><span class="color-purple-dark"><strong>Greedy search:</strong></span> Always select token with highest score</p></li>
+<li><p><span class="color-deep-purple"><strong>Beam search:</strong></span> Keep track of several possible branches of output sequences, and select the sentence with highest probability</p></li>
+<li><p><span class="color-indigo"><strong>Sampling:</strong></span> Use scores as probabilities and sample randomly</p>
+<ul>
+<li>With large vocabularies the results can be nonsensical</li>
+</ul></li>
+</ul>
+</section>
+<section id="generating-text-from-a-decoder-model-9" class="slide level2">
+<h2>Generating text from a decoder model</h2>
+<p>Sampling strategies for next token:</p>
+<ul>
+<li><p><span class="color-purple-dark"><strong>Greedy search:</strong></span> Always select token with highest score</p></li>
+<li><p><span class="color-deep-purple"><strong>Beam search:</strong></span> Keep track of several possible branches of output sequences, and select the sentence with highest probability</p></li>
+<li><p><span class="color-indigo"><strong>Sampling:</strong></span> Use scores as probabilities and sample randomly</p></li>
+<li><p><span class="color-blue-dark"><strong>Top-<em>K</em> sampling:</strong></span> Sample among the <em>K</em> tokens with highest score</p></li>
+</ul>
+</section>
+<section id="generating-text-from-a-decoder-model-10" class="slide level2">
+<h2>Generating text from a decoder model</h2>
+<p>Sampling strategies for next token:</p>
+<ul>
+<li><p><span class="color-purple-dark"><strong>Greedy search:</strong></span> Always select token with highest score</p></li>
+<li><p><span class="color-deep-purple"><strong>Beam search:</strong></span> Keep track of several possible branches of output sequences, and select the sentence with highest probability</p></li>
+<li><p><span class="color-indigo"><strong>Sampling:</strong></span> Use scores as probabilities and sample randomly</p></li>
+<li><p><span class="color-blue-dark"><strong>Top-<em>K</em> sampling:</strong></span> Sample among the <em>K</em> tokens with highest score</p></li>
+<li><p><span class="color-light-blue-dark"><strong>Adjusted softmax sampling:</strong></span> Add a parameter <em>T</em> called <span class="color-pink-dark">temperature</span> in the softmax function applied to the output<br>Adjusts how tokens are sampled</p></li>
+</ul>
+</section>
+<section id="softmax-with-temperature" class="slide level2">
+<h2>Softmax with temperature</h2>
+<p>Divide the <span class="color-deep-orange-dark">logits</span> <em>a</em> by <span class="color-pink-dark">temperature</span> <em>T</em> in the softmax function:</p>
+<p><span class="math display">\[
+\small
+y_i = \frac{\exp(a_i/T)}{\sum_j \exp(a_j/T)}
+\]</span></p>
+<p>Changes the distribution we sample from.</p>
+<div class="columns fragment">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>Low <em>T</em>:</strong><br> Give highest score to the most likely token
+<ul>
+<li>More determinism</li>
+</ul></li>
+</ul>
+<div style="padding-top: 10px;">
+
+</div>
+<ul>
+<li><strong>High <em>T</em>:</strong><br> Give more equals scores to all tokens
+<ul>
+<li>More randomness / creativity</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<iframe width="100%" height="300px" src="figures/lecture17/softmax_temperature.html">
+</iframe>
+</div></div>
+</section>
+<section id="large-language-models-llms" class="slide level2 center" data-background-color="#E0F7FA">
+<h2>Large language models (LLMs)</h2>
+<p><span class="color-blue-dark"><strong><em>LLM:</em></strong></span> language model with <span class="math inline">\(\small\gtrsim 10^9\)</span> (1 billion) parameters</p>
+</section>
+<section id="training-llms" class="slide level2">
+<h2>Training LLMs</h2>
+<p>Typical training procedure:</p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ol type="1">
+<li><p><strong>Self-supervised pre-training</strong></p>
+<p>A general model that can be subsequently fine-tuned on different tasks is called a <em>foundation</em> model</p>
+<p>Cost: <span class="color-red-dark">$1 million</span> to <span class="color-red-dark">$100 million</span></p></li>
+</ol>
+<div class="fragment">
+<ol start="2" type="1">
+<li><p><strong>Supervised fine-tuning</strong></p>
+<p>Adapt to more specific uses, such as</p>
+<ul>
+<li>Chat / Question answering</li>
+<li>Chain-of-thought reasoning</li>
+<li>Domain-specific used</li>
+</ul>
+<p>Cost: <span class="color-orange-dark">Depends</span></p></li>
+</ol>
+</div>
+</div><div class="column" style="width:45%;">
+<div class="fragment">
+<ol start="3" type="1">
+<li><p><strong>Continuous fine-tuning</strong></p>
+<p>Fine-tune an already fine-tuned model</p>
+<p>Cost: <span class="color-green-dark">$1</span> to <span class="color-green-dark">$1000</span></p></li>
+</ol>
+<div class="{.layout-nrow=2}">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture17/hugging-face.png" class="quarto-figure quarto-figure-center" width="300"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture17/llama-finetunes.png" class="quarto-figure quarto-figure-center" width="300"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="training-data" class="slide level2">
+<h2>Training data</h2>
+<p>As always, key to a good model is data.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Pre-training:</strong></p>
+<p>Data scraped from …</p>
+<ul>
+<li>Wikipedia <span class="color-text-muted"><em>(multi-language)</em></span></li>
+<li>GitHub <span class="color-text-muted"><em>(code)</em></span></li>
+<li>ArXiv <span class="color-text-muted"><em>(academic text)</em></span></li>
+<li>StackOverflow <span class="color-text-muted"><em>(Q&amp;A)</em></span></li>
+<li>Reddit etc. <span class="color-text-muted"><em>(forums)</em></span></li>
+<li>Project Gutenberg <span class="color-text-muted"><em>(books)</em></span></li>
+</ul>
+<p>See e.g.&nbsp;<a href="https://commoncrawl.org/">Common Crawl</a></p>
+</div><div class="column" style="width:50%;">
+
+</div></div>
+<div class="absolute" style="top: -10%; left: 60%; width: 700px; ">
+<p><img data-src="figures/lecture17/commoncrawl.png"></p>
+</div>
+</section>
+<section id="training-data-1" class="slide level2">
+<h2>Training data</h2>
+<p>As always, key to a good model is data.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Pre-training:</strong></p>
+<p>Data scraped from …</p>
+<ul>
+<li>Wikipedia <span class="color-text-muted"><em>(multi-language)</em></span></li>
+<li>GitHub <span class="color-text-muted"><em>(code)</em></span></li>
+<li>ArXiv <span class="color-text-muted"><em>(academic text)</em></span></li>
+<li>StackOverflow <span class="color-text-muted"><em>(Q&amp;A)</em></span></li>
+<li>Reddit etc. <span class="color-text-muted"><em>(forums)</em></span></li>
+<li>Project Gutenberg <span class="color-text-muted"><em>(books)</em></span></li>
+</ul>
+<p>See e.g.&nbsp;<a href="https://commoncrawl.org/">Common Crawl</a></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Fine-tuning:</strong></p>
+<p>Now we need <span class="color-teal-dark"><strong><em>annotated</em></strong></span> data</p>
+<ul>
+<li>Specific datasets for question answering</li>
+<li>Reinforcement learning from human feedback (RLHF)</li>
+</ul>
+</div></div>
+<p>Exact training data are business secrets (even for open-sourced models)</p>
+</section>
+<section id="distributed-training" class="slide level2">
+<h2>Distributed training</h2>
+<p>Once the model can’t fit on a single GPU, things get more complicated</p>
+<div style="text-align: center; padding-bottom: 20px;">
+<p><em>(for instance the full Llama 3.1 needs 3.3TB VRAM for training)</em></p>
+</div>
+<div class="fragment">
+<p>What can be split and parallelised?</p>
+<ul>
+<li><span class="color-cyan-dark"><strong>Data:</strong></span> Run different batches in parallel</li>
+<li><span class="color-green-dark"><strong>Weights:</strong></span> Distribute weight matrices over separate GPUs</li>
+<li><span class="color-amber-dark"><strong>Layers:</strong></span> Distribute different layers over separate GPUs</li>
+<li><span class="color-deep-orange-dark"><strong>Sequences:</strong></span> Partition the input data sequences</li>
+</ul>
+<p>Update entire model after each training step</p>
+<p>TensorFlow implements a set of <a href="https://www.tensorflow.org/guide/distributed_training#overview">methods</a> for distributed training, while <a href="https://huggingface.co/docs/transformers/en/perf_train_gpu_many#efficient-training-on-multiple-gpus">Hugging Face</a> offers advanced ones</p>
+</div>
+</section>
+<section id="supervised-fine-tuning" class="slide level2">
+<h2>Supervised fine-tuning</h2>
+<p>A pre-trained model can only append text to an input.</p>
+<div class="fragment">
+<p>Making a useful chatbot requires <span class="color-pink-dark"><em>instruction</em></span> training</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">"instruction"</span><span class="fu">:</span> <span class="st">"Translate 'Good night' into Spanish."</span><span class="fu">,</span></span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">"solution"</span><span class="fu">:</span> <span class="st">"Buenas noches"</span></span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span>
+<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">"instruction"</span><span class="fu">:</span> <span class="st">"Name primary colors."</span><span class="fu">,</span></span>
+<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">"solution"</span><span class="fu">:</span> <span class="st">"Red, blue, yellow"</span></span>
+<span id="cb1-8"><a aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<!-- For this step, high quality data is preferred to quantity. -->
+</div>
+<div class="fragment">
+<p>On the Hugging Face model hub you will often find two variants of the same model:</p>
+<div class="columns">
+<div class="column" style="width:20%;">
+
+</div><div class="column" style="width:50%;">
+<p><code>meta-llama/Llama-3.2-3B</code><br> <code>meta-llama/Llama-3.2-3B-Instruct</code></p>
+</div></div>
+<div style="font-size: 0.8em;">
+<blockquote>
+<p>The Llama 3.2 collection of multilingual large language models (LLMs) is a collection of pretrained and instruction-tuned generative models in 1B and 3B sizes (…)</p>
+</blockquote>
+</div>
+</div>
+</section>
+<section id="llm-fine-tuning-with-limited-resources" class="slide level2">
+<h2>LLM fine-tuning with limited resources</h2>
+<p><span class="color-indigo"><em>Full</em></span> model fine-tuning can be problematic for two reasons:</p>
+<ul>
+<li>Hardware requirements (mainly VRAM)</li>
+<li>Risk of <span class="color-red-dark"><em>catastrophic forgetting</em></span> <span class="color-text-muted">(https://arxiv.org/abs/1312.6211)</span></li>
+</ul>
+<div class="fragment" data-fragment-index="1">
+<p>Useful techniques:</p>
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="fragment" data-fragment-index="1">
+<ul>
+<li><p><strong>Prompt tuning:</strong></p>
+<p>Add a small trainable model <em>before</em> the LLM, which outputs learned, task-specific tokens</p></li>
+</ul>
+</div>
+<div class="fragment" data-fragment-index="2">
+<ul>
+<li><p><strong>Low-rank adaptation</strong> (<em>LoRA</em>):</p>
+<p>Add small traininable layers <em>in parallel</em> with the existing attention layers</p></li>
+</ul>
+</div>
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-right">
+<figure>
+<p><img data-src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/peft/lora_animated.gif" class="fragment quarto-figure quarto-figure-right" data-fragment-index="2"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="low-rank-adaptation-lora" class="slide level2">
+<h2>Low-rank adaptation (<em>LoRA</em>)</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture17/lora.png" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
+</figure>
+</div>
+<p>Keep original weight matrix <span class="math inline">\(\small W\)</span>&nbsp;frozen</p>
+<p>Train new (small) matrices <span class="math inline">\(\small A\)</span> and <span class="math inline">\(\small B\)</span></p>
+<ul>
+<li>Adds <span class="math inline">\(\small 2\cdot R\cdot D\)</span> new parameters (compared to <span class="math inline">\(\small D^2\)</span> in <span class="math inline">\(\small W\)</span>)</li>
+</ul>
+</section>
+<section id="quantization" class="slide level2">
+<h2>Quantization</h2>
+<p>Reduce memory cost of running inference by <span class="color-deep-purple">reducing numerical precision</span> in weights and activations</p>
+<ul>
+<li>Can store <code>float32</code> as <code>float16</code> without much modification</li>
+<li>Can store <code>float32</code> as <code>int8</code> for use on embedded systems (requires more modification)</li>
+</ul>
+<div class="fragment">
+<p>Modern quantisation schemes for LLMs are more extreme:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Go down to anywhere between <strong>6</strong> to <strong>2 bit</strong></p>
+<p><em>Example</em>:</p>
+<p><code>DeepSeek-R1-Q4_K_M.gguf</code></p>
+<p><code>Q</code>{<em>bits per weight</em>}<code>_</code>{<em>type</em>}<code>_</code>{<em>variant</em>}</p>
+</div><div class="column" style="width:50%;">
+<div style="padding-top: 30px; text-align: right;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Scheme</th>
+<th style="text-align: center;">Compression ratio<br>(relative to <code>f32</code>)</th>
+<th>Performance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Q8_0</code></td>
+<td style="text-align: center;">1:4</td>
+<td>High quality</td>
+</tr>
+<tr class="even">
+<td><code>Q4_K_M</code></td>
+<td style="text-align: center;">1:8</td>
+<td>Medium quality</td>
+</tr>
+<tr class="odd">
+<td><code>Q3_K_M</code></td>
+<td style="text-align: center;">1:11</td>
+<td>Low quality</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></div>
+</div>
+</section>
+<section id="knowledge-distillation" class="slide level2">
+<h2>Knowledge distillation</h2>
+<p>Train a small model to mimic the output of a bigger one:</p>
+<p>Use the output of the <span class="color-pink-dark">bigger</span> model as labels to supervise the <span class="color-deep-orange">smaller</span> model</p>
+<div style="padding-top: 20px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiN3UISRCKswIxZuTsi08LUV15urAL9GuG65SHPLQcyxa6JKL_aKMtYCiaFmaQ-TC59otrYI7g-DXLTa8v-h4WgOT_B1CqKtMZG7gyRiw4YoQcUn1EUj386PgYZ1PP-Wq9vDSer0D2kdYsT0n8XgAq9AdokWEtfgUBs-1KUZc2H8lMHuyjQ-nA6YFDuewrI/s1999/image4.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
+<div class="absolute" style="font-size: 0.6em;bottom: 0%; right: 0%; ">
+<p>https://arxiv.org/abs/2305.02301</p>
+</div>
+</section>
+<section id="knowledge-distillation-1" class="slide level2">
+<h2>Knowledge distillation</h2>
+<p>Train a small model to mimic the output of a bigger one:</p>
+<p>Use the output of the <span class="color-pink-dark">bigger</span> model as labels to supervise the <span class="color-deep-orange">smaller</span> model</p>
+<div style="padding-top: 20px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture17/deepseek-distill.png" class="quarto-figure quarto-figure-center" width="700"></p>
+</figure>
+</div>
+</section>
+<section id="section" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>

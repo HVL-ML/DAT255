@@ -195,7 +195,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 13</u> <br> Natural language processing 1: Text vectorisation</p>
+  <p class="subtitle"><u>Lecture 19</u> – Deployment</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -206,331 +206,264 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="natural-language-processing-nlp" class="slide level2">
-<h2>Natural language processing (NLP)</h2>
-<p><span class="color-teal-dark">(as opposed to <em>machine language</em>)</span></p>
-<p>Since most human knowledge is stored as text, <strong>NLP</strong> is an important field of study</p>
-<div class="fragment">
-<blockquote>
-<p>Knowing grammar, syntax and language structure (i.e.&nbsp;<em>linguistics</em>), can we write down the set of rules required to do a language task like translation?</p>
-</blockquote>
-</div>
-<div class="fragment color-red-dark" style="text-indent: 25px;">
-<p>Not really, no.</p>
-</div>
-<div class="fragment">
-<blockquote>
-<p>Knowing basically nothing, but having a library of example text, can we statistically infer the rules required to do a language task?</p>
-</blockquote>
-</div>
-<div class="fragment color-green-dark" style="text-indent: 25px;">
-<p>Yes!</p>
-</div>
-<div class="fragment">
-<p><span class="color-indigo"><em>Disclaimer:</em></span><br> There’s loads of interesting NLP stuff that we will skip, because it has been obsoleted by transformer models. Look at the supplemental reading on Canvas.</p>
-</div>
+<section id="deployment-options" class="slide level2 center" data-background-color="#F3E5F5">
+<h2>Deployment options</h2>
+<ul>
+<li>As REST API (central)</li>
+<li>On a device (local)</li>
+<li>In browser / app (local)</li>
+</ul>
 </section>
-<section id="nlp-tasks" class="slide level2" data-background-color="#F5F5F5">
-<h2>NLP tasks</h2>
-<ul>
-<li><p><span class="color-indigo">Text classification:</span></p>
-<p><em>What is the topic of this text?</em></p></li>
-<li><p><span class="color-indigo">Content filtering:</span></p>
-<p><em>Is this email spam? Does this post contain swearing?</em></p></li>
-<li><p><span class="color-pink-dark">Sentiment analysis:</span></p>
-<p><em>Is this review positive or negative?</em></p></li>
-<li><p><span class="color-pink-dark">Translation:</span></p>
-<p><em>What is this text in French?</em></p></li>
-<li><p><span class="color-pink-dark">Summarisation:</span></p>
-<p><em>Give a short summary of this article.</em></p></li>
-<li><p><span class="color-purple-dark">Question answering:</span></p>
-<p><em>How do I fix the Wifi on my Thinkpad?</em></p></li>
-</ul>
-<div class="fragment absolute img-shadow" style="padding-left: 15px; background-color: #E0F2F1;top: 60%; right: 0%; width: 400px; ">
-<p>We start off with classification, before moving to text output next week.</p>
-</div>
-</section>
-<section id="our-toolbox-so-far" class="slide level2">
-<h2>Our toolbox so far:</h2>
-<p>We know how to do</p>
-<ul>
-<li><p><strong>Sequence processing:</strong> <br> Know how to construct RNNs, CNNs</p></li>
-<li><p><strong>Input encoding:</strong> <br> Looked at <em>embeddings</em> last time</p></li>
-</ul>
-<p>With this, we can build an <strong>NLP model at <span class="color-purple">2017 level</span></strong><br> (will do so this week)</p>
-<div class="fragment">
-<p>Next week we will learn about</p>
-<ul>
-<li><strong>Transformers</strong> <span class="color-text-muted" style="font-size: 0.75em;">(not the electrical kind)</span></li>
-</ul>
-<p>With this, we can build an <strong>NLP model at <span class="color-deep-orange">2022 level</span></strong></p>
-</div>
-<div class="absolute" style="top: 15%; right: 0%; width: 450px; ">
-<!-- ![[MMLU](https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu) benchmark](figures/lecture13/mmlu.png) -->
+<section id="deploying-a-model-as-a-rest-api" class="slide level2">
+<h2>Deploying a model as a REST API</h2>
+<p>The most common approach:</p>
+<div class="absolute" style="top: 40%; left: 0%; width: 250px; ">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture1/ai-index-fig_2.1.33.png" class="img-shadow"></p>
-<figcaption><span class="color-text-muted">Stanford AI Index 2025</span></figcaption>
+<p><img data-src="figures/lecture19/webpage.png"></p>
+<figcaption>Webpage / App</figcaption>
 </figure>
 </div>
 </div>
+<div class="absolute" style="top: 40%; right: 0%; width: 220px; ">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture19/server.png"></p>
+<figcaption>Server</figcaption>
+</figure>
+</div>
+</div>
+<div class="absolute" style="top: 23%; left: 32%; width: 450px; ">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">"signature_name"</span><span class="fu">:</span> <span class="st">"serving_default"</span><span class="fu">,</span></span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">"instances"</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">0.42</span><span class="ot">,</span> <span class="fl">1.31</span><span class="ot">,</span> <span class="fl">2.50</span><span class="ot">]</span></span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="absolute" style="left: 35%; bottom: 0%; width: 400px; ">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">"predictions"</span><span class="fu">:</span> <span class="ot">[</span><span class="fl">0.99</span><span class="ot">,</span> <span class="fl">0.01</span><span class="ot">]</span></span>
+<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="absolute" style="top: 37%; left: 32%; width: 450px; ">
+<p><img data-src="figures/lecture19/arrow.png"></p>
+</div>
+<div class="absolute" style="transform: rotate(180deg);left: 30%; bottom: 10%; width: 450px; ">
+<p><img data-src="figures/lecture19/arrow.png"></p>
+</div>
 </section>
-<section id="getting-text-into-our-model" class="slide level2">
-<h2>Getting text into our model</h2>
+<section id="deploying-a-model-as-a-rest-api-1" class="slide level2">
+<h2>Deploying a model as a REST API</h2>
+<p><span class="color-deep-purple"><strong>Inference server:</strong></span></p>
+<ul>
+<li>Has relevant hardware</li>
+<li>Optimised for inference
+<ul>
+<li>Runs e.g.&nbsp;TensorFlow Serving</li>
+</ul></li>
+<li>No user accounts, databases etc (stateless)</li>
+</ul>
+<p><span class="color-orange-dark"><strong>Website server / App:</strong></span></p>
+<ul>
+<li>Minimal compute need</li>
+<li>Implements user account and other persistent info</li>
+</ul>
+<p>Both can be scaled independently</p>
+<div class="absolute" style="top: 10%; right: 0%; width: 160px; ">
+<p><img data-src="figures/lecture19/server.png"></p>
+</div>
+<div class="absolute" style="top: 8%; right: -1%; ">
+<p>✨</p>
+</div>
+<div class="absolute" style="top: 55%; right: 0%; width: 160px; ">
+<p><img data-src="figures/lecture19/webpage.png"></p>
+</div>
+</section>
+<section id="deploying-a-model-as-a-rest-api-2" class="slide level2">
+<h2>Deploying a model as a REST API</h2>
+<p>Can use <a href="https://www.tensorflow.org/tfx/guide/serving">TensorFlow Serving</a> to serve Keras models</p>
+<!-- Request and response in JSON format -->
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Download the TensorFlow Serving Docker imageo</span></span>
+<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull tensorflow/serving</span>
+<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Start TensorFlow Serving container and open the REST API port</span></span>
+<span id="cb3-5"><a aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-t</span> <span class="at">--rm</span> <span class="at">-p</span> 8501:8501 <span class="dt">\</span></span>
+<span id="cb3-6"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">-v</span> <span class="st">"my_saved_model:/models/my_saved_model"</span> <span class="dt">\</span></span>
+<span id="cb3-7"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">-e</span> MODEL_NAME=my_model <span class="dt">\</span></span>
+<span id="cb3-8"><a aria-hidden="true" tabindex="-1"></a>    tensorflow/serving <span class="kw">&amp;</span></span>
+<span id="cb3-9"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Query the model using the predict API</span></span>
+<span id="cb3-11"><a aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-d</span> <span class="st">'{"instances": [1.0, 2.0, 5.0]}'</span> <span class="dt">\</span></span>
+<span id="cb3-12"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">-X</span> POST http://localhost:8501/v1/models/my_model:predict</span>
+<span id="cb3-13"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Returns =&gt; { "predictions": [2.5, 3.0, 4.5] }</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Things to consider:</p>
+<ul>
+<li>Inference + network roundtrip typically takes &gt; 0.5 s</li>
+<li>Although request can be encrypted, data must be decrypted on the remote server</li>
+</ul>
+</section>
+<section id="deploying-a-model-as-a-rest-api-3" class="slide level2">
+<h2>Deploying a model as a REST API</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p>For serving LLMs, JSON elements can differ per model, but typically looks like</p>
+<div style="padding-top: 20px;">
+
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST <span class="st">"http://localhost:8000/v1/chat/completions"</span> <span class="dt">\</span></span>
+<span id="cb4-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb4-3"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">--data</span> <span class="st">'{</span></span>
+<span id="cb4-4"><a aria-hidden="true" tabindex="-1"></a><span class="st">        "model": "meta-llama/Llama-3.2-3B-Instruct",</span></span>
+<span id="cb4-5"><a aria-hidden="true" tabindex="-1"></a><span class="st">        "messages": [</span></span>
+<span id="cb4-6"><a aria-hidden="true" tabindex="-1"></a><span class="st">            {</span></span>
+<span id="cb4-7"><a aria-hidden="true" tabindex="-1"></a><span class="st">                "role": "user",</span></span>
+<span id="cb4-8"><a aria-hidden="true" tabindex="-1"></a><span class="st">                "content": "What is the capital of France?"</span></span>
+<span id="cb4-9"><a aria-hidden="true" tabindex="-1"></a><span class="st">            }</span></span>
+<span id="cb4-10"><a aria-hidden="true" tabindex="-1"></a><span class="st">        ]</span></span>
+<span id="cb4-11"><a aria-hidden="true" tabindex="-1"></a><span class="st">    }'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+<div class="absolute" style="top: 20%; right: -5%; width: 350px; ">
+<p><img data-src="figures/lecture19/llama-instructions.png" class="img-shadow"></p>
+</div>
+<div class="absolute" style="font-size: 1.5em;top: 67%; left: 68%; ">
+<p><i class="bi bi-arrow-up-right"></i></p>
+</div>
+</section>
+<section id="deploying-on-a-specific-device" class="slide level2">
+<h2>Deploying on a (specific) device</h2>
+<div style="padding-top: 20px;">
+
+</div>
+<p>For <span class="color-indigo">low-latency applications</span>, the model typically resides on the same device that reads directly from sensor/instrument</p>
+<p>This comes with specific requirements:</p>
+<ul>
+<li>Low memory</li>
+<li>Low compute capacity</li>
+<li>Low power</li>
+<li>Specific runtime environment</li>
+</ul>
+<div class="absolute" style="top: 35%; right: 0%; width: 550px; ">
+<p><img data-src="https://www.teslarati.com/wp-content/uploads/2020/02/Tesla-Autopilot.jpg"></p>
+</div>
+</section>
+<section id="deploying-on-a-specific-device-1" class="slide level2">
+<h2>Deploying on a (specific) device</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><strong>Text vectorisation</strong>: Converting text to numeric data.</p>
-<p>Typical approach consists of several steps</p>
-<ol type="1">
-<li class="fragment"><strong><em>Standardisation:</em></strong><br>Remove diacritics, punctuation, convert to lowercase</li>
-<li class="fragment"><strong><em>Tokenisation:</em></strong><br>Split text into <span class="color-purple-dark"><strong><em>tokens</em></strong></span> which can be words, subwords, or groups of words</li>
-<li class="fragment"><strong><em>Indexing:</em></strong><br>Convert tokens to integer values</li>
-<li class="fragment"><strong><em>Encoding:</em></strong><br>Convert indices into embeddings or one-hot encoding</li>
-</ol>
+<p>Can still develop and train on regular hardware, and then optimise the model for the target device</p>
+<p>Preferred way to run Keras models is through <a href="https://ai.google.dev/edge/litert"><em>Lite Runtime</em></a> (LiteRT)*, which supports</p>
+<ul>
+<li>Android / iOS</li>
+<li>Embedded Linux</li>
+<li>Various microcontrollers</li>
+</ul>
+<p>Converts and optimises Keras (or other) models to run in any of the above environments</p>
 </div></div>
-<div class="absolute" style="top: 5%; right: 0%; width: 350px; ">
-<p><img data-src="figures/lecture13/text-vectorisation.png"></p>
+<div class="absolute" style="font-size: 0.8em;left: 0%; bottom: 0%; ">
+<p>*Used to be called <em>TensorFlow Lite</em></p>
 </div>
-<!-- [_Deep Learning with Python_, F. Chollet]{.absolute bottom="-2%" right="5%" style="font-size: 0.5em;"} -->
+<div class="absolute" style="top: 25%; right: 0%; width: 400px; ">
+<p><img data-src="https://store.arduino.cc/cdn/shop/files/AKX00028_02.unbox_d5387fcf-26c7-4981-b1fd-6d3abb552d50_623x468.jpg?v=1727099482"></p>
+</div>
 </section>
-<section id="text-vectorisation" class="slide level2">
-<h2>Text vectorisation</h2>
-<p>Can do all the processing steps with the <code>keras.layers.TextVectorization</code> layer</p>
-<blockquote>
-<p>A preprocessing layer which maps text features to integer sequences.</p>
-</blockquote>
-<div style="padding-top: 30px;">
+<section id="very-low-latency-dl" class="slide level2">
+<h2>Very low-latency DL</h2>
+<div style="padding-top: 20px;">
 
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|2|3|4|5|6|7|8|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>keras.layers.TextVectorization(</span>
-<span id="cb1-2"><a></a>  max_tokens<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-3"><a></a>  standardize<span class="op">=</span><span class="st">"lower_and_strip_punctuation"</span>,</span>
-<span id="cb1-4"><a></a>  split<span class="op">=</span><span class="st">"whitespace"</span>,</span>
-<span id="cb1-5"><a></a>  ngrams<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-6"><a></a>  output_mode<span class="op">=</span><span class="st">"int"</span>,</span>
-<span id="cb1-7"><a></a>  output_sequence_length<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-8"><a></a>  vocabulary<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-9"><a></a>  ...</span>
-<span id="cb1-10"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>standardize</code> and <code>split</code> can be custom functions.</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p>If you want a small-ish model to be <span class="color-orange-dark"><em>really</em></span> fast, run it to a Field-Programmable Gate Array (FPGA)</p>
+<p>Inference times down to between <span class="math inline">\(\small 10^{-9}\)</span> – <span class="math inline">\(\small 10^{-6}\)</span> s (depending on models size)</p>
+<div style="padding-top: 20px;">
+
+</div>
+<p>Tools like <a href="https://github.com/fastmachinelearning/hls4ml">hls4ml</a> can do the high-level synthesis of Keras models into hardware-specific language</p>
+</div></div>
+<div class="absolute" style="top: 5%; right: -7%; width: 500px; ">
+<p><img data-src="https://www.pny.com/image%20library/promo/commercial/promotions/htc%20incentive%20program/nvidia-rtx-a6000.png"></p>
+</div>
+<div class="absolute" style="font-size: 1.4em;top: 50%; right: 18%; ">
+<p><i class="bi bi-arrow-down"></i></p>
+</div>
+<div class="absolute" style="top: 60%; right: 12%; width: 160px; ">
+<p><img data-src="https://www.waveshare.com/media/catalog/product/cache/1/image/800x800/9df78eab33525d08d6e5fb8d27136e95/c/o/core3s500e_l_4_2.jpg"></p>
+</div>
 </section>
-<section id="text-vectorisation-1" class="slide level2">
-<h2>Text vectorisation</h2>
-<p>Can do all the processing steps with the <code>keras.layers.TextVectorization</code> layer</p>
-<div style="padding-top: 30px;">
-
-</div>
-<p>The vocabulary is built automatically from data by calling <code>adapt()</code>:</p>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer <span class="op">=</span> keras.layers.TextVectorization(</span>
-<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>  max_tokens<span class="op">=</span><span class="dv">1000</span>,</span>
-<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>  standardize<span class="op">=</span><span class="st">"lower_and_strip_punctuation"</span>,</span>
-<span id="cb2-4"><a aria-hidden="true" tabindex="-1"></a>  output_sequence_length<span class="op">=</span><span class="dv">250</span></span>
-<span id="cb2-5"><a aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-6"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer.adapt(dataset)</span>
-<span id="cb2-8"><a aria-hidden="true" tabindex="-1"></a>vectorize_layer.get_vocabulary()[:<span class="dv">10</span>]</span>
-<span id="cb2-9"><a aria-hidden="true" tabindex="-1"></a><span class="co"># ['', '[UNK]', 'the', 'and', 'a', 'of', 'to', 'is', 'in', 'it']</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div style="padding-top: 30px;">
-
-</div>
+<section id="deploying-locally-in-browser-or-app" class="slide level2">
+<h2>Deploying locally in browser or app</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>A good midway between the two previous options: Implement in browser</p>
+<p><a href="https://www.tensorflow.org/js">TensorFlow.js</a> provides JavaScript interface to run Keras models (with WebGPU acceleration)</p>
+<p><em>Ideal if:</em></p>
 <ul>
-<li>We reserve index 1 (<code>'[UNK]'</code>) for unknown, out-of-vocabulary (OOV) tokens</li>
-<li>We reserve index 0 (<code>''</code>) for the <em>mask token</em>, which used to pad sequences</li>
+<li>Model is not too big</li>
+<li>Model does not have to be kept secret</li>
+<li>User data should stay on the users device</li>
+<li>You don’t want to pay for a compute server</li>
 </ul>
-</section>
-<section id="text-vectorisation-2" class="slide level2">
-<h2>Text vectorisation</h2>
-<p>Test sentence from the <a href="https://ai.stanford.edu/~amaas/data/sentiment/">IMDb movie review</a> dataset:</p>
-<div style="padding-top: 20px">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Text:</span>     I   am  shocked.  Shocked  and  dismayed  that  the   428   of   you   IMDB  users</span>
-<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Encoded:</span> 10  238     2355      2355    3         1    12    2     1    5    23    933   5911</span>
-<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a><span class="ex">Decoded:</span>  i   am  shocked   shocked  and     <span class="pp">[</span><span class="ss">UNK</span><span class="pp">]</span>  that  the  <span class="pp">[</span><span class="ss">UNK</span><span class="pp">]</span>  of   you   imdb  users</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<p>Can remove HTML tags (or other uninteresting stuff) by using regexes:</p>
-<div style="padding-top: 20px">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="|2|3|4|7-9|"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> custom_standardization(input_data):</span>
-<span id="cb4-2"><a></a>  lowercase <span class="op">=</span> tf.strings.lower(input_data)</span>
-<span id="cb4-3"><a></a>  without_html <span class="op">=</span> tf.strings.regex_replace(lowercase, <span class="st">'&lt;[^&gt;]*&gt;'</span>, <span class="st">' '</span>)</span>
-<span id="cb4-4"><a></a>  without_punctuation <span class="op">=</span> tf.strings.regex_replace(without_html, <span class="st">'[</span><span class="sc">{}</span><span class="st">]'</span>.<span class="bu">format</span>(string.punctuation), <span class="st">''</span>)</span>
-<span id="cb4-5"><a></a>  <span class="cf">return</span> without_punctuation</span>
-<span id="cb4-6"><a></a></span>
-<span id="cb4-7"><a></a>vectorize_layer <span class="op">=</span> keras.layers.TextVectorization(</span>
-<span id="cb4-8"><a></a>  standardize<span class="op">=</span>custom_standardization</span>
-<span id="cb4-9"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><em>Note:</em> <code>TextVectorization</code> is based on TensorFlow operations, so using it with other backend frameworks is complicated.</p>
+</div></div>
+<div class="absolute" style="top: 15%; right: 0%; width: 400px; ">
+<p><img data-src="figures/lecture19/tf-js.png" class="img-shadow"></p>
 </div>
 </section>
-<section id="fancier-text-vectorisation" class="slide level2">
-<h2>Fancier text vectorisation</h2>
-<div style="padding-top: 30px;">
-
-</div>
-<p>Word vectorisation is fast, but</p>
+<section id="optimisation" class="slide level2">
+<h2>Optimisation</h2>
+<p>When your models is developed and ready to be deployed, it pays off to optimise it</p>
+<p>Minimise computing cost and memory footprint by:</p>
 <ul>
-<li><p>Could be more efficient (consider <span class="color-pink-dark"><em>small</em> - <em>small<strong>er</strong></em> - <em>small<strong>est</strong></em></span>, <span class="color-purple-dark"><em>loud</em> - <em>loud<strong>er</strong></em> - <em>loud<strong>est</strong></em></span>)</p></li>
-<li><p>Struggles with out-of-vocabulary words</p></li>
+<li>Pruning</li>
+<li>Weight quantisation</li>
+<li>Weight sharing / clustering</li>
 </ul>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="fragment">
-<p>Modern LLMs use <strong>subword tokenisation</strong> algorithms:</p>
-<ul>
-<li>Start out with individual characters</li>
-<li>Then merge them into subwords based on frequency of character combinations</li>
-</ul>
-</div>
-</section>
-<section id="section" class="slide level2" data-menu-title="Tiktokenizer" data-background-interactive="true" data-background-iframe="https://tiktokenizer.vercel.app/?model=google%2Fgemma-7b">
-<h2></h2>
-<div class="absolute" style="font-size: 0.75em;bottom: 0%; right: 0%; ">
-<p><a href="https://tiktokenizer.vercel.app">https://tiktokenizer.vercel.app</a></p>
-</div>
-</section>
-<section id="detour-bag-of-words" class="slide level2">
-<h2>Detour: Bag-of-words</h2>
-<p>So far all words receive a separate index; we assume <span class="color-red-dark">no relation</span> between them.</p>
-<p>Since text is not strictly ordered, how about training a <code>Dense</code> model on the <em>presence</em> of words, and just ignore the ordering?</p>
-<div class="fragment">
-<p>Consider the IMDb review dataset again:</p>
-<div style="padding-top: 20px">
-
-</div>
-<table class="caption-top">
-<colgroup>
-<col style="width: 85%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Review</th>
-<th>Sentiment</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Probably my all-time favorite movie, a story of selflessness, sacrifice and dedication to …</td>
-<td><span class="color-green-dark">positive</span></td>
-</tr>
-<tr class="even">
-<td>If you like original gut wrenching laughter you will like this movie. If you are young …</td>
-<td><span class="color-green-dark">positive</span></td>
-</tr>
-<tr class="odd">
-<td>This movie made it into one of my top 10 most awful movies. Horrible. There wasn’t …</td>
-<td><span class="color-red-dark">negative</span></td>
-</tr>
-</tbody>
-</table>
-<div style="padding-top: 20px">
-
-</div>
-<p>Can classify decently well by learning correlations between single words and sentiment.</p>
-<p>In this case we treat the text as a <span class="color-teal-dark"><strong><em>set</em></strong></span> and not a <span class="color-teal-dark"><strong><em>sequence</em></strong></span>.</p>
-</div>
-</section>
-<section id="detour-n-grams" class="slide level2">
-<h2>Detour: N-grams</h2>
-<p>There are still some word combinations that throw us off:</p>
-<div style="text-align: center;">
-<p><code>"good"</code> is very different from <code>"not good"</code>.</p>
-</div>
-<div style="padding-top: 30px">
-
-</div>
-<div class="fragment">
-<p>Such modifiers are placed close, so we can extend our vocabulary with <span class="color-deep-orange-dark"><em>pairs</em></span>:</p>
-<div style="text-align: center;">
-<p><span class="color-blue-dark">“… not really expecting much,”</span></p>
-<p><i class="bi bi-arrow-right"></i> &nbsp; {<span class="color-blue-dark">“not”</span>, <span class="color-purple-dark">“not really”</span>, <span class="color-blue-dark">“really”</span>, <span class="color-purple-dark">“really expecting”</span>, <span class="color-blue-dark">“expecting”</span>, <span class="color-purple-dark">“expecting much”</span>]}</p>
-</div>
-<div style="padding-top: 30px">
-
-</div>
-<p>This approach of keeping <em>some</em> ordering, popular around 2010, is called</p>
-<ul>
-<li>bigrams (for pairs for words)</li>
-<li>trigrams (for triplets of words)</li>
-<li>N-grams (for N words)</li>
-</ul>
-</div>
-</section>
-<section id="detour-n-grams-1" class="slide level2">
-<h2>Detour: N-grams</h2>
-<!-- ## Text as _sequences_ vs _sets_ -->
-<p>N-grams apply to other data as well, for instance</p>
-<div style="padding-top: 20px">
-
-</div>
-<table class="caption-top">
-<colgroup>
-<col style="width: 15%">
-<col style="width: 20%">
-<col style="width: 15%">
-<col style="width: 20%">
-<col style="width: 30%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>Sequence</th>
-<th>1-gram</th>
-<th>2-gram</th>
-<th>3-gram</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Protein sequencing</td>
-<td>Cys-Gly-Leu-Ser-Trp</td>
-<td>Cys, Gly, Leu, Ser, Trp,</td>
-<td>Cys-Gly, Gly-Leu, Leu-Ser, Ser-Trp</td>
-<td>Cys-Gly-Leu, Gly-Leu-Ser, Leu-Ser-Trp</td>
-</tr>
-<tr class="even">
-<td>DNA sequencing</td>
-<td>AGCTTCGA</td>
-<td>A, G, C, T, T, C, G, A</td>
-<td>AG, GC, CT, TT, TC, CG, GA</td>
-<td>AGC, GCT, CTT, TTC, TCG, CGA,</td>
-</tr>
-</tbody>
-</table>
-<div style="padding-top: 20px">
-
-</div>
-<p>For language research purpuses N-grams are still useful; have a look at<br>the Google <a href="https://books.google.com/ngrams/">N-gram Viewer</a></p>
+<p>This is implemented in LiteRT<br><span class="color-text-muted">(and in other tools too)</span></p>
+<div class="absolute" style="top: 35%; right: 0%; width: 550px; ">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture13/ngram-viewer.png" class="quarto-figure quarto-figure-center" width="450"></p>
+<p><img data-src="https://ai.google.dev/edge/litert/images/models/quantization_decision_tree.png"></p>
+<figcaption>LiteRT optimisation <a href="https://ai.google.dev/edge/litert/models/model_optimization">flowchart</a></figcaption>
 </figure>
 </div>
+</div>
+<!-- ## Maintaining a model -->
 </section>
-<section id="sequence-models" class="slide level2">
-<h2>Sequence models</h2>
-<p>Let’s put the ordering back in, and look at <span class="color-teal-dark"><em>sequence</em></span> models instead.</p>
-<p>Now need a model type that assumes a relation between neighbouring words</p>
-<p>We know of two:</p>
+<section id="some-deployment-options" class="slide level2 center" data-background-color="#F1F8E9">
+<h2>Some deployment options</h2>
+<p><span class="color-indigo">Streamlit</span> and <span class="color-indigo">Gradio</span></p>
+</section>
+<section id="streamlit" class="slide level2">
+<h2>Streamlit</h2>
+<hr>
+<div class="absolute" style="top: 10%; left: -10%; width: 1200px; ">
+<p><img data-src="figures/lecture19/streamlit.png"></p>
+</div>
+<div class="absolute" style="left: 15%; bottom: 0%; width: 700px; ">
+<p><video data-src="https://s3-us-west-2.amazonaws.com/assets.streamlit.io/videos/hero-video.mp4" controls=""><a href="https://s3-us-west-2.amazonaws.com/assets.streamlit.io/videos/hero-video.mp4">Video</a></video></p>
+</div>
+</section>
+<section id="section" class="slide level2" data-menu-title="Streamlit Cloud" data-background-image="figures/lecture19/streamlit-cloud.png">
+<h2></h2>
+<p>Simple public deployment on Streamlit cloud</p>
 <ul>
-<li>Convolutional neural networks (CNNs)</li>
-<li>Recurrent neural networks (RNNs)</li>
+<li>Automatic updates triggered when code<br> pushed to GitHub</li>
+<li>Free compute resources rather limited</li>
 </ul>
-<div style="padding-top: 40px;">
-
-</div>
-<div class="fragment">
-<p>For NLP uses, both are superseeded by <span class="color-purple"><em>transformers</em></span>, which is the topic for next week.</p>
-<p>But let’s go through a trick tomorrow that improves performance for all model types: word <span class="color-pink-dark"><em>embeddings</em></span>.</p>
+</section>
+<section id="section-1" class="slide level2" data-menu-title="Gradio" data-background-iframe="https://www.gradio.app/" data-background-interactive="true">
+<h2></h2>
+</section>
+<section id="section-2" class="slide level2" data-menu-title="Hugging Face Spaces" data-background-image="figures/lecture19/spaces.png">
+<h2></h2>
+<div class="absolute colorbox img-shadow" style="background-color: #FFF;top: 40%; right: 0%; width: 400px; ">
+<p>Gradio apps are easily deployed on Hugging Face Spaces</p>
+<ul>
+<li>AI focused</li>
+<li>Free compute resources are somewhat limited</li>
+</ul>
 </div>
 </section>
-<section id="section-1" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<section id="section-3" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>

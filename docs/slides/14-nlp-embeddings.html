@@ -195,7 +195,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 14</u> – Natural language processing: More on embeddings</p>
+  <p class="subtitle"><u>Lecture 14</u> <br> Natural language processing: Embeddings</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -206,43 +206,54 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="getting-text-into-our-model" class="slide level2">
-<h2>Getting text into our model</h2>
+<section id="begin-stuff-from-13" class="slide level2">
+<h2>Begin stuff from 13</h2>
+</section>
+<section id="from-yesterday" class="slide level2">
+<h2>From yesterday:</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
 <p><strong>Text vectorisation</strong>: Converting text to numeric data.</p>
 <p>Typical approach consists of several steps</p>
 <ol type="1">
-<li class="fragment"><strong><em>Standardisation:</em></strong><br>Remove diacritics, punctuation, convert to lowercase</li>
-<li class="fragment"><strong><em>Tokenisation:</em></strong><br>Split text into <strong><em>tokens</em></strong> which can be words, subwords, or groups of words</li>
-<li class="fragment"><strong><em>Indexing:</em></strong><br>Convert tokens to integer values</li>
-<li class="fragment"><strong><em>Encoding:</em></strong><br>Convert indices into embeddings or one-hot encoding</li>
+<li><strong><em>Standardisation:</em></strong><br>Remove diacritics, punctuation, convert to lowercase</li>
+<li><strong><em>Tokenisation:</em></strong><br>Split text into <span class="color-purple-dark"><strong><em>tokens</em></strong></span> which can be words, subwords, or groups of words</li>
+<li><strong><em>Indexing:</em></strong><br>Convert tokens to integer values</li>
+<li><strong><em>Encoding:</em></strong><br>Convert indices into embeddings or one-hot encoding</li>
 </ol>
 </div></div>
 <div class="absolute" style="top: 5%; right: 0%; width: 350px; ">
 <p><img data-src="figures/lecture13/text-vectorisation.png"></p>
 </div>
-<p><span class="absolute" style="font-size: 0.5em;bottom: -2%; right: 5%; "><em>Deep Learning with Python</em>, F. Chollet</span></p>
-</section>
-<section id="tokenisation" class="slide level2">
-<h2>Tokenisation</h2>
-<div class="columns">
-<div class="column" style="width:40%;">
-<div style="padding-top: 120px;">
-
+<div class="fragment">
+<p>Today we want to make <span class="color-orange">better encodings</span>.</p>
 </div>
-<p>There are several different <span class="color-pink-dark"><em>tokenisation</em></span> algorithms</p>
-<p>Different language models often use different schemes.</p>
-</div><div class="column" style="width:60%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture14/tokenizers.png"></p>
-<figcaption>Tokeniser <a href="https://huggingface.co/spaces/Xenova/the-tokenizer-playground">playground</a></figcaption>
-</figure>
-</div>
-</div></div>
 </section>
 <section id="embeddings" class="slide level2">
+<h2>Embeddings</h2>
+<!-- Let's return to single words. -->
+<!-- Our text is converted into numbers -- We can convert them further into [_good_]{.color-green-dark} numbers, by creating **word embeddings**. -->
+<div style="padding-top: 40px;">
+
+</div>
+<p>Recall we could map categorical values to vectors of floating-point values:</p>
+<div style="padding-top: 20px">
+
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a>my_embedding <span class="op">=</span> {</span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">'the'</span>: [<span class="op">-</span><span class="fl">1.46</span>, <span class="op">-</span><span class="fl">0.86</span>,  <span class="fl">0.09</span>],</span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">'and'</span>: [<span class="op">-</span><span class="fl">0.27</span>,  <span class="fl">1.15</span>,  <span class="fl">1.19</span>],</span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">'a'</span>:   [ <span class="fl">1.17</span>,  <span class="fl">0.06</span>, <span class="op">-</span><span class="fl">0.16</span>],</span>
+<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">'of'</span>:  [ <span class="fl">0.60</span>,  <span class="fl">0.10</span>,  <span class="fl">0.22</span>],</span>
+<span id="cb1-6"><a aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Our list of words are now <strong>vectors</strong> in an abstract space, where we choose the dimensionality ourselves.</p>
+<div class="fragment">
+<p>At first, these values are randomly initialised</p>
+<p>Then, we optimise them during training.</p>
+</div>
+</section>
+<section id="embeddings-1" class="slide level2">
 <h2>Embeddings</h2>
 <p><code>Embedding</code> layers are practically the same as one-hot encoding, followed by a linear <code>Dense</code> layer (without the bias term):</p>
 <div class="columns">
@@ -251,26 +262,44 @@ sma@hvl.no
 <p><img data-src="figures/lecture13/embedding-layer.png"></p>
 </div>
 <div class="absolute" style="text-align: center;top: 24%; left: 4.5%; ">
-<p><code>the</code><br> <i class="bi bi-arrow-down"></i><br> <code>[ 0     1     0     0 ]</code></p>
+<p><code>the</code><br> <i class="bi bi-arrow-down"></i><br> <code>[ 0      1     0      0 ]</code></p>
 </div>
 <div class="absolute" style="left: 5%; bottom: 9%; ">
-<p><code>[ -1.46 -0.86  0.09 ]</code></p>
+<p><code>[ -1.46  -0.86   0.09 ]</code></p>
 </div>
 </div><div class="column" style="width:57%;">
 <div style="padding-top: 150px;">
 
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a>embedding <span class="op">=</span> keras.Sequential([</span>
-<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>  keras.layers.StringLookup(output_mode<span class="op">=</span><span class="st">"one-hot"</span>),</span>
-<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>  keras.layers.Dense(</span>
-<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a>    units<span class="op">=</span>embedding_dim,</span>
-<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a>    use_bias<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb1-6"><a aria-hidden="true" tabindex="-1"></a>    activation<span class="op">=</span><span class="va">None</span></span>
-<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-8"><a aria-hidden="true" tabindex="-1"></a>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>embedding <span class="op">=</span> keras.Sequential([</span>
+<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>  keras.layers.StringLookup(output_mode<span class="op">=</span><span class="st">"one-hot"</span>),</span>
+<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>  keras.layers.Dense(</span>
+<span id="cb2-4"><a aria-hidden="true" tabindex="-1"></a>    units<span class="op">=</span>embedding_dim,</span>
+<span id="cb2-5"><a aria-hidden="true" tabindex="-1"></a>    use_bias<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb2-6"><a aria-hidden="true" tabindex="-1"></a>    activation<span class="op">=</span><span class="va">None</span></span>
+<span id="cb2-7"><a aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-8"><a aria-hidden="true" tabindex="-1"></a>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="absolute" style="bottom: -1%; ">
 <p>Difference is that <code>Embedding</code> layers are implemented in a much more efficient way.</p>
+</div>
+</section>
+<section id="demo" class="slide level2" data-background-color="#FFF8E1">
+<h2>Demo</h2>
+<div style="padding-top: 50px">
+
+</div>
+<p>Let’s visualise some embeddings</p>
+</section>
+<section id="embeddings-2" class="slide level2">
+<h2>Embeddings</h2>
+<div style="padding-top: 50px">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture13/improving-embeddings.png" class="quarto-figure quarto-figure-center" width="800"></p>
+</figure>
 </div>
 </section>
 <section id="computing-similarity-in-embedding-space" class="slide level2">
@@ -296,6 +325,131 @@ sma@hvl.no
 \small
 \cos(\mathbf{a}, \mathbf{b}) = \frac{\mathbf{a} \cdot \mathbf{b}}{||\mathbf{a}|| \cdot ||\mathbf{b}||}
 \]</span></p>
+</div>
+</section>
+<section id="computing-similarity-in-embedding-space-1" class="slide level2">
+<h2>Computing similarity in embedding space</h2>
+<p><em>How to interpret Euclidian vs cosine similarity?</em></p>
+<p>Consider this <a href="https://datascience.stackexchange.com/questions/27726/when-to-use-cosine-simlarity-over-euclidean-similarity">example</a> from StackOverflow:</p>
+<div class="color-pink-dark" style="text-align: center;">
+<p>You run an online shop and want to compare customers.</p>
+<ul>
+<li>User 1 bought 1x eggs, 1x flour and 1x sugar.</li>
+<li>User 2 bought 100x eggs, 100x flour and 100x sugar.</li>
+<li>User 3 bought 1x eggs, 1x Vodka and 1x Red Bull.</li>
+</ul>
+</div>
+<div class="fragment">
+<p><code>-&gt;</code> By <strong>cosine</strong> similarity, user 1 and user 2 are more similar</p>
+<p><code>-&gt;</code> By <strong>Euclidian</strong> similarity, user 1 and user 3 are more similar</p>
+<div style="padding-top: 50px">
+
+</div>
+<p>Word embeddings are affected by word frequency, so cosine similarity is often preferred.</p>
+</div>
+</section>
+<section id="embeddings-3" class="slide level2">
+<h2>Embeddings</h2>
+<div style="padding-top: 50px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture13/word2vec.jpg" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+<!-- ![](figures/lecture13/embedding-arithmetic.png) -->
+</section>
+<section id="better-text-tokenisation" class="slide level2">
+<h2>Better text tokenisation</h2>
+<div style="padding-top: 20px;">
+
+</div>
+<p>Some words are obviously variants of the same; but conjugated, in plural, etc.</p>
+<div style="text-align: center;">
+<p><span class="color-purple-dark"><em>am, is, are</em></span> are all variants of the <strong>lemma</strong> that is <span class="color-purple-dark"><em>be</em></span></p>
+</div>
+<div style="padding-top: 20px;">
+
+</div>
+<p>We can collapse these in order to simplify the vocabulary our model needs to learn:</p>
+<div style="text-align: center;">
+<p><span class="color-pink-dark"><em>He is reading books</em></span> <code>-&gt;</code> <span class="color-teal-dark"><em>He be read book</em></span></p>
+</div>
+<div style="padding-top: 20px;">
+
+</div>
+<p>Manually composed algorithms for this <em>lemmatization</em> have been developed over long time.</p>
+</section>
+<section id="better-text-tokenisation-1" class="slide level2">
+<h2>Better text tokenisation</h2>
+<p>Modern <span class="color-indigo">tokenisation algorithms</span> are not inspired by linguistics, but rather <em>substring frequencies</em> in data.</p>
+<p>Different LLMs use different algorithms, but they are mostly based on splitting words into individual characters and recombing them into common subwords.</p>
+<div class="fragment">
+<p>The final vocabulary is under no obligation to make sense to us 🤷</p>
+<p>Randomly selected tokens from the GPT-2 tokeniser vocabulary:</p>
+<div class="columns">
+<div class="column" style="width:10%;">
+
+</div><div class="column" style="width:80%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a> objective         stacked             USB                Energy</span>
+<span id="cb3-2"><a aria-hidden="true" tabindex="-1"></a> <span class="dv">306</span>               booster            Bird                learn</span>
+<span id="cb3-3"><a aria-hidden="true" tabindex="-1"></a> stationary        nighttime          <span class="dv">85</span>                  rice</span>
+<span id="cb3-4"><a aria-hidden="true" tabindex="-1"></a> tensions         mission             iency               quitting</span>
+<span id="cb3-5"><a aria-hidden="true" tabindex="-1"></a>agging             hypers             OOOOOOOO           Typ</span>
+<span id="cb3-6"><a aria-hidden="true" tabindex="-1"></a> reopen           finding              Spoon              Plate</span>
+<span id="cb3-7"><a aria-hidden="true" tabindex="-1"></a> nat              Ïĥ                   climates           Druid</span>
+<span id="cb3-8"><a aria-hidden="true" tabindex="-1"></a>download          isition             æĦ                  partic</span>
+<span id="cb3-9"><a aria-hidden="true" tabindex="-1"></a> predis            calf                Object            annie</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+<p>Different tokenisers <a href="https://huggingface.co/spaces/Xenova/the-tokenizer-playground">example</a></p>
+</div>
+</section>
+<section id="pretrained-embeddings-and-models" class="slide level2">
+<h2>Pretrained embeddings and models</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>For image classification tasks we could use take pretrained models and <em>fine-tune</em>, without having to retrain the first layers</p>
+<ul>
+<li>First layers were general enough to transfer well to basically all other tasks</li>
+</ul>
+<p>Same for NLP models:</p>
+<p>Embeddings are general and can be reused for other models or tasks.</p>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture13/cnn-layer-1.png" class="quarto-figure quarto-figure-center" width="100"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture13/cnn-layer-2_1.png" class="quarto-figure quarto-figure-center" width="200"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture13/cnn-layer-2_2.png" class="quarto-figure quarto-figure-center" width="200"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="nlp-resources" class="slide level2">
+<h2>NLP resources</h2>
+<ul>
+<li>Tensorflow <a href="https://www.tensorflow.org/text">Text</a></li>
+</ul>
+<div class="absolute" style="left: 10%; bottom: 0%; width: 900px; ">
+<p><img data-src="figures/lecture13/tensorflow-text.png"></p>
+</div>
+</section>
+<section id="nlp-resources-1" class="slide level2">
+<h2>NLP resources</h2>
+<ul>
+<li><p>Tensorflow <a href="https://www.tensorflow.org/text">Text</a></p></li>
+<li><p>Huggingface <a href="https://huggingface.co/models">models</a> and <a href="https://huggingface.co/docs">ML library</a></p></li>
+</ul>
+<div class="absolute" style="left: 5%; bottom: 0%; width: 1000px; ">
+<p><img data-src="figures/lecture13/huggingface.png"></p>
 </div>
 </section>
 <section id="other-uses-of-embeddings" class="slide level2">
@@ -370,28 +524,28 @@ sma@hvl.no
 </svg>
 </div>
 <div class="absolute" style="top: 0%; right: -4%; width: 100px; ">
-<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/5784916/9504762/Bird%20Speciees%20Dataset/FLAMINGO/003.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20250312%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20250312T153843Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=0be5a9f338190ab558f6f6ee6a0ff442e3f0e05e93142d73c5ab6f1cb1da2351a036707a04fb3fc5f8b7fbdd2c07766432d8743cc19750456744aa8b96fcf144a947a604d6523ad12772feeb4a483d99b7eaa13fadbcc4b94a6c7cd3cdfe9177cd262a5ca993976df5e8fe82e73433d5a034af82d3c20b3d333d76a580aae603b801e977661f80995ba4d66896985856a47e6a6de56680638d5a02350994cefeb913e85b7f7019964a05847d385d9b20def37f7c1f0874958455aa93d8b8138b6067e50c079603a900da8ecc8073d9c637b6b0f5b244b7ddb9a4de068b57d5ec5d1bee033039ba656a1165f32c9ab79904df4218306eb46a64896cd31f2afeb0"></p>
+<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/1554380/3952946/animals/animals/bat/2dba7ed0d9.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20260225%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20260225T131659Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=920108407c7018952e06f6c6ae7f5a1e0592a5e79b8a72b50bcee92dcf9aef9d9e9c2b02d987a38791ae26a551b9f9ee4c35c8aa2e2ceabe374132c2faa0a70fc240a5205b653c18ba9253cc8765463fb537ad49f377b43b51c1c6d35985fee50b866e941f9879ce50cddae2aa9f8decc223f4de26210c313b9275883ba07f5c6c97aab908d3b9ee597464280545e9974ff23481de81e9e879eda9cf592e5963d602298116a27f57d4891a4f28f742cb2f0a1bdd479ab1925fccff56f9686f729aa1c2d69887cd4f775a3e5d1c3d8ea0209be544b1fbe328e95ce940f5ccfcc01a860a4e19f3fbef2ae3853b196f1fec12c32d75bf7e2eb775c86928111d2ead"></p>
 </div>
 <div class="absolute" style="top: 10%; right: 5%; width: 100px; ">
-<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/5784916/9504762/Bird%20Speciees%20Dataset/AMERICAN%20GOLDFINCH/002.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20250311%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20250311T060647Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=8808261c76024c0fd9f6d74df28535e759f6dd9ef269cb412d53222e9c31bd7bf2942e719c1ea55276d46d4069c5ac6ac0305cf76e1eefa36885a74947eb1b56bdf04a19511b056925a8b5685dee4c8d551adf8086754eb69439213e139b8cc31ed276993de4dff7b275cf74a446991f02534a75c4b4a702b0d92440b1a32438ce32d7006b8955053065d274e53f8e6a3a661e3bf1eed824bed52b2ec0bc37746e8dfaa001244c887cbaabbdbe7b0766da0fbdcbca2767af9fc961fc1e8f135c02233ac68e92e85c0daaf45f2a35677f00539232c6c9c4c735e440327c9f4ac32a08409f6fd8b2442929e765856b4fbc7ea5b49d9a8d58426154fa9fd7662533"></p>
+<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/841289/1435929/Test/American_Goldfinch/American_Goldfinch_0001_32306.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20260225%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20260225T130551Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=2f948b26859cecd8a7f87b0c906bacd345edecf6f64929d08cad4b409f1e1f0d18167aa39241b68051c69e9e88c1ff82cdfb268da14341e97cee71059429bc7fdf5e05e953dba17a1fb2b7ede9b8f2db6d672dd36f1a991097f307ff114fd756f9c110fe6e8b8fe67189756ad8ac4b3fdf79b89940f1a395c4ca2bfae4acfae72e143b8483f6f1d203fb961e582541ea7d96b92ab4625fb3378dd3eb4139001a36f466de47f0ccc6650fef3bec336ae3ba660c41857d1c3188f388edddfdb61fb284459396be31564a9235146006799d739d33d06abfc51209e061d14f0d025f82f9eee245cb63de9ba2fe715b604a7a75f5d069dd924537292d1bfe8eafa9d3"></p>
 </div>
 <div class="absolute" style="top: 14%; right: -2%; width: 100px; ">
-<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/5784916/9504762/Bird%20Speciees%20Dataset/CARMINE%20BEE-EATER/008.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20250312%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20250312T153819Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=a96cee5e27411c16270aff90d7d424e2278e42cb545640645a3064f30a7ec7fe243fd3e9efc72c4379cb20c1f81375b0ad456ced66816817a3c2d10a5386785c2f4438d4e8e742b4c901574ed4fed7c55e48ef5a062cd8db6004c458ec457648c55a4a72edee5b715ee3c258eb02723cb839ab2edfe8eb29c7d0ba7a1ad6fc16fc627bef86193d65d789e31e3812ba729fda93742c53f491736ac8d9c1a65deaad2b1d866001e908a5fe9af9985be3462812566b37e7ee214c6a783a8278a688220c4580bd215e8375346333c038ffaa6e5bfcdf7ebe9effdb753eae96cf72c57b59a2f17b9ab55391ea045b98d17d94371a8b8a0473eb6d51ef5c0447bc8f2f"></p>
+<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/841289/1435929/Test/American_Goldfinch/American_Goldfinch_0082_31890.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20260225%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20260225T130551Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=bf62ed200467f6360f98318556054bd767e87562215cd025e5e603b711ff0aadb6ef0cc4a99591cf98c2bd1c593a0a7d5be975aaa8980834ae232d657d6af147ae74acc3d369cbef354c020468464072c15c5cfcc6d0b4139a6597a29f1efb560e5054844a650322288324751423e3a2d45d79be8612d907814bd9b1d30f0304e216a3172435cab63f8dc330d0f88da803573b9afd75661a7ca3427999b8fb14c19751d5dc0a5c3e8549881334e94bf3556c5d7fe097783869185cfe182737198032468d493f422045b72fd161645d38bad5f39619acd0d4eeb61a572b092a768844b26c631ebe5be5ef61923f6f4d7f4397fd46df86121752e54121e9766a5f"></p>
 </div>
 <div class="absolute" style="top: 32%; right: 8%; width: 100px; ">
-<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/3442424/8780816/train/Image_1009.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20250310%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20250310T193752Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=77d8d2ba39ec805159de9810876f071c22e6e4183dc1176e88b64ac9f91ddb7ddb598be29851f9816ecff29f68a14f58f730df1855ff838028688734b18f93272944a466dffd7c29c1b7e1d3fe88d45a4230cc4ea7a53e29b28feba99dd846e31308ed6c1da7b724241bcd62fb276f0e881399a2ca939afd896def7c3dced7d6106f10fee227bec7718b0757b0b54c8d1697ea19988408078012d6c21d0255d6b4d8b7283ca6e2bb875876e99f433351317bf3fc6f99b696a874769f136b0b10d8c757a435a88f17a994dbabeb278637faff760ba6c58d9b9e0588647ec7c83b68cc7ddd84ea225eae5c3fbf9f1f4aacc5e537674083e9110b23ab21040d62d3"></p>
+<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/841289/1435929/Test/American_Redstart/American_Redstart_0116_103631.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20260225%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20260225T130803Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=0d411520c821b4afc00e3e007b4ff5a74af595a7a0d1eec56ab9cb200a87f7311433bc236cee883fbe48fbe260576a1c4b79afe73cd2a86a28abe631041ee80b497e1f16e0ce947496d65fd73f33b5b9709d1575d8e804337d791debaa50b89b01562ff8d744a7fdeb1770414b4c8848a54fa6043f901fab340d72317e5b631a8d23da390621e4cd3b8a73f469bf3ba15136b6e0081a50d6fca19ed056012f884609e1f10da189c90b58b60a5c2f8ae05e50a4caa91877c819d9ad3e823b37814d03bdbaef8c8bc0819030a1358651bd586d8422ab7b7a7d68cbffa83d37b60c77430161933d366e6b687eadf13c21f00c093989f182f7c04abc441674b77fc0"></p>
 </div>
 <div class="absolute" style="top: 30%; right: 27%; width: 100px; ">
-<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/667852/1176357/afhq/train/wild/flickr_wild_000014.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20250312%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20250312T154235Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=a6bb5265dd6e9fd7d1214d2cd78f85da38a01fcbd9f08705a714c19272afa4e550ee3b3b7c550ca6d70539c5d0485fd2fbb9fa3a827b8da70b130ad1940b54c22320cbe227a7592c94e03a86a6984b9df20031aa743ebcbfa8117a1c065fe27c108baba9586c0dd65b6519b48f63a15f9f8623cb560b834f0796d0c583585b9fc3482b5e89ef1ba9fcf83cf4d777cd44717e724c5b2c54a186b4a7817bb0e985ab251e8cadae1ad39e8e25ce236a12bb438ae4459d53007ebd55777f474b430ee826f3b91fc40e4f5f8df25dfb1f139199572e1517781c7d5c5039c835c7a2e99c09030d1acba12dd813e3da5ae6962945a790c3604255c037ff6054aed730dd"></p>
+<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/1554380/3952946/animals/animals/badger/00f56e5c92.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20260225%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20260225T041019Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=16e30add04b7867c30ea84ac2ba29f9ffbef0badd1524619050b93669192b7dc20503f947ec850509688231f412443afbcb72bab4e65c9cf2c155b6f79e8f91882c008aa16d4b118e203a45ff0fa976e584c2e9b029f92001e07fd869caf721021710520ef81e339528142a4662ae1e23cd7f06b18ac8f49e0927d30234bed9af644c791be357b0a77a3e8fa4422db5e765749c1d9ee127071a9542c9885cd32fa5788e58dae9512c5d93a0059c59a26f4c02e57cc7b9e5df29a94bacd232d153e29fdc0534a3229ea1619d151852c19f5c6a906116335751b2c51ddae3a72ab91335990fd6c1946403fbbd60866352c8dfbae6a866bd7faed58e9acc6428101"></p>
 </div>
 <div class="absolute" style="top: 50%; right: 25%; width: 100px; ">
-<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/667852/1176357/afhq/train/cat/flickr_cat_000015.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20250311%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20250311T221215Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=656309b6fccb5e9463306b5dec32e1bcceb9c7e79a82a5efc79ff410a176b057c21a060619da799d901e4a4e93e2cb3c67264d3916ada767add271cdf369e3a4e1747aa01dcec178ab15548529b0deed4b1454c6b913b2cd59b68ed8243b7c010721d277ee28214d913c3917e605b7d6990057b78728fcf176424cdd6c13226b60e6a2f3f2471e75db0ca24ef9c9026a640fe39082f7aba9888b5c61922bfaece05da34cb5d5b24bdec13816ad55ac976874bbb91369ba6295f6d898965f3a5f027762a4e6c6d1f015f4310b35cead89f6d75b094e6dc28f2be7e8ad6e39ee45a18a910c623619a3c0a06662967c785aa8b88b53d2ed7ef016d10f1b17bfbc89"></p>
+<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/13371/18106/CAT_00/00000002_001.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20260224%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20260224T034349Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=9fecb1704181a8bf57a826b94c048a3d69a1f0c9a46d13aba676cb3c48dbfaadcb77523c8e0c0bb1f5d8a28b5c32a033dc1319ee2ddd4ec412bb54bbe5f9f06f830173d79df4e9ff812ef5f804057e24f675b5722febfa4872098acfc798c2e8b5683f260479a800ae2dd18bf9b75aa54e1d6ab6e66bfe7838037d5d558e7d952ba220f6ff2df54839a111dab22356b49c71dfe5b0734369ee602ab8a62142bfabf5fc9b125062d36a7fb8a147c512c4ccf4af0d2f995c8c819123886d0b88121a6935f140a71c55a96505c6df78441424abd7e76cfa2437cfa5025e589d8d635b5aaf141f341acdc099882a935356baf727a0974b908646ff2b2db6dca6d640"></p>
 </div>
 <div class="absolute" style="top: 55%; right: 17%; width: 100px; ">
-<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/667852/1176357/afhq/train/cat/flickr_cat_000018.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20250311%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20250311T221215Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=4ed6a3f08b007d21c7ec78f5db3a8b4a525fafa2af1ea4aed4c15a6c263f6233d43851013d729d344a61752f8ce6975487733d8371df3e9b978e1af0dbc436caac1a6d25c31e8271ffd9dd368eb900b93f1a77f2854c899ec39f8daf8e776a98f8fcaa3539c5b2a98dd04b4c1c80de4bdd3c6fade88c92287b15d27cf5a283201ef5f49179cdf91082295da7f9159bce51eae6606ad8e2ea8872711cca0272e2e30c9ecf6b75103e6f5e0190de5d36c929f26437ffe141166648415ed03240db52441e81eeafbad638b34694620ba9b9204bb874056408eeb3f149b47d08464a4a0376406bb22272fbd8c01d9c266809a00dbd43ec3f646df040e1f405cb264b"></p>
+<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/13371/18106/CAT_02/00000501_003.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20260225%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20260225T131102Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=aa8ce65e0ff2657dfed006c73a88a8087a4359b9b4f7c1904595f8f3e7d74071c042ae39ce8dddf8d5df7375b748d1fcfe881e9819eaaa994e6061c0630a2987b95dd154ab4966dea6d4b37e3f7b6ba0ea92b6172538dc2633565a560ddcba87ec0888f6d5f5e66345638e469238e1979a618fd92444d2fbb84d34323467e25163131911262ec125812e3f70abcb7515d1e23521ef4a5d97308d2229f10bc990df6347071893c5381bba8e9e16bbd9d8e4764b13a771a017a9197d75a87024955064e18286d42f9ca6cd21c53e65149ff5c4802ede09830db3be1e021bdd666ff238f2a593d7d31c079d83bf10f76c8871e3a703710b88ffa74367bb8147fa38"></p>
 </div>
-<div class="absolute" style="top: 70%; right: -10%; width: 120px; ">
-<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/3083976/5304701/flower_images/Lilly/0f6847636c4.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20250312%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20250312T155807Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=4445df61a67bfd14d4839a8175724ab7abedca335ffd26cb9e4c5dbb01f42197d15d1d31a59decfa15e34e8aefe4e73d869d445ef8f9b49fcfb2af279b8c5a607cea8c5319f2d993028e11fdd3cd9ce7abdf7cd8a4db4f74fa8bee4902df51ebe90722f00098b56fd49eb562b9d482405dc38e49461c88dc14268227522a8def47de119d2b6ea035abeef76ea62cabb9b9437efd54fd48f37fddeb769d642b931231f9794c2c0dc54c9ebee95ca5f0aa55b366a7717c9c0cd96faa7921548b08963452e6440cdd14772976f0af3e83ddefb7046ca429d6469d54c8935eac10d7cdeaef7c8fcb164135aff2c8aad2bd063a8212a8bb1da5d9d4b56442aa0ce952"></p>
+<div class="absolute" style="top: 70%; right: -5%; width: 120px; ">
+<p><img data-src="https://storage.googleapis.com/kagglesdsdata/datasets/8782/2431805/flowers/daisy/10712722853_5632165b04.jpg?X-Goog-Algorithm=GOOG4-RSA-SHA256&amp;X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20260224%2Fauto%2Fstorage%2Fgoog4_request&amp;X-Goog-Date=20260224T035813Z&amp;X-Goog-Expires=345600&amp;X-Goog-SignedHeaders=host&amp;X-Goog-Signature=53fb156ef6f0a28deb084b3b7e81dc10aa2f89dcfc40858f5dcd4b9c7a7ce31ede779042a00227e020e27a8fec3be9e06e62bbafc4f0be85bdd130c4e89639fc5e460706718078f70f05d7b4c08d48c073448142b3b2e34370254282da10f8d09b9974449c54fbc168ea92d57d5f0feb99677ed244fdf6598b189c590ad42103a747ab095b13790e83b034f7e1d1be74f52d4156c5e4a4b5bd6df051f9c0325f6ac53789fe42bfa57af765f9a32290461af7e356bcc6c77a6d6825ed98046153e6c163a54df7b3eeb41244d3ec22bc77be19d12a8fff2b3fd6a3e4641ece459cfc136c67a347d243ce58f2227f8381f01e156192972c3a1a8b5e6df68145e2af"></p>
 </div>
 <div class="columns">
 <div class="column" style="width:55%;">
@@ -488,24 +642,24 @@ sma@hvl.no
 </div>
 <p>Various classification / clustering / information retrieval problems with human annotated solutions.</p>
 </div><div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>sentences1 <span class="op">=</span> [</span>
-<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="st">"The new movie is awesome"</span>,</span>
-<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a> ]</span>
-<span id="cb2-4"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a aria-hidden="true" tabindex="-1"></a>sentences2 <span class="op">=</span> [</span>
-<span id="cb2-6"><a aria-hidden="true" tabindex="-1"></a>    <span class="st">"The dog plays in the garden"</span>,</span>
-<span id="cb2-7"><a aria-hidden="true" tabindex="-1"></a>    <span class="st">"The new movie is so great"</span>,</span>
-<span id="cb2-8"><a aria-hidden="true" tabindex="-1"></a>    <span class="st">"A woman watches TV"</span>,</span>
-<span id="cb2-9"><a aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb2-10"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute embeddings for both lists</span></span>
-<span id="cb2-12"><a aria-hidden="true" tabindex="-1"></a>embeddings1 <span class="op">=</span> model.encode(sentences1)</span>
-<span id="cb2-13"><a aria-hidden="true" tabindex="-1"></a>embeddings2 <span class="op">=</span> model.encode(sentences2)</span>
-<span id="cb2-14"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute cosine similarities</span></span>
-<span id="cb2-16"><a aria-hidden="true" tabindex="-1"></a>similarities <span class="op">=</span> model.similarity(</span>
-<span id="cb2-17"><a aria-hidden="true" tabindex="-1"></a>  embeddings1, embeddings2</span>
-<span id="cb2-18"><a aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a aria-hidden="true" tabindex="-1"></a>sentences1 <span class="op">=</span> [</span>
+<span id="cb4-2"><a aria-hidden="true" tabindex="-1"></a>    <span class="st">"The new movie is awesome"</span>,</span>
+<span id="cb4-3"><a aria-hidden="true" tabindex="-1"></a> ]</span>
+<span id="cb4-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a aria-hidden="true" tabindex="-1"></a>sentences2 <span class="op">=</span> [</span>
+<span id="cb4-6"><a aria-hidden="true" tabindex="-1"></a>    <span class="st">"The dog plays in the garden"</span>,</span>
+<span id="cb4-7"><a aria-hidden="true" tabindex="-1"></a>    <span class="st">"The new movie is so great"</span>,</span>
+<span id="cb4-8"><a aria-hidden="true" tabindex="-1"></a>    <span class="st">"A woman watches TV"</span>,</span>
+<span id="cb4-9"><a aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb4-10"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute embeddings for both lists</span></span>
+<span id="cb4-12"><a aria-hidden="true" tabindex="-1"></a>embeddings1 <span class="op">=</span> model.encode(sentences1)</span>
+<span id="cb4-13"><a aria-hidden="true" tabindex="-1"></a>embeddings2 <span class="op">=</span> model.encode(sentences2)</span>
+<span id="cb4-14"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Compute cosine similarities</span></span>
+<span id="cb4-16"><a aria-hidden="true" tabindex="-1"></a>similarities <span class="op">=</span> model.similarity(</span>
+<span id="cb4-17"><a aria-hidden="true" tabindex="-1"></a>  embeddings1, embeddings2</span>
+<span id="cb4-18"><a aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>The new movie is awesome
 - The dog plays in the garden   : 0.0543
 - The new movie is so great     : 0.8939
