@@ -882,13 +882,6 @@
     "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\nSampling: Use scores as probabilities and sample randomly\nTop-K sampling: Sample among the K tokens with highest score\nAdjusted softmax sampling: Add a parameter T called temperature in the softmax function applied to the output:\n\\[\n  \\small\n  y_i = \\frac{\\exp(a_i/T)}{\\sum_j \\exp(a_j/T)}\n  \\]\n\nLow T: sample among best tokens\nHigh T: sample among all tokens (output is more random)"
   },
   {
-    "objectID": "slides/14-nlp-embeddings.html#begin-stuff-from-13",
-    "href": "slides/14-nlp-embeddings.html#begin-stuff-from-13",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Begin stuff from 13",
-    "text": "Begin stuff from 13"
-  },
-  {
     "objectID": "slides/14-nlp-embeddings.html#from-yesterday",
     "href": "slides/14-nlp-embeddings.html#from-yesterday",
     "title": "DAT255: Deep learning engineering",
