@@ -283,7 +283,7 @@ They will be added as the course progresses.
     </tr>
     <!-- --> 
     <tr>
-      <td rowspan=5>Natural language processing</td>
+      <td rowspan=5>Natural language processing (NLP)</td>
       <td>
       <h4>Tutorial: <a href="19_text_classification.ipynb">19: Text classification</a></h4>
       Build an NLP model for sentiment analysis, in this case, classifying film reviews.
@@ -349,6 +349,48 @@ They will be added as the course progresses.
         </a>
       </td>
     </tr>
+    <!-- --> 
+    <tr>
+      <td rowspan=3>NLP: Transformers</td>
+      <td>
+      <h4>Tutorial: <a href="24_transformer_encoder_for_classification.ipynb">24: Text classification with transformers</a></h4>
+      We continue doing text classification, but with a more powerful tool: The transformer.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/24_transformer_encoder_for_classification.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/24_transformer_encoder_for_classification.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Exercise: <a href="25_attention_visualisation.ipynb">25: Attention visualisation</a></h4>
+      Visualise the attention mechanism in pretrained large language models.
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/25_attention_visualisation.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/25_attention_visualisation.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Exercise: <a href="26_translation.ipynb">26: Machine translation with transformers</a></h4>
+      Translate to the language of your choice using an encoder-decoder transformer model.
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/26_translation.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/26_translation.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
   </tbody>
 </table>
 
@@ -381,7 +423,7 @@ They will be added as the course progresses.
 | | [24: Fine-tune a model on pretrained embeddings](24_pretrained_embeddings.ipynb)<br> Benefit from the work others have done, by downloading pretrained word embeddings. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/24_pretrained_embeddings.ipynb) |
 | | [25: Code classification](25_code_classification.ipynb)<br> Can you tell the difference between Java, JavaScript, C# and Python? | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/25_code_classification.ipynb) |
 | | [26: Tokenisers](26_tokenisers.ipynb)<br> Modern language models rely on different tokenisation algorithms to split up the text into useful tokens. Here we try out a few of them. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/26_tokenisers.ipynb) |
-| | [27: Transformer encoder for classification](27_transformer_encoder_for_classification.ipynb)<br> We continue doing text classification, but with a more powerful tool: The transformer. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/27_transformer_encoder_for_classification.ipynb) |
+| | [27: Transformer encoder for classification](27_transformer_encoder_for_classification.ipynb)<br> We continue doing text classification, but with a more powerful tool: The transformery. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/27_transformer_encoder_for_classification.ipynb) |
 | | [28: Attention visualisation](28_attention_visualisation.ipynb)<br> Visualise the attention mechanism in pretrained large language models. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/28_attention_visualisation.ipynb) |
 | | [29: Machine translation with transformers](29_translation.ipynb)<br> Translate to the language of your choice using an encoder-decoder transformer model. | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/29_translation.ipynb) |
 | | [30: Text generation](30_text_generation.ipynb)<br> Try out different sampling strategies to generate text just like ChatGPT (or at least almost). | [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/30_text_generation.ipynb) |
