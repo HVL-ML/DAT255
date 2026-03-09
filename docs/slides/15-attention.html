@@ -655,229 +655,234 @@ sma@hvl.no
 <div class="absolute" style="top: -5%; left: 82%; width: 1800px; ">
 <p><img data-src="figures/lecture9/attention-arxiv.png"></p>
 </div>
-</section>
-<section id="section-2" class="slide level2">
-<h2></h2>
-<p>Stop</p>
-</section>
-<section id="multi-head-attention-1" class="slide level2">
-<h2>Multi-head attention</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture15/multi-head-attention.png" class="quarto-figure quarto-figure-center" width="950"></p>
-</figure>
-</div>
-<div class="fragment">
-<div class="absolute" style="border: 3px solid #FF0000;top: 65%; left: 7.5%; width: 400px; height: 80px; ">
+<!--
+## 
 
-</div>
-<div class="absolute" style="border: 3px solid #FF0000;top: 65%; left: 53%; width: 400px; height: 80px; ">
+Stop
 
-</div>
-</div>
-<p><span class="absolute" style="font-size: 0.5em;top: 0%; right: 0%; "><em>Deep Learning with Python</em>, F. Chollet</span></p>
-</section>
-<section id="multi-head-attention-2" class="slide level2">
-<h2>Multi-head attention</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>The parameters of the <code>Dense</code> layers that form the Q, K, V matrices, is where the attention head actually <span class="color-teal-dark"><em>learns</em></span> something.</p>
-<div class="fragment">
-<p>If <span class="math inline">\(\small D\)</span>&nbsp;is the dimensionality of the embedding space, and <span class="math inline">\(\small N\)</span>&nbsp;is the number of tokens in our data matrix <span class="math inline">\(\small X\)</span>,</p>
-<p>this introduces 3 weight matrices <span class="math inline">\(\small W\)</span>, of dimension <span class="math inline">\(\small D \times D\)</span>:</p>
-<p><span class="math display">\[
+
+## Multi-head attention
+
+![](figures/lecture15/multi-head-attention.png){fig-align="center" width="950px"}
+
+:::{.fragment}
+:::{.absolute top="65%" left="7.5%" width="400px" height="80px" style="border: 3px solid #FF0000;"}
+:::
+
+:::{.absolute top="65%" left="53%" width="400px" height="80px" style="border: 3px solid #FF0000;"}
+:::
+:::
+
+[_Deep Learning with Python_, F. Chollet]{.absolute top="0%" right="0%" style="font-size: 0.5em;"}
+
+
+
+## Multi-head attention
+
+::::{.columns}
+:::{.column width="50%"}
+
+The parameters of the `Dense` layers that form the Q, K, V matrices, is where the attention head actually [_learns_]{.color-teal-dark} something.
+
+:::{.fragment}
+If $\small D$ is the dimensionality of the embedding space, and $\small N$ is the number of tokens in our data matrix $\small X$,
+
+this introduces 3 weight matrices $\small W$, of dimension $\small D \times D$:
+
+$$
 \small
 \begin{align}
-Q &amp;= X W^{(q)} \\
-K &amp;= X W^{(k)} \\
-V &amp;= X W^{(v)} \\
+Q &= X W^{(q)} \\
+K &= X W^{(k)} \\
+V &= X W^{(v)} \\
 \end{align}
-\]</span></p>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-right">
-<figure>
-<p><img data-src="figures/lecture15/multi-head-attention.png" class="quarto-figure quarto-figure-right" style="padding-top: 100px;" width="450"></p>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="multi-head-attention-3" class="slide level2">
-<h2>Multi-head attention</h2>
-<div style="padding-top: 40px;">
+$$
+:::
 
-</div>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>In the end, we can write the scaled dot-product self-attention for a single head as</p>
-<p><span class="math display">\[
+:::
+:::{.column width="50%"}
+![](figures/lecture15/multi-head-attention.png){style="padding-top: 100px;" fig-align="right" width="450px"}
+:::
+::::
+
+
+## Multi-head attention
+
+:::{style="padding-top: 40px;"}
+:::
+
+::::{.columns}
+:::{.column width="55%"}
+In the end, we can write the scaled dot-product self-attention for a single head as 
+
+$$
 \small
 \mathrm{attention}(Q, K, V) = \mathrm{softmax}\left[\frac{QK^T}{\sqrt{D}} \right] V
-\]</span></p>
-<p>And to get the final output from <em>all</em> the attention heads, we simply concatenate the individial outputs.</p>
-</div></div>
-<div class="absolute" style="top: 10%; right: 0%; width: 300px; ">
-<p><img data-src="figures/lecture15/scaled-dot-prod.png"></p>
-</div>
-<p><span class="absolute" style="font-size: 0.5em;bottom: 0%; right: 0%; "><em>Deep Learning: Foundations and Concepts</em>, C. Bishop</span></p>
-</section>
-<section id="multi-head-attention-4" class="slide level2">
-<h2>Multi-head attention</h2>
-<div style="padding-top: 40px;">
+$$
 
-</div>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>In the end, we can write the scaled dot-product self-attention for a single head as</p>
-<p><span class="math display">\[
+And to get the final output from _all_ the attention heads, we simply concatenate the individial outputs.
+:::
+::::
+
+:::{.absolute top="10%" right="0%" width="300px"}
+![](figures/lecture15/scaled-dot-prod.png)
+:::
+
+[_Deep Learning: Foundations and Concepts_, C. Bishop]{.absolute bottom="0%" right="0%" style="font-size: 0.5em;"}
+
+
+## Multi-head attention
+
+:::{style="padding-top: 40px;"}
+:::
+
+::::{.columns}
+:::{.column width="55%"}
+In the end, we can write the scaled dot-product self-attention for a single head as 
+
+$$
 \small
 \mathrm{attention}(Q, K, V) = \mathrm{softmax}\left[\frac{QK^T}{\sqrt{D}} \right] V
-\]</span></p>
-<p>And to get the final output from <em>all</em> the attention heads, we simply concatenate the individial outputs.</p>
-</div></div>
-<div class="absolute" style="top: 20%; right: 0%; ">
-<iframe width="370px" height="600px" src="figures/lecture15/bertviz_head_view.html" style="frame-scale: 0.75;">
-</iframe>
-</div>
-</section>
-<section id="bonus-feature" class="slide level2">
-<h2>Bonus feature</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Before we started involving <code>Dense</code> layers and the Q, K, V matrices, we had this:</p>
-<p><img data-src="figures/lecture15/attention-zoom.png" width="400"></p>
-</div><div class="column" style="width:50%;">
-<div style="padding-top: 150px;">
+$$
 
-</div>
-<div class="fragment">
-<div class="colorbox" style="background-color: #E0F2F1;">
-<p>Notice it’s symmetric.</p>
-<p>The output from</p>
-<p><span class="math display">\[\small\mathrm{attention}(Q, K, V)\]</span></p>
-<p>on the other hand, need <strong>not</strong> be symmetric.</p>
-<div class="fragment">
-<p>Can then encode asymmetric relations:</p>
-<p>A <strong>hammer</strong> is a <strong>tool</strong>, but not all <strong>tools</strong> are <strong>hammers</strong>.</p>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-<section id="the-transformer-architecture" class="slide level2">
-<h2>The Transformer architecture</h2>
-<div style="padding-top: 30px;">
+And to get the final output from _all_ the attention heads, we simply concatenate the individial outputs.
+:::
+::::
 
-</div>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p>With the multi-head attention in place, we add a few extra layers to form a block:</p>
-<ul>
-<li class="fragment">A <span class="color-deep-orange-dark">residual connection</span> (<em>Add &amp; Norm</em>) going around the attention layer</li>
-<li class="fragment">A stack of <code>Dense</code> (<em>Feed Forward</em>) layers</li>
-<li class="fragment">A <span class="color-deep-orange-dark">residual connection</span> going around the feed forward layers</li>
-</ul>
-</div></div>
-<div class="fragment">
-<p>This <em>almost</em> completes our transformer encoder.</p>
-</div>
-<div class="absolute" style="top: 10%; right: 0%; width: 400px; ">
-<p><img data-src="figures/lecture15/encoder-zoom.png"></p>
-</div>
-<div class="absolute" style="top: 70%; right: 0%; width: 200px; ">
-<p><img data-src="figures/lecture1/attention.png"></p>
-</div>
-</section>
-<section id="positional-encodings" class="slide level2">
-<h2>Positional encodings</h2>
-<p>So far, the position of each token in a sentence<br>doesn’t affect the computation of the attention scores.</p>
-<p><code>-&gt;</code> If we permute the word order, we still get the<br>same result.</p>
-<div style="padding-top: 10px; text-align: center;">
-<p><span class="color-red-dark"><em>The food was bad, not good at all.</em></span></p>
-<p><span class="math display">\[
+:::{.absolute top="20%" right="0%"}
+<iframe width="370px" height="600px" src="figures/lecture15/bertviz_head_view.html" style="frame-scale: 0.75;"></iframe>
+:::
+
+
+## Bonus feature
+
+::::{.columns}
+:::{.column width="50%"}
+Before we started involving `Dense` layers and the Q, K, V matrices, we had this:
+
+![](figures/lecture15/attention-zoom.png){width="400px"}
+:::
+
+:::{.column width="50%"}
+
+:::{style="padding-top: 150px;"}
+:::
+
+:::{.fragment}
+:::{.colorbox style="background-color: #E0F2F1;"}
+Notice it's symmetric.
+
+The output from
+
+$$\small\mathrm{attention}(Q, K, V)$$
+
+on the other hand, need **not** be symmetric.
+
+:::{.fragment}
+Can then encode asymmetric relations:
+
+A **hammer** is a **tool**, but not all **tools** are **hammers**.
+:::
+:::
+:::
+:::
+::::
+
+
+## The Transformer architecture
+
+:::{style="padding-top: 30px;"}
+:::
+
+::::{.columns}
+:::{.column width="60%"}
+With the multi-head attention in place, we add a few extra layers to form a block:
+
+:::{.incremental}
+- A [residual connection]{.color-deep-orange-dark} (_Add & Norm_) going around the attention layer
+- A stack of `Dense` (_Feed Forward_) layers
+- A [residual connection]{.color-deep-orange-dark} going around the feed forward layers
+:::
+:::
+::::
+
+:::{.fragment}
+This _almost_ completes our transformer encoder.
+:::
+
+:::{.absolute top="10%" right="0%" width="400px"}
+![](figures/lecture15/encoder-zoom.png)
+:::
+
+:::{.absolute top="70%" right="0%" width="200px"}
+![](figures/lecture1/attention.png)
+:::
+
+## Positional encodings
+
+So far, the position of each token in a sentence<br>doesn't affect the computation of the attention scores.
+
+`->` If we permute the word order, we still get the<br>same result.
+
+:::{style="padding-top: 10px; text-align: center;"}
+[_The food was bad, not good at all._]{.color-red-dark}
+
+$$
 \small
 \neq
-\]</span></p>
-<p><span class="color-green-dark"><em>The food was good, not bad at all.</em></span></p>
-</div>
-<div style="padding-top: 10px;">
+$$
 
-</div>
-<div class="fragment">
-<p>Transformer models solve this by <strong>encoding token position into the data itself:</strong></p>
-<p><span class="color-indigo">token embedding with position</span> = <span class="color-pink-dark">token embedding</span> + <span class="color-deep-purple">position encoding</span></p>
-</div>
-<div class="absolute" style="top: 0%; right: 0%; width: 250px; ">
-<p><img data-src="figures/lecture15/attention-zoom.png"></p>
-</div>
-</section>
-<section id="positional-encodings-1" class="slide level2">
-<h2>Positional encodings</h2>
-<ul>
-<li>Option 1: Count token positions, then embed them</li>
-</ul>
-<table class="caption-top">
-<colgroup>
-<col style="width: 40%">
-<col style="width: 15%">
-<col style="width: 15%">
-<col style="width: 15%">
-<col style="width: 15%">
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><em>token</em></td>
-<td style="text-align: center;">The</td>
-<td style="text-align: center;">food</td>
-<td style="text-align: center;">was</td>
-<td style="text-align: center;">good</td>
-</tr>
-<tr class="even">
-<td><em>token embedding</em></td>
-<td style="text-align: center;"><span class="math inline">\(\mathbf{x}_1\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\mathbf{x}_2\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\mathbf{x}_3\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\mathbf{x}_4\)</span></td>
-</tr>
-<tr class="odd">
-<td><em>token position</em></td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">4</td>
-</tr>
-<tr class="even">
-<td><em>position embedding</em></td>
-<td style="text-align: center;"><span class="math inline">\(\mathbf{r}_1\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\mathbf{r}_2\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\mathbf{r}_3\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\mathbf{r}_4\)</span></td>
-</tr>
-<tr class="odd">
-<td><em>final embedding</em></td>
-<td style="text-align: center;"><span class="math inline">\(\mathbf{x}_1 + \mathbf{r}_1\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\mathbf{x}_2 + \mathbf{r}_2\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\mathbf{x}_3 + \mathbf{r}_3\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\mathbf{x}_4 + \mathbf{r}_4\)</span></td>
-</tr>
-</tbody>
-</table>
-<div style="padding-top: 20px;">
+[_The food was good, not bad at all._]{.color-green-dark}
+:::
 
-</div>
-<div class="fragment">
-<ul>
-<li>Option 2: <em>Sinusoidal</em> encoding (see textbook p 613)</li>
-</ul>
-<div class="absolute" style="left: 15%; bottom: -5%; width: 200px; ">
-<p><img data-src="figures/lecture15/Figure_10_a.png" style="transform: rotate(90deg);"></p>
-</div>
-<div class="absolute" style="bottom: -5%; right: 15%; width: 200px; ">
-<p><img data-src="figures/lecture15/Figure_10_b.png" style="transform: rotate(90deg);"></p>
-</div>
-</div>
+:::{style="padding-top: 10px;"}
+:::
+
+:::{.fragment}
+Transformer models solve this by **encoding token position into the data itself:**
+
+[token embedding with position]{.color-indigo} = [token embedding]{.color-pink-dark} + [position encoding]{.color-deep-purple}
+:::
+
+:::{.absolute top="0%" right="0%" width="250px"}
+![](figures/lecture15/attention-zoom.png)
+:::
+
+
+## Positional encodings
+
+- Option 1: Count token positions, then embed them
+
+|     |     |      |     |      |
+| --- |:---:|:---:|:---:|:---:|
+| _token_ | The | food | was | good | 
+| _token embedding_ | $\mathbf{x}_1$ | $\mathbf{x}_2$ | $\mathbf{x}_3$ | $\mathbf{x}_4$ | 
+| _token position_ | 1 | 2 | 3 | 4 | 
+| _position embedding_ | $\mathbf{r}_1$ | $\mathbf{r}_2$ | $\mathbf{r}_3$ | $\mathbf{r}_4$ | 
+| _final embedding_ | $\mathbf{x}_1 + \mathbf{r}_1$ | $\mathbf{x}_2 + \mathbf{r}_2$ | $\mathbf{x}_3 + \mathbf{r}_3$ | $\mathbf{x}_4 + \mathbf{r}_4$ | 
+: {tbl-colwidths="[40,15,15,15,15]"}
+
+:::{style="padding-top: 20px;"}
+:::
+
+:::{.fragment}
+- Option 2: _Sinusoidal_ encoding (see textbook p 613)
+
+
+
+:::{.absolute left="15%" bottom="-5%" width="200px" }
+![](figures/lecture15/Figure_10_a.png){style="transform: rotate(90deg);"}
+:::
+
+:::{.absolute right="15%" bottom="-5%" width="200px" }
+![](figures/lecture15/Figure_10_b.png){style="transform: rotate(90deg);"}
+:::
+
+:::
+
+-->
 </section>
-<section id="section-3" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<section id="section-2" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>

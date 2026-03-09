@@ -3073,69 +3073,6 @@
     "text": "Multi-head attention\n\n\nNow we want to increase the complexity by computing attention several times in parallel.\nBut: Our transformation so far has no learnable parameters\n it’s just a stateless operation, we get the same result each time.\n\nKey idea from the “Attention is all you need” paper:\n\nPass each input (query, key and value) though a separate Dense layer\n\nEach with their own parameters\n\n\nThis we can do in parallel, and get different features for each attention “head”\n Call it multi-head attention."
   },
   {
-    "objectID": "slides/15-attention.html#section-2",
-    "href": "slides/15-attention.html#section-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "",
-    "text": "Stop"
-  },
-  {
-    "objectID": "slides/15-attention.html#multi-head-attention-1",
-    "href": "slides/15-attention.html#multi-head-attention-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Multi-head attention",
-    "text": "Multi-head attention\n\n\n\n\n\n\n\n\n\n\n\n\n\nDeep Learning with Python, F. Chollet"
-  },
-  {
-    "objectID": "slides/15-attention.html#multi-head-attention-2",
-    "href": "slides/15-attention.html#multi-head-attention-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Multi-head attention",
-    "text": "Multi-head attention\n\n\nThe parameters of the Dense layers that form the Q, K, V matrices, is where the attention head actually learns something.\n\nIf \\(\\small D\\) is the dimensionality of the embedding space, and \\(\\small N\\) is the number of tokens in our data matrix \\(\\small X\\),\nthis introduces 3 weight matrices \\(\\small W\\), of dimension \\(\\small D \\times D\\):\n\\[\n\\small\n\\begin{align}\nQ &= X W^{(q)} \\\\\nK &= X W^{(k)} \\\\\nV &= X W^{(v)} \\\\\n\\end{align}\n\\]"
-  },
-  {
-    "objectID": "slides/15-attention.html#multi-head-attention-3",
-    "href": "slides/15-attention.html#multi-head-attention-3",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Multi-head attention",
-    "text": "Multi-head attention\n\n\n\n\n\nIn the end, we can write the scaled dot-product self-attention for a single head as\n\\[\n\\small\n\\mathrm{attention}(Q, K, V) = \\mathrm{softmax}\\left[\\frac{QK^T}{\\sqrt{D}} \\right] V\n\\]\nAnd to get the final output from all the attention heads, we simply concatenate the individial outputs.\n\n\n\n\nDeep Learning: Foundations and Concepts, C. Bishop"
-  },
-  {
-    "objectID": "slides/15-attention.html#multi-head-attention-4",
-    "href": "slides/15-attention.html#multi-head-attention-4",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Multi-head attention",
-    "text": "Multi-head attention\n\n\n\n\n\nIn the end, we can write the scaled dot-product self-attention for a single head as\n\\[\n\\small\n\\mathrm{attention}(Q, K, V) = \\mathrm{softmax}\\left[\\frac{QK^T}{\\sqrt{D}} \\right] V\n\\]\nAnd to get the final output from all the attention heads, we simply concatenate the individial outputs."
-  },
-  {
-    "objectID": "slides/15-attention.html#bonus-feature",
-    "href": "slides/15-attention.html#bonus-feature",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Bonus feature",
-    "text": "Bonus feature\n\n\nBefore we started involving Dense layers and the Q, K, V matrices, we had this:\n\n\n\n\n\n\n\nNotice it’s symmetric.\nThe output from\n\\[\\small\\mathrm{attention}(Q, K, V)\\]\non the other hand, need not be symmetric.\n\nCan then encode asymmetric relations:\nA hammer is a tool, but not all tools are hammers."
-  },
-  {
-    "objectID": "slides/15-attention.html#the-transformer-architecture",
-    "href": "slides/15-attention.html#the-transformer-architecture",
-    "title": "DAT255: Deep learning engineering",
-    "section": "The Transformer architecture",
-    "text": "The Transformer architecture\n\n\n\n\n\nWith the multi-head attention in place, we add a few extra layers to form a block:\n\nA residual connection (Add & Norm) going around the attention layer\nA stack of Dense (Feed Forward) layers\nA residual connection going around the feed forward layers\n\n\n\nThis almost completes our transformer encoder."
-  },
-  {
-    "objectID": "slides/15-attention.html#positional-encodings",
-    "href": "slides/15-attention.html#positional-encodings",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Positional encodings",
-    "text": "Positional encodings\nSo far, the position of each token in a sentencedoesn’t affect the computation of the attention scores.\n-&gt; If we permute the word order, we still get thesame result.\n\nThe food was bad, not good at all.\n\\[\n\\small\n\\neq\n\\]\nThe food was good, not bad at all.\n\n\n\n\n\nTransformer models solve this by encoding token position into the data itself:\ntoken embedding with position = token embedding + position encoding"
-  },
-  {
-    "objectID": "slides/15-attention.html#positional-encodings-1",
-    "href": "slides/15-attention.html#positional-encodings-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Positional encodings",
-    "text": "Positional encodings\n\nOption 1: Count token positions, then embed them\n\n\n\n\n\n\n\n\n\n\n\ntoken\nThe\nfood\nwas\ngood\n\n\ntoken embedding\n\\(\\mathbf{x}_1\\)\n\\(\\mathbf{x}_2\\)\n\\(\\mathbf{x}_3\\)\n\\(\\mathbf{x}_4\\)\n\n\ntoken position\n1\n2\n3\n4\n\n\nposition embedding\n\\(\\mathbf{r}_1\\)\n\\(\\mathbf{r}_2\\)\n\\(\\mathbf{r}_3\\)\n\\(\\mathbf{r}_4\\)\n\n\nfinal embedding\n\\(\\mathbf{x}_1 + \\mathbf{r}_1\\)\n\\(\\mathbf{x}_2 + \\mathbf{r}_2\\)\n\\(\\mathbf{x}_3 + \\mathbf{r}_3\\)\n\\(\\mathbf{x}_4 + \\mathbf{r}_4\\)\n\n\n\n\n\n\n\n\nOption 2: Sinusoidal encoding (see textbook p 613)"
-  },
-  {
     "objectID": "slides/old-07-timeseries.html#sequences",
     "href": "slides/old-07-timeseries.html#sequences",
     "title": "DAT255: Deep learning engineering",
