@@ -209,6 +209,66 @@ sma@hvl.no
 <section id="section" class="slide level2" data-menu-title="ML trends">
 <h2></h2>
 <p><a href="https://epoch.ai/data/notable-ai-models"><img data-src="figures/lecture15/ml-trends.png"></a></p>
+<div class="absolute" style="font-size: 0.7em;bottom: 0%; right: 0%; ">
+<p>epoch.ai</p>
+</div>
+</section>
+<section id="sequence-to-sequence-learning" class="slide level2">
+<h2>Sequence-to-sequence learning</h2>
+<div style="padding-top: 40px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch15/seq2seq-learning.0e1e1c31.png" class="quarto-figure quarto-figure-center" width="800"></p>
+</figure>
+</div>
+</section>
+<section id="sequence-to-sequence-learning-1" class="slide level2">
+<h2>Sequence-to-sequence learning</h2>
+<div style="padding-top: 40px;">
+
+</div>
+<p>Using RNNs:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch15/seq2seq-rnn.ec377d3b.png" class="quarto-figure quarto-figure-center" width="700"></p>
+</figure>
+</div>
+</section>
+<section id="sequence-to-sequence-learning-2" class="slide level2">
+<h2>Sequence-to-sequence learning</h2>
+<div style="padding-top: 40px;">
+
+</div>
+<p>Using RNNs:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch15/seq2seq-rnn.ec377d3b.png" class="quarto-figure quarto-figure-center" width="500"></p>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a>inputs <span class="op">=</span> keras.Input(shape<span class="op">=</span>(sequence_length,), dtype<span class="op">=</span><span class="st">"int32"</span>)</span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> layers.Embedding(input_dim<span class="op">=</span>vocab_size, output_dim<span class="op">=</span><span class="dv">128</span>)(inputs)</span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> layers.LSTM(<span class="dv">32</span>, return_sequences<span class="op">=</span><span class="va">True</span>)(x)</span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a>outputs <span class="op">=</span> layers.Dense(vocab_size, activation<span class="op">=</span><span class="st">"softmax"</span>)(x)</span>
+<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> keras.Model(inputs, outputs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="sequence-to-sequence-learning-3" class="slide level2">
+<h2>Sequence-to-sequence learning</h2>
+<div style="padding-top: 40px;">
+
+</div>
+<p>Using RNNs:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch15/seq2seq-rnn.ec377d3b.png" class="quarto-figure quarto-figure-center" width="500"></p>
+</figure>
+</div>
+<p>Limitations:</p>
+<ul>
+<li>All of the source text must be stored in the hidden state <code>-&gt;</code> in practice we get limited to short texts</li>
+<li>RNNs struggle to maintain memory over long sequences <code>-&gt;</code> again we get limited to short texts</li>
+</ul>
 </section>
 <section id="section-1" class="slide level2" data-menu-title="Attention is all you need" data-background-image="figures/lecture9/attention-arxiv.png" data-background-size="contain">
 <h2></h2>
@@ -306,7 +366,6 @@ sma@hvl.no
 <div class="absolute" style="font-size: 0.7em;top: 400%; right: 0%; ">
 <p><i class="bi bi-arrow-clockwise"></i>Repeat<br>for all tokens</p>
 </div>
-<p><span class="absolute" style="font-size: 0.5em;top: 40%; right: 0%; "><em>Deep Learning with Python</em>, F. Chollet</span></p>
 </section>
 <section id="self-attention-the-steps-involved" class="slide level2">
 <h2>Self-attention: The steps involved</h2>
@@ -380,38 +439,7 @@ sma@hvl.no
 <div style="padding-top: 10px;">
 
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> self_attention(input_sequence):</span>
-<span id="cb1-2"><a></a>  output <span class="op">=</span> tf.zeros(shape<span class="op">=</span>input_sequence.shape)</span>
-<span id="cb1-3"><a></a></span>
-<span id="cb1-4"><a></a>  <span class="cf">for</span> i, vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
-<span id="cb1-5"><a></a>    scores <span class="op">=</span> tf.zeros(shape<span class="op">=</span>(<span class="bu">len</span>(input_sequence), ))</span>
-<span id="cb1-6"><a></a></span>
-<span id="cb1-7"><a></a>    <span class="cf">for</span> j, other_vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
-<span id="cb1-8"><a></a>      scores[j] <span class="op">=</span> tf.tensordot(vector, other_vector, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb1-9"><a></a></span>
-<span id="cb1-10"><a></a>    scores <span class="op">/=</span> np.sqrt(input_sequence.shape[<span class="dv">1</span>])</span>
-<span id="cb1-11"><a></a>    scores <span class="op">=</span> tf.nn.softmax(scores)</span>
-<span id="cb1-12"><a></a></span>
-<span id="cb1-13"><a></a>    new_representation <span class="op">=</span> tf.zeros(shape<span class="op">=</span>vector.shape)</span>
-<span id="cb1-14"><a></a>    <span class="cf">for</span> j, other_vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
-<span id="cb1-15"><a></a>      new_representation <span class="op">+=</span> other_vector <span class="op">*</span> scores[j]</span>
-<span id="cb1-16"><a></a></span>
-<span id="cb1-17"><a></a>    output[i] <span class="op">=</span> new_representation</span>
-<span id="cb1-18"><a></a></span>
-<span id="cb1-19"><a></a>  <span class="cf">return</span> output</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:26%;">
-
-</div></div>
-</section>
-<section id="self-attention-3" class="slide level2">
-<h2>Self-attention</h2>
-<div class="columns">
-<div class="column" style="width:72%;">
-<p>In (slow) code, we can write it as</p>
-<div style="padding-top: 10px;">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-code-line-numbers="4-8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> self_attention(input_sequence):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> self_attention(input_sequence):</span>
 <span id="cb2-2"><a></a>  output <span class="op">=</span> tf.zeros(shape<span class="op">=</span>input_sequence.shape)</span>
 <span id="cb2-3"><a></a></span>
 <span id="cb2-4"><a></a>  <span class="cf">for</span> i, vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
@@ -430,6 +458,37 @@ sma@hvl.no
 <span id="cb2-17"><a></a>    output[i] <span class="op">=</span> new_representation</span>
 <span id="cb2-18"><a></a></span>
 <span id="cb2-19"><a></a>  <span class="cf">return</span> output</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:26%;">
+
+</div></div>
+</section>
+<section id="self-attention-3" class="slide level2">
+<h2>Self-attention</h2>
+<div class="columns">
+<div class="column" style="width:72%;">
+<p>In (slow) code, we can write it as</p>
+<div style="padding-top: 10px;">
+
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-code-line-numbers="4-8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> self_attention(input_sequence):</span>
+<span id="cb3-2"><a></a>  output <span class="op">=</span> tf.zeros(shape<span class="op">=</span>input_sequence.shape)</span>
+<span id="cb3-3"><a></a></span>
+<span id="cb3-4"><a></a>  <span class="cf">for</span> i, vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
+<span id="cb3-5"><a></a>    scores <span class="op">=</span> tf.zeros(shape<span class="op">=</span>(<span class="bu">len</span>(input_sequence), ))</span>
+<span id="cb3-6"><a></a></span>
+<span id="cb3-7"><a></a>    <span class="cf">for</span> j, other_vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
+<span id="cb3-8"><a></a>      scores[j] <span class="op">=</span> tf.tensordot(vector, other_vector, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-9"><a></a></span>
+<span id="cb3-10"><a></a>    scores <span class="op">/=</span> np.sqrt(input_sequence.shape[<span class="dv">1</span>])</span>
+<span id="cb3-11"><a></a>    scores <span class="op">=</span> tf.nn.softmax(scores)</span>
+<span id="cb3-12"><a></a></span>
+<span id="cb3-13"><a></a>    new_representation <span class="op">=</span> tf.zeros(shape<span class="op">=</span>vector.shape)</span>
+<span id="cb3-14"><a></a>    <span class="cf">for</span> j, other_vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
+<span id="cb3-15"><a></a>      new_representation <span class="op">+=</span> other_vector <span class="op">*</span> scores[j]</span>
+<span id="cb3-16"><a></a></span>
+<span id="cb3-17"><a></a>    output[i] <span class="op">=</span> new_representation</span>
+<span id="cb3-18"><a></a></span>
+<span id="cb3-19"><a></a>  <span class="cf">return</span> output</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:28%;">
 <div style="padding-top: 120px;">
 
@@ -450,41 +509,7 @@ sma@hvl.no
 <div style="padding-top: 10px;">
 
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-code-line-numbers="10-11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> self_attention(input_sequence):</span>
-<span id="cb3-2"><a></a>  output <span class="op">=</span> tf.zeros(shape<span class="op">=</span>input_sequence.shape)</span>
-<span id="cb3-3"><a></a></span>
-<span id="cb3-4"><a></a>  <span class="cf">for</span> i, vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
-<span id="cb3-5"><a></a>    scores <span class="op">=</span> tf.zeros(shape<span class="op">=</span>(<span class="bu">len</span>(input_sequence), ))</span>
-<span id="cb3-6"><a></a></span>
-<span id="cb3-7"><a></a>    <span class="cf">for</span> j, other_vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
-<span id="cb3-8"><a></a>      scores[j] <span class="op">=</span> tf.tensordot(vector, other_vector, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb3-9"><a></a></span>
-<span id="cb3-10"><a></a>    scores <span class="op">/=</span> np.sqrt(input_sequence.shape[<span class="dv">1</span>])</span>
-<span id="cb3-11"><a></a>    scores <span class="op">=</span> tf.nn.softmax(scores)</span>
-<span id="cb3-12"><a></a></span>
-<span id="cb3-13"><a></a>    new_representation <span class="op">=</span> tf.zeros(shape<span class="op">=</span>vector.shape)</span>
-<span id="cb3-14"><a></a>    <span class="cf">for</span> j, other_vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
-<span id="cb3-15"><a></a>      new_representation <span class="op">+=</span> other_vector <span class="op">*</span> scores[j]</span>
-<span id="cb3-16"><a></a></span>
-<span id="cb3-17"><a></a>    output[i] <span class="op">=</span> new_representation</span>
-<span id="cb3-18"><a></a></span>
-<span id="cb3-19"><a></a>  <span class="cf">return</span> output</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:26%;">
-<div style="padding-top: 200px;">
-<p>Scale by input length and apply softmax</p>
-<p>Softmax ensures all attention scores are in the interval [0, 1].</p>
-</div>
-</div></div>
-</section>
-<section id="self-attention-5" class="slide level2">
-<h2>Self-attention</h2>
-<div class="columns">
-<div class="column" style="width:74%;">
-<p>In (slow) code, we can write it as</p>
-<div style="padding-top: 10px;">
-
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="13-15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> self_attention(input_sequence):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="10-11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> self_attention(input_sequence):</span>
 <span id="cb4-2"><a></a>  output <span class="op">=</span> tf.zeros(shape<span class="op">=</span>input_sequence.shape)</span>
 <span id="cb4-3"><a></a></span>
 <span id="cb4-4"><a></a>  <span class="cf">for</span> i, vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
@@ -504,12 +529,13 @@ sma@hvl.no
 <span id="cb4-18"><a></a></span>
 <span id="cb4-19"><a></a>  <span class="cf">return</span> output</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:26%;">
-<div style="padding-top: 320px;">
-<p>Multiply each token vector by the score, and sum all of them</p>
+<div style="padding-top: 200px;">
+<p>Scale by input length and apply softmax</p>
+<p>Softmax ensures all attention scores are in the interval [0, 1].</p>
 </div>
 </div></div>
 </section>
-<section id="self-attention-6" class="slide level2">
+<section id="self-attention-5" class="slide level2">
 <h2>Self-attention</h2>
 <div class="columns">
 <div class="column" style="width:74%;">
@@ -517,9 +543,9 @@ sma@hvl.no
 <div style="padding-top: 10px;">
 
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> self_attention(input_sequence):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-code-line-numbers="13-15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> self_attention(input_sequence):</span>
 <span id="cb5-2"><a></a>  output <span class="op">=</span> tf.zeros(shape<span class="op">=</span>input_sequence.shape)</span>
-<span id="cb5-3"><a></a> </span>
+<span id="cb5-3"><a></a></span>
 <span id="cb5-4"><a></a>  <span class="cf">for</span> i, vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
 <span id="cb5-5"><a></a>    scores <span class="op">=</span> tf.zeros(shape<span class="op">=</span>(<span class="bu">len</span>(input_sequence), ))</span>
 <span id="cb5-6"><a></a></span>
@@ -536,6 +562,39 @@ sma@hvl.no
 <span id="cb5-17"><a></a>    output[i] <span class="op">=</span> new_representation</span>
 <span id="cb5-18"><a></a></span>
 <span id="cb5-19"><a></a>  <span class="cf">return</span> output</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:26%;">
+<div style="padding-top: 320px;">
+<p>Multiply each token vector by the score, and sum all of them</p>
+</div>
+</div></div>
+</section>
+<section id="self-attention-6" class="slide level2">
+<h2>Self-attention</h2>
+<div class="columns">
+<div class="column" style="width:74%;">
+<p>In (slow) code, we can write it as</p>
+<div style="padding-top: 10px;">
+
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> self_attention(input_sequence):</span>
+<span id="cb6-2"><a></a>  output <span class="op">=</span> tf.zeros(shape<span class="op">=</span>input_sequence.shape)</span>
+<span id="cb6-3"><a></a> </span>
+<span id="cb6-4"><a></a>  <span class="cf">for</span> i, vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
+<span id="cb6-5"><a></a>    scores <span class="op">=</span> tf.zeros(shape<span class="op">=</span>(<span class="bu">len</span>(input_sequence), ))</span>
+<span id="cb6-6"><a></a></span>
+<span id="cb6-7"><a></a>    <span class="cf">for</span> j, other_vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
+<span id="cb6-8"><a></a>      scores[j] <span class="op">=</span> tf.tensordot(vector, other_vector, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb6-9"><a></a></span>
+<span id="cb6-10"><a></a>    scores <span class="op">/=</span> np.sqrt(input_sequence.shape[<span class="dv">1</span>])</span>
+<span id="cb6-11"><a></a>    scores <span class="op">=</span> tf.nn.softmax(scores)</span>
+<span id="cb6-12"><a></a></span>
+<span id="cb6-13"><a></a>    new_representation <span class="op">=</span> tf.zeros(shape<span class="op">=</span>vector.shape)</span>
+<span id="cb6-14"><a></a>    <span class="cf">for</span> j, other_vector <span class="kw">in</span> <span class="bu">enumerate</span>(input_sequence):</span>
+<span id="cb6-15"><a></a>      new_representation <span class="op">+=</span> other_vector <span class="op">*</span> scores[j]</span>
+<span id="cb6-16"><a></a></span>
+<span id="cb6-17"><a></a>    output[i] <span class="op">=</span> new_representation</span>
+<span id="cb6-18"><a></a></span>
+<span id="cb6-19"><a></a>  <span class="cf">return</span> output</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:26%;">
 <div style="padding-top: 400px;">
 <p>Return the new vector representation</p>
@@ -556,7 +615,7 @@ sma@hvl.no
 <div style="padding-top: 20px;">
 
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> <span class="bu">sum</span>(inputs <span class="op">*</span> pairwise_scores(inputs, inputs))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> <span class="bu">sum</span>(inputs <span class="op">*</span> pairwise_scores(inputs, inputs))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="fragment">
 <p>but we could be doing this with three different sequences:</p>
@@ -567,7 +626,7 @@ sma@hvl.no
 <div style="padding-top: 20px;">
 
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> <span class="bu">sum</span>(values <span class="op">*</span> pairwise_scores(query, keys))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> <span class="bu">sum</span>(values <span class="op">*</span> pairwise_scores(query, keys))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <blockquote>
 <p>For each element in a query, compute how much it is related to every key, and use these scores to weight a sum of values</p>
@@ -596,6 +655,10 @@ sma@hvl.no
 <div class="absolute" style="top: -5%; left: 82%; width: 1800px; ">
 <p><img data-src="figures/lecture9/attention-arxiv.png"></p>
 </div>
+</section>
+<section id="section-2" class="slide level2">
+<h2></h2>
+<p>Stop</p>
 </section>
 <section id="multi-head-attention-1" class="slide level2">
 <h2>Multi-head attention</h2>
@@ -814,7 +877,7 @@ V &amp;= X W^{(v)} \\
 </div>
 </div>
 </section>
-<section id="section-2" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<section id="section-3" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>

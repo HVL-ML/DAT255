@@ -206,8 +206,8 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="transformers-basic-idea" class="slide level2">
-<h2>Transformers: Basic idea</h2>
+<section id="transformers-the-basic-idea" class="slide level2">
+<h2>Transformers: The basic idea</h2>
 <div class="absolute colorbox" style="background-color: #FAFAFA;top: 18%; left: 67%&quot;; width: 400px; height: 550px; ">
 
 </div>
@@ -243,7 +243,7 @@ sma@hvl.no
 <p>New representation</p>
 </div>
 </section>
-<section id="transformers-the-basic-idea" class="slide level2">
+<section id="transformers-the-basic-idea-1" class="slide level2">
 <h2>Transformers: The basic idea</h2>
 <div style="padding-top: 30px;">
 
@@ -473,6 +473,14 @@ sma@hvl.no
 </blockquote>
 </div>
 </section>
+<section id="the-query-key-value-model-1" class="slide level2">
+<h2>The <em>query-key-value</em> model</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch15/query-key-value.b57cceb0.png" class="quarto-figure quarto-figure-center" width="800"></p>
+</figure>
+</div>
+</section>
 <section id="multi-head-attention" class="slide level2">
 <h2>Multi-head attention</h2>
 <div class="quarto-figure quarto-figure-center">
@@ -494,7 +502,7 @@ sma@hvl.no
 <h2>Multi-head attention</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>The parameters of the <code>Dense</code> layers that form the Q, K, V matrices, is where the attention head actually <span class="color-teal-dark"><em>learns</em></span> something.</p>
+<p>The parameters of the <code>Dense</code> layers that form the Q, K, V matrices, is where the attention head actually <span class="color-orange-dark"><em>learns</em></span> something.</p>
 <div class="fragment">
 <p>If <span class="math inline">\(\small D\)</span>&nbsp;is the dimensionality of the embedding space, and <span class="math inline">\(\small N\)</span>&nbsp;is the number of tokens in our data matrix <span class="math inline">\(\small X\)</span>,</p>
 <p>this introduces 3 weight matrices <span class="math inline">\(\small W\)</span>, of dimension <span class="math inline">\(\small D \times D\)</span>:</p>
@@ -533,6 +541,25 @@ V &amp;= X W^{(v)} \\
 <p><img data-src="figures/lecture15/scaled-dot-prod.png"></p>
 </div>
 <p><span class="absolute" style="font-size: 0.5em;bottom: 0%; right: 0%; "><em>Deep Learning: Foundations and Concepts</em>, C. Bishop</span></p>
+</section>
+<section id="multi-head-attention-3" class="slide level2">
+<h2>Multi-head attention</h2>
+<div style="padding-top: 40px;">
+
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>In the end, we can write the scaled dot-product self-attention for a single head as</p>
+<p><span class="math display">\[
+\small
+\mathrm{attention}(Q, K, V) = \mathrm{softmax}\left[\frac{QK^T}{\sqrt{D}} \right] V
+\]</span></p>
+<p>And to get the final output from <em>all</em> the attention heads, we simply concatenate the individial outputs.</p>
+</div></div>
+<div class="absolute" style="top: 20%; right: 0%; ">
+<iframe width="370px" height="600px" src="figures/lecture15/bertviz_head_view.html" style="frame-scale: 0.75;">
+</iframe>
+</div>
 </section>
 <section id="the-transformer-architecture" class="slide level2">
 <h2>The Transformer architecture</h2>
@@ -637,7 +664,7 @@ V &amp;= X W^{(v)} \\
 </div>
 <div class="fragment">
 <ul>
-<li>Option 2: <em>Sinusoidal</em> encoding (see textbook p 613)</li>
+<li>Option 2: <em>Sinusoidal</em> encoding</li>
 </ul>
 <div class="absolute" style="left: 15%; bottom: -5%; width: 200px; ">
 <p><img data-src="figures/lecture15/Figure_10_a.png" style="transform: rotate(90deg);"></p>
@@ -674,11 +701,11 @@ V &amp;= X W^{(v)} \\
 <div class="column" style="width:60%;">
 <p>Typically divide by which parts of the original transformer architecture is being used:</p>
 <ul>
-<li><p><span class="color-teal-dark"><strong>Encoder</strong></span> models:</p>
+<li><p><span class="color-purple"><strong>Encoder</strong></span> models:</p>
 <p>Useful for sentiment analysis and similar tasks</p></li>
-<li><p><span class="color-teal-dark"><strong>Decoder</strong></span> models:</p>
+<li><p><span class="color-purple"><strong>Decoder</strong></span> models:</p>
 <p>Most modern language models are this type</p></li>
-<li><p><span class="color-teal-dark"><strong>Encoder-decoder</strong></span> models:</p>
+<li><p><span class="color-purple"><strong>Encoder-decoder</strong></span> models:</p>
 <p>Sequence-to-sequence models, useful for translation and for multimodal tasks</p></li>
 </ul>
 </div></div>
@@ -776,180 +803,240 @@ V &amp;= X W^{(v)} \\
 <p>Yang, Jingfeng, et al.&nbsp;“Harnessing the power of LLMs in practice: A survey on ChatGPT and beyond.” <em>ACM Transactions on Knowledge Discovery from Data</em> 18.6 (2024): 1-32.</p>
 </div>
 </section>
-<section id="training-decoder-models" class="slide level2">
-<h2>Training decoder models</h2>
-<p>Decoder-type language models are <span class="color-pink-dark">next word predictors</span>.</p>
+<section id="training-data" class="slide level2">
+<h2>Training data</h2>
+<p>As always, key to a good model is data.</p>
 <div class="columns">
-<div class="column" style="width:60%;">
-<p>So we train them to do exactly this:</p>
+<div class="column" style="width:50%;">
+<p>Typically use data scraped from …</p>
 <ul>
-<li>Mask the end of sentences</li>
-<li>Use the next token as the prediction target</li>
-<li>Reveal token and move to next one</li>
-<li>Continue until end of text</li>
+<li>Wikipedia <span class="color-text-muted"><em>(multi-language)</em></span></li>
+<li>GitHub <span class="color-text-muted"><em>(code)</em></span></li>
+<li>ArXiv <span class="color-text-muted"><em>(academic text)</em></span></li>
+<li>StackOverflow <span class="color-text-muted"><em>(Q&amp;A)</em></span></li>
+<li>Reddit etc. <span class="color-text-muted"><em>(forums)</em></span></li>
+<li>Project Gutenberg <span class="color-text-muted"><em>(books)</em></span></li>
 </ul>
-<p>Usually call the procedure <em>masked attention</em> or <em>causal attention</em>, when model is only allowed to look “backwards”.</p>
-<p>Can train on large, unlabelled data in a <span class="color-deep-purple">self-supervised</span> approach</p>
-</div><div class="column" style="width:40%;">
-<div class="quarto-figure quarto-figure-right">
-<figure>
-<p><img data-src="figures/lecture16/mask-matrix.png" class="quarto-figure quarto-figure-right"></p>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="generating-text-from-a-decoder-model" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<p>As for other classification models, last layer looks like</p>
-<div style="text-align: center">
-<p><code>Dense(units=vocabulary_size, activation="softmax")</code></p>
-</div>
-<p><code>-&gt;</code> output is a vector of softmax scores for all possible tokens.</p>
-<div style="padding-top: 20px;">
+<p>See e.g.&nbsp;<a href="https://commoncrawl.org/">Common Crawl</a></p>
+</div><div class="column" style="width:50%;">
 
-</div>
-<p>Run the model in an <span class="color-teal-dark"><strong>autoregressive</strong></span> loop:</p>
-<ul>
-<li>Process sequence and predict next token</li>
-<li>Append predicted token to the sequence</li>
-<li>Process extended sequence and again append predicted token</li>
-<li>Repeat</li>
-<li>(Stop if predicting end-of-sequence token)</li>
-</ul>
-</section>
-<section id="generating-text-from-a-decoder-model-1" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<ul>
-<li>Process sequence and predict next token</li>
-<li>Append predicted token to the sequence</li>
-<li>Process extended sequence and again append predicted token</li>
-<li>Repeat</li>
-</ul>
-<div class="absolute" style="top: 50%; left: 10%; ">
-<p>The cat sat on the _____</p>
-</div>
-<div class="absolute" style="top: 50%; left: 52%; width: 300px; ">
-<p><code>floor       7.72%</code><br> <code>bed         6.82%</code><br> <code>couch       5.70%</code><br> <code>ground      4.71%</code><br> <code>edge        4.66%</code><br></p>
+</div></div>
+<div class="absolute" style="top: -10%; left: 60%; width: 700px; ">
+<p><img data-src="figures/lecture17/commoncrawl.png"></p>
 </div>
 </section>
-<section id="generating-text-from-a-decoder-model-2" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<ul>
-<li>Process sequence and predict next token</li>
-<li>Append predicted token to the sequence</li>
-<li>Process extended sequence and again append predicted token</li>
-<li>Repeat</li>
-</ul>
-<div class="absolute" style="top: 50%; left: 10%; ">
-<p>The cat sat on the <span class="color-pink-dark">floor</span> _____</p>
-</div>
-<div class="absolute" style="top: 50%; left: 52%; width: 300px; ">
-<p><code>,           25.08%</code><br> <code>and         13.56%</code><br> <code>.            7.38%</code><br> <code>of           7.07%</code><br> <code>with         6.58%</code><br></p>
+<section id="section-1" class="slide level2" data-background-image="figures/lecture16/hugging-face.png" data-menu-title="Hugging Face" data-background-size="contain">
+<h2></h2>
+<div class="absolute" style="font-size: 0.7em;bottom: 0%; right: 0%; ">
+<p>https://huggingface.co/models</p>
 </div>
 </section>
-<section id="generating-text-from-a-decoder-model-3" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<ul>
-<li>Process sequence and predict next token</li>
-<li>Append predicted token to the sequence</li>
-<li>Process extended sequence and again append predicted token</li>
-<li>Repeat</li>
-</ul>
-<div class="absolute" style="top: 50%; left: 10%; ">
-<p>The cat sat on the <span class="color-pink-dark">floor,</span> _____</p>
-</div>
-<div class="absolute" style="top: 50%; left: 52%; width: 300px; ">
-<p><code>and         9.41%</code><br> <code>looking     3.23%</code><br> <code>the         1.78%</code><br> <code>he          1.63%</code><br> <code>his         1.48%</code><br></p>
-</div>
+<section id="section-2" class="slide level2" data-background-iframe="https://keras.io/keras_hub/" data-background-interactive="true" data-menu-title="Keras Hub">
+<h2></h2>
 </section>
-<section id="generating-text-from-a-decoder-model-4" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<ul>
-<li>Process sequence and predict next token</li>
-<li>Append predicted token to the sequence</li>
-<li>Process extended sequence and again append predicted token</li>
-<li>Repeat</li>
-</ul>
-<div class="absolute" style="top: 50%; left: 10%; ">
-<p>The cat sat on the <span class="color-pink-dark">floor, and</span> _____</p>
-</div>
-<div class="absolute" style="top: 50%; left: 52%; width: 300px; ">
-<p><code>the         8.40%</code><br> <code>he          5.72%</code><br> <code>I           4.55%</code><br> <code>she         3.65%</code><br> <code>his         3.56%</code><br></p>
-</div>
+<section id="section-3" class="slide level2" data-menu-title="Training data" data-background-iframe="https://commoncrawl.org/" data-background-interactive="true">
+<h2></h2>
+<!--
+## Training decoder models 
+
+Decoder-type language models are [next word predictors]{.color-pink-dark}.
+
+::::{.columns}
+:::{.column width="60%"}
+So we train them to do exactly this:
+
+- Mask the end of sentences
+- Use the next token as the prediction target 
+- Reveal token and move to next one
+- Continue until end of text
+
+Usually call the procedure _masked attention_ or _causal attention_, when model is only allowed to look "backwards".
+
+Can train on large, unlabelled data in a [self-supervised]{.color-deep-purple} approach
+:::
+
+:::{.column width="40%"}
+![](figures/lecture16/mask-matrix.png){fig-align="right"}
+:::
+::::
+
+
+## Generating text from a decoder model
+
+As for other classification models, last layer looks like 
+
+:::{style="text-align: center"}
+`Dense(units=vocabulary_size, activation="softmax")`
+:::
+
+`->` output is a vector of softmax scores for all possible tokens.
+
+:::{style="padding-top: 20px;"}
+:::
+
+Run the model in an [**autoregressive**]{.color-teal-dark} loop: 
+
+- Process sequence and predict next token
+- Append predicted token to the sequence 
+- Process extended sequence and again append predicted token
+- Repeat 
+- (Stop if predicting end-of-sequence token)
+
+
+## Generating text from a decoder model
+
+- Process sequence and predict next token
+- Append predicted token to the sequence 
+- Process extended sequence and again append predicted token
+- Repeat 
+
+:::{.absolute top="50%" left="10%"}
+The cat sat on the _____
+:::
+:::{.absolute top="50%" left="52%" width="300px"}
+`floor       7.72%`<br>
+`bed         6.82%`<br>
+`couch       5.70%`<br>
+`ground      4.71%`<br>
+`edge        4.66%`<br>
+:::
+
+
+## Generating text from a decoder model
+
+- Process sequence and predict next token
+- Append predicted token to the sequence 
+- Process extended sequence and again append predicted token
+- Repeat 
+
+:::{.absolute top="50%" left="10%"}
+The cat sat on the [floor]{.color-pink-dark} _____
+:::
+:::{.absolute top="50%" left="52%" width="300px"}
+`,           25.08%`<br>
+`and         13.56%`<br>
+`.            7.38%`<br>
+`of           7.07%`<br>
+`with         6.58%`<br>
+:::
+
+
+## Generating text from a decoder model
+
+- Process sequence and predict next token
+- Append predicted token to the sequence 
+- Process extended sequence and again append predicted token
+- Repeat 
+
+:::{.absolute top="50%" left="10%"}
+The cat sat on the [floor, ]{.color-pink-dark} _____
+:::
+:::{.absolute top="50%" left="52%" width="300px"}
+`and         9.41%`<br>
+`looking     3.23%`<br>
+`the         1.78%`<br>
+`he          1.63%`<br>
+`his         1.48%`<br>
+:::
+
+## Generating text from a decoder model
+
+- Process sequence and predict next token
+- Append predicted token to the sequence 
+- Process extended sequence and again append predicted token
+- Repeat 
+
+:::{.absolute top="50%" left="10%"}
+The cat sat on the [floor, and]{.color-pink-dark} _____
+:::
+:::{.absolute top="50%" left="52%" width="300px"}
+`the         8.40%`<br>
+`he          5.72%`<br>
+`I           4.55%`<br>
+`she         3.65%`<br>
+`his         3.56%`<br>
+:::
+
+
+
+
+## Generating text from a decoder model
+
+Sampling strategies for next token:
+
+- **Greedy search:** Always select token with highest score
+  - Makes model deterministic, always outputs same output for a given input 
+  - Often get stuck in sequence loops 
+
+
+
+## Generating text from a decoder model
+
+Sampling strategies for next token:
+
+- **Greedy search:** Always select token with highest score
+
+- **Beam search:** Keep track of several possible branches of output sequences, and select the sentence with highest probability
+  - Computationally expensive
+  - Also gets stuck in loops
+
+![](figures/lecture16/beamsearch.png){fig-align="center" width="700px"}
+
+:::{.absolute bottom="0%" right="0%" style="font-size: 0.5em;"}
+arXiv:1904.09751
+:::
+
+
+## Generating text from a decoder model
+
+Sampling strategies for next token:
+
+- **Greedy search:** Always select token with highest score
+
+- **Beam search:** Keep track of several possible branches of output sequences, and select the sentence with highest probability
+
+- **Sampling**: Use scores as probabilities and sample randomly
+  - With large vocabularies the results can be nonsensical
+
+
+## Generating text from a decoder model
+
+Sampling strategies for next token:
+
+- **Greedy search:** Always select token with highest score
+
+- **Beam search:** Keep track of several possible branches of output sequences, and select the sentence with highest probability
+
+- **Sampling**: Use scores as probabilities and sample randomly
+  
+- **Top-_K_ sampling**: Sample among the _K_ tokens with highest score
+
+
+## Generating text from a decoder model
+
+Sampling strategies for next token:
+
+- **Greedy search:** Always select token with highest score
+
+- **Beam search:** Keep track of several possible branches of output sequences, and select the sentence with highest probability
+
+- **Sampling**: Use scores as probabilities and sample randomly
+  
+- **Top-_K_ sampling**: Sample among the _K_ tokens with highest score
+
+- **Adjusted softmax sampling**: Add a parameter _T_ called [temperature]{.color-pink-dark} in the softmax function applied to the output:
+
+    $$
+    \small
+    y_i = \frac{\exp(a_i/T)}{\sum_j \exp(a_j/T)}
+    $$
+
+    - Low _T_: sample among best tokens
+    - High _T_: sample among all tokens (output is more random)
+
+-->
 </section>
-<section id="generating-text-from-a-decoder-model-5" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<p>Sampling strategies for next token:</p>
-<ul>
-<li><strong>Greedy search:</strong> Always select token with highest score
-<ul>
-<li>Makes model deterministic, always outputs same output for a given input</li>
-<li>Often get stuck in sequence loops</li>
-</ul></li>
-</ul>
-</section>
-<section id="generating-text-from-a-decoder-model-6" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<p>Sampling strategies for next token:</p>
-<ul>
-<li><p><strong>Greedy search:</strong> Always select token with highest score</p></li>
-<li><p><strong>Beam search:</strong> Keep track of several possible branches of output sequences, and select the sentence with highest probability</p>
-<ul>
-<li>Computationally expensive</li>
-<li>Also gets stuck in loops</li>
-</ul></li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture16/beamsearch.png" class="quarto-figure quarto-figure-center" width="700"></p>
-</figure>
-</div>
-<div class="absolute" style="font-size: 0.5em;bottom: 0%; right: 0%; ">
-<p>arXiv:1904.09751</p>
-</div>
-</section>
-<section id="generating-text-from-a-decoder-model-7" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<p>Sampling strategies for next token:</p>
-<ul>
-<li><p><strong>Greedy search:</strong> Always select token with highest score</p></li>
-<li><p><strong>Beam search:</strong> Keep track of several possible branches of output sequences, and select the sentence with highest probability</p></li>
-<li><p><strong>Sampling</strong>: Use scores as probabilities and sample randomly</p>
-<ul>
-<li>With large vocabularies the results can be nonsensical</li>
-</ul></li>
-</ul>
-</section>
-<section id="generating-text-from-a-decoder-model-8" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<p>Sampling strategies for next token:</p>
-<ul>
-<li><p><strong>Greedy search:</strong> Always select token with highest score</p></li>
-<li><p><strong>Beam search:</strong> Keep track of several possible branches of output sequences, and select the sentence with highest probability</p></li>
-<li><p><strong>Sampling</strong>: Use scores as probabilities and sample randomly</p></li>
-<li><p><strong>Top-<em>K</em> sampling</strong>: Sample among the <em>K</em> tokens with highest score</p></li>
-</ul>
-</section>
-<section id="generating-text-from-a-decoder-model-9" class="slide level2">
-<h2>Generating text from a decoder model</h2>
-<p>Sampling strategies for next token:</p>
-<ul>
-<li><p><strong>Greedy search:</strong> Always select token with highest score</p></li>
-<li><p><strong>Beam search:</strong> Keep track of several possible branches of output sequences, and select the sentence with highest probability</p></li>
-<li><p><strong>Sampling</strong>: Use scores as probabilities and sample randomly</p></li>
-<li><p><strong>Top-<em>K</em> sampling</strong>: Sample among the <em>K</em> tokens with highest score</p></li>
-<li><p><strong>Adjusted softmax sampling</strong>: Add a parameter <em>T</em> called <span class="color-pink-dark">temperature</span> in the softmax function applied to the output:</p>
-<p><span class="math display">\[
-  \small
-  y_i = \frac{\exp(a_i/T)}{\sum_j \exp(a_j/T)}
-  \]</span></p>
-<ul>
-<li>Low <em>T</em>: sample among best tokens</li>
-<li>High <em>T</em>: sample among all tokens (output is more random)</li>
-</ul></li>
-</ul>
-</section>
-<section id="section-1" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<section id="section-4" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>

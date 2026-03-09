@@ -658,15 +658,15 @@
     "text": "Quiz"
   },
   {
-    "objectID": "slides/16-transformers.html#transformers-basic-idea",
-    "href": "slides/16-transformers.html#transformers-basic-idea",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Transformers: Basic idea",
-    "text": "Transformers: Basic idea\n\n\n\nTokenise and embed the words:\n\n“you are right”\n\n\n“turn right here”\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntransform! \n\n\ntransform! \n\n\nEmbedding space\n\n\nNew representation"
-  },
-  {
     "objectID": "slides/16-transformers.html#transformers-the-basic-idea",
     "href": "slides/16-transformers.html#transformers-the-basic-idea",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Transformers: The basic idea",
+    "text": "Transformers: The basic idea\n\n\n\nTokenise and embed the words:\n\n“you are right”\n\n\n“turn right here”\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntransform! \n\n\ntransform! \n\n\nEmbedding space\n\n\nNew representation"
+  },
+  {
+    "objectID": "slides/16-transformers.html#transformers-the-basic-idea-1",
+    "href": "slides/16-transformers.html#transformers-the-basic-idea-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Transformers: The basic idea",
     "text": "Transformers: The basic idea\n\n\n\nAim:\n\nTake a sequence of vectors of dimensionality \\(\\small N \\times D\\)\nCompute some relation between the vectors\nUse these relations to transform the vectors into new ones (also \\(\\small N \\times D\\))\nNew representation is better suited to solve the task\n\nCritical operation is to incorporate the relation between vectors\n-&gt; the neural attention mechanism"
@@ -721,6 +721,13 @@
     "text": "The query-key-value model\n\n\n\nWe can generalise the attention mechanism by using concepts from information retrieval.\nWhat we computed was basically\n\n\n\n\n\n\n\noutput = sum(inputs * pairwise_scores(inputs, inputs))\n\n\nbut we could be doing this with three different sequences:\n\n\n\n\n\n\n\noutput = sum(values * pairwise_scores(query, keys))\n\n\nFor each element in a query, compute how much it is related to every key, and use these scores to weight a sum of values"
   },
   {
+    "objectID": "slides/16-transformers.html#the-query-key-value-model-1",
+    "href": "slides/16-transformers.html#the-query-key-value-model-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "The query-key-value model",
+    "text": "The query-key-value model"
+  },
+  {
     "objectID": "slides/16-transformers.html#multi-head-attention",
     "href": "slides/16-transformers.html#multi-head-attention",
     "title": "DAT255: Deep learning engineering",
@@ -742,6 +749,13 @@
     "text": "Multi-head attention\n\n\n\n\n\nIn the end, we can write the scaled dot-product self-attention for a single head as\n\\[\n\\small\n\\mathrm{attention}(Q, K, V) = \\mathrm{softmax}\\left[\\frac{QK^T}{\\sqrt{D}} \\right] V\n\\]\nAnd to get the final output from all the attention heads, we simply concatenate the individial outputs.\n\n\n\n\nDeep Learning: Foundations and Concepts, C. Bishop"
   },
   {
+    "objectID": "slides/16-transformers.html#multi-head-attention-3",
+    "href": "slides/16-transformers.html#multi-head-attention-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Multi-head attention",
+    "text": "Multi-head attention\n\n\n\n\n\nIn the end, we can write the scaled dot-product self-attention for a single head as\n\\[\n\\small\n\\mathrm{attention}(Q, K, V) = \\mathrm{softmax}\\left[\\frac{QK^T}{\\sqrt{D}} \\right] V\n\\]\nAnd to get the final output from all the attention heads, we simply concatenate the individial outputs."
+  },
+  {
     "objectID": "slides/16-transformers.html#the-transformer-architecture",
     "href": "slides/16-transformers.html#the-transformer-architecture",
     "title": "DAT255: Deep learning engineering",
@@ -760,7 +774,7 @@
     "href": "slides/16-transformers.html#positional-encodings-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Positional encodings",
-    "text": "Positional encodings\n\nOption 1: Count token positions, then embed them\n\n\n\n\n\n\n\n\n\n\n\ntoken\nThe\nfood\nwas\ngood\n\n\ntoken embedding\n\\(\\mathbf{x}_1\\)\n\\(\\mathbf{x}_2\\)\n\\(\\mathbf{x}_3\\)\n\\(\\mathbf{x}_4\\)\n\n\ntoken position\n1\n2\n3\n4\n\n\nposition embedding\n\\(\\mathbf{r}_1\\)\n\\(\\mathbf{r}_2\\)\n\\(\\mathbf{r}_3\\)\n\\(\\mathbf{r}_4\\)\n\n\nfinal embedding\n\\(\\mathbf{x}_1 + \\mathbf{r}_1\\)\n\\(\\mathbf{x}_2 + \\mathbf{r}_2\\)\n\\(\\mathbf{x}_3 + \\mathbf{r}_3\\)\n\\(\\mathbf{x}_4 + \\mathbf{r}_4\\)\n\n\n\n\n\n\n\n\nOption 2: Sinusoidal encoding (see textbook p 613)"
+    "text": "Positional encodings\n\nOption 1: Count token positions, then embed them\n\n\n\n\n\n\n\n\n\n\n\ntoken\nThe\nfood\nwas\ngood\n\n\ntoken embedding\n\\(\\mathbf{x}_1\\)\n\\(\\mathbf{x}_2\\)\n\\(\\mathbf{x}_3\\)\n\\(\\mathbf{x}_4\\)\n\n\ntoken position\n1\n2\n3\n4\n\n\nposition embedding\n\\(\\mathbf{r}_1\\)\n\\(\\mathbf{r}_2\\)\n\\(\\mathbf{r}_3\\)\n\\(\\mathbf{r}_4\\)\n\n\nfinal embedding\n\\(\\mathbf{x}_1 + \\mathbf{r}_1\\)\n\\(\\mathbf{x}_2 + \\mathbf{r}_2\\)\n\\(\\mathbf{x}_3 + \\mathbf{r}_3\\)\n\\(\\mathbf{x}_4 + \\mathbf{r}_4\\)\n\n\n\n\n\n\n\n\nOption 2: Sinusoidal encoding"
   },
   {
     "objectID": "slides/16-transformers.html#computational-complexity",
@@ -805,81 +819,18 @@
     "text": "Yang, Jingfeng, et al. “Harnessing the power of LLMs in practice: A survey on ChatGPT and beyond.” ACM Transactions on Knowledge Discovery from Data 18.6 (2024): 1-32."
   },
   {
-    "objectID": "slides/16-transformers.html#training-decoder-models",
-    "href": "slides/16-transformers.html#training-decoder-models",
+    "objectID": "slides/16-transformers.html#training-data",
+    "href": "slides/16-transformers.html#training-data",
     "title": "DAT255: Deep learning engineering",
-    "section": "Training decoder models",
-    "text": "Training decoder models\nDecoder-type language models are next word predictors.\n\n\nSo we train them to do exactly this:\n\nMask the end of sentences\nUse the next token as the prediction target\nReveal token and move to next one\nContinue until end of text\n\nUsually call the procedure masked attention or causal attention, when model is only allowed to look “backwards”.\nCan train on large, unlabelled data in a self-supervised approach"
+    "section": "Training data",
+    "text": "Training data\nAs always, key to a good model is data.\n\n\nTypically use data scraped from …\n\nWikipedia (multi-language)\nGitHub (code)\nArXiv (academic text)\nStackOverflow (Q&A)\nReddit etc. (forums)\nProject Gutenberg (books)\n\nSee e.g. Common Crawl"
   },
   {
-    "objectID": "slides/16-transformers.html#generating-text-from-a-decoder-model",
-    "href": "slides/16-transformers.html#generating-text-from-a-decoder-model",
+    "objectID": "slides/16-transformers.html#section-1",
+    "href": "slides/16-transformers.html#section-1",
     "title": "DAT255: Deep learning engineering",
-    "section": "Generating text from a decoder model",
-    "text": "Generating text from a decoder model\nAs for other classification models, last layer looks like\n\nDense(units=vocabulary_size, activation=\"softmax\")\n\n-&gt; output is a vector of softmax scores for all possible tokens.\n\n\n\nRun the model in an autoregressive loop:\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n(Stop if predicting end-of-sequence token)"
-  },
-  {
-    "objectID": "slides/16-transformers.html#generating-text-from-a-decoder-model-1",
-    "href": "slides/16-transformers.html#generating-text-from-a-decoder-model-1",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Generating text from a decoder model",
-    "text": "Generating text from a decoder model\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n\n\nThe cat sat on the _____\n\n\nfloor       7.72% bed         6.82% couch       5.70% ground      4.71% edge        4.66%"
-  },
-  {
-    "objectID": "slides/16-transformers.html#generating-text-from-a-decoder-model-2",
-    "href": "slides/16-transformers.html#generating-text-from-a-decoder-model-2",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Generating text from a decoder model",
-    "text": "Generating text from a decoder model\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n\n\nThe cat sat on the floor _____\n\n\n,           25.08% and         13.56% .            7.38% of           7.07% with         6.58%"
-  },
-  {
-    "objectID": "slides/16-transformers.html#generating-text-from-a-decoder-model-3",
-    "href": "slides/16-transformers.html#generating-text-from-a-decoder-model-3",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Generating text from a decoder model",
-    "text": "Generating text from a decoder model\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n\n\nThe cat sat on the floor, _____\n\n\nand         9.41% looking     3.23% the         1.78% he          1.63% his         1.48%"
-  },
-  {
-    "objectID": "slides/16-transformers.html#generating-text-from-a-decoder-model-4",
-    "href": "slides/16-transformers.html#generating-text-from-a-decoder-model-4",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Generating text from a decoder model",
-    "text": "Generating text from a decoder model\n\nProcess sequence and predict next token\nAppend predicted token to the sequence\nProcess extended sequence and again append predicted token\nRepeat\n\n\nThe cat sat on the floor, and _____\n\n\nthe         8.40% he          5.72% I           4.55% she         3.65% his         3.56%"
-  },
-  {
-    "objectID": "slides/16-transformers.html#generating-text-from-a-decoder-model-5",
-    "href": "slides/16-transformers.html#generating-text-from-a-decoder-model-5",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Generating text from a decoder model",
-    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\n\nMakes model deterministic, always outputs same output for a given input\nOften get stuck in sequence loops"
-  },
-  {
-    "objectID": "slides/16-transformers.html#generating-text-from-a-decoder-model-6",
-    "href": "slides/16-transformers.html#generating-text-from-a-decoder-model-6",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Generating text from a decoder model",
-    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\n\nComputationally expensive\nAlso gets stuck in loops\n\n\n\n\n\n\n\n\narXiv:1904.09751"
-  },
-  {
-    "objectID": "slides/16-transformers.html#generating-text-from-a-decoder-model-7",
-    "href": "slides/16-transformers.html#generating-text-from-a-decoder-model-7",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Generating text from a decoder model",
-    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\nSampling: Use scores as probabilities and sample randomly\n\nWith large vocabularies the results can be nonsensical"
-  },
-  {
-    "objectID": "slides/16-transformers.html#generating-text-from-a-decoder-model-8",
-    "href": "slides/16-transformers.html#generating-text-from-a-decoder-model-8",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Generating text from a decoder model",
-    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\nSampling: Use scores as probabilities and sample randomly\nTop-K sampling: Sample among the K tokens with highest score"
-  },
-  {
-    "objectID": "slides/16-transformers.html#generating-text-from-a-decoder-model-9",
-    "href": "slides/16-transformers.html#generating-text-from-a-decoder-model-9",
-    "title": "DAT255: Deep learning engineering",
-    "section": "Generating text from a decoder model",
-    "text": "Generating text from a decoder model\nSampling strategies for next token:\n\nGreedy search: Always select token with highest score\nBeam search: Keep track of several possible branches of output sequences, and select the sentence with highest probability\nSampling: Use scores as probabilities and sample randomly\nTop-K sampling: Sample among the K tokens with highest score\nAdjusted softmax sampling: Add a parameter T called temperature in the softmax function applied to the output:\n\\[\n  \\small\n  y_i = \\frac{\\exp(a_i/T)}{\\sum_j \\exp(a_j/T)}\n  \\]\n\nLow T: sample among best tokens\nHigh T: sample among all tokens (output is more random)"
+    "section": "",
+    "text": "https://huggingface.co/models"
   },
   {
     "objectID": "slides/14-nlp-embeddings.html#from-yesterday",
@@ -1957,7 +1908,7 @@
     "href": "index.html",
     "title": "DAT255 lecture notes",
     "section": "",
-    "text": "Published after each lecture week – see Canvas for additional material.\n\nWeek 3\n1: Monday: Welcome and introduction\n2: Tuesday: The tools of deep learning\n\n\nWeek 4\n3: Monday: Computer vision and the concepts of layers\n4: Tuesday: Training deep neural networks\n\n\nWeek 5\n5: Monday: Optimisation algorithms and learning rates\n6: Tuesday: Augmentation and advanced computer vision\n\n\nWeek 6\n7: Monday: Image segmentation\n\n8: Tuesday: Object detection\n\n\nWeek 7\n9: Monday: Sequences, time series, recurrent networks\n10: Tuesday: Time series continued\n\n\n\nWeek 8\n11: Monday: Tabular data\n12: Tuesday: Development tools and project kickoff\n\n\n\nWeek 10\n13: Monday: Natural language processing: Text vectorisation\n14: Tuesday: Natural language processing: Embeddings"
+    "text": "Published after each lecture week – see Canvas for additional material.\n\nWeek 3\n1: Monday: Welcome and introduction\n2: Tuesday: The tools of deep learning\n\n\nWeek 4\n3: Monday: Computer vision and the concepts of layers\n4: Tuesday: Training deep neural networks\n\n\nWeek 5\n5: Monday: Optimisation algorithms and learning rates\n6: Tuesday: Augmentation and advanced computer vision\n\n\nWeek 6\n7: Monday: Image segmentation\n\n8: Tuesday: Object detection\n\n\nWeek 7\n9: Monday: Sequences, time series, recurrent networks\n10: Tuesday: Time series continued\n\n\n\nWeek 8\n11: Monday: Tabular data\n12: Tuesday: Development tools and project kickoff\n\n\n\nWeek 10\n13: Monday: Natural language processing: Text vectorisation\n14: Tuesday: Natural language processing: Embeddings\n\n\nWeek 11\n15: Monday: Attention and Transformers\n16: Tuesday: Transformers for natural language processing"
   },
   {
     "objectID": "slides/01-welcome.html#what-can-you-do-with-deep-learning",
@@ -2975,6 +2926,41 @@
     "text": "Sequence models\nLet’s put the ordering back in, and look at sequence models instead.\nNow need a model type that assumes a relation between neighbouring words\nWe know of two:\n\nConvolutional neural networks (CNNs)\nRecurrent neural networks (RNNs)\n\n\n\n\n\nFor NLP uses, both are superseeded by transformers, which is the topic for next week.\nBut let’s go through a trick tomorrow that improves performance for all model types: word embeddings."
   },
   {
+    "objectID": "slides/15-attention.html#section",
+    "href": "slides/15-attention.html#section",
+    "title": "DAT255: Deep learning engineering",
+    "section": "",
+    "text": "epoch.ai"
+  },
+  {
+    "objectID": "slides/15-attention.html#sequence-to-sequence-learning",
+    "href": "slides/15-attention.html#sequence-to-sequence-learning",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Sequence-to-sequence learning",
+    "text": "Sequence-to-sequence learning"
+  },
+  {
+    "objectID": "slides/15-attention.html#sequence-to-sequence-learning-1",
+    "href": "slides/15-attention.html#sequence-to-sequence-learning-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Sequence-to-sequence learning",
+    "text": "Sequence-to-sequence learning\n\n\n\nUsing RNNs:"
+  },
+  {
+    "objectID": "slides/15-attention.html#sequence-to-sequence-learning-2",
+    "href": "slides/15-attention.html#sequence-to-sequence-learning-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Sequence-to-sequence learning",
+    "text": "Sequence-to-sequence learning\n\n\n\nUsing RNNs:\n\n\n\n\n\ninputs = keras.Input(shape=(sequence_length,), dtype=\"int32\")\nx = layers.Embedding(input_dim=vocab_size, output_dim=128)(inputs)\nx = layers.LSTM(32, return_sequences=True)(x)\noutputs = layers.Dense(vocab_size, activation=\"softmax\")(x)\nmodel = keras.Model(inputs, outputs)"
+  },
+  {
+    "objectID": "slides/15-attention.html#sequence-to-sequence-learning-3",
+    "href": "slides/15-attention.html#sequence-to-sequence-learning-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Sequence-to-sequence learning",
+    "text": "Sequence-to-sequence learning\n\n\n\nUsing RNNs:\n\n\n\n\n\nLimitations:\n\nAll of the source text must be stored in the hidden state -&gt; in practice we get limited to short texts\nRNNs struggle to maintain memory over long sequences -&gt; again we get limited to short texts"
+  },
+  {
     "objectID": "slides/15-attention.html#vector-embeddings",
     "href": "slides/15-attention.html#vector-embeddings",
     "title": "DAT255: Deep learning engineering",
@@ -3007,7 +2993,7 @@
     "href": "slides/15-attention.html#self-attention-1",
     "title": "DAT255: Deep learning engineering",
     "section": "Self-attention",
-    "text": "Self-attention\nExample sentence: “The train left the station on time”\n\n\n\n\n\n\nRepeatfor all tokens\n\nDeep Learning with Python, F. Chollet"
+    "text": "Self-attention\nExample sentence: “The train left the station on time”\n\n\n\n\n\n\nRepeatfor all tokens"
   },
   {
     "objectID": "slides/15-attention.html#self-attention-the-steps-involved",
@@ -3085,6 +3071,13 @@
     "title": "DAT255: Deep learning engineering",
     "section": "Multi-head attention",
     "text": "Multi-head attention\n\n\nNow we want to increase the complexity by computing attention several times in parallel.\nBut: Our transformation so far has no learnable parameters\n it’s just a stateless operation, we get the same result each time.\n\nKey idea from the “Attention is all you need” paper:\n\nPass each input (query, key and value) though a separate Dense layer\n\nEach with their own parameters\n\n\nThis we can do in parallel, and get different features for each attention “head”\n Call it multi-head attention."
+  },
+  {
+    "objectID": "slides/15-attention.html#section-2",
+    "href": "slides/15-attention.html#section-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "",
+    "text": "Stop"
   },
   {
     "objectID": "slides/15-attention.html#multi-head-attention-1",
