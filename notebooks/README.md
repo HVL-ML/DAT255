@@ -351,7 +351,7 @@ They will be added as the course progresses.
     </tr>
     <!-- --> 
     <tr>
-      <td rowspan=3>NLP: Transformers</td>
+      <td rowspan=5>NLP: Transformers</td>
       <td>
       <h4>Tutorial: <a href="24_transformer_encoder_for_classification.ipynb">24: Text classification with transformers</a></h4>
       We continue doing text classification, but with a more powerful tool: The transformer.
@@ -387,6 +387,32 @@ They will be added as the course progresses.
           <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
         </a><br>
         <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/26_translation.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Exercise: <a href="27_text_generation.ipynb">27: Text generation</a></h4>
+      Try out different sampling strategies to generate text just like ChatGPT (or at least _almost_).
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/27_text_generation.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/27_text_generation.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Exercise: <a href="28_LLMs_from_Hugging_Face.ipynb">28: Run pretrained LLMs from Hugging Face Hub</a></h4>
+      Run state-of-the-art open-source models with almost zero effort.
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/28_LLMs_from_Hugging_Face.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/28_LLMs_from_Hugging_Face.ipynb" download>
           <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
         </a>
       </td>
