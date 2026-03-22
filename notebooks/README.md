@@ -417,6 +417,48 @@ They will be added as the course progresses.
         </a>
       </td>
     </tr>
+    <!-- --> 
+    <tr>
+      <td rowspan=3>Advanced Transformer techniques</td>
+      <td>
+      <h4>Tutorial: <a href="29_mixture_of_experts_classification.ipynb">29: Mixture-of-Experts model</a></h4>
+      Classify text using a advanced Tranformer architecture with internal ensembling that switches between different parameter sets during inference.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/29_mixture_of_experts_classification.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/29_mixture_of_experts_classification.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Exercise: <a href="30_LoRA_finetuning.ipynb">30: Finetune an LLM using Low-Rank Adaptation. </a></h4>
+      We compare the process of finetuning a GPT-2 model both with and without the technique called Low-Rank Adaptation (LoRA).
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/30_LoRA_finetuning.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/30_LoRA_finetuning.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Exercise: <a href="31_optimisation.ipynb">31: Optimise model size and memory use. </a></h4>
+      Prepare a model for running on edge devices by quantising its weights.
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/31_optimisation.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/31_optimisation.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
   </tbody>
 </table>
 
