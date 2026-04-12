@@ -491,7 +491,7 @@ They will be added as the course progresses.
     <tr>
       <td>
       <h4>Exercise: <a href="34_autoencoder_for_anomaly_detection.ipynb">34: Autoencoders for anomaly detection</a></h4>
-      Try out autoencoders for a different type of problem, namely <i>anomaly detection</i>, using real data from one of the CERN experiments.
+      Try again to use an autoencoder for the task of anomaly detection, this time using real data from one of the CERN experiments.
       <td>
         <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/34_autoencoder_for_anomaly_detection.ipynb">
           <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
