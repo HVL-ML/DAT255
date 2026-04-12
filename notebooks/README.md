@@ -459,8 +459,68 @@ They will be added as the course progresses.
         </a>
       </td>
     </tr>
+    <!-- --> 
+    <tr>
+      <td rowspan=4>Autoencoders (+ one on deployment)</td>
+      <td>
+      <h4>Tutorial: <a href="32_tensorflow_serving.ipynb">32: Deploy a model as a REST API</a></h4>
+      Deploy a model as a REST API endpoint using TensorFlow Serving.
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/32_tensorflow_serving.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/32_tensorflow_serving.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Tutorial: <a href="33_autoencoder_for_image_denoising.ipynb">33: Autoencoders for image denoising</a></h4>
+      Train a model to enhance images by removing noise.
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/33_autoencoder_for_image_denoising.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/33_autoencoder_for_image_denoising.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Exercise: <a href="34_autoencoder_for_anomaly_detection.ipynb">34: Autoencoders for anomaly detection</a></h4>
+      Try out autoencoders for a different type of problem, namely <i>anomaly detection</i>, using real data from one of the CERN experiments.
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/34_autoencoder_for_anomaly_detection.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/34_autoencoder_for_anomaly_detection.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Tutorial: <a href="35_variational_autoencoder.ipynb">35: Variational autoencoders</a></h4>
+      Generate images by sampling the latent space of a variational autoencoder.
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/35_variational_autoencoder.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/35_variational_autoencoder.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
   </tbody>
 </table>
+
+
+
+
+
 
 <!--
 | Week | Notebook | Colab link |
