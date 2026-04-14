@@ -816,7 +816,7 @@
     "href": "slides/22-generative-deep-learning.html#latent-space-sampling",
     "title": "DAT255: Deep learning engineering",
     "section": "Latent space sampling",
-    "text": "Latent space sampling\nCan generalise to different model types\n\n\n\n\n\n\n\n\n\nIn this and next lecture we look at decoders to go from random points in latent space to realistic data\n Our sampling strategy) is simply to draw from a normal distribution\n(ideally, the latent space should have a structure so htat )"
+    "text": "Latent space sampling\nCan generalise to different model types\n\n\n\n\n\n\n\n\n\nIn this and next lecture we look at decoders to go from random points in latent space to realistic data\n Our sampling strategy is simply to draw from a normal distribution\n(ideally, the latent space should have a structure so that this makes sense)"
   },
   {
     "objectID": "slides/22-generative-deep-learning.html#improving-the-autoencoder",
@@ -865,7 +865,7 @@
     "href": "slides/22-generative-deep-learning.html#generative-adversarial-networks",
     "title": "DAT255: Deep learning engineering",
     "section": "Generative adversarial networks",
-    "text": "Generative adversarial networks\n\n\n\n\n\n\n\n\nGANs: The coolest thing in 2014 (now superseded by diffusion models)\nPopularised by thispersondoesnotexist.com\n\n\n\n\n\nBased StyleGAN, arXiv:182.04948"
+    "text": "Generative adversarial networks\n\n\n\n\n\n\n\n\nGANs: The coolest thing in 2014 (now superseded by diffusion models)\nPopularised by thispersondoesnotexist.com\n\n \n\n\nBased StyleGAN, arXiv:182.04948"
   },
   {
     "objectID": "slides/22-generative-deep-learning.html#generative-adversarial-networks-1",
@@ -879,7 +879,35 @@
     "href": "slides/22-generative-deep-learning.html#generative-adversarial-networks-2",
     "title": "DAT255: Deep learning engineering",
     "section": "Generative adversarial networks",
-    "text": "Generative adversarial networks\nTraining procedure is a little tricky, see the book for details\nWe can still do vector arithmetic in the latent space:\n\n\n\n\n\n\narXiv:1511.06434\n\n\nNote: GANs are well studied in research but seldom used in practice.\nThey are very sensitive to configuration of the training procedure, and are generally just difficult"
+    "text": "Generative adversarial networks\nWith GANs we can still do vector arithmetic in the latent space:\n\n\n\n\n\n\narXiv:1511.06434\n\n\nGANs are well studied in research, but sees little practical application anymore.\nThey are very sensitive to configuration of the training procedure, and are generally just difficult"
+  },
+  {
+    "objectID": "slides/22-generative-deep-learning.html#diffusion-models",
+    "href": "slides/22-generative-deep-learning.html#diffusion-models",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Diffusion models",
+    "text": "Diffusion models"
+  },
+  {
+    "objectID": "slides/22-generative-deep-learning.html#diffusion-models-1",
+    "href": "slides/22-generative-deep-learning.html#diffusion-models-1",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Diffusion models",
+    "text": "Diffusion models\nThought:\n\nAutoencoders are good at removing noise, since the latent contains the underlying concepts.\nWe can sample from the latent space\nAdding noise is simple for us to do\n\n Profit??"
+  },
+  {
+    "objectID": "slides/22-generative-deep-learning.html#diffusion-models-2",
+    "href": "slides/22-generative-deep-learning.html#diffusion-models-2",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Diffusion models",
+    "text": "Diffusion models\nIdea:\n\nIn steps, add random noise to the original image\nFor each step, train the model to remove the noise\n\n Denoising diffusion probabilistic model (DDPM)"
+  },
+  {
+    "objectID": "slides/22-generative-deep-learning.html#diffusion-models-3",
+    "href": "slides/22-generative-deep-learning.html#diffusion-models-3",
+    "title": "DAT255: Deep learning engineering",
+    "section": "Diffusion models",
+    "text": "Diffusion models\n\n\n\n\n\n\n\nTo generate new images, we\n\nSample an images of random noise\nRun stepwise denoising\nConverge at a realistic image"
   },
   {
     "objectID": "slides/20-more-transformers.html#training-llms",

@@ -129,7 +129,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 22</u> – Generative deep learning</p>
+  <p class="subtitle"><u>Lecture 22</u> – Generative deep learning: Autoencoders</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -172,7 +172,7 @@ sma@hvl.no
 </ul>
 </div>
 <div class="fragment" data-fragment-index="2">
-<p>No target <span class="math inline">\(y\)</span> involved! Model is <span class="color-orange-dark"><em>self-supervised</em></span>.</p>
+<p>No target <span class="math inline">\(y\)</span> involved! Model is <span class="color-blue-dark"><em>self-supervised</em></span>.</p>
 </div>
 </div><div class="column" style="width:45%;">
 <div style="padding-top: 100px;">
@@ -210,7 +210,7 @@ sma@hvl.no
 <div style="padding-top: 50px;">
 
 </div>
-<p>Can explore the <span class="color-indigo"><em>latent space</em></span> in TensorBoard <a href="https://projector.tensorflow.org/">projector</a>)</p>
+<p>Can explore the latent space in TensorBoard <a href="https://projector.tensorflow.org/">projector</a>)</p>
 </section>
 <section id="autoencoder-applications" class="slide level2">
 <h2>Autoencoder applications</h2>
@@ -329,8 +329,8 @@ sma@hvl.no
 </div>
 <!-- [Sampling strategies]{.color-teal-dark} are still important to the quality of the results -->
 <p>In this and next lecture we look at decoders to go from random points in latent space to realistic data</p>
-<p><i class="bi bi-arrow-right"></i> Our <span class="color-purple-dark"><em>sampling strategy</em></span>) is simply to draw from a normal distribution</p>
-<p>(ideally, the latent space should have a structure so htat )</p>
+<p><i class="bi bi-arrow-right"></i> Our <span class="color-purple-dark"><em>sampling strategy</em></span> is simply to draw from a normal distribution</p>
+<p>(ideally, the latent space should have a structure so that this makes sense)</p>
 </section>
 <section id="improving-the-autoencoder" class="slide level2" data-background-color="#faebed">
 <h2>Improving the autoencoder</h2>
@@ -475,8 +475,7 @@ sma@hvl.no
 <p><strong>GANs</strong>: The coolest thing in 2014 <br>(<em>now superseded by diffusion models</em>)</p>
 <p>Popularised by <a href="https://thispersondoesnotexist.com/"><code>thispersondoesnotexist.com</code></a></p>
 </div><div class="column" style="width:50%;">
-<iframe src="https://thispersondoesnotexist.com" width="350px" height="350px">
-</iframe>
+<p><img src="https://thispersondoesnotexist.com" width="350"> <!-- <iframe src="https://thispersondoesnotexist.com" width="350"></iframe> --></p>
 </div></div>
 <div class="absolute" style="font-size: 0.6em;bottom: 13%; right: 22%; ">
 <p>Based <em>StyleGAN</em>, <a href="https://arxiv.org/abs/1812.04948">arXiv:182.04948</a></p>
@@ -502,19 +501,74 @@ sma@hvl.no
 </section>
 <section id="generative-adversarial-networks-2" class="slide level2">
 <h2>Generative adversarial networks</h2>
-<p>Training procedure is a little tricky, see the book for details</p>
-<p>We can still do vector arithmetic in the latent space:</p>
+<p>With GANs we can still do vector arithmetic in the latent space:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figures/lecture21/dcgan.png" class="quarto-figure quarto-figure-center" width="600"></p>
 </figure>
 </div>
-<div class="absolute" style="font-size: 0.6em;top: 34%; right: 24%; ">
+<div class="absolute" style="font-size: 0.6em;top: 25%; right: 24%; ">
 <p><a href="https://arxiv.org/pdf/1511.06434">arXiv:1511.06434</a></p>
 </div>
 <div class="fragment">
-<p>Note: GANs are well studied in research but seldom used in practice.</p>
+<p>GANs are well studied in research, but sees little practical application anymore.</p>
 <p>They are <em>very</em> sensitive to configuration of the training procedure, and are generally just difficult</p>
+</div>
+</section>
+<section id="diffusion-models" class="slide level2" data-background-image="figures/lecture22/midjourney.png" data-background-color="black">
+<h2>Diffusion models</h2>
+</section>
+<section id="diffusion-models-1" class="slide level2">
+<h2>Diffusion models</h2>
+<p><strong><em>Thought</em></strong>:</p>
+<ul>
+<li>Autoencoders are good at removing noise, since the latent contains the underlying concepts.</li>
+<li>We can sample from the latent space</li>
+<li><em>Adding</em> noise is simple for us to do</li>
+</ul>
+<p><i class="bi bi-arrow-right"></i> Profit??</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://developer-blogs.nvidia.com/wp-content/uploads/2022/04/Generation-with-Diffusion-Models-1024x576.png" class="quarto-figure quarto-figure-center" width="800"></p>
+</figure>
+</div>
+</section>
+<section id="diffusion-models-2" class="slide level2">
+<h2>Diffusion models</h2>
+<p><strong>Idea:</strong></p>
+<ul>
+<li>In steps, <span class="color-deep-orange-dark">add random noise</span> to the original image</li>
+<li>For each step, train the model to <span class="color-green-dark">remove</span> the noise</li>
+</ul>
+<p><i class="bi bi-arrow-right"></i> Denoising diffusion probabilistic model (DDPM)</p>
+<div style="padding-top: 10px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture22/diffusion.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+<!-- Can technically see the diffusion model as a variational autoencoder, but where the encoder process is just adding noise -->
+</section>
+<section id="diffusion-models-3" class="slide level2">
+<h2>Diffusion models</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture22/diffusion.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>To <strong>generate</strong> new images, we</p>
+<ul>
+<li>Sample an images of random noise</li>
+<li>Run stepwise denoising</li>
+<li>Converge at a realistic image</li>
+</ul>
+</div></div>
+<div class="absolute fragment" style="bottom: 10%; right: 0%; width: 500px; ">
+<p><img data-src="https://i.imgur.com/FSCKtZq.gif"></p>
 </div>
 </section>
 <section id="section-1" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
