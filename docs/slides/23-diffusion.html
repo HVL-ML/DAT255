@@ -129,7 +129,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 22</u> – More generative deep learning</p>
+  <p class="subtitle"><u>Lecture 23</u> – Generative deep learning: Diffusion models</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -140,262 +140,43 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="section" class="slide level2 center" data-menu-title="Topics" data-background-color="#E1F5FE">
-<h2></h2>
-<p>We already did <span class="color-orange-dark"><em>generative</em></span> deep learning for text generation - key was to <strong>sample</strong> instead of deterministically picking top prediction.</p>
-<p>Will look at some deep learning methods for converting sampled values into realistic data:</p>
-<ul>
-<li><span class="color-purple-dark">Variational autoencoders</span> (<em>last week</em>)</li>
-<li><span class="color-purple-dark">Generative adversarial networks</span> (<em>Today</em>)</li>
-<li><span class="color-purple-dark">Diffusion models</span> (<em>Today</em>)</li>
-</ul>
-</section>
-<section id="autoencoders-revisited" class="slide level2">
-<h2>Autoencoders revisited</h2>
-<p>Train a model to reconstruct its input, by</p>
-<ul>
-<li>encoding (compressing) data to smaller dimensionality:<br>the <span class="color-indigo"><em>latent space</em></span> (explore in TensorBoard <a href="https://projector.tensorflow.org/">projector</a>)</li>
-<li>decoding from latent space to original dimensions</li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="https://blog.keras.io/img/ae/autoencoder_schema.jpg" class="quarto-figure quarto-figure-center" width="600"></p>
-</figure>
-</div>
-<p>Can <span class="color-pink-dark">randomly sample</span> values in the latent space to generate new outputs</p>
-<p>(<em>although not all sampled value are meaningful</em>)</p>
-</section>
-<section id="vectors-in-latent-space" class="slide level2">
-<h2>Vectors in latent space</h2>
-<p>For language models we saw that <span class="color-pink-dark">direction</span> was related to <span class="color-pink-dark">concepts</span> / word meaning</p>
-<p>Can recognise the same for images:</p>
-<div style="padding-top: 90px;">
-
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture21/smiles.png" width="600"></p>
-<figcaption>Generated faces (<a href="https://arxiv.org/abs/1609.04468">arXiv:1609.04468</a>)</figcaption>
-</figure>
-</div>
-<div class="absolute" style="top: 30%; left: 22%; ">
-<p><i class="bi bi-arrow-left"></i> <em>Less</em> smile</p>
-</div>
-<div class="absolute" style="top: 30%; left: 62%; ">
-<p><em>More</em> smile <i class="bi bi-arrow-right"></i></p>
-</div>
-<div class="absolute" style="top: 40%; left: 80%; ">
-<p><i class="bi bi-arrow-up"></i><br><em>Open</em> mouth</p>
-</div>
-<div class="absolute" style="top: 78%; left: 80%; ">
-<p><em>Closed</em> mouth<br><i class="bi bi-arrow-down"></i></p>
-</div>
-</section>
-<section id="latent-space-sampling" class="slide level2">
-<h2>Latent space sampling</h2>
-<p>Can generalise to different model types</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture21/latent-sampling.png" class="quarto-figure quarto-figure-center" width="550"></p>
-</figure>
-</div>
-<!-- [Sampling strategies]{.color-teal-dark} are still important to the quality of the results -->
-<p>In this and next lecture we look at decoders to go from random points in latent space to realistic data</p>
-<p><i class="bi bi-arrow-right"></i> <em>Sampling strategy</em> is simply to draw from a normal distribution</p>
-<p><span class="absolute" style="font-size: 0.5em;top: 10%; right: 0%; "><em>Deep Learning with Python</em>, F. Chollet</span></p>
-</section>
-<section id="improving-the-autoencoder" class="slide level2" data-background-color="#faebed">
-<h2>Improving the autoencoder</h2>
-<div style="padding-top: 90px;">
-
-</div>
-<p>In practice, autoencoder latent spaces are not great for generating realistic output.</p>
-<div style="padding-top: 10px;">
-
-</div>
-<p>Can do a better by imposing some requirements on the structure of the latent space:</p>
-<p><i class="bi bi-arrow-right"></i> Try to learn a <span class="color-indigo"><em>distribution</em></span> rather than a fixed encoding</p>
-<div style="padding-top: 10px;">
-
-</div>
-<p>This will lead us to the <span class="color-pink-dark"><strong>variational autoencoder</strong></span> <span class="color-text-muted">(<em>in a bit</em>)</span></p>
-</section>
-<section id="learning-distributions" class="slide level2">
-<h2>Learning distributions</h2>
-<p>For ML in general, we usually only to predict a single best value.</p>
-<p>Requires there to be a <span class="color-indigo"><strong>functional relationship</strong></span> (<em>one-to-one</em> or <em>many-to-one</em>) between the the input features and the target</p>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture21/mdn-1.png" width="300"></p>
-<figcaption>Nice relationship between <em>x</em> and <em>y</em></figcaption>
-</figure>
-</div>
-</div>
-<div class="fragment quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture21/mdn-2.png" width="300"></p>
-<figcaption>Many possible <em>y</em> values for each <em>x</em></figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute" style="font-size: 0.8em;top: 45%; left: 43%; ">
-<p><span class="color-blue-dark">● data points</span></p>
-<p><span class="color-red">‒ prediction</span></p>
-</div>
-</section>
-<section id="learning-distributions-1" class="slide level2">
-<h2>Learning distributions</h2>
-<p>Can free ourselves from the functional assumption by rather modelling the <span class="color-indigo"><em>distribution</em></span> that data came from</p>
-<p>Example: <em>Mixture density network</em> predicting parameters of normal distributions</p>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture21/mdn-3.png" class="quarto-figure quarto-figure-center" width="300"></p>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture21/mdn-4.png" class="quarto-figure quarto-figure-center" width="300"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p>From this we can sample realistic new data points</p>
-</section>
-<section id="variational-autoencoder" class="slide level2">
-<h2>Variational autoencoder</h2>
-<p><span class="color-red-dark">Twist</span>: Let’s model distributions <strong><em>in latent space</em></strong></p>
-<p>This is the aim of the variational autoencoder (VAE).</p>
-<div style="padding-top: 10px;">
-
-</div>
-<div class="fragment">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture21/variational-1.png" class="quarto-figure quarto-figure-center" width="650"></p>
-</figure>
-</div>
-<ol type="1">
-<li><span class="color-pink-dark">Encode</span> input data into parameters of a probability distribution (for a normal distribution: mean and variance)</li>
-<li><span class="color-pink-dark">Sample</span> a point from this distribution</li>
-<li><span class="color-pink-dark">Decode</span> this point back to the input format</li>
-</ol>
-</div>
-</section>
-<section id="variational-autoencoder-1" class="slide level2">
-<h2>Variational autoencoder</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p>Since encoder and decoder layers are <span class="color-purple">nonlinear transformations</span>, we can go from complicated input distributions to a normal (Gaussian) looking latent space and back</p>
-<p>To <span class="color-red-dark">force</span> this latent space distribution, we modify the loss function:</p>
-<p>Combine</p>
-<ul>
-<li>reconstruction error (e.g.&nbsp;MSE), and</li>
-<li>difference between the latent distribution and a normal distribution (measured by <em>KL divergence</em>)</li>
-</ul>
-</div></div>
-<div class="absolute" style="top: 10%; right: 0%; width: 500px; ">
-<p><img data-src="figures/lecture21/variational-2.png"></p>
-</div>
-</section>
-<section id="variational-autoencoder-2" class="slide level2">
-<h2>Variational autoencoder</h2>
-<div style="padding-top: 120px;">
-
-</div>
-<div class="columns">
-<div class="column" style="width:40%;">
-<p>The latent space becomes continuous</p>
-<p><i class="bi bi-arrow-right"></i> We can sample along the different latent space dimensions to combine (or remove) <span class="color-pink-dark"><em>concepts</em></span></p>
-</div></div>
-<div class="absolute" style="top: 10%; right: 0%; width: 600px; ">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture21/variational-mnist.png"></p>
-<figcaption>MNIST digits with 2 latent dimensions</figcaption>
-</figure>
-</div>
-</div>
-</section>
-<section id="generative-adversarial-networks" class="slide level2">
-<h2>Generative adversarial networks</h2>
-<div style="padding-top: 90px;">
-
-</div>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div style="padding-top: 50px;">
-
-</div>
-<p><strong>GANs</strong>: The coolest thing in 2014 <br>(<em>now superseded by diffusion models</em>)</p>
-<p>Popularised by <a href="https://thispersondoesnotexist.com/"><code>thispersondoesnotexist.com</code></a></p>
-</div><div class="column" style="width:50%;">
-<iframe src="https://thispersondoesnotexist.com" width="350px" height="350px">
-</iframe>
-</div></div>
-<div class="absolute" style="font-size: 0.6em;bottom: 13%; right: 22%; ">
-<p>Based on <em>StyleGAN</em>, <a href="https://arxiv.org/abs/1812.04948">arXiv:182.04948</a></p>
-</div>
-</section>
-<section id="generative-adversarial-networks-1" class="slide level2">
-<h2>Generative adversarial networks</h2>
-<p>Have two models work in tandem:</p>
-<ul>
-<li>A <span class="color-pink-dark"><em>generator</em></span> that decodes random values into an image</li>
-<li>A <span class="color-pink-dark"><em>discriminator</em></span> that takes in images and predicts whether it is real or made by the generator</li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture21/gan-1.png" class="quarto-figure quarto-figure-center" width="500"></p>
-</figure>
-</div>
-<div class="fragment">
-<p>Train so that</p>
-<ul>
-<li>Generator gets better at producing realistic output</li>
-<li>Discriminator gets better at distinguishing <span class="color-red-dark"><em>fake</em></span> from <span class="color-green-dark"><em>real</em></span></li>
-</ul>
-</div>
-</section>
-<section id="generative-adversarial-networks-2" class="slide level2">
-<h2>Generative adversarial networks</h2>
-<p>Training procedure is a little tricky, see the textbook for details</p>
-<p>We can still do vector arithmetic in the latent space:</p>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture21/dcgan.png" class="quarto-figure quarto-figure-center" width="600"></p>
-</figure>
-</div>
-<div class="absolute" style="font-size: 0.6em;top: 34%; right: 24%; ">
-<p><a href="https://arxiv.org/pdf/1511.06434">arXiv:1511.06434</a></p>
-</div>
-<div class="fragment">
-<p>Note: GANs are well studied in research but seldom used in practice.</p>
-<p>They are <span class="color-deep-orange-dark"><em>very</em></span> sensitive to configuration of the training procedure, and are generally just difficult</p>
-</div>
-</section>
 <section id="diffusion-models" class="slide level2" data-background-image="figures/lecture22/midjourney.png" data-background-color="black">
 <h2>Diffusion models</h2>
+</section>
+<section id="generative-deep-learning" class="slide level2">
+<h2>Generative deep learning</h2>
+<p>Have had a look at some deep learning methods for converting sampled values into realistic data:</p>
+<ul>
+<li><span class="color-purple-dark">Variational autoencoders</span> (<em>last week</em>)</li>
+<li><span class="color-purple-dark">Generative adversarial networks</span> (<em>last week</em>)</li>
+<li><span class="color-purple-dark">Diffusion models</span> (<em>this week</em>)</li>
+</ul>
+<div style="padding-top: 30px:">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch17/image_gen.d02c5d8f.png" class="quarto-figure quarto-figure-center" width="700"></p>
+</figure>
+</div>
+</section>
+<section id="generative-deep-learning-1" class="slide level2">
+<h2>Generative deep learning</h2>
+<p>Have had a look at some deep learning methods for converting sampled values into realistic data:</p>
+<ul>
+<li><span class="color-purple-dark">Variational autoencoders</span> (<em>last week</em>)</li>
+<li><span class="color-purple-dark">Generative adversarial networks</span> (<em>last week</em>)</li>
+<li><span class="color-purple-dark">Diffusion models</span> (<em>this week</em>)</li>
+</ul>
+<p>This week we also want to learn <em>language-guided</em> generation:</p>
+<div style="padding-top: 100px:">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch17/text-to-image.d51ae48c.png" class="quarto-figure quarto-figure-center" width="900"></p>
+</figure>
+</div>
 </section>
 <section id="diffusion-models-1" class="slide level2">
 <h2>Diffusion models</h2>
@@ -413,72 +194,111 @@ sma@hvl.no
 <p><img data-src="figures/lecture22/diffusion.png" class="quarto-figure quarto-figure-center"></p>
 </figure>
 </div>
-<p>Can technically see the diffusion model as a variational autoencoder, but where the encoder process is just adding noise</p>
+<!-- Can technically see the diffusion model as a variational autoencoder, but where the encoder process is just adding noise -->
 </section>
 <section id="diffusion-models-2" class="slide level2">
 <h2>Diffusion models</h2>
+<p>When we talk about “diffusion models” we refer to the way they are trained.</p>
+<p>The network architecture must be something that can de-noise an image, i.e.&nbsp;maintain original dimensions but improve the inherent concept</p>
+<div class="fragment">
+<div style="padding-top: 20px;">
+
+</div>
+<p>Good candidate: the <span class="color-purple-dark">U-Net</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch17/unet.20eacd7d.png" class="quarto-figure quarto-figure-center" width="800"></p>
+</figure>
+</div>
+<p>Ideally also want to encode the time step – hence the <code>concat</code> in the beginning</p>
+</div>
+</section>
+<section id="training-a-diffusion-model" class="slide level2">
+<h2>Training a diffusion model</h2>
+<div style="padding-top: 70px;">
+
+</div>
+<p>Let’s now look at the forward and backward processes.</p>
+<div style="padding-top: 50px;">
+
+</div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figures/lecture22/diffusion.png" class="quarto-figure quarto-figure-center"></p>
 </figure>
 </div>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>To <strong>generate</strong> new images, we</p>
-<ul>
-<li>Sample an images of random noise</li>
-<li>Run stepwise denoising</li>
-<li>Converge at a realistic image</li>
-</ul>
-</div></div>
-<div class="absolute fragment" style="bottom: 10%; right: 0%; width: 500px; ">
-<p><img data-src="https://i.imgur.com/FSCKtZq.gif"></p>
-</div>
+<!-- Like for the autoencoder variants, we need only the _decoding_ step to generate new data, but we need both the _encoding_ and _decoding_ steps to train the model. -->
 </section>
-<section id="forward-encoder" class="slide level2">
-<h2>Forward encoder</h2>
-<p>With the noise addition being the central component, let’s have a closer look.</p>
+<section id="forward-diffusion-process" class="slide level2">
+<h2>Forward diffusion process</h2>
 <p>Like for the VAE, we want a nicely <span class="color-pink-dark">structured latent space</span> were we can create new data just by sampling from a <span class="color-pink-dark">normal</span> distribution.</p>
-<div class="fragment">
-<p>The <span class="color-indigo"><em>forward</em></span> process makes a corrupted image <span class="math inline">\(\boldsymbol{x}_1\)</span> from an initial example <span class="math inline">\(\boldsymbol{x}_0\)</span>:</p>
+<p>The <span class="color-indigo"><em>forward</em></span> process makes a corrupted image <span class="math inline">\(\boldsymbol{x}_1\)</span> from an initial example <span class="math inline">\(\boldsymbol{x}_0\)</span></p>
 <p><span class="math display">\[
 \small
-\boldsymbol{x}_1 = \sqrt{1-\beta_1}\boldsymbol{x}_0 + \sqrt{\beta_1}\boldsymbol{\epsilon}_1
+\boldsymbol{x}_1 = \mathtt{noise\_rate}_1 \cdot \boldsymbol{\epsilon}_1 + \mathtt{signal\_rate}_1 \cdot \boldsymbol{x}_0
 \]</span></p>
+<p>where</p>
 <ul>
-<li><span class="math inline">\(\beta_1\)</span> is the variance of the noise distribution (at step 1), <span class="math inline">\(\small\beta_1 &lt; 1\)</span></li>
-<li><span class="math inline">\(\boldsymbol{\epsilon}_1\)</span> is noise</li>
+<li><span class="math inline">\(\boldsymbol{\epsilon}_1\)</span> are numbers sampled from a normal distribution (the <strong>noise</strong>)</li>
+<li>noise_rate is a scaling for how much noise to add at this step</li>
+<li>signal_rate is the remaining amount of the original image, at this step</li>
 </ul>
+<p>Controlling the noise rate at each step is done by the <em>diffusion schedule</em></p>
+</section>
+<section id="diffusion-schedule" class="slide level2">
+<h2>Diffusion schedule</h2>
+<!-- ![](figures/lecture22/variance-schedule.png){fig-align="center" width="400px"} -->
+<p>See best results if we add noise slowly in the beginning, using the <em>cosine schedule</em> <br> (rather than adding the same amount each time)</p>
+<div style="padding-top: 10px;">
+
 </div>
-<div class="fragment">
-<p>The book writes this transformation as a <span class="color-indigo">probability distribution</span> <span class="math inline">\(q\)</span> (eq. 17-5):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://ar5iv.labs.arxiv.org/html/2102.09672/assets/linear_vs_cosine.png" class="quarto-figure quarto-figure-center" width="880"></p>
+</figure>
+</div>
+<div class="absolute color-red-dark" style="top: 30%; right: 0%; ">
+<p>Linear</p>
+</div>
+<div class="absolute color-blue-dark" style="top: 42%; right: 0%; ">
+<p>Cosine</p>
+</div>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div style="padding-top: 40px;">
+
+</div>
+<p>The relation between noise and signal rates are given by</p>
+<p><span class="math display">\[
+\small
+\mathtt{noise\_rate}^2 + \mathtt{signal\_rate}^2 = 1
+\]</span></p>
+</div><div class="column" style="width:60%;">
+<div class="r-stack">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch17/diffusion_schedule.52ecea17.png" class="quarto-figure quarto-figure-center" width="450"></p>
+</figure>
+</div>
+<p><img data-src="https://i.imgur.com/JW9W0fA.gif" class="fragment" width="400"></p>
+</div>
+</div></div>
+</section>
+<section id="forward-diffusion-process-1" class="slide level2">
+<h2>Forward diffusion process</h2>
+<p>If being a little fancy about it, we can write the forward step</p>
+<p><span class="math display">\[
+\small
+\boldsymbol{x}_1 = \sqrt{\beta_1} \cdot \boldsymbol{\epsilon}_1 + \sqrt{1-\beta_1} \cdot \boldsymbol{x}_0
+\]</span></p>
+<p>(here with <span class="math inline">\(\beta\)</span> being the noise variance) as a <span class="color-indigo">probability distribution</span> <span class="math inline">\(q\)</span>:</p>
 <p><span class="math display">\[
 \small
 q(\boldsymbol{x}_1 | \boldsymbol{x}_{0}) = \mathcal{N}(\sqrt{\beta_1} \boldsymbol{x}_0, \beta_1 \boldsymbol{\mathrm{I}})
 \]</span></p>
-<p>where <span class="math inline">\(\mathcal{N}\)</span> is the normal distribution and <span class="math inline">\(\boldsymbol{\mathrm{I}}\)</span> the identiy matrix</p>
-</div>
-</section>
-<section id="forward-encoder-1" class="slide level2">
-<h2>Forward encoder</h2>
-<p>Run the diffusion step <span class="math inline">\(T\)</span><br> times, with <span class="math inline">\(T \approx 10^3\)</span></p>
-<div class="absolute" style="top: 0%; right: 0%; ">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture22/diffused-cat.png" class="quarto-figure quarto-figure-center" width="550"></p>
-</figure>
-</div>
-</div>
-<div style="padding-top: 20px;">
-
-</div>
-<p>The distribution for an arbitrary step <span class="math inline">\(t\)</span> is then</p>
-<p><span class="math display">\[
-\small
-q(\boldsymbol{x}_{t} | \boldsymbol{x}_{t-1}) = \mathcal{N}(\sqrt{\beta_t} \boldsymbol{x}_{t-1}, \beta_t \boldsymbol{\mathrm{I}})
-\]</span></p>
+<p>where <span class="math inline">\(\mathcal{N}\)</span> is the normal distribution (and <span class="math inline">\(\boldsymbol{\mathrm{I}}\)</span> the identity matrix)</p>
 <div class="fragment">
-<p><span class="color-deep-purple"><em>Trick:</em></span> Since the sum of normal distributions is also normal, we can write the entire thing from start to <span class="math inline">\(t\)</span> as (eq. 17-6):</p>
+<p><span class="color-deep-purple"><strong><em>Trick:</em></strong></span> Since the sum of normal distributions is also normal, we can write the entire thing from start to <span class="math inline">\(t\)</span> as</p>
 <p><span class="math display">\[
 \small
 q(\boldsymbol{x}_{t} | \boldsymbol{x}_{0}) = \mathcal{N}(\sqrt{\bar{\alpha}_t} \boldsymbol{x}_{0}, (1 - \bar{\alpha}_t) \boldsymbol{\mathrm{I}})
@@ -487,43 +307,42 @@ q(\boldsymbol{x}_{t} | \boldsymbol{x}_{0}) = \mathcal{N}(\sqrt{\bar{\alpha}_t} \
 <p>The factor <span class="math inline">\(\small\bar{\alpha}_t\)</span> is basically the amount of original image remaining</p>
 </div>
 </section>
-<section id="noise-variance-scheduling" class="slide level2">
-<h2>Noise (variance) scheduling</h2>
-<p><span class="math inline">\(\small\bar{\alpha}_t\)</span> should start at 1 (no noise) and end at 0 (all noise).</p>
-<ul>
-<li><em>Naïve approach:</em> Change <span class="math inline">\(\small\beta_t\)</span> in fixed steps (<span class="color-red"><strong>linear</strong></span> schedule)</li>
-<li><em>Better approach:</em> Start adding noise more slowly (<span class="color-blue-dark"><strong>cosine</strong></span> schedule)</li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture22/variance-schedule.png" class="quarto-figure quarto-figure-center" width="400"></p>
-</figure>
+<section id="forward-encoder" class="slide level2">
+<h2>Forward encoder</h2>
+<p>For the denoiser to be able to reverse the forward process, each step has to be small.</p>
+<p><i class="bi bi-arrow-right"></i> Need many steps in total, typically <span class="math inline">\(&gt; 1000\)</span>.</p>
+<div style="padding-top: 20px;">
+
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="https://ar5iv.labs.arxiv.org/html/2102.09672/assets/linear_vs_cosine.png" class="quarto-figure quarto-figure-center" width="700"></p>
+<p><img data-src="figures/lecture22/diffused-cat.png" class="quarto-figure quarto-figure-center" width="700"></p>
 </figure>
 </div>
-<div class="absolute color-red" style="left: 86%; bottom: 17%; ">
-<p>Linear</p>
+<div style="padding-top: 20px;">
+
 </div>
-<div class="absolute color-blue-dark" style="left: 86%; bottom: 8%; ">
-<p>Cosine</p>
-</div>
+<p>Since we could write the output at an arbitrary step <span class="math inline">\(t\)</span>, we don’t have to run the forward process in sequence, but can train on the steps in random order</p>
 </section>
 <section id="reverse-decoder" class="slide level2">
 <h2>Reverse decoder</h2>
-<p>The distributions of the forward encoder <span class="math inline">\(q(\boldsymbol{x}_{t} | \boldsymbol{x}_{t-1})\)</span> were <span class="color-green-dark">easy</span></p>
-<p>But computing reverse distribution <span class="math inline">\(q(\boldsymbol{x}_{t-1} | \boldsymbol{x}_{t})\)</span> analytically is close to <span class="color-red-dark">impossible</span>.</p>
-<p>Luckily we can <em>approximate</em> it with a deep learning model:</p>
+<div style="padding-top: 20px;">
+
+</div>
+<p>The distributions of the forward encoder <span class="math inline">\(\small q(\boldsymbol{x}_{t} | \boldsymbol{x}_{t-1})\)</span> were <span class="color-green-dark">easy</span></p>
+<p>But computing reverse distribution <span class="math inline">\(\small q(\boldsymbol{x}_{t-1} | \boldsymbol{x}_{t})\)</span> analytically is close to <span class="color-red-dark">impossible</span>.</p>
+<div style="padding-top: 20px;">
+
+</div>
 <div class="fragment">
-<p>Build a model that learns the approximate data distribution <span class="math inline">\(\small p(\boldsymbol{x}_{t-1} | \boldsymbol{x}_{t}, \boldsymbol{w})\)</span> where <span class="math inline">\(\boldsymbol{w}\)</span>&nbsp;represents the parameters of the model</p>
+<p>Luckily we can <em>approximate</em> it with a deep learning model:</p>
+<!-- :::{.fragment} -->
+<!-- Build a model that learns the approximate data distribution -->
+<!-- $\small p(\boldsymbol{x}_{t-1} | \boldsymbol{x}_{t}, \boldsymbol{w})$ -->
+<!-- where $\boldsymbol{w}$ represents the parameters of the model -->
 <div class="columns">
 <div class="column" style="width:50%;">
-<ul>
-<li>The original DDPM papers used a <span class="color-pink-dark">U-Net</span> type architecture</li>
-</ul>
-<div class="fragment">
+<!-- - The original DDPM papers used a [U-Net]{.color-pink-dark} type architecture -->
 <ul>
 <li>Model choice is independent of the diffusion process itself, as long as
 <ul>
@@ -531,11 +350,10 @@ q(\boldsymbol{x}_{t} | \boldsymbol{x}_{0}) = \mathcal{N}(\sqrt{\bar{\alpha}_t} \
 <li>We can (ideally) encode the time step information</li>
 </ul></li>
 </ul>
-</div>
-</div><div class="column" style="width:50%;">
+</div><!-- ::: --><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-right">
 <figure>
-<p><img data-src="https://miro.medium.com/v2/resize:fit:1400/1*VUS2cCaPB45wcHHFp_fQZQ.png" class="quarto-figure quarto-figure-right"></p>
+<p><img data-src="https://miro.medium.com/v2/resize:fit:1400/1*VUS2cCaPB45wcHHFp_fQZQ.png" class="quarto-figure quarto-figure-right" style="width:90.0%"></p>
 </figure>
 </div>
 </div></div>
@@ -572,43 +390,7 @@ q(\boldsymbol{x}_{t} | \boldsymbol{x}_{0}) = \mathcal{N}(\sqrt{\bar{\alpha}_t} \
 </div>
 </div>
 </section>
-<section id="modern-diffusion-models" class="slide level2">
-<h2>Modern diffusion models</h2>
-<p>The newest and best image generation models are variants of <span class="color-pink-dark"><strong>latent diffusion</strong></span>:</p>
-<p>Run the diffusion in <span class="color-pink-dark"><em>latent space</em></span>, rather than pixel space</p>
-<p>To construct the latent space, use a variational autoencoder:</p>
-<div class="columns">
-<div class="column" style="width:68%;">
-<p><img data-src="https://scholar.harvard.edu/sites/scholar.harvard.edu/files/styles/os_files_xxlarge/public/binxuw/files/stablediffusion_overview.jpg?m=1745779642&amp;itok=n2gM0Xba"></p>
-</div><div class="column" style="width:32%;">
-<p><img data-src="https://scholar.harvard.edu/sites/scholar.harvard.edu/files/styles/os_files_large/public/binxuw/files/diffusion_proc1.gif?m=1667441103&amp;itok=y1BDYFl1" class="fragment"></p>
-</div></div>
-</section>
-<section id="conditional-generation" class="slide level2">
-<h2>Conditional generation</h2>
-<p>So far we generated data starting from entirely random noise: We do <span class="color-deep-orange"><em>unconditional</em></span> sampling.</p>
-<p>Outputs are realistic representations of training data</p>
-<ul>
-<li>But we can’t control what output we get.</li>
-</ul>
-<div class="fragment">
-<p>Enter <span class="color-deep-purple"><strong>guided diffusion</strong></span>:</p>
-<p>Condition the generation on additional input data <span class="color-text-muted"><em>(class, text prompt, …)</em></span></p>
-<p>Gets complicated, but relies mainly on two things:</p>
-<ul>
-<li>Encoding the input prompt through e.g.&nbsp;a language model, and concatenating with input to the denoising network</li>
-<li><span class="color-deep-purple">Cross-attention</span> layers allowing denoising network to attend to prompt tokens</li>
-</ul>
-</div>
-</section>
-<section id="open-source-diffusion-models" class="slide level2">
-<h2>Open-source diffusion models</h2>
-<p><img data-src="figures/lecture22/huggingface.png"></p>
-<div class="absolute" style="font-size: 0.7em;top: 0%; right: 0%; ">
-<p>Hugging Face <a href="https://huggingface.co/models?pipeline_tag=text-to-image">text-to-image</a></p>
-</div>
-</section>
-<section id="section-1" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<section id="section" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>

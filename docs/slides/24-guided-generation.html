@@ -95,7 +95,7 @@
     code span.vs { color: #da4453; } /* VerbatimString */
     code span.wa { color: #da4453; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e5387708f32441f66e167fb7200d552e.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-41d670d08b33858e423018f51d98f717.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,7 +195,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 20</u> – Multimodal transformers</p>
+  <p class="subtitle"><u>Lecture 24</u> – Guided generation</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -206,553 +206,331 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="training-llms" class="slide level2">
-<h2>Training LLMs</h2>
-<p>Typical training procedure:</p>
+<section id="generating-samples-from-a-decoder-model" class="slide level2">
+<h2>Generating samples from a decoder model</h2>
+<p>With the trained decoder model in place, we can finally generate new (unseen) images:</p>
 <div class="columns">
-<div class="column" style="width:55%;">
-<ol type="1">
-<li><p><strong>Self-supervised pre-training</strong></p>
-<p>A general model that can be subsequently fine-tuned on different tasks is called a <em>foundation</em> model</p>
-<p>Cost: <span class="color-red-dark">$1 million</span> to <span class="color-red-dark">$100 million</span></p></li>
-</ol>
-<div class="fragment">
-<ol start="2" type="1">
-<li><p><strong>Supervised fine-tuning</strong></p>
-<p>Adapt to more specific uses, such as</p>
+<div class="column" style="width:33%;">
 <ul>
-<li>Chat / Question answering</li>
-<li>Chain-of-thought reasoning</li>
-<li>Domain-specific used</li>
+<li><strong>Step 0:</strong> <br>Draw random pixel values from a normal distribution</li>
+<li><strong>Steps 1 to <span class="math inline">\(\sim\)</span> 4000</strong>: <br> Sequentially run the decoder to remove noise</li>
 </ul>
-<p>Cost: <span class="color-orange-dark">Depends</span></p></li>
-</ol>
+</div><div class="column" style="width:7%;">
+
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture22/diffused-cat.png" class="quarto-figure quarto-figure-center" width="550"></p>
+</figure>
 </div>
-</div><div class="column" style="width:45%;">
+</div></div>
 <div class="fragment">
-<ol start="3" type="1">
-<li><p><strong>Continuous fine-tuning</strong></p>
-<p>Fine-tune an already fine-tuned model</p>
-<p>Cost: <span class="color-green-dark">$1</span> to <span class="color-green-dark">$1000</span></p></li>
-</ol>
-<div class="{.layout-nrow=2}">
+<p>Properties of diffusion models:</p>
+<ul>
+<li><span class="color-green-dark">Easy</span> to train</li>
+<li>Superb <span class="color-green-dark">quality</span> of results</li>
+<li><span class="color-red-dark">Slow</span> to generate new samples</li>
+</ul>
+<div class="absolute" style="bottom: 0%; right: 0%; width: 500px; ">
+<!-- ![](https://i.imgur.com/FSCKtZq.gif) -->
+<p><img data-src="https://doctorpopular.com/wp-content/uploads/2022/08/beautiful-art-generated-from-the-yo-yo-emoji.gif"></p>
+</div>
+</div>
+</section>
+<section id="modern-diffusion-models" class="slide level2">
+<h2>Modern diffusion models</h2>
+<p>The newest and best image generation models are variants of <span class="color-pink-dark"><strong>latent diffusion</strong></span>:</p>
+<p>Run the diffusion in <span class="color-pink-dark"><em>latent space</em></span>, rather than pixel space</p>
+<p>To construct the latent space, use a variational autoencoder:</p>
+<div class="columns">
+<div class="column" style="width:68%;">
+<!-- ![](https://scholar.harvard.edu/sites/scholar.harvard.edu/files/styles/os_files_xxlarge/public/binxuw/files/stablediffusion_overview.jpg?m=1745779642&itok=n2gM0Xba){} -->
+<p><img data-src="https://jalammar.github.io/images/stable-diffusion/article-Figure3-1-1536x762.png"></p>
+</div><div class="column" style="width:32%;">
+<!-- ![](https://scholar.harvard.edu/sites/scholar.harvard.edu/files/styles/os_files_large/public/binxuw/files/diffusion_proc1.gif?m=1667441103&itok=y1BDYFl1){.fragment} -->
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture17/hugging-face.png" class="quarto-figure quarto-figure-center" width="300"></p>
+<p><img data-src="https://miro.medium.com/v2/resize:fit:1024/format:webp/1*kHhMdfSPjWSqRe0-oQlqJQ.gif" style="width:90.0%"></p>
+<figcaption>Example: <em>Stable Diffusion</em></figcaption>
 </figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture17/llama-finetunes.png" class="quarto-figure quarto-figure-center" width="300"></p>
-</figure>
-</div>
-</div>
 </div>
 </div></div>
 </section>
-<section id="training-data" class="slide level2">
-<h2>Training data</h2>
-<p>As always, key to a good model is data.</p>
+<section id="conditional-generation" class="slide level2">
+<h2>Conditional generation</h2>
+<p>So far we generated data starting from entirely random noise: We do <span class="color-deep-orange"><em>unconditional</em></span> sampling.</p>
+<p>Outputs are realistic representations of training data</p>
+<ul>
+<li>But we can’t control what output we get.</li>
+</ul>
+<div class="fragment">
+<p>Enter <span class="color-deep-purple"><strong>guided diffusion</strong></span>:</p>
+<p>Condition the generation on additional input data <span class="color-text-muted"><em>(class, text prompt, …)</em></span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch17/text-to-image.d51ae48c.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="conditional-generation-1" class="slide level2">
+<h2>Conditional generation</h2>
+<p>The conditional generation of models like <em>stable diffusion</em> is complicated, but relies mainly on two things:</p>
+<ul>
+<li>Encoding the input prompt through a language model, and concatenating with input to the denoising network</li>
+<li><span class="color-deep-purple">Cross-attention</span> layers allowing denoising network to attend to prompt tokens</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://jalammar.github.io/images/stable-diffusion/article-Figure3-1-1536x762.png" class="quarto-figure quarto-figure-center" width="800"></p>
+</figure>
+</div>
+<p>Training is done on pairs of images and descriptions, where the descriptions are needed to align text embeddings with concepts in latent space</p>
+</section>
+<section id="open-source-diffusion-models" class="slide level2">
+<h2>Open-source diffusion models</h2>
+<p>Training diffusion models is beyond the expectation for this course, but we can still try them out.</p>
+<p>For instance through <a href="https://keras.io/keras_hub/presets/">Keras Hub</a>:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Pre-training:</strong></p>
-<p>Data scraped from …</p>
-<ul>
-<li>Wikipedia <span class="color-text-muted"><em>(multi-language)</em></span></li>
-<li>GitHub <span class="color-text-muted"><em>(code)</em></span></li>
-<li>ArXiv <span class="color-text-muted"><em>(academic text)</em></span></li>
-<li>StackOverflow <span class="color-text-muted"><em>(Q&amp;A)</em></span></li>
-<li>Reddit etc. <span class="color-text-muted"><em>(forums)</em></span></li>
-<li>Project Gutenberg <span class="color-text-muted"><em>(books)</em></span></li>
-</ul>
-<p>See e.g.&nbsp;<a href="https://commoncrawl.org/">Common Crawl</a></p>
-</div><div class="column" style="width:50%;">
-
-</div></div>
-<div class="absolute" style="top: -10%; left: 60%; width: 700px; ">
-<p><img data-src="figures/lecture17/commoncrawl.png"></p>
-</div>
-</section>
-<section id="training-data-1" class="slide level2">
-<h2>Training data</h2>
-<p>As always, key to a good model is data.</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Pre-training:</strong></p>
-<p>Data scraped from …</p>
-<ul>
-<li>Wikipedia <span class="color-text-muted"><em>(multi-language)</em></span></li>
-<li>GitHub <span class="color-text-muted"><em>(code)</em></span></li>
-<li>ArXiv <span class="color-text-muted"><em>(academic text)</em></span></li>
-<li>StackOverflow <span class="color-text-muted"><em>(Q&amp;A)</em></span></li>
-<li>Reddit etc. <span class="color-text-muted"><em>(forums)</em></span></li>
-<li>Project Gutenberg <span class="color-text-muted"><em>(books)</em></span></li>
-</ul>
-<p>See e.g.&nbsp;<a href="https://commoncrawl.org/">Common Crawl</a></p>
-</div><div class="column" style="width:50%;">
-<p><strong>Fine-tuning:</strong></p>
-<p>Now we need <span class="color-teal-dark"><strong><em>annotated</em></strong></span> data</p>
-<ul>
-<li>Specific datasets for question answering</li>
-<li>Reinforcement learning from human feedback (RLHF)</li>
-</ul>
-</div></div>
-<p>Exact training data are business secrets (even for open-sourced models)</p>
-</section>
-<section id="distributed-training" class="slide level2">
-<h2>Distributed training</h2>
-<p>Once the model can’t fit on a single GPU, things get more complicated</p>
-<div style="text-align: center; padding-bottom: 20px;">
-<p><em>(for instance the full Llama 3.1 needs 3.3TB VRAM for training)</em></p>
-</div>
-<div class="fragment">
-<p>What can be split and parallelised?</p>
-<ul>
-<li><span class="color-cyan-dark"><strong>Data:</strong></span> Run different batches in parallel</li>
-<li><span class="color-green-dark"><strong>Weights:</strong></span> Distribute weight matrices over separate GPUs</li>
-<li><span class="color-amber-dark"><strong>Layers:</strong></span> Distribute different layers over separate GPUs</li>
-<li><span class="color-deep-orange-dark"><strong>Sequences:</strong></span> Partition the input data sequences</li>
-</ul>
-<p>Update entire model after each training step</p>
-<p>TensorFlow implements a set of <a href="https://www.tensorflow.org/guide/distributed_training#overview">methods</a> for distributed training, while <a href="https://huggingface.co/docs/transformers/en/perf_train_gpu_many#efficient-training-on-multiple-gpus">Hugging Face</a> offers advanced ones</p>
-</div>
-</section>
-<section id="supervised-fine-tuning" class="slide level2">
-<h2>Supervised fine-tuning</h2>
-<p>A pre-trained model can only append text to an input.</p>
-<div class="fragment">
-<p>Making a useful chatbot requires <span class="color-pink-dark"><em>instruction</em></span> training</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">"instruction"</span><span class="fu">:</span> <span class="st">"Translate 'Good night' into Spanish."</span><span class="fu">,</span></span>
-<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">"solution"</span><span class="fu">:</span> <span class="st">"Buenas noches"</span></span>
-<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span>
-<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb1-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">"instruction"</span><span class="fu">:</span> <span class="st">"Name primary colors."</span><span class="fu">,</span></span>
-<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">"solution"</span><span class="fu">:</span> <span class="st">"Red, blue, yellow"</span></span>
-<span id="cb1-8"><a aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<!-- For this step, high quality data is preferred to quantity. -->
-</div>
-<div class="fragment">
-<p>On the Hugging Face model hub you will often find two variants of the same model:</p>
-<div class="columns">
-<div class="column" style="width:20%;">
-
-</div><div class="column" style="width:50%;">
-<p><code>meta-llama/Llama-3.2-3B</code><br> <code>meta-llama/Llama-3.2-3B-Instruct</code></p>
-</div></div>
-<div style="font-size: 0.8em;">
-<blockquote>
-<p>The Llama 3.2 collection of multilingual large language models (LLMs) is a collection of pretrained and instruction-tuned generative models in 1B and 3B sizes (…)</p>
-</blockquote>
-</div>
-</div>
-</section>
-<section id="llm-fine-tuning-with-limited-resources" class="slide level2">
-<h2>LLM fine-tuning with limited resources</h2>
-<p><span class="color-indigo"><em>Full</em></span> model fine-tuning can be problematic for two reasons:</p>
-<ul>
-<li>Hardware requirements (mainly VRAM)</li>
-<li>Risk of <span class="color-red-dark"><em>catastrophic forgetting</em></span> <span class="color-text-muted">(https://arxiv.org/abs/1312.6211)</span></li>
-</ul>
-<div class="fragment" data-fragment-index="1">
-<p>Useful techniques:</p>
-</div>
-<div class="columns">
-<div class="column" style="width:55%;">
-<div class="fragment" data-fragment-index="1">
-<ul>
-<li><p><strong>Prompt tuning:</strong></p>
-<p>Add a small trainable model <em>before</em> the LLM, which outputs learned, task-specific tokens</p></li>
-</ul>
-</div>
-<div class="fragment" data-fragment-index="2">
-<ul>
-<li><p><strong>Low-rank adaptation</strong> (<em>LoRA</em>):</p>
-<p>Add small traininable layers <em>in parallel</em> with the existing attention layers</p></li>
-</ul>
-</div>
-</div><div class="column" style="width:45%;">
-<div class="quarto-figure quarto-figure-right">
-<figure>
-<p><img data-src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/peft/lora_animated.gif" class="fragment quarto-figure quarto-figure-right" data-fragment-index="2"></p>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="low-rank-adaptation-lora" class="slide level2">
-<h2>Low-rank adaptation (<em>LoRA</em>)</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture17/lora.png" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
-</figure>
-</div>
-<p>Keep original weight matrix <span class="math inline">\(\small W\)</span>&nbsp;frozen</p>
-<p>Train new (small) matrices <span class="math inline">\(\small A\)</span> and <span class="math inline">\(\small B\)</span></p>
-<ul>
-<li>Adds <span class="math inline">\(\small 2\cdot R\cdot D\)</span> new parameters (compared to <span class="math inline">\(\small D^2\)</span> in <span class="math inline">\(\small W\)</span>)</li>
-</ul>
-</section>
-<section id="quantization" class="slide level2">
-<h2>Quantization</h2>
-<p>Reduce memory cost of running inference by <span class="color-deep-purple">reducing numerical precision</span> in weights and activations</p>
-<ul>
-<li>Can store <code>float32</code> as <code>float16</code> without much modification</li>
-<li>Can store <code>float32</code> as <code>int8</code> for use on embedded systems (requires more modification)</li>
-</ul>
-<div class="fragment">
-<p>Modern quantisation schemes for LLMs are more extreme:</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Go down to anywhere between <strong>6</strong> to <strong>2 bit</strong></p>
-<p><em>Example</em>:</p>
-<p><code>DeepSeek-R1-Q4_K_M.gguf</code></p>
-<p><code>Q</code>{<em>bits per weight</em>}<code>_</code>{<em>type</em>}<code>_</code>{<em>variant</em>}</p>
-</div><div class="column" style="width:50%;">
-<div style="padding-top: 30px; text-align: right;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Scheme</th>
-<th style="text-align: center;">Compression ratio<br>(relative to <code>f32</code>)</th>
-<th>Performance</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>Q8_0</code></td>
-<td style="text-align: center;">1:4</td>
-<td>High quality</td>
-</tr>
-<tr class="even">
-<td><code>Q4_K_M</code></td>
-<td style="text-align: center;">1:8</td>
-<td>Medium quality</td>
-</tr>
-<tr class="odd">
-<td><code>Q3_K_M</code></td>
-<td style="text-align: center;">1:11</td>
-<td>Low quality</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div></div>
-</div>
-</section>
-<section id="knowledge-distillation" class="slide level2">
-<h2>Knowledge distillation</h2>
-<p>Train a small model to mimic the output of a bigger one:</p>
-<p>Use the output of the <span class="color-pink-dark">bigger</span> model as labels to supervise the <span class="color-deep-orange">smaller</span> model</p>
-<div style="padding-top: 20px;">
+<div style="padding-top: 30px;">
 
 </div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiN3UISRCKswIxZuTsi08LUV15urAL9GuG65SHPLQcyxa6JKL_aKMtYCiaFmaQ-TC59otrYI7g-DXLTa8v-h4WgOT_B1CqKtMZG7gyRiw4YoQcUn1EUj386PgYZ1PP-Wq9vDSer0D2kdYsT0n8XgAq9AdokWEtfgUBs-1KUZc2H8lMHuyjQ-nA6YFDuewrI/s1999/image4.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
-</figure>
-</div>
-<div class="absolute" style="font-size: 0.6em;bottom: 0%; right: 0%; ">
-<p>https://arxiv.org/abs/2305.02301</p>
-</div>
-</section>
-<section id="knowledge-distillation-1" class="slide level2">
-<h2>Knowledge distillation</h2>
-<p>Train a small model to mimic the output of a bigger one:</p>
-<p>Use the output of the <span class="color-pink-dark">bigger</span> model as labels to supervise the <span class="color-deep-orange">smaller</span> model</p>
-<div style="padding-top: 20px;">
-
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture17/deepseek-distill.png" class="quarto-figure quarto-figure-center" width="700"></p>
-</figure>
-</div>
-</section>
-<section id="knowledge-distillation-2" class="slide level2">
-<h2>Knowledge distillation</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture19/claude-knowledge-distillation.png" class="img-shadow quarto-figure quarto-figure-center" width="800"></p>
-</figure>
-</div>
-</section>
-<section id="transformers-for-other-data-types" class="slide level2 center" data-background-color="#E3F2FD">
-<h2>Transformers for other data types</h2>
-</section>
-<section id="general-transformers" class="slide level2">
-<h2>General transformers</h2>
-<p>Motivation behind transformers was to process sequential language data</p>
-<p>Turns out they are great general-purpose models</p>
-<ul>
-<li>Make very few assumptions about the input data</li>
-</ul>
-<div class="fragment">
-<p>Transformers are now among state-of-the-art for large-scale models on</p>
-<div class="colorbox" style="background-color: #E1F5FE; text-indent: 20px;">
-<ul>
-<li>Text</li>
-<li>Images</li>
-<li>Video</li>
-<li>Audio</li>
-<li>Point clouds</li>
-</ul>
-</div>
-<div class="absolute" style="top: 60%; left: 50%; ">
-<p>In context of LLMs we call this<br> different <span class="color-cyan-dark"><em>modalities</em></span></p>
-</div>
-</div>
-</section>
-<section id="visual-attention" class="slide level2">
-<h2>Visual attention</h2>
-<p>Before the transformer architecture was established, there were still experiments with <span class="color-pink-dark"><em>visual attention</em></span> (using a combination of CNNs and RNNs with attention)</p>
-<p>Caption generation model, with attention matrix overlaid:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/frisbee.png" class="quarto-figure quarto-figure-center" style="padding-top: 30px;" width="650"></p>
-</figure>
-</div>
-</section>
-<section id="visual-attention-1" class="slide level2">
-<h2>Visual attention</h2>
-<p>Use the attention matrix as an explanation tool:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/giraffe.png" class="quarto-figure quarto-figure-center" width="800"></p>
-</figure>
-</div>
-</section>
-<section id="visual-attention-2" class="slide level2">
-<h2>Visual attention</h2>
-<p>Use the attention matrix as an explanation tool:</p>
-<div class="quarto-layout-panel" style="padding-top: 60px;" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img data-src="figures/lecture18/skateboard.png" width="500"></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img data-src="figures/lecture18/cellphone.png" width="500"></p>
-</div>
-</div>
-</div>
-<div class="absolute" style="text-align: center;left: 40%; bottom: 3%; ">
-<p><i class="bi bi-arrow-up-left"></i> &nbsp; <i class="bi bi-arrow-up-right"></i><br> Mistakes :/</p>
-</div>
-</section>
-<section id="transformers-for-computer-vision" class="slide level2">
-<h2>Transformers for computer vision</h2>
-<p>Challenge for processing non-textual inputs:</p>
-<div style="text-align: center;">
-<p>How to define a <span class="color-deep-orange">token</span>?</p>
-</div>
-<div class="fragment">
-<p><em>Simplest approach:</em> <span class="color-teal-dark">Each pixel</span> is a token.</p>
-</div>
-<div class="fragment">
-<p>Problem: Attention matrix is quadratic in number of tokens</p>
-<p><i class="bi bi-arrow-right"></i> for big images, the matrix becomes <span class="color-red-dark">huge</span></p>
-<div style="padding-top: 40px;">
-<p>Two common approches:</p>
-<ul>
-<li>Cut the image into patches</li>
-<li>First apply convolutional layers</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="vision-transformer-vit-for-classification" class="slide level2">
-<h2>Vision transformer (ViT) for classification</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>Split the image in <span class="math inline">\(\small N\)</span> patches: Instead of</p>
-<div style="text-align: center;">
-<p>height <span class="math inline">\(\small\times\)</span> width <span class="math inline">\(\small\times\)</span> colour channels</p>
-</div>
-<p>number of tokens, we get</p>
-<div style="text-align: center;">
-<p><span class="math inline">\(\small N \times\)</span> (patch size)<span class="math inline">\(^2\)</span> <span class="math inline">\(\small\times\)</span>&nbsp;colour channels</p>
-</div>
-<p>tokens</p>
-<div class="fragment" data-fragment-index="2">
-<p>For each patch:</p>
-<ul>
-<li>Flatten it to an 1D vector</li>
-<li>Make embeddings</li>
-<li>Add positional embeddings</li>
-</ul>
-<p><i class="bi bi-arrow-right"></i> Treat it as any generic sequence and input to a transformer encoder</p>
-</div>
-</div><div class="column" style="width:45%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/cat.png" class="quarto-figure quarto-figure-center" width="250"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/cat-patches.png" class="fragment quarto-figure quarto-figure-center" data-fragment-index="1" width="300"></p>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="vision-transformer-vit-for-classifiction" class="slide level2">
-<h2>Vision transformer (ViT) for classifiction</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/vision-transformer.png" class="quarto-figure quarto-figure-center" width="800"></p>
-</figure>
-</div>
-<div class="absolute" style="font-size: 0.6em;left: 0%; bottom: 0%; ">
-<p>https://arxiv.org/pdf/2010.11929</p>
-</div>
-</section>
-<section id="positional-embeddings" class="slide level2">
-<h2>Positional embeddings</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p>Still need to introduce the position of each patch</p>
-<ul>
-<li><p><em>Option 1:</em> <span class="color-indigo"><strong>Handcrafted encodings</strong></span>, like the sinusoidal encoding of the original encoder</p>
-<ul>
-<li>Gets a little complicated and generally does not perform very well</li>
-</ul></li>
-</ul>
-<div style="padding-top: 15px;">
-
-</div>
-<ul>
-<li><p><em>Option 2:</em> <span class="color-cyan-dark"><strong>Learned embeddings</strong></span></p>
-<ul>
-<li><p>Instead of embedding word 1, 2, … <span class="math inline">\(\small N\)</span>, we trivially extend the procedure to embed patch (1,1), (2,1), … (<span class="math inline">\(\small N, M\)</span>)</p>
-<p><code>keras.layers.Embedding</code> can be used for any input dimensionality</p></li>
-</ul></li>
-</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="im">import</span> keras_hub</span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>height, width <span class="op">=</span> <span class="dv">512</span>, <span class="dv">512</span></span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a>task <span class="op">=</span> keras_hub.models.TextToImage.from_preset(</span>
+<span id="cb1-5"><a aria-hidden="true" tabindex="-1"></a>    <span class="st">"stable_diffusion_3_medium"</span>,</span>
+<span id="cb1-6"><a aria-hidden="true" tabindex="-1"></a>    image_shape<span class="op">=</span>(height, width, <span class="dv">3</span>),</span>
+<span id="cb1-7"><a aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span><span class="st">"float16"</span>,</span>
+<span id="cb1-8"><a aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-9"><a aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb1-10"><a aria-hidden="true" tabindex="-1"></a><span class="st">A NASA astraunaut riding an</span></span>
+<span id="cb1-11"><a aria-hidden="true" tabindex="-1"></a><span class="st">origami elephant in New York City</span></span>
+<span id="cb1-12"><a aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb1-13"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a aria-hidden="true" tabindex="-1"></a>task.generate(prompt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:40%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture18/cat.png" class="quarto-figure quarto-figure-center" width="200"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/cat-patches.png" class="quarto-figure quarto-figure-center" width="250"></p>
+<p><img data-src="https://deeplearningwithpython.io/images/ch17/sd3-output.6c189acc.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
 </figure>
 </div>
 </div></div>
 </section>
-<section id="combined-architecture" class="slide level2">
-<h2>Combined architecture</h2>
-<div style="padding-top: 100px">
-
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/object-det.png" class="quarto-figure quarto-figure-center" width="1000"></p>
-</figure>
-</div>
-<div class="absolute" style="font-size: 0.6em;left: 0%; bottom: 0%; ">
-<p>https://arxiv.org/pdf/2005.12872</p>
+<section id="open-source-diffusion-models-1" class="slide level2">
+<h2>Open-source diffusion models</h2>
+<p>Or through <a href="https://keras.io/keras_hub/presets/">Hugging Face</a>:</p>
+<p><img data-src="figures/lecture22/huggingface.png"></p>
+<div class="absolute" style="font-size: 0.7em;top: 0%; right: 0%; ">
+<p>Hugging Face <a href="https://huggingface.co/models?pipeline_tag=text-to-image">text-to-image</a></p>
 </div>
 </section>
-<section id="inductive-biases" class="slide level2">
-<h2>Inductive biases</h2>
-<p><strong><em>Inductive bias:</em></strong> assumption built into the model architecture</p>
-<ul>
-<li><p><span class="color-deep-purple">Linear models (<span class="math inline">\(\small y = ax+b\)</span>)</span>: Assume data is linear</p></li>
-<li><p><span class="color-deep-purple">CNNs</span>: Assume translational equivariance, hierarchical structure</p></li>
-<li><p><span class="color-deep-purple">RNNs</span>: Assume meaningful ordering</p></li>
-</ul>
+<section id="exploring-the-latent-space" class="slide level2">
+<h2>Exploring the latent space</h2>
+<p>Knowing how text embeddings work, we can not only use prompts to generate the desired output, but also add <em>negative prompts</em> to avoid certain output:</p>
 <div style="padding-top: 30px;">
 
 </div>
-<hr>
-<div style="padding-top: 30px;">
-
-</div>
-<div class="fragment">
-<p><strong>Transformers</strong>: Assume <em>some</em> relation between input tokens, but that’s about it</p>
-<p><span class="color-green-dark"><em>Good</em></span>: General-purpose architecture</p>
-<p><span class="color-red-dark"><em>Bad</em></span>: Requires <span class="color-text-muted">(a lot)</span> more training data than problem-specific models</p>
-</div>
-</section>
-<section id="combining-vision-and-text" class="slide level2">
-<h2>Combining vision and text</h2>
-<p><img data-src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/vlm/visual.jpg"></p>
-</section>
-<section id="audio-transformers" class="slide level2">
-<h2>Audio transformers</h2>
 <div class="columns">
-<div class="column" style="width:55%;">
-<p>Typical tasks:</p>
-<ul>
-<li>Speech-to-text</li>
-<li>Text-to-speech</li>
-<li>Speech-to-speech</li>
-<li>Text-to-music</li>
-</ul>
-<p>Two common ways to process audio data:</p>
-<ul>
-<li><p>Work on raw waveform data</p>
-<p>(Amplitude as function of time)</p></li>
-</ul>
-<div style="padding-top: 15px;">
-<ul>
-<li><p>Convert waveforms to spectrograms</p>
-<p>(Frequency content as function of time)</p></li>
-</ul>
+<div class="column" style="width:50%;">
+<div style="padding-top: 100px;">
+
 </div>
-</div><div class="column" style="width:45%;">
-<p><img data-src="https://c2s2.engineering.cornell.edu/blogposts/FA23/imgs/UnravelingBirdSoundsWithSpectrograms/image2.png" style="padding-top: 120px;" width="400"></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a>task.generate(</span>
+<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>        <span class="st">"prompts"</span>: prompt,</span>
+<span id="cb2-4"><a aria-hidden="true" tabindex="-1"></a>        <span class="st">"negative_prompts"</span>: <span class="st">"blue color"</span>,</span>
+<span id="cb2-5"><a aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-6"><a aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch17/sd3-output-negative.32fbdbe2.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
+</div>
 </div></div>
 </section>
-<section id="audio-transformers-1" class="slide level2">
-<h2>Audio transformers</h2>
+<section id="exploring-the-latent-space-1" class="slide level2">
+<h2>Exploring the latent space</h2>
+<p>Since the prompt embeddings live in a <em>continuous</em> vector space, we can <em>interpolate</em> between distinct concepts (= fun)</p>
+<p>However, the interpolation method matters. Prefer <em>spherical linear interpolation</em>:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="https://learnopencv.com/storage/2024/11/diffusion_variablesample_space.png"></p>
+</div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="https://images.ctfassets.net/kftzwdyauwt9/d9c13138-366f-49d3-a1a563abddc1/8acfb590df46923b021026207ff1a438/asr-summary-of-model-architecture-desktop.svg?w=1920&amp;q=90" class="quarto-figure quarto-figure-center" width="750"></p>
+<p><img data-src="https://deeplearningwithpython.io/images/ch17/slerp.eea42213.png" class="quarto-figure quarto-figure-center" style="width:60.0%"></p>
 </figure>
 </div>
-<!-- https://huggingface.co/spaces/KingNish/Realtime-whisper-large-v3-turbo -->
+</div></div>
 </section>
-<section id="audio-transformers-2" class="slide level2">
-<h2>Audio transformers</h2>
-<p>Speech synthesis: Use an example (<span class="color-deep-orange-dark"><em>acoustic prompt</em></span>) to determine generated style and tone</p>
+<section id="interpolating-between-prompts" class="slide level2">
+<h2>Interpolating between prompts</h2>
+<div style="padding-top: 120px;">
+
+</div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture18/speech-synthesis.png" class="quarto-figure quarto-figure-center" width="700"></p>
+<p><img data-src="https://deeplearningwithpython.io/images/ch17/sd3-morph.40f60bd8.png" class="quarto-figure quarto-figure-center"></p>
 </figure>
 </div>
-<div class="absolute" style="font-size: 0.6em;left: 0%; bottom: 0%; ">
-<p>https://arxiv.org/abs/2407.08551</p>
+<div class="absolute" style="font-size: 1.5em;top: 60%; left: 0%; ">
+<p><i class="bi bi-arrow-left"></i><br></p>
+<pre><code>A friendly dog looking up
+in a field of flowers</code></pre>
+</div>
+<div class="absolute" style="text-align: right; font-size: 1.5em;top: 60%; right: 0%; ">
+<p><i class="bi bi-arrow-right"></i><br></p>
+<pre><code>A horrifying, tentacled creature
+hovering over a field of flowers</code></pre>
 </div>
 </section>
-<section id="transformers-for-other-uses" class="slide level2">
-<h2>Transformers for other uses</h2>
-<p><img data-src="figures/lecture18/alphastar1.png" width="1200"></p>
-<p><img data-src="figures/lecture18/alphastar2.png" width="1200"></p>
-<p><a href="https://deepmind.google/blog/alphastar-mastering-the-real-time-strategy-game-starcraft-ii/"><img data-src="figures/lecture18/alphastar3.png" width="1200"></a></p>
-<!-- https://deepmind.google/discover/blog/alphastar-mastering-the-real-time-strategy-game-starcraft-ii/ -->
-</section>
-<section id="multimodal-transformers" class="slide level2">
-<h2>Multimodal transformers</h2>
-<p>Transformer encoder-decoder structure allows for a single model to operate on selveral different types of data</p>
-<p>If it can be encoded into an embedding space, it can be used as a context for a decoder.</p>
+<section id="interpolating-between-prompts-1" class="slide level2">
+<h2>Interpolating between prompts</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a>prompt_1 <span class="op">=</span> <span class="st">"A cute dog in a beautiful field of lavander colorful flowers "</span></span>
+<span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>prompt_2 <span class="op">=</span> prompt_1.replace(<span class="st">"dog"</span>, <span class="st">"cat"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<!-- ![](https://keras.io/img/examples/generative/random_walks_with_stable_diffusion_3/dog_to_cat_64.gif){fig-align="center"} -->
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture16/encoder-decoder.png" class="quarto-figure quarto-figure-center" width="600"></p>
+<p><img data-src="https://huggingface.co/datasets/huggingface/cookbook-images/resolve/main/sd_interpolation_3.gif" class="quarto-figure quarto-figure-center"></p>
 </figure>
 </div>
 </section>
-<section id="section" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
+<section id="interpolating-in-latent-space" class="slide level2">
+<h2>Interpolating in latent space</h2>
+<p>We can also interpolate between two noise components from the same prompt, and with spherical interpolation, do a full circle:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> <span class="st">"Beautiful sea sunset, warm light, Aivazovsky style"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://huggingface.co/datasets/huggingface/cookbook-images/resolve/main/sd_interpolation_4.gif" class="quarto-figure quarto-figure-center" width="500"></p>
+</figure>
+</div>
+<div class="absolute" style="font-size: 0.6em;bottom: 10%; right: 0%; ">
+<p>Hugging Face <br><a href="https://huggingface.co/learn/cookbook/stable_diffusion_interpolation">Open-Source AI Cookbook</a></p>
+</div>
+</section>
+<section id="exam-preparation" class="slide level2 center" data-background-color="#F3E5F5">
+<h2>Exam preparation</h2>
+<p>Questions from last year’s exam</p>
+</section>
+<section id="section" class="slide level2" data-menu-title="Q0">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q0.png"></p>
+<div class="absolute fragment fade-out rectangle" style="color: #FFF; background-color: #FFF;top: 40%; right: 7%; ">
+
+</div>
+</section>
+<section id="section-1" class="slide level2" data-menu-title="Q1">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q1.png"></p>
+<div class="absolute fragment fade-out rectangle" style="color: #FFF; background-color: #FFF;top: 23%; right: 7%; ">
+
+</div>
+</section>
+<section id="section-2" class="slide level2" data-menu-title="Q2">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q2.png"></p>
+<div class="absolute fragment fade-out rectangle" style="color: #FFF; background-color: #FFF;top: 40%; right: 7%; ">
+
+</div>
+</section>
+<section id="section-3" class="slide level2" data-menu-title="Q3">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q3.png"></p>
+<div class="absolute fragment fade-out rectangle" style="color: #FFF; background-color: #FFF;top: 60%; right: 7%; ">
+
+</div>
+</section>
+<section id="section-4" class="slide level2" data-menu-title="Q4">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q4.png"></p>
+<div class="absolute fragment fade-out rectangle" style="color: #FFF; background-color: #FFF;top: 50%; right: 7%; ">
+
+</div>
+</section>
+<section id="section-5" class="slide level2" data-menu-title="Q5">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q5.png"></p>
+<div class="absolute fragment fade-out rectangle" style="color: #FFF; background-color: #FFF;top: 45%; right: 3%; ">
+
+</div>
+</section>
+<section id="section-6" class="slide level2" data-menu-title="Q6">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q6.png"></p>
+<div class="absolute fragment fade-out rectangle" style="color: #FFF; background-color: #FFF;top: 33%; right: 7%; ">
+
+</div>
+</section>
+<section id="section-7" class="slide level2" data-menu-title="Q7">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q7.png" width="800"></p>
+<div class="absolute fragment fade-out rectangle" style="color: #FFF; background-color: #FFF;bottom: -6%; right: 20%; ">
+
+</div>
+</section>
+<section id="section-8" class="slide level2" data-menu-title="Q8">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q8.png"></p>
+<div class="absolute fragment fade-out rectangle" style="color: #FFF; background-color: #FFF;top: 46%; right: 7%; ">
+
+</div>
+</section>
+<section id="section-9" class="slide level2" data-menu-title="Q9">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q9.png"></p>
+<div class="absolute fragment fade-out rectangle" style="color: #FFF; background-color: #FFF;top: 46%; right: 7%; ">
+
+</div>
+</section>
+<section id="section-10" class="slide level2" data-menu-title="Q10">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q10.png"></p>
+<div class="absolute fragment fade-out rectangle" style="color: #FFF; background-color: #FFF;top: 46%; right: 7%; ">
+
+</div>
+</section>
+<section id="section-11" class="slide level2" data-menu-title="Q11">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q11.png"></p>
+<div class="absolute fragment fade-out rectangle" style="color: #FFF; background-color: #FFF;top: 67%; right: 7%; ">
+
+</div>
+</section>
+<section id="section-12" class="slide level2" data-menu-title="Q12">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q12.png"></p>
+<!-- :::{.absolute top="23%" right="7%" .fragment .fade-out .rectangle style="color: #aaa; background-color: #FFF;"} -->
+<!-- ::: -->
+</section>
+<section id="section-13" class="slide level2" data-menu-title="Q14">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q14.png"></p>
+<div class="absolute fragment fade-out rectangle" style="height: 200px; color: #FFF; background-color: #FFF;top: 45%; right: 7%; ">
+
+</div>
+</section>
+<section id="section-14" class="slide level2" data-menu-title="Q15">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q15.png"></p>
+<div class="absolute fragment fade-out rectangle" style="width: 1000px; height: 200px; color: #FFF; background-color: #FFF;top: 20%; left: 0%; ">
+
+</div>
+</section>
+<section id="section-15" class="slide level2" data-menu-title="Q16">
+<h2></h2>
+<p><img data-src="figures/lecture24/Q16.png"></p>
+<div class="absolute fragment fade-out rectangle" style="width: 1000px; height: 170px; color: #FFF; background-color: #FFF;top: 43%; left: 0%; ">
+
+</div>
+</section>
+<section id="section-16" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>
 </div>
-<!--
-SHOW:
-- whisper
-- alphastar
-- visual question answering gemini
--->
 
 
 </section>
