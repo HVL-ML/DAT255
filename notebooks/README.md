@@ -514,9 +514,37 @@ They will be added as the course progresses.
         </a>
       </td>
     </tr>
+    <!-- --> 
+    <tr>
+      <td rowspan=2>Diffusion models</td>
+      <td>
+      <h4>Tutorial: <a href="36_diffusion_models.ipynb">36: Diffusion models</a></h4>
+      A look at modern image generation models: The denoising diffusion probabilistic model (DDPM).
+      </td>
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/36_diffusion_models.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/36_diffusion_models.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <h4>Tutorial: <a href="37_exploring_latent_spaces.ipynb">37: Exploring the latent space of a pretrained Stable Diffusion model</a></h4>
+      Use the fact that latent spaces are continuous, to try and walk around the latent space between different input prompts. 
+      <td>
+        <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/37_exploring_latent_spaces.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
+        </a><br>
+        <a href="https://raw.githubusercontent.com/HVL-ML/DAT255/main/notebooks/37_exploring_latent_spaces.ipynb" download>
+          <img src="https://img.shields.io/badge/github-download-blue?logo=github" alt="Download">
+        </a>
+      </td>
+    </tr>
   </tbody>
 </table>
-
 
 
 
