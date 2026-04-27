@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e5387708f32441f66e167fb7200d552e.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-41d670d08b33858e423018f51d98f717.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -129,7 +129,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 18</u> – Multimodal transformers</p>
+  <p class="subtitle"><u>Lecture 25</u> – Possibilities and limitations of deep learning</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -140,280 +140,431 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="general-transformers" class="slide level2">
-<h2>General transformers</h2>
-<p>Motivation behind transformers was to process sequential language data</p>
-<p>Turns out they are great general-purpose models</p>
+<section id="submit-your-own-exam-questions" class="slide level2" data-background-color="#ECEFF1">
+<h2>Submit your own exam questions</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture25/diy-exam.png" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
+</figure>
+</div>
+<p>Send in questions <a href="https://forms.cloud.microsoft/e/K21LBYQVLm">here</a></p>
+</section>
+<section id="status-of-deep-learning" class="slide level2 center" data-background-color="#EDE7F6">
+<h2>Status of deep learning</h2>
+<p>Today:</p>
 <ul>
-<li>Make very few assumptions about the input data</li>
+<li><p>What are deep learning models doing</p></li>
+<li><p>What can deep learning do</p></li>
+<li><p>What can deep learning <em>not</em> do (in 2026)</p></li>
 </ul>
+</section>
+<section id="what-are-deep-learning-models-doing" class="slide level2">
+<h2>What are deep learning models doing</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture25/nn-cropped.svg" class="quarto-figure quarto-figure-center" width="600"></p>
+</figure>
+</div>
+<p>The point of deep learning is to sequentially produce better features, that are useful for solving some task <span class="color-text-muted">(<em>classification / regression / segmentation / etc</em>)</span></p>
 <div class="fragment">
-<p>Transformers are now among state-of-the-art for large-scale models on</p>
-<div class="colorbox" style="background-color: #E1F5FE; text-indent: 20px;">
+<p>We do this by <span class="color-pink-dark"><em>pattern recognition</em></span>, where patterns are provided by the training data</p>
+<p>First layers typically look for general patterns, while last layers look for task-specific patterns</p>
+</div>
+</section>
+<section id="what-are-deep-learning-models-doing-1" class="slide level2">
+<h2>What are deep learning models doing</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture25/nn-cropped.svg" class="quarto-figure quarto-figure-center" width="600"></p>
+</figure>
+</div>
+<p>Recall we could write the output of our network (or any intermediate layer) as</p>
+<p><span class="math display">\[
+\small
+\hat{y} = f(\boldsymbol{x} | \boldsymbol{\theta})
+\]</span></p>
+<p>Where <span class="math inline">\(\boldsymbol{x}\)</span> is the input data and <span class="math inline">\(\boldsymbol{\theta}\)</span> are our (<strong>fixed</strong>) parameters</p>
+<p><i class="bi bi-arrow-right"></i> We are doing <span class="color-cyan-dark"><em>curve fitting</em></span>.</p>
+</section>
+<section id="what-are-deep-learning-models-doing-2" class="slide level2">
+<h2>What are deep learning models doing</h2>
+<blockquote>
+<p>Is my state-of-the-art LLM, capable of “reasoning” and “extended thinking” just a statistical tool?</p>
+</blockquote>
+<div class="fragment">
+<p>Well, yes. LLMs have no neuroplasticity, the parameters <span class="math inline">\(\boldsymbol{\theta}\)</span> are constant.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="padding-top: 40px;">
+
+</div>
+<p><strong><em>But:</em></strong> The <span class="color-purple-dark">transformer architecture</span> is extremely effective at information storage and retrieval, and scales unreasonably well.</p>
+<p>It won’t result in AGI, but is still remarkably useful.</p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture1/attention.png" class="img-shadow quarto-figure quarto-figure-center" width="300"></p>
+</figure>
+</div>
+</div></div>
+</div>
+</section>
+<section id="deep-learning-and-gradient-descent" class="slide level2">
+<h2>Deep learning and gradient descent</h2>
+<div style="padding-top: 40px;">
+
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Training large-parameter models by gradient descent is efficient, but often the models end up very sensitive to small changes in input data</p>
+<p>(which is why <span class="color-purple-dark"><em>prompt engineering</em></span> has become a thing)</p>
+<div style="padding-top: 40px;">
+
+</div>
+<p>Can exploit this in two ways:</p>
 <ul>
-<li>Text</li>
-<li>Images</li>
-<li>Video</li>
-<li>Audio</li>
-<li>Point clouds</li>
+<li>One for good: <span class="color-green-dark"><em>Explainability</em></span></li>
+<li>and one for bad: <span class="color-red-dark"><em>Adversarial attacks</em></span></li>
 </ul>
-</div>
-<div class="absolute" style="top: 60%; left: 50%; ">
-<p>In context of LLMs we call this<br> different <span class="color-cyan-dark"><em>modalities</em></span></p>
+</div><div class="column" style="width:50%;">
+<!-- :::{.absolute right="5%" bottom="5%" width="500px"} -->
+<p><img data-src="figures/lecture5/gradient_descent_comparison2.gif"> <!-- ::: --></p>
+</div></div>
+</section>
+<section id="recap-optimisation-with-gradient-descent" class="slide level2">
+<h2><em>Recap</em>: Optimisation with gradient descent</h2>
+<p>Question:</p>
+<p><span class="color-indigo-dark">If we vary the parameters <span class="math inline">\(\boldsymbol{\theta}\)</span> of model, how does it affect the predictions?</span></p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figures/lecture4/gradient.png"></p>
+</div><div class="column" style="width:50%;">
+<p>Quantify this by computing the gradient of the loss <span class="math inline">\(L\)</span> with respect to the model parameters <span class="math inline">\(\boldsymbol{\theta}\)</span>:</p>
+<!-- To find optimal parameters $\boldsymbol{\theta}$ that minimises the loss $L$, we computed the gradient of $L$ with respect to $\boldsymbol{\theta}$: -->
+<p><span class="math display">\[
+\nabla \color{MediumVioletRed}{L}(\color{teal}{\boldsymbol{\theta}}) =
+\begin{bmatrix}
+  \frac{\partial \color{MediumVioletRed}{L}}{\partial \color{teal}{\theta}_0} \\
+  \vdots \\
+  \frac{\partial \color{MediumVioletRed}{L}}{\partial \color{teal}{\theta}_n} \\
+\end{bmatrix}
+\]</span></p>
+</div><p>Basically: Vary <span class="math inline">\(\theta\)</span> <i class="bi bi-arrow-right"></i> check effect on <span class="math inline">\(L\)</span></p>
 </div>
 </div>
 </section>
-<section id="visual-attention" class="slide level2">
-<h2>Visual attention</h2>
-<p>Before the transformer architecture was established, there were still experiments with <span class="color-pink-dark"><em>visual attention</em></span> (using a combination of CNNs and RNNs with attention)</p>
-<p>Caption generation model, with attention matrix overlaid:</p>
+<section id="using-gradients-for-explainability" class="slide level2">
+<h2>Using gradients for explainability</h2>
+<p>Let’s turn it around and ask a different question:</p>
+<p><span class="color-indigo-dark">If we vary the <strong>data</strong> <span class="math inline">\(\boldsymbol{x}\)</span>, how does it affect the prediction?</span></p>
+<div style="padding-top: 60px;">
+
+</div>
+<div class="fragment">
+<p>Can use this for per-datapoint <strong><em>explanations</em></strong> of model decision.</p>
+<p>Compute then the gradient of the model output <span class="math inline">\(S\)</span> with respect to input data <span class="math inline">\(x\)</span>.</p>
+</div>
+</section>
+<section id="using-gradients-for-explainability-1" class="slide level2">
+<h2>Using gradients for explainability</h2>
+<p><strong>Example</strong>:</p>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p>For an image classifier we have two classes, <code>cat</code> and <code>dog</code>. Differentiating the score for <code>cat</code>, <span class="math inline">\(\small S_c\)</span>, with respect to the pixel values <span class="math inline">\(\small x_1, \dots, x_n\)</span>, gives an <em>attribution</em> of each pixels’ importance to the classification</p>
+<div style="padding-top: 40px;">
+
+</div>
+<p><span class="math display">\[
+\small
+\nabla S_c (\boldsymbol{x}) =
+\begin{bmatrix}
+  \frac{\partial \color{MediumVioletRed}{S_c}}{\partial \color{teal}{x}_0} \\
+  \vdots \\
+  \frac{\partial \color{MediumVioletRed}{S_c}}{\partial \color{teal}{x}_n} \\
+\end{bmatrix}
+\leftarrow \mathrm{attribution\; map}
+\]</span></p>
+</div><div class="column" style="width:35%;">
+<div data-layout-row="2">
+<div class="fragment">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture18/frisbee.png" class="quarto-figure quarto-figure-center" style="padding-top: 30px;" width="650"></p>
+<p><img data-src="figures/lecture9/cat.png"></p>
+<figcaption>Cat</figcaption>
 </figure>
 </div>
-</section>
-<section id="visual-attention-1" class="slide level2">
-<h2>Visual attention</h2>
-<p>Use the attention matrix as an explanation tool:</p>
+</div>
+<div class="fragment">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture18/giraffe.png" class="quarto-figure quarto-figure-center" width="800"></p>
+<p><img data-src="figures/lecture9/cat-attribution.png"></p>
+<figcaption>Pixel attributions to classification score</figcaption>
 </figure>
 </div>
+</div>
+</div>
+</div></div>
 </section>
-<section id="visual-attention-2" class="slide level2">
-<h2>Visual attention</h2>
-<p>Use the attention matrix as an explanation tool:</p>
-<div class="quarto-layout-panel" style="padding-top: 60px;" data-layout-ncol="2">
+<section id="using-gradients-for-explainability-2" class="slide level2">
+<h2>Using gradients for explainability</h2>
+<p>Some problems with using the (only) the gradient:</p>
+<ul>
+<li>Gradients looks rather noisy</li>
+<li>If using ReLU and output activations are 0, the gradient is also 0.</li>
+</ul>
+<hr>
+<div class="fragment">
+<p>Some solutions:</p>
+<ul>
+<li>Add noise and average: <em>SmoothGrad</em></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture9/smoothgrad.png" class="quarto-figure quarto-figure-center" width="800"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="using-gradients-for-explainability-3" class="slide level2">
+<h2>Using gradients for explainability</h2>
+<p>Some problems with using the (only) the gradient:</p>
+<ul>
+<li>Gradients looks rather noisy</li>
+<li>If using ReLU and output activations are 0, the gradient is also 0.</li>
+</ul>
+<hr>
+<p>Some solutions:</p>
+<ul>
+<li><p>Add noise and average: <em>SmoothGrad</em></p>
+<p>Make a baseline and integrate: <em>Integrated gradients</em></p></li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img data-src="figures/lecture18/skateboard.png" width="500"></p>
+<div class="quarto-figure quarto-figure-right">
+<figure>
+<p><img data-src="figures/lecture9/integrated-gradients-image.png" class="quarto-figure quarto-figure-right" width="250"></p>
+</figure>
+</div>
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><img data-src="figures/lecture18/cellphone.png" width="500"></p>
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="figures/lecture9/integrated-gradients.png" class="quarto-figure quarto-figure-left" width="250"></p>
+</figure>
 </div>
 </div>
 </div>
-<div class="absolute" style="text-align: center;left: 40%; bottom: 3%; ">
-<p><i class="bi bi-arrow-up-left"></i> &nbsp; <i class="bi bi-arrow-up-right"></i><br> Mistakes :/</p>
 </div>
 </section>
-<section id="transformers-for-computer-vision" class="slide level2">
-<h2>Transformers for computer vision</h2>
-<p>Challenge for processing non-textual inputs:</p>
-<div style="text-align: center;">
-<p>How to define a <span class="color-deep-orange">token</span>?</p>
-</div>
-<div class="fragment">
-<p><em>Simplest approach:</em> <span class="color-teal-dark">Each pixel</span> is a token.</p>
-</div>
-<div class="fragment">
-<p>Problem: Attention matrix is quadratic in number of tokens</p>
-<p><i class="bi bi-arrow-right"></i> for big images, the matrix becomes <span class="color-red-dark">huge</span></p>
-<div style="padding-top: 40px;">
-<p>Two common approches:</p>
+<section id="using-gradients-for-explainability-4" class="slide level2">
+<h2>Using gradients for explainability</h2>
+<p>Some problems with using the (only) the gradient:</p>
 <ul>
-<li>Cut the image into patches</li>
-<li>First apply convolutional layers</li>
+<li>Gradients looks rather noisy</li>
+<li>If using ReLU and output activations are 0, the gradient is also 0.</li>
 </ul>
-</div>
-</div>
-</section>
-<section id="vision-transformer-vit-for-classification" class="slide level2">
-<h2>Vision transformer (ViT) for classification</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>Split the image in <span class="math inline">\(\small N\)</span> patches: Instead of</p>
-<div style="text-align: center;">
-<p>height <span class="math inline">\(\small\times\)</span> width <span class="math inline">\(\small\times\)</span> colour channels</p>
-</div>
-<p>number of tokens, we get</p>
-<div style="text-align: center;">
-<p><span class="math inline">\(\small N \times\)</span> (patch size)<span class="math inline">\(^2\)</span> <span class="math inline">\(\small\times\)</span>&nbsp;colour channels</p>
-</div>
-<p>tokens</p>
-<div class="fragment" data-fragment-index="2">
-<p>For each patch:</p>
-<ul>
-<li>Flatten it to an 1D vector</li>
-<li>Make embeddings</li>
-<li>Add positional embeddings</li>
-</ul>
-<p><i class="bi bi-arrow-right"></i> Treat it as any generic sequence and input to a transformer encoder</p>
-</div>
-</div><div class="column" style="width:45%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/cat.png" class="quarto-figure quarto-figure-center" width="250"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/cat-patches.png" class="fragment quarto-figure quarto-figure-center" data-fragment-index="1" width="300"></p>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="vision-transformer-vit-for-classifiction" class="slide level2">
-<h2>Vision transformer (ViT) for classifiction</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/vision-transformer.png" class="quarto-figure quarto-figure-center" width="800"></p>
-</figure>
-</div>
-<div class="absolute" style="font-size: 0.6em;left: 0%; bottom: 0%; ">
-<p>https://arxiv.org/pdf/2010.11929</p>
-</div>
-</section>
-<section id="positional-embeddings" class="slide level2">
-<h2>Positional embeddings</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
-<p>Still need to introduce the position of each patch</p>
-<ul>
-<li><p><em>Option 1:</em> <span class="color-indigo"><strong>Handcrafted encodings</strong></span>, like the sinusoidal encoding of the original encoder</p>
-<ul>
-<li>Gets a little complicated and generally does not perform very well</li>
-</ul></li>
-</ul>
-<div style="padding-top: 15px;">
-
-</div>
-<ul>
-<li><p><em>Option 2:</em> <span class="color-cyan-dark"><strong>Learned embeddings</strong></span></p>
-<ul>
-<li><p>Instead of embedding word 1, 2, … <span class="math inline">\(\small N\)</span>, we trivially extend the procedure to embed patch (1,1), (2,1), … (<span class="math inline">\(\small N, M\)</span>)</p>
-<p><code>keras.layers.Embedding</code> can be used for any input dimensionality</p></li>
-</ul></li>
-</ul>
-</div><div class="column" style="width:40%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/cat.png" class="quarto-figure quarto-figure-center" width="200"></p>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/cat-patches.png" class="quarto-figure quarto-figure-center" width="250"></p>
-</figure>
-</div>
-</div></div>
-</section>
-<section id="combined-architecture" class="slide level2">
-<h2>Combined architecture</h2>
-<div style="padding-top: 100px">
-
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/object-det.png" class="quarto-figure quarto-figure-center" width="1000"></p>
-</figure>
-</div>
-<div class="absolute" style="font-size: 0.6em;left: 0%; bottom: 0%; ">
-<p>https://arxiv.org/pdf/2005.12872</p>
-</div>
-</section>
-<section id="inductive-biases" class="slide level2">
-<h2>Inductive biases</h2>
-<p><strong><em>Inductive bias:</em></strong> assumption built into the model architecture</p>
-<ul>
-<li><p><span class="color-deep-purple">Linear models (<span class="math inline">\(\small y = ax+b\)</span>)</span>: Assume data is linear</p></li>
-<li><p><span class="color-deep-purple">CNNs</span>: Assume translational equivariance, hierarchical structure</p></li>
-<li><p><span class="color-deep-purple">RNNs</span>: Assume meaningful ordering</p></li>
-</ul>
-<div style="padding-top: 30px;">
-
-</div>
 <hr>
-<div style="padding-top: 30px;">
+<p>Some solutions:</p>
+<ul>
+<li>Be clever about how gradients are propagated through the activation functions: <em>DeepLift</em>, <em>Deconvolution</em>, <em>Layerwise relevance propagation</em></li>
+</ul>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-right">
+<figure>
+<p><img data-src="figures/lecture9/deconvolution-cat-image.png" class="quarto-figure quarto-figure-right" width="250"></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="figures/lecture9/deconvolution-cat.png" class="quarto-figure quarto-figure-left" width="250"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute" style="font-size: 0.8em;bottom: 6%; right: 0%; ">
+<p><a href="https://lrpserver.hhi.fraunhofer.de/image-classification">Interactive<br>heatmapping</a></p>
+</div>
+</section>
+<section id="adversarial-attacks" class="slide level2">
+<h2>Adversarial attacks</h2>
+<p>Two observations from our pixel attributions:</p>
+<ol type="1">
+<li>Gradients look noisy</li>
+<li>A few pixels have very large gradients<br> (and thereby a large impact on the classification)</li>
+</ol>
+</section>
+<section id="adversarial-attacks-1" class="slide level2">
+<h2>Adversarial attacks</h2>
+<div class="quarto-layout-panel" style="padding-top: 120px;" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="figures/lecture9/adversarial-szegedy-1.png" class="quarto-figure quarto-figure-left" width="400"></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture9/adversarial-szegedy-2.png" class="quarto-figure quarto-figure-center" width="400"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute" style="font-size: 0.7em; text-align: center;top: 19%; left: 2%; width: 100px; ">
+<p>Original image</p>
+</div>
+<div class="absolute" style="font-size: 0.7em; text-align: center;top: 20%; left: 14%; width: 100px; ">
+<p>Perturbation</p>
+</div>
+<div class="absolute" style="font-size: 0.7em; text-align: center;top: 19%; left: 27%; width: 100px; ">
+<p>Perturbed image</p>
+</div>
+<div class="absolute" style="font-size: 0.7em; text-align: center;top: 21%; left: 39%; width: 100px; ">
+<p>Prediction</p>
+</div>
+<div class="fragment absolute" style="font-size: 0.7em; text-align: center;top: 37%; left: 38%; width: 100px; ">
+<p><code>Ostrich</code></p>
+</div>
+<div class="fragment absolute" style="font-size: 0.7em; text-align: center;top: 56%; left: 38%; width: 100px; ">
+<p><code>Ostrich</code></p>
+</div>
+<div class="fragment absolute" style="font-size: 0.7em; text-align: center;top: 76%; left: 38%; width: 100px; ">
+<p><code>Ostrich</code></p>
+</div>
+<div class="fragment absolute" style="top: -4%; right: 0%; width: 200px; ">
+<p><img data-src="figures/lecture9/ostrich.webp" class="img-shadow"></p>
+</div>
+<div class="fragment absolute" style="font-size: 0.7em; text-align: center;top: 37%; left: 94%; width: 100px; ">
+<p><code>Ostrich</code></p>
+</div>
+<div class="fragment absolute" style="font-size: 0.7em; text-align: center;top: 56%; left: 94%; width: 100px; ">
+<p><code>Ostrich</code></p>
+</div>
+<div class="fragment absolute" style="font-size: 0.7em; text-align: center;top: 76%; left: 94%; width: 100px; ">
+<p><code>Ostrich</code></p>
+</div>
+</section>
+<section id="constructing-adversarial-examples" class="slide level2">
+<h2>Constructing adversarial examples</h2>
+<p>From the gradient <span class="math inline">\(\nabla S_c\)</span> we know which pixels were important to make the <em>correct</em> prediction</p>
+<p><i class="bi bi-arrow-right"></i> Adjust their values in the <em>opposite</em> direction</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture9/adversarial-goodfellow.png" class="quarto-figure quarto-figure-center" style="padding-top: 50px;" width="800"></p>
+</figure>
+</div>
+<p>(Many sophisticated variants exist)</p>
+</section>
+<section id="irl-adversarial-examples" class="slide level2">
+<h2>IRL adversarial examples</h2>
+<div style="padding-top: 100px;">
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="4">
+<div class="quarto-layout-row">
+<div class="fragment quarto-layout-cell" style="flex-basis: 25.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture9/sign-1.png"></p>
+<figcaption><span class="fragment">Prediction:<br><code>Speed limit 45</code></span></figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment quarto-layout-cell" style="flex-basis: 25.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture9/sign-2.png"></p>
+<figcaption><span class="fragment">Prediction:<br><code>Speed limit 45</code></span></figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment quarto-layout-cell" style="flex-basis: 25.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture9/sign-3.png"></p>
+<figcaption><span class="fragment">Prediction:<br><code>Speed limit 45</code></span></figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment quarto-layout-cell" style="flex-basis: 25.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture9/sign-4.png"></p>
+<figcaption><span class="fragment">Prediction:<br><code>Speed limit 45</code></span></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="adversarial-attacks-2" class="slide level2">
+<h2>Adversarial attacks</h2>
+<p><em>Targeted</em> attacks need access to the model on order to compute gradients</p>
+<p><em>Black box</em> attacks: Constructing adversarial examples purely by analysing outputs for given inputs (more difficult)</p>
+<div class="fragment" style="padding-top: 70px;">
+<p>Some defense strategies:</p>
+<ul>
+<li>Training on adversarial examples</li>
+<li>Ensembling</li>
+<li>Augmentation</li>
+</ul>
+<div class="absolute" style="bottom: 0%; right: 0%; width: 400px; ">
+<iframe data-external="1" src="https://player.vimeo.com/video/340528216" width="400px" height="400px" frameborder="0" title="" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen=""></iframe>
+</div>
+</div>
+</section>
+<section id="generalisation" class="slide level2">
+<h2>Generalisation</h2>
+<div style="padding-top: 50px;">
+
+</div>
+<p>Over the course we have applied neural networks to many different <span class="color-cyan-dark">specific</span> tasks</p>
+<p>If properly trained, the models work well (<em>generalise</em>) for new data.</p>
+<div style="padding-top: 40px;">
 
 </div>
 <div class="fragment">
-<p><strong>Transformers</strong>: Assume <em>some</em> relation between input tokens, but that’s about it</p>
-<p><span class="color-green-dark"><em>Good</em></span>: General-purpose architecture</p>
-<p><span class="color-red-dark"><em>Bad</em></span>: Requires <span class="color-text-muted">(a lot)</span> more training data than problem-specific models</p>
+<p>But, naturally, they work only for instances represented in the training data<br> <i class="bi bi-arrow-right"></i> can call it <span class="color-pink-dark"><em>local</em></span> generalisation.</p>
+<p>On the other hand, <span class="color-pink-dark"><em>extreme</em></span> generalisation would be if the model could solve new and unseen <strong>tasks</strong>.<br> <i class="bi bi-arrow-right"></i> Not only automate, but display intelligence.</p>
 </div>
 </section>
-<section id="combining-vision-and-text" class="slide level2">
-<h2>Combining vision and text</h2>
-<p><img data-src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/vlm/visual.jpg"></p>
+<section id="a-puzzle" class="slide level2">
+<h2>A puzzle</h2>
+<p><img data-src="https://deeplearningwithpython.io/images/ch19/arc_example_2.7d4f0c33.png"></p>
 </section>
-<section id="audio-transformers" class="slide level2">
-<h2>Audio transformers</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>Typical tasks:</p>
-<ul>
-<li>Speech-to-text</li>
-<li>Text-to-speech</li>
-<li>Speech-to-speech</li>
-<li>Text-to-music</li>
-</ul>
-<p>Two common ways to process audio data:</p>
-<ul>
-<li><p>Work on raw waveform data</p>
-<p>(Amplitude as function of time)</p></li>
-</ul>
-<div style="padding-top: 15px;">
-<ul>
-<li><p>Convert waveforms to spectrograms</p>
-<p>(Frequency content as function of time)</p></li>
-</ul>
-</div>
-</div><div class="column" style="width:45%;">
-<p><img data-src="https://c2s2.engineering.cornell.edu/blogposts/FA23/imgs/UnravelingBirdSoundsWithSpectrograms/image2.png" style="padding-top: 120px;" width="400"></p>
-</div></div>
+<section id="benchmarks" class="slide level2">
+<h2>Benchmarks</h2>
+<p><a href="https://llm-stats.com"><img data-src="figures/lecture25/ai-leaderboard.png"></a></p>
 </section>
-<section id="audio-transformers-1" class="slide level2">
-<h2>Audio transformers</h2>
+<section id="benchmarks-1" class="slide level2">
+<h2>Benchmarks</h2>
+<p><a href="https://epoch.ai/data/notable-ai-models"><img data-src="figures/lecture15/ml-trends.png"></a></p>
+</section>
+<section id="next-week" class="slide level2">
+<h2>Next week</h2>
+<p>Repetition and exam preparation</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="https://images.ctfassets.net/kftzwdyauwt9/d9c13138-366f-49d3-a1a563abddc1/8acfb590df46923b021026207ff1a438/asr-summary-of-model-architecture-desktop.svg?w=1920&amp;q=90" class="quarto-figure quarto-figure-center" width="750"></p>
+<p><img data-src="figures/lecture25/test-exam.png" class="img-shadow quarto-figure quarto-figure-center" width="600"></p>
 </figure>
 </div>
-<!-- https://huggingface.co/spaces/KingNish/Realtime-whisper-large-v3-turbo -->
-</section>
-<section id="audio-transformers-2" class="slide level2">
-<h2>Audio transformers</h2>
-<p>Speech synthesis: Use an example (<span class="color-deep-orange-dark"><em>acoustic prompt</em></span>) to determine generated style and tone</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture18/speech-synthesis.png" class="quarto-figure quarto-figure-center" width="700"></p>
-</figure>
-</div>
-<div class="absolute" style="font-size: 0.6em;left: 0%; bottom: 0%; ">
-<p>https://arxiv.org/abs/2407.08551</p>
-</div>
-</section>
-<section id="transformers-for-other-uses" class="slide level2">
-<h2>Transformers for other uses</h2>
-<p><img data-src="figures/lecture18/alphastar1.png" width="1200"></p>
-<p><img data-src="figures/lecture18/alphastar2.png" width="1200"></p>
-<p><img data-src="figures/lecture18/alphastar3.png" width="1200"></p>
-<!-- https://deepmind.google/discover/blog/alphastar-mastering-the-real-time-strategy-game-starcraft-ii/ -->
-</section>
-<section id="multimodal-transformers" class="slide level2">
-<h2>Multimodal transformers</h2>
-<p>Transformer encoder-decoder structure allows for a single model to operate on selveral different types of data</p>
-<p>If it can be encoded into an embedding space, it can be used as a context for a decoder.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture16/encoder-decoder.png" class="quarto-figure quarto-figure-center" width="600"></p>
-</figure>
-</div>
+<p>(see Canvas)</p>
 </section>
 <section id="section" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
 <h2></h2>
 <div class="absolute" style="top: 60%; left: 40%; width: 20%; ">
 <p><img data-src="figures/hvl_logo_engelsk.png"></p>
 </div>
-<!--
-SHOW:
-- whisper
-- alphastar
-- visual question answering gemini
--->
 
 
 </section>
