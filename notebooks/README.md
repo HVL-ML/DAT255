@@ -53,7 +53,7 @@ They will be added as the course progresses.
     <tr>
       <td>
       <h4>Tutorial: <a href="03_advanced_image_classification.ipynb">03: Advanced image classification</a></h4>
-      Time to do more advanced stuff, which requires a more powerful approach to constructing neural networks in Keras, namely the <a href="https://keras.io/guides/functional_api/"functional model API></a>. Here we also start using TensorFlow datasets, image augmentation, and look at _fine-tuning_ of existing models.
+      Time to do more advanced stuff, which requires a more powerful approach to constructing neural networks in Keras, namely the <a href="https://keras.io/guides/functional_api/">functional model API</a>. Here we also start using TensorFlow datasets, image augmentation, and look at <i>fine-tuning</i> of existing models.
       </td>
       <td>
         <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/notebooks/03_advanced_image_classification.ipynb">
@@ -256,7 +256,7 @@ They will be added as the course progresses.
     </tr>
     <tr>
       <td>
-      <h4>Exercise: <a href="17_preprocessing_tabular_data.ipynb">17: Preprocessing tabular data with Keras.</a></h4>
+      <h4>Exercise: <a href="17_preprocessing_tabular_data.ipynb">17: Preprocessing tabular data with Keras</a></h4>
       Try out the different preprocessing layers in Keras.
       </td>
       <td>
@@ -270,7 +270,7 @@ They will be added as the course progresses.
     </tr>
     <tr>
       <td>
-      <h4>(Optional) Exercise: <a href="18_embeddings_and_modern_tabular_networks.ipynb">18: Embeddings and modern networks for tabular data. </a></h4>
+      <h4>(Optional) Exercise: <a href="18_embeddings_and_modern_tabular_networks.ipynb">18: Embeddings and modern networks for tabular data</a></h4>
       Skip the one-hot encodings and replace them with embeddings. Then train a transformer model on it 👩‍💻
       <td>
         <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/18_embeddings_and_modern_tabular_networks.ipynb">
@@ -394,7 +394,7 @@ They will be added as the course progresses.
     <tr>
       <td>
       <h4>Exercise: <a href="27_text_generation.ipynb">27: Text generation</a></h4>
-      Try out different sampling strategies to generate text just like ChatGPT (or at least _almost_).
+      Try out different sampling strategies to generate text just like ChatGPT (or at least <i>almost</i>).
       <td>
         <a href="https://colab.research.google.com/github/HVL-ML/DAT255/blob/main/27_text_generation.ipynb">
           <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Google Colab">
