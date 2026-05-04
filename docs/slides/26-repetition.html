@@ -28,6 +28,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #383a42;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #383a42; } /* Normal */
+    code span.al { color: #95da4c; background-color: #4d1f24; font-weight: bold; } /* Alert */
+    code span.an { color: #50a14f; } /* Annotation */
+    code span.at { color: #a626a4; } /* Attribute */
+    code span.bn { color: #986801; } /* BaseN */
+    code span.bu { color: #a626a4; } /* BuiltIn */
+    code span.cf { color: #a626a4; } /* ControlFlow */
+    code span.ch { color: #50a14f; } /* Char */
+    code span.cn { color: #986801; } /* Constant */
+    code span.co { color: #a0a1a7; font-style: italic; } /* Comment */
+    code span.cv { color: #e45649; font-style: italic; } /* CommentVar */
+    code span.do { color: #e45649; } /* Documentation */
+    code span.dt { color: #a626a4; } /* DataType */
+    code span.dv { color: #986801; } /* DecVal */
+    code span.er { color: #f44747; text-decoration: underline; } /* Error */
+    code span.ex { color: #4078f2; font-weight: bold; } /* Extension */
+    code span.fl { color: #986801; } /* Float */
+    code span.fu { color: #4078f2; } /* Function */
+    code span.im { color: #50a14f; } /* Import */
+    code span.in { color: #c45b00; } /* Information */
+    code span.kw { color: #a626a4; } /* Keyword */
+    code span.op { color: #a626a4; } /* Operator */
+    code span.ot { color: #27ae60; } /* Other */
+    code span.pp { color: #a626a4; } /* Preprocessor */
+    code span.re { color: #2980b9; background-color: #153042; } /* RegionMarker */
+    code span.sc { color: #0184bc; } /* SpecialChar */
+    code span.ss { color: #da4453; } /* SpecialString */
+    code span.st { color: #50a14f; } /* String */
+    code span.va { color: #e45649; } /* Variable */
+    code span.vs { color: #da4453; } /* VerbatimString */
+    code span.wa { color: #da4453; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-41d670d08b33858e423018f51d98f717.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -129,7 +195,7 @@
 
 <section id="title-slide" data-background-image="figures/hvl_logo_engelsk.png" data-background-position="98% 2%" data-background-size="15%" class="quarto-title-block center">
   <h1 class="title">DAT255: Deep learning engineering</h1>
-  <p class="subtitle"><u>Lecture 25</u> – Possibilities and limitations of deep learning</p>
+  <p class="subtitle"><u>Lecture 26</u> – Repetition</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -140,425 +206,272 @@ sma@hvl.no
 </div>
 
 </section>
-<section id="submit-your-own-exam-questions" class="slide level2" data-background-color="#ECEFF1">
-<h2>Submit your own exam questions</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture25/diy-exam.png" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
-</figure>
-</div>
-<p>Send in questions <a href="https://forms.cloud.microsoft/e/K21LBYQVLm">here</a></p>
-</section>
-<section id="status-of-deep-learning" class="slide level2 center" data-background-color="#EDE7F6">
-<h2>Status of deep learning</h2>
-<p>Today:</p>
-<ul>
-<li><p>What are deep learning models doing</p></li>
-<li><p>What can deep learning do</p></li>
-<li><p>What can deep learning <em>not</em> do (in 2026)</p></li>
-</ul>
-</section>
-<section id="what-are-deep-learning-models-doing" class="slide level2">
-<h2>What are deep learning models doing</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture25/nn-cropped.svg" class="quarto-figure quarto-figure-center" width="600"></p>
-</figure>
-</div>
-<p>The point of deep learning is to sequentially produce better features, that are useful for solving some task <span class="color-text-muted">(<em>classification / regression / segmentation / etc</em>)</span></p>
-<div class="fragment">
-<p>We do this by <span class="color-pink-dark"><em>pattern recognition</em></span>, where patterns are provided by the training data</p>
-<p>First layers typically look for general patterns, while last layers look for task-specific patterns</p>
-</div>
-</section>
-<section id="what-are-deep-learning-models-doing-1" class="slide level2">
-<h2>What are deep learning models doing</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture25/nn-cropped.svg" class="quarto-figure quarto-figure-center" width="600"></p>
-</figure>
-</div>
-<p>Recall we could write the output of our network (or any intermediate layer) as</p>
-<p><span class="math display">\[
-\small
-\hat{y} = f(\boldsymbol{x} | \boldsymbol{\theta})
-\]</span></p>
-<p>Where <span class="math inline">\(\boldsymbol{x}\)</span> is the input data and <span class="math inline">\(\boldsymbol{\theta}\)</span> are our (<strong>fixed</strong>) parameters</p>
-<p><i class="bi bi-arrow-right"></i> We are doing <span class="color-cyan-dark"><em>curve fitting</em></span>.</p>
-</section>
-<section id="what-are-deep-learning-models-doing-2" class="slide level2">
-<h2>What are deep learning models doing</h2>
-<blockquote>
-<p>Is my state-of-the-art LLM, capable of “reasoning” and “extended thinking” just a statistical tool?</p>
-</blockquote>
-<div class="fragment">
-<p>Well, yes. LLMs have no neuroplasticity, the parameters <span class="math inline">\(\boldsymbol{\theta}\)</span> are constant.</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div style="padding-top: 40px;">
-
-</div>
-<p><strong><em>But:</em></strong> The <span class="color-purple-dark">transformer architecture</span> is extremely effective at information storage and retrieval, and scales unreasonably well.</p>
-<p>It won’t result in AGI, but is still remarkably useful.</p>
-</div><div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture1/attention.png" class="img-shadow quarto-figure quarto-figure-center" width="300"></p>
-</figure>
-</div>
-</div></div>
-</div>
-</section>
-<section id="deep-learning-and-gradient-descent" class="slide level2">
-<h2>Deep learning and gradient descent</h2>
-<div style="padding-top: 40px;">
-
-</div>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Training large-parameter models by gradient descent is efficient, but often the models end up very sensitive to small changes in input data</p>
-<p>(which is why <span class="color-purple-dark"><em>prompt engineering</em></span> has become a thing)</p>
-<div style="padding-top: 40px;">
-
-</div>
-<p>Can exploit this in two ways:</p>
-<ul>
-<li>One for good: <span class="color-green-dark"><em>Explainability</em></span></li>
-<li>and one for bad: <span class="color-red-dark"><em>Adversarial attacks</em></span></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<!-- :::{.absolute right="5%" bottom="5%" width="500px"} -->
-<p><img data-src="figures/lecture5/gradient_descent_comparison2.gif"> <!-- ::: --></p>
-</div></div>
-</section>
-<section id="recap-optimisation-with-gradient-descent" class="slide level2">
-<h2><em>Recap</em>: Optimisation with gradient descent</h2>
-<p>Question:</p>
-<p><span class="color-indigo-dark">If we vary the parameters <span class="math inline">\(\boldsymbol{\theta}\)</span> of model, how does it affect the predictions?</span></p>
-<div class="fragment">
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><img data-src="figures/lecture4/gradient.png"></p>
-</div><div class="column" style="width:50%;">
-<p>Quantify this by computing the gradient of the loss <span class="math inline">\(L\)</span> with respect to the model parameters <span class="math inline">\(\boldsymbol{\theta}\)</span>:</p>
-<!-- To find optimal parameters $\boldsymbol{\theta}$ that minimises the loss $L$, we computed the gradient of $L$ with respect to $\boldsymbol{\theta}$: -->
-<p><span class="math display">\[
-\nabla \color{MediumVioletRed}{L}(\color{teal}{\boldsymbol{\theta}}) =
-\begin{bmatrix}
-  \frac{\partial \color{MediumVioletRed}{L}}{\partial \color{teal}{\theta}_0} \\
-  \vdots \\
-  \frac{\partial \color{MediumVioletRed}{L}}{\partial \color{teal}{\theta}_n} \\
-\end{bmatrix}
-\]</span></p>
-</div><p>Basically: Vary <span class="math inline">\(\theta\)</span> <i class="bi bi-arrow-right"></i> check effect on <span class="math inline">\(L\)</span></p>
-</div>
-</div>
-</section>
-<section id="using-gradients-for-explainability" class="slide level2">
-<h2>Using gradients for explainability</h2>
-<p>Let’s turn it around and ask a different question:</p>
-<p><span class="color-indigo-dark">If we vary the <strong>data</strong> <span class="math inline">\(\boldsymbol{x}\)</span>, how does it affect the prediction?</span></p>
-<div style="padding-top: 60px;">
-
-</div>
-<div class="fragment">
-<p>Can use this for per-datapoint <strong><em>explanations</em></strong> of model decision.</p>
-<p>Compute then the gradient of the model output <span class="math inline">\(S\)</span> with respect to input data <span class="math inline">\(x\)</span>.</p>
-</div>
-</section>
-<section id="using-gradients-for-explainability-1" class="slide level2">
-<h2>Using gradients for explainability</h2>
-<p><strong>Example</strong>:</p>
-<div class="columns">
-<div class="column" style="width:65%;">
-<p>For an image classifier we have two classes, <code>cat</code> and <code>dog</code>. Differentiating the score for <code>cat</code>, <span class="math inline">\(\small S_c\)</span>, with respect to the pixel values <span class="math inline">\(\small x_1, \dots, x_n\)</span>, gives an <em>attribution</em> of each pixels’ importance to the classification</p>
-<div style="padding-top: 40px;">
-
-</div>
-<p><span class="math display">\[
-\small
-\nabla S_c (\boldsymbol{x}) =
-\begin{bmatrix}
-  \frac{\partial \color{MediumVioletRed}{S_c}}{\partial \color{teal}{x}_0} \\
-  \vdots \\
-  \frac{\partial \color{MediumVioletRed}{S_c}}{\partial \color{teal}{x}_n} \\
-\end{bmatrix}
-\leftarrow \mathrm{attribution\; map}
-\]</span></p>
-</div><div class="column" style="width:35%;">
-<div data-layout-row="2">
-<div class="fragment">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture9/cat.png"></p>
-<figcaption>Cat</figcaption>
-</figure>
-</div>
-</div>
-<div class="fragment">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture9/cat-attribution.png"></p>
-<figcaption>Pixel attributions to classification score</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-<section id="using-gradients-for-explainability-2" class="slide level2">
-<h2>Using gradients for explainability</h2>
-<p>Some problems with using the (only) the gradient:</p>
-<ul>
-<li>Gradients looks rather noisy</li>
-<li>If using ReLU and output activations are 0, the gradient is also 0.</li>
-</ul>
-<hr>
-<div class="fragment">
-<p>Some solutions:</p>
-<ul>
-<li>Add noise and average: <em>SmoothGrad</em></li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture9/smoothgrad.png" class="quarto-figure quarto-figure-center" width="800"></p>
-</figure>
-</div>
-</div>
-</section>
-<section id="using-gradients-for-explainability-3" class="slide level2">
-<h2>Using gradients for explainability</h2>
-<p>Some problems with using the (only) the gradient:</p>
-<ul>
-<li>Gradients looks rather noisy</li>
-<li>If using ReLU and output activations are 0, the gradient is also 0.</li>
-</ul>
-<hr>
-<p>Some solutions:</p>
-<ul>
-<li><p>Add noise and average: <em>SmoothGrad</em></p>
-<p>Make a baseline and integrate: <em>Integrated gradients</em></p></li>
-</ul>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-right">
-<figure>
-<p><img data-src="figures/lecture9/integrated-gradients-image.png" class="quarto-figure quarto-figure-right" width="250"></p>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-left">
-<figure>
-<p><img data-src="figures/lecture9/integrated-gradients.png" class="quarto-figure quarto-figure-left" width="250"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="using-gradients-for-explainability-4" class="slide level2">
-<h2>Using gradients for explainability</h2>
-<p>Some problems with using the (only) the gradient:</p>
-<ul>
-<li>Gradients looks rather noisy</li>
-<li>If using ReLU and output activations are 0, the gradient is also 0.</li>
-</ul>
-<hr>
-<p>Some solutions:</p>
-<ul>
-<li>Be clever about how gradients are propagated through the activation functions: <em>DeepLift</em>, <em>Deconvolution</em>, <em>Layerwise relevance propagation</em></li>
-</ul>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-right">
-<figure>
-<p><img data-src="figures/lecture9/deconvolution-cat-image.png" class="quarto-figure quarto-figure-right" width="250"></p>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-left">
-<figure>
-<p><img data-src="figures/lecture9/deconvolution-cat.png" class="quarto-figure quarto-figure-left" width="250"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute" style="font-size: 0.8em;bottom: 6%; right: 0%; ">
-<p><a href="https://lrpserver.hhi.fraunhofer.de/image-classification">Interactive<br>heatmapping</a></p>
-</div>
-</section>
-<section id="adversarial-attacks" class="slide level2">
-<h2>Adversarial attacks</h2>
-<p>Two observations from our pixel attributions:</p>
-<ol type="1">
-<li>Gradients look noisy</li>
-<li>A few pixels have very large gradients<br> (and thereby a large impact on the classification)</li>
-</ol>
-</section>
-<section id="adversarial-attacks-1" class="slide level2">
-<h2>Adversarial attacks</h2>
-<div class="quarto-layout-panel" data-layout-ncol="2" style="padding-top: 120px;">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-left">
-<figure>
-<p><img data-src="figures/lecture9/adversarial-szegedy-1.png" class="quarto-figure quarto-figure-left" width="400"></p>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture9/adversarial-szegedy-2.png" class="quarto-figure quarto-figure-center" width="400"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute" style="font-size: 0.7em; text-align: center;top: 19%; left: 2%; width: 100px; ">
-<p>Original image</p>
-</div>
-<div class="absolute" style="font-size: 0.7em; text-align: center;top: 20%; left: 14%; width: 100px; ">
-<p>Perturbation</p>
-</div>
-<div class="absolute" style="font-size: 0.7em; text-align: center;top: 19%; left: 27%; width: 100px; ">
-<p>Perturbed image</p>
-</div>
-<div class="absolute" style="font-size: 0.7em; text-align: center;top: 21%; left: 39%; width: 100px; ">
-<p>Prediction</p>
-</div>
-<div class="fragment absolute" style="font-size: 0.7em; text-align: center;top: 37%; left: 38%; width: 100px; ">
-<p><code>Ostrich</code></p>
-</div>
-<div class="fragment absolute" style="font-size: 0.7em; text-align: center;top: 56%; left: 38%; width: 100px; ">
-<p><code>Ostrich</code></p>
-</div>
-<div class="fragment absolute" style="font-size: 0.7em; text-align: center;top: 76%; left: 38%; width: 100px; ">
-<p><code>Ostrich</code></p>
-</div>
-<div class="fragment absolute" style="top: -4%; right: 0%; width: 200px; ">
-<p><img data-src="figures/lecture9/ostrich.webp" class="img-shadow"></p>
-</div>
-<div class="fragment absolute" style="font-size: 0.7em; text-align: center;top: 37%; left: 94%; width: 100px; ">
-<p><code>Ostrich</code></p>
-</div>
-<div class="fragment absolute" style="font-size: 0.7em; text-align: center;top: 56%; left: 94%; width: 100px; ">
-<p><code>Ostrich</code></p>
-</div>
-<div class="fragment absolute" style="font-size: 0.7em; text-align: center;top: 76%; left: 94%; width: 100px; ">
-<p><code>Ostrich</code></p>
-</div>
-</section>
-<section id="constructing-adversarial-examples" class="slide level2">
-<h2>Constructing adversarial examples</h2>
-<p>From the gradient <span class="math inline">\(\nabla S_c\)</span> we know which pixels were important to make the <em>correct</em> prediction</p>
-<p><i class="bi bi-arrow-right"></i> Adjust their values in the <em>opposite</em> direction</p>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture9/adversarial-goodfellow.png" class="quarto-figure quarto-figure-center" style="padding-top: 50px;" width="800"></p>
-</figure>
-</div>
-<p>(Many sophisticated variants exist)</p>
-</section>
-<section id="irl-adversarial-examples" class="slide level2">
-<h2>IRL adversarial examples</h2>
-<div style="padding-top: 100px;">
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="4">
-<div class="quarto-layout-row">
-<div class="fragment quarto-layout-cell" style="flex-basis: 25.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture9/sign-1.png"></p>
-<figcaption><span class="fragment">Prediction:<br><code>Speed limit 45</code></span></figcaption>
-</figure>
-</div>
-</div>
-<div class="fragment quarto-layout-cell" style="flex-basis: 25.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture9/sign-2.png"></p>
-<figcaption><span class="fragment">Prediction:<br><code>Speed limit 45</code></span></figcaption>
-</figure>
-</div>
-</div>
-<div class="fragment quarto-layout-cell" style="flex-basis: 25.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture9/sign-3.png"></p>
-<figcaption><span class="fragment">Prediction:<br><code>Speed limit 45</code></span></figcaption>
-</figure>
-</div>
-</div>
-<div class="fragment quarto-layout-cell" style="flex-basis: 25.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/lecture9/sign-4.png"></p>
-<figcaption><span class="fragment">Prediction:<br><code>Speed limit 45</code></span></figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="adversarial-attacks-2" class="slide level2">
-<h2>Adversarial attacks</h2>
-<p><em>Targeted</em> attacks need access to the model on order to compute gradients</p>
-<p><em>Black box</em> attacks: Constructing adversarial examples purely by analysing outputs for given inputs (more difficult)</p>
-<div class="fragment" style="padding-top: 70px;">
-<p>Some defense strategies:</p>
-<ul>
-<li>Training on adversarial examples</li>
-<li>Ensembling</li>
-<li>Augmentation</li>
-</ul>
-<div class="absolute" style="bottom: 0%; right: 0%; width: 400px; ">
-<iframe data-external="1" src="https://player.vimeo.com/video/340528216" width="400px" height="400px" frameborder="0" title="" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen=""></iframe>
-</div>
-</div>
-</section>
-<section id="generalisation" class="slide level2">
-<h2>Generalisation</h2>
+<section id="this-week-exam-prep" class="slide level2" data-background-color="#FCE4EC">
+<h2>This week: Exam prep</h2>
 <div style="padding-top: 50px;">
 
 </div>
-<p>Over the course we have applied neural networks to many different <span class="color-cyan-dark">specific</span> tasks</p>
-<p>If properly trained, the models work well (<em>generalise</em>) for new data.</p>
+<p><strong>Today</strong>:</p>
+<p>Summary of curriculum<br> (details also listed on <a href="https://hvl.instructure.com/courses/32052/pages/curriculum">Canvas</a>)</p>
+<div style="padding-top: 50px;">
+
+</div>
+<p><strong>Tomorrow</strong>:</p>
+<p>We solve the <a href="https://hvl.instructure.com/courses/32052/files/3653159?wrap=1">test exam</a><br> (plus a few extra questions from old exams)</p>
+</section>
+<section id="what-is-deep-learning" class="slide level2">
+<h2>1: <em>What is deep learning?</em></h2>
+<div style="padding-top: 50px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch01/mnist_representations.fdb30a2d.png" class="quarto-figure quarto-figure-center" width="700"></p>
+</figure>
+</div>
+</section>
+<section id="building-blocks-of-neural-networks" class="slide level2">
+<h2>2: <em>Building blocks of neural networks</em></h2>
+<div style="padding-top: 30px;">
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://deeplearningwithpython.io/images/ch02/gradient_descent_3d.85d77c73.png"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://deeplearningwithpython.io/images/ch02/global_minimum.8f000c0a.png"></p>
+</div>
+</div>
+</div>
+<p>We skip the section on “<em>Chaining derivatives: The Backpropagation algorithm</em>”</p>
+</section>
+<section id="not-directly-included-3-4-and-6" class="slide level2">
+<h2>Not (directly) included: 3, 4 and 6</h2>
+<div style="padding-top: 30px;">
+
+</div>
+<p>No specific questions from</p>
+<ul>
+<li><span class="color-indigo">Chapter 3</span> <em>Introduction to TensorFlow, PyTorch, JAX, and Keras</em><br> (but there can still be Keras code questions)</li>
+</ul>
+<div style="padding-top: 30px;">
+
+</div>
+<p>Considered prerequisite material:</p>
+<ul>
+<li><span class="color-purple">Chapter 4</span> <em>Classification and regression</em></li>
+<li><span class="color-purple">Chapter 6</span> <em>The universal workflow of machine learning</em></li>
+</ul>
+</section>
+<section id="fundamentals-of-deep-learning" class="slide level2">
+<h2>5: <em>Fundamentals of deep learning</em></h2>
+<div style="padding-top: 30px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch05/original_model_vs_dropout_regularized_model_imdb.58acc10b.png" class="quarto-figure quarto-figure-center" width="700"></p>
+</figure>
+</div>
+</section>
+<section id="a-deep-dive-on-keras" class="slide level2">
+<h2>7: <em>A deep dive on Keras</em></h2>
+<div style="padding-top: 30px;">
+
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a>inputs <span class="op">=</span> keras.Input(shape<span class="op">=</span>(<span class="dv">3</span>,), name<span class="op">=</span><span class="st">"my_input"</span>)</span>
+<span id="cb1-2"><a aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> layers.Dense(<span class="dv">64</span>, activation<span class="op">=</span><span class="st">"relu"</span>)(inputs)</span>
+<span id="cb1-3"><a aria-hidden="true" tabindex="-1"></a>outputs <span class="op">=</span> layers.Dense(<span class="dv">10</span>, activation<span class="op">=</span><span class="st">"softmax"</span>)(features)</span>
+<span id="cb1-4"><a aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> keras.Model(inputs<span class="op">=</span>inputs, outputs<span class="op">=</span>outputs, name<span class="op">=</span><span class="st">"my_functional_model"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="padding-top: 40px;">
 
 </div>
-<div class="fragment">
-<p>But, naturally, they work only for instances represented in the training data<br> <i class="bi bi-arrow-right"></i> can call it <span class="color-pink-dark"><em>local</em></span> generalisation.</p>
-<p>On the other hand, <span class="color-pink-dark"><em>extreme</em></span> generalisation would be if the model could solve new and unseen <strong>tasks</strong>.<br> <i class="bi bi-arrow-right"></i> Not only automate, but display intelligence.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> model.summary()</span>
+<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a>Model: <span class="st">"my_functional_model"</span></span>
+<span id="cb2-3"><a aria-hidden="true" tabindex="-1"></a>┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓</span>
+<span id="cb2-4"><a aria-hidden="true" tabindex="-1"></a>┃ Layer (<span class="bu">type</span>)                      ┃ Output Shape             ┃       Param <span class="co"># ┃</span></span>
+<span id="cb2-5"><a aria-hidden="true" tabindex="-1"></a>┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩</span>
+<span id="cb2-6"><a aria-hidden="true" tabindex="-1"></a>│ my_input (InputLayer)             │ (<span class="va">None</span>, <span class="dv">3</span>)                │             <span class="dv">0</span> │</span>
+<span id="cb2-7"><a aria-hidden="true" tabindex="-1"></a>├───────────────────────────────────┼──────────────────────────┼───────────────┤</span>
+<span id="cb2-8"><a aria-hidden="true" tabindex="-1"></a>│ dense_8 (Dense)                   │ (<span class="va">None</span>, <span class="dv">64</span>)               │           <span class="dv">256</span> │</span>
+<span id="cb2-9"><a aria-hidden="true" tabindex="-1"></a>├───────────────────────────────────┼──────────────────────────┼───────────────┤</span>
+<span id="cb2-10"><a aria-hidden="true" tabindex="-1"></a>│ dense_9 (Dense)                   │ (<span class="va">None</span>, <span class="dv">10</span>)               │           <span class="dv">650</span> │</span>
+<span id="cb2-11"><a aria-hidden="true" tabindex="-1"></a>└───────────────────────────────────┴──────────────────────────┴───────────────┘</span>
+<span id="cb2-12"><a aria-hidden="true" tabindex="-1"></a> Total params: <span class="dv">906</span> (<span class="fl">3.54</span> KB)</span>
+<span id="cb2-13"><a aria-hidden="true" tabindex="-1"></a> Trainable params: <span class="dv">906</span> (<span class="fl">3.54</span> KB)</span>
+<span id="cb2-14"><a aria-hidden="true" tabindex="-1"></a> Non<span class="op">-</span>trainable params: <span class="dv">0</span> (<span class="fl">0.00</span> B)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="image-classification" class="slide level2">
+<h2>8: <em>Image classification</em></h2>
+<div style="padding-top: 40px;">
+
 </div>
-</section>
-<section id="a-puzzle" class="slide level2">
-<h2>A puzzle</h2>
-<p><img data-src="https://deeplearningwithpython.io/images/ch19/arc_example_2.7d4f0c33.png"></p>
-</section>
-<section id="benchmarks" class="slide level2">
-<h2>Benchmarks</h2>
-<p><a href="https://llm-stats.com"><img data-src="figures/lecture25/ai-leaderboard.png"></a></p>
-</section>
-<section id="benchmarks-1" class="slide level2">
-<h2>Benchmarks</h2>
-<p><a href="https://epoch.ai/data/notable-ai-models"><img data-src="figures/lecture15/ml-trends.png"></a></p>
-</section>
-<section id="next-week" class="slide level2">
-<h2>Next week</h2>
-<p>Repetition and exam preparation</p>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 42.9%;justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/lecture25/test-exam.png" class="img-shadow quarto-figure quarto-figure-center" width="600"></p>
+<p><img data-src="https://deeplearningwithpython.io/images/ch08/local_patterns.b72668dd.jpg" class="quarto-figure quarto-figure-center" width="300"></p>
 </figure>
 </div>
-<p>(see Canvas)</p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 57.1%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch08/how_convolution_works.fb611af4.png" class="quarto-figure quarto-figure-center" width="400"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="convnet-architecture-patterns" class="slide level2">
+<h2>9: <em>ConvNet architecture patterns</em></h2>
+<div style="padding-top: 40px;">
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://deeplearningwithpython.io/images/ch09/xception_entry_flow_pyramid.4701a5de.png"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://deeplearningwithpython.io/images/ch09/residual_connection.0524fdc4.png"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="not-directly-included-chapter-10" class="slide level2">
+<h2>Not (directly) included: Chapter 10</h2>
+<div style="padding-top: 40px;">
+
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch10/cam.b66fff28.png" class="quarto-figure quarto-figure-center" width="480"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div style="padding-top: 60px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch10/elephant_cam.73b7f8e0.jpg" class="quarto-figure quarto-figure-center" width="380"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="image-segmentation" class="slide level2">
+<h2>11: <em>Image segmentation</em></h2>
+<div style="padding-top: 50px;">
+
+</div>
+<p><img data-src="https://deeplearningwithpython.io/images/ch11/instance_segmentation.818c62ba.png"></p>
+</section>
+<section id="object-detection" class="slide level2">
+<h2>12: <em>Object detection</em></h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch12/retinanet-output.0a67b6e8.png" class="quarto-figure quarto-figure-center" width="800"></p>
+</figure>
+</div>
+</section>
+<section id="timeseries-forecasting" class="slide level2">
+<h2>13: <em>Timeseries forecasting</em></h2>
+<div style="padding-top: 80px;">
+
+</div>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch13/temperature_over_several_days.975eb51a.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div><div class="column" style="width:60%;">
+<div style="padding-top: 20px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch13/unrolled_lstm_1.d9bee30c.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="text-classification" class="slide level2">
+<h2>14: <em>Text classification</em></h2>
+<div style="padding-top: 60px;">
+
+</div>
+<p><img data-src="https://deeplearningwithpython.io/images/ch14/embedding-dictionary.80faa429.png"></p>
+</section>
+<section id="language-models-and-the-transformer" class="slide level2">
+<h2>15: <em>Language models and the Transformer</em></h2>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://deeplearningwithpython.io/images/ch15/attention-concept.fde57742.png" width="450"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="https://deeplearningwithpython.io/images/ch15/encoder-decoder.d979dbbc.png"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="text-generation" class="slide level2">
+<h2>16: <em>Text generation</em></h2>
+<div style="padding-top: 60px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch16/sampling-strategies.0545bedf.png" class="quarto-figure quarto-figure-center" width="700"></p>
+</figure>
+</div>
+</section>
+<section id="image-generation" class="slide level2">
+<h2>17: <em>Image generation</em></h2>
+<div class="quarto-layout-panel" data-layout-nrow="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="https://deeplearningwithpython.io/images/ch17/autoencoder.71a857ef.png"></p>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="https://deeplearningwithpython.io/images/ch17/diffusion.184e1d12.png"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="best-practices-for-the-real-world" class="slide level2">
+<h2>18: <em>Best practices for the real world</em></h2>
+<div style="padding-top: 60px;">
+
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://deeplearningwithpython.io/images/ch18/the_loop_of_progress.4bb26a08.png" class="quarto-figure quarto-figure-center" width="500"></p>
+</figure>
+</div>
+<div style="padding-top: 60px;">
+
+</div>
+<p>We skip the sections on <em>“Multi-GPU training”</em> and <em>“TPU training”</em></p>
+</section>
+<section id="notebooks" class="slide level2">
+<h2>Notebooks</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/lecture26/notebooks.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
 </section>
 <section id="section" class="slide level2" data-background-color="#fff" data-menu-title="Fin">
 <h2></h2>
